@@ -14,4 +14,18 @@ public class MainController {
         log.info("index: logging example");
         return new ModelAndView("index");
     }
+    @GetMapping("/admin")
+    public ModelAndView adminPage() {
+        return new ModelAndView("admin");
+    }
+
+    @GetMapping("/manager")
+    public ModelAndView managerPage() {
+        return new ModelAndView("manager");
+    }
+
+    @GetMapping("/passenger")
+    public ModelAndView passengerPage() {
+        return new ModelAndView("passenger");
+    }
 }
