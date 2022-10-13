@@ -35,6 +35,10 @@ public class DataInitializer {
     public void init() {
         System.out.println("DataInitializer сработал!");
 
+        initDbWithRolesAndUsers();
+    }
+
+    private void initDbWithRolesAndUsers() {
         Role roleAdmin = new Role();
         roleAdmin.setName("ROLE_ADMIN");
         roleService.saveRole(roleAdmin);
