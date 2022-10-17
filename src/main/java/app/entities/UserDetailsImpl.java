@@ -1,4 +1,4 @@
-package app.security;
+package app.entities;
 
 import app.entities.User;
 import org.springframework.security.core.GrantedAuthority;

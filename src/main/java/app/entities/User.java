@@ -7,26 +7,29 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
-@RequiredArgsConstructor
+@Data
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String firstname;
+    @Column
+    private String firstName;
 
-    private String lastname;
+    @Column
+    private String lastName;
 
+    @Column
     private String gender;
 
-    private Date birthdate;
+    @Column
+    private Date birthDate;
 
     @Column(unique = true)
     private String email;
 
+    @Column
     private String password;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
