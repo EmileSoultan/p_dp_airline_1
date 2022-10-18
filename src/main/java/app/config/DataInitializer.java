@@ -1,5 +1,7 @@
 package app.config;
 
+import app.entities.Ticket;
+import app.services.TicketService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -11,9 +13,26 @@ import javax.annotation.PostConstruct;
  */
 @Component
 public class DataInitializer {
+    private final TicketService ticketService;
+
+    public DataInitializer(TicketService ticketService) {
+        this.ticketService = ticketService;
+    }
 
     @PostConstruct
     public void init() {
         System.out.println("DataInitializer сработал!");
+        initDbWithTicket();
+    }
+
+    public void initDbWithTicket() {
+        Ticket ticket1 = new Ticket(1L, "TL-1111", "Олег", "Боинг-747", "1F");
+        ticketService.saveTicket(ticket1);
+
+        Ticket ticket2 = new Ticket(2L, "SD-2222", "Иван", "Боинг-747", "9A");
+        ticketService.saveTicket(ticket2);
+
+        Ticket ticket3 = new Ticket(3L, "ZX-3333", "Андрей", "Боинг-747", "6D");
+        ticketService.saveTicket(ticket3);
     }
 }
