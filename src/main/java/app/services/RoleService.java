@@ -18,7 +18,7 @@ public class RoleService {
 
     @Transactional(readOnly = true)
     public Role getRoleByName(String name) {
-        return roleRepository.findByName(name).orElseThrow();
+        return roleRepository.findByName(name);
     }
 
     public void saveRole(Role role) {
