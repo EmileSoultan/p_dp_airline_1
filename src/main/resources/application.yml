@@ -18,9 +18,9 @@ spring:
       leak-detection-threshold: 60000
       maximum-pool-size: 20
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

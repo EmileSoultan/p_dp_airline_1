@@ -3,6 +3,7 @@ package app.config;
 import app.entities.Ticket;
 import app.services.TicketService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 
@@ -19,6 +20,11 @@ public class DataInitializer {
         this.ticketService = ticketService;
     }
 
+    public DataInitializer(DestinationService destinationService) {
+        this.destinationService = destinationService;
+    }
+
+    @Transactional
     @PostConstruct
     public void init() {
         System.out.println("DataInitializer сработал!");
