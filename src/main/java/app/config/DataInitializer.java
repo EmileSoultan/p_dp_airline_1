@@ -21,7 +21,6 @@ import java.util.Set;
  */
 @Component
 public class DataInitializer {
-    DestinationService destinationService;
 
     private final UserService userService;
     private final RoleService roleService;
