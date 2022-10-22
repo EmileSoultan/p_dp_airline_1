@@ -7,8 +7,10 @@ import app.services.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import app.entities.Aircraft;
 import app.entities.Destination;
 import app.enums.Airport;
+import app.services.AircraftService;
 import app.services.DestinationService;
 
 import javax.annotation.PostConstruct;
@@ -26,11 +28,14 @@ public class DataInitializer {
     private final RoleService roleService;
     private final DestinationService destinationService;
     private final PasswordEncoder encoder;
+    private final AircraftService aircraftService;
 
-    public DataInitializer(UserService userService, RoleService roleService, DestinationService destinationService, PasswordEncoder encoder) {
+
+    public DataInitializer(UserService userService, RoleService roleService, DestinationService destinationService, AircraftService aircraftService, PasswordEncoder encoder) {
         this.userService = userService;
         this.roleService = roleService;
         this.destinationService = destinationService;
+        this.aircraftService = aircraftService;
         this.encoder = encoder;
     }
 
@@ -38,10 +43,9 @@ public class DataInitializer {
     @Transactional
     public void init() {
         System.out.println("DataInitializer сработал!");
-
         initDbWithRolesAndUsers();
-
         initDbWithDestination();
+        aircraftsInit();
     }
 
     private void initDbWithRolesAndUsers() {
@@ -94,6 +98,36 @@ public class DataInitializer {
         destinationService.updateDestination(new Destination(4L, Airport.GDX, "Сокол", "Магадан", "GMT +11", "Россия"));
 
         System.out.println(destinationService.findDestinationByName("волг", ""));
+    }
+
+    private void aircraftsInit() {
+//        List<Seat> seatList1;
+//        List<Seat> seatList2;
+//        List<Seat> seatList3;
+
+        Aircraft aircraft1 = new Aircraft();
+        aircraft1.setAircraftNumber("17000012");
+        aircraft1.setModel("Embraer E170STD");
+        aircraft1.setModelYear(2002);
+        aircraft1.setFlightRange(3800);
+//        aircraft1.setSeatList(seatList1);
+        aircraftService.save(aircraft1);
+
+        Aircraft aircraft2 = new Aircraft();
+        aircraft2.setAircraftNumber("5134");
+        aircraft2.setModel("Airbus A320-200");
+        aircraft2.setModelYear(2011);
+        aircraft2.setFlightRange(4300);
+//        aircraft2.setSeatList(seatList2);
+        aircraftService.save(aircraft2);
+
+        Aircraft aircraft3 = new Aircraft();
+        aircraft3.setAircraftNumber("35283");
+        aircraft3.setModel("Boeing 737-800");
+        aircraft3.setModelYear(2008);
+        aircraft3.setFlightRange(5765);
+//        aircraft3.setSeatList(seatList3);
+        aircraftService.save(aircraft3);
     }
 
 }
