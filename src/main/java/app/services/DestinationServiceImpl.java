@@ -8,10 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class DestinationServiceImp implements DestinationService {
+public class DestinationServiceImpl implements DestinationService {
     private final DestinationRepository destinationRepository;
 
-    public DestinationServiceImp(DestinationRepository destinationRepository) {
+    public DestinationServiceImpl(DestinationRepository destinationRepository) {
         this.destinationRepository = destinationRepository;
     }
 

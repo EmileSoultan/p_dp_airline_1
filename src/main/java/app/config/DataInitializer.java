@@ -1,8 +1,10 @@
 package app.config;
 
 import app.entities.Role;
+import app.entities.Ticket;
 import app.entities.User;
 import app.services.RoleService;
+import app.services.TicketService;
 import app.services.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -24,6 +26,7 @@ import java.util.Set;
 @Component
 public class DataInitializer {
 
+    private final TicketService ticketService;
     private final UserService userService;
     private final RoleService roleService;
     private final DestinationService destinationService;
@@ -31,11 +34,17 @@ public class DataInitializer {
     private final AircraftService aircraftService;
 
 
-    public DataInitializer(UserService userService, RoleService roleService, DestinationService destinationService, AircraftService aircraftService, PasswordEncoder encoder) {
+    public DataInitializer(UserService userService,
+                           RoleService roleService,
+                           DestinationService destinationService,
+                           AircraftService aircraftService,
+                           TicketService ticketService,
+                           PasswordEncoder encoder) {
         this.userService = userService;
         this.roleService = roleService;
         this.destinationService = destinationService;
         this.aircraftService = aircraftService;
+        this.ticketService = ticketService;
         this.encoder = encoder;
     }
 
@@ -95,9 +104,11 @@ public class DataInitializer {
 
         destinationService.deleteDestinationById(3L);
 
-        destinationService.updateDestination(new Destination(4L, Airport.GDX, "Сокол", "Магадан", "GMT +11", "Россия"));
+        Ticket ticket2 = new Ticket(2L, "SD-2222", "Иван", "Боинг-747", "9A");
+        ticketService.saveTicket(ticket2);
 
-        System.out.println(destinationService.findDestinationByName("волг", ""));
+        Ticket ticket3 = new Ticket(3L, "ZX-3333", "Андрей", "Боинг-747", "6D");
+        ticketService.saveTicket(ticket3);
     }
 
     private void aircraftsInit() {
