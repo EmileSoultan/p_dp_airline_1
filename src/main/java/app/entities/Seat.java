@@ -1,0 +1,58 @@
+package app.entities;
+
+import lombok.Data;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
+
+@Entity
+@Table(name = "seat")
+@Data
+public class Seat {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Size(min = 2, max = 5, message = "Seat number must be between 2 and 5 characters")
+    @NotBlank(message = "Field seat number cannot be null")
+    @Column(name = "seat_number")
+    private String seatNumber;
+
+    @NotNull(message = "Field isNearEmergencyExit cannot be null")
+    @Column(name = "is_near_emergency_exit")
+    private Boolean isNearEmergencyExit;
+
+
+    //TODO: add fields
+    /*
+    @Column(name = "category")
+    private Category category;
+
+    @NotNull(message = "Field aircraft cannot be null")
+    @Column(name = "aircraft")
+    private Aircraft aircraft;
+
+    @Column(name = "flight")
+    private Flight flight;
+    */
+
+    @PositiveOrZero(message = "Fare must be positive")
+    @Column(name = "fare")
+    private Integer fare;
+
+    @Column(name = "is_registered")
+    private Boolean isRegistered;
+
+    @Column(name = "is_sold")
+    private Boolean isSold;
+}

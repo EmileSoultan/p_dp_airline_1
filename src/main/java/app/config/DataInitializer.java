@@ -11,8 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import app.entities.Aircraft;
 import app.entities.Destination;
+import app.entities.Seat;
 import app.enums.Airport;
 import app.services.AircraftService;
+import app.services.SeatService;
 import app.services.DestinationService;
 
 import javax.annotation.PostConstruct;
@@ -32,6 +34,7 @@ public class DataInitializer {
     private final DestinationService destinationService;
     private final PasswordEncoder encoder;
     private final AircraftService aircraftService;
+    private final SeatService seatService;
 
 
     public DataInitializer(UserService userService,
@@ -39,12 +42,14 @@ public class DataInitializer {
                            DestinationService destinationService,
                            AircraftService aircraftService,
                            TicketService ticketService,
+                           SeatService seatService,
                            PasswordEncoder encoder) {
         this.userService = userService;
         this.roleService = roleService;
         this.destinationService = destinationService;
         this.aircraftService = aircraftService;
         this.ticketService = ticketService;
+        this.seatService = seatService;
         this.encoder = encoder;
     }
 
@@ -55,6 +60,7 @@ public class DataInitializer {
         initDbWithRolesAndUsers();
         initDbWithDestination();
         aircraftsInit();
+        initSeat();
     }
 
     private void initDbWithRolesAndUsers() {
@@ -139,6 +145,33 @@ public class DataInitializer {
         aircraft3.setFlightRange(5765);
 //        aircraft3.setSeatList(seatList3);
         aircraftService.save(aircraft3);
+    }
+
+    public void initSeat() {
+
+        Seat seat1 = new Seat();
+        seat1.setSeatNumber("1B");
+        seat1.setIsNearEmergencyExit(false);
+        seat1.setFare(500);
+        seat1.setIsRegistered(true);
+        seat1.setIsRegistered(true);
+        seatService.save(seat1);
+
+        Seat seat2 = new Seat();
+        seat2.setSeatNumber("11A");
+        seat2.setIsNearEmergencyExit(true);
+        seat2.setFare(300);
+        seat2.setIsRegistered(true);
+        seat2.setIsRegistered(false);
+        seatService.save(seat2);
+
+        Seat seat3 = new Seat();
+        seat3.setSeatNumber("21F");
+        seat3.setIsNearEmergencyExit(false);
+        seat3.setFare(100);
+        seat3.setIsRegistered(false);
+        seat3.setIsRegistered(false);
+        seatService.save(seat2);
     }
 
 }
