@@ -1,8 +1,10 @@
 package app.config;
 
 import app.entities.Role;
+import app.entities.Ticket;
 import app.entities.User;
 import app.services.RoleService;
+import app.services.TicketService;
 import app.services.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -23,12 +25,8 @@ import java.util.Set;
  */
 @Component
 public class DataInitializer {
+
     private final TicketService ticketService;
-
-    public DataInitializer(TicketService ticketService) {
-        this.ticketService = ticketService;
-    }
-
     private final UserService userService;
     private final RoleService roleService;
     private final DestinationService destinationService;
@@ -36,11 +34,17 @@ public class DataInitializer {
     private final AircraftService aircraftService;
 
 
-    public DataInitializer(UserService userService, RoleService roleService, DestinationService destinationService, AircraftService aircraftService, PasswordEncoder encoder) {
+    public DataInitializer(UserService userService,
+                           RoleService roleService,
+                           DestinationService destinationService,
+                           AircraftService aircraftService,
+                           TicketService ticketService,
+                           PasswordEncoder encoder) {
         this.userService = userService;
         this.roleService = roleService;
         this.destinationService = destinationService;
         this.aircraftService = aircraftService;
+        this.ticketService = ticketService;
         this.encoder = encoder;
     }
 

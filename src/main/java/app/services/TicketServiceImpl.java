@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class TicketServiceImp implements TicketService {
+public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
 
-    public TicketServiceImp(TicketRepository ticketRepository) {
+    public TicketServiceImpl(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
     }
 

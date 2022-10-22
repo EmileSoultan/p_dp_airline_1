@@ -16,14 +16,14 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Ticket")
+@Table(name = "ticket")
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "bookingNumber", nullable = false, unique = true)
+    @Column(name = "booking_number", nullable = false, unique = true)
     @NotNull
     private String bookingNumber;
 
