@@ -1,6 +1,8 @@
 package app.entities;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,8 +32,6 @@ public class User {
 
     @Column(name = "last_name")
     private String lastName;
-
-    private String gender;
 
     @Column(name = "birth_date")
     private Date birthDate;

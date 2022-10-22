@@ -1,6 +1,5 @@
 package app.entities;
 
-import app.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
