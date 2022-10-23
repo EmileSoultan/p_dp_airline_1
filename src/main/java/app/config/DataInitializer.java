@@ -1,8 +1,11 @@
 package app.config;
 
+import app.entities.Flight;
 import app.entities.Role;
 import app.entities.Ticket;
 import app.entities.User;
+import app.enums.FlightStatus;
+import app.services.FlightService;
 import app.services.RoleService;
 import app.services.TicketService;
 import app.services.UserService;
@@ -18,6 +21,7 @@ import app.services.SeatService;
 import app.services.DestinationService;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -36,6 +40,8 @@ public class DataInitializer {
     private final AircraftService aircraftService;
     private final SeatService seatService;
 
+    private final FlightService flightService;
+
 
     public DataInitializer(UserService userService,
                            RoleService roleService,
@@ -43,7 +49,7 @@ public class DataInitializer {
                            AircraftService aircraftService,
                            TicketService ticketService,
                            SeatService seatService,
-                           PasswordEncoder encoder) {
+                           PasswordEncoder encoder, FlightService flightService) {
         this.userService = userService;
         this.roleService = roleService;
         this.destinationService = destinationService;
@@ -51,6 +57,7 @@ public class DataInitializer {
         this.ticketService = ticketService;
         this.seatService = seatService;
         this.encoder = encoder;
+        this.flightService = flightService;
     }
 
     @PostConstruct
@@ -61,6 +68,21 @@ public class DataInitializer {
         initDbWithDestination();
         aircraftsInit();
         initSeat();
+        initFlight();
+    }
+
+    private void initFlight() {
+        Flight flight1 = new Flight(1L, "MSKOMSK",
+                destinationService.findDestinationByName("Москва", "").get(0),
+                destinationService.findDestinationByName("Омск", "").get(0),
+                LocalDateTime.now(), LocalDateTime.now(), aircraftService.findById(1L), FlightStatus.ON_TIME);
+        flightService.save(flight1);
+
+        Flight flight2 = new Flight(2L, "MSKVLG",
+                destinationService.findDestinationByName("Москва", "").get(0),
+                destinationService.findDestinationByName("Волгоград", "").get(0),
+                LocalDateTime.now(), LocalDateTime.now(), aircraftService.findById(1L), FlightStatus.DELAYED);
+        flightService.save(flight2);
     }
 
     private void initDbWithRolesAndUsers() {
@@ -173,5 +195,4 @@ public class DataInitializer {
         seat3.setIsRegistered(false);
         seatService.save(seat2);
     }
-
 }
