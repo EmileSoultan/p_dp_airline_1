@@ -4,6 +4,7 @@ import app.entities.Flight;
 import app.entities.Role;
 import app.entities.Ticket;
 import app.entities.User;
+import app.enums.Gender;
 import app.enums.FlightStatus;
 import app.services.FlightService;
 import app.services.RoleService;
@@ -19,8 +20,14 @@ import app.enums.Airport;
 import app.services.AircraftService;
 import app.services.SeatService;
 import app.services.DestinationService;
+import app.entities.Passenger;
+import app.entities.Passport;
+import app.services.PassengerService;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -32,6 +39,7 @@ import java.util.Set;
 @Component
 public class DataInitializer {
 
+    private final PassengerService passengerService;
     private final TicketService ticketService;
     private final UserService userService;
     private final RoleService roleService;
@@ -49,7 +57,8 @@ public class DataInitializer {
                            AircraftService aircraftService,
                            TicketService ticketService,
                            SeatService seatService,
-                           PasswordEncoder encoder, FlightService flightService) {
+                           PasswordEncoder encoder, FlightService flightService,
+                           PassengerService passengerService) {
         this.userService = userService;
         this.roleService = roleService;
         this.destinationService = destinationService;
@@ -57,6 +66,7 @@ public class DataInitializer {
         this.ticketService = ticketService;
         this.seatService = seatService;
         this.encoder = encoder;
+        this.passengerService = passengerService;
         this.flightService = flightService;
     }
 
@@ -69,6 +79,7 @@ public class DataInitializer {
         aircraftsInit();
         initSeat();
         initFlight();
+        initDbByPassengerAndPassport();
     }
 
     private void initFlight() {
@@ -167,6 +178,57 @@ public class DataInitializer {
         aircraft3.setFlightRange(5765);
 //        aircraft3.setSeatList(seatList3);
         aircraftService.save(aircraft3);
+    }
+
+    private void initDbByPassengerAndPassport() {
+        passengerService.save(new Passenger(
+                "petrov@mail.ru",
+                "79111111111",
+                "Пётр",
+                "Петров",
+                "Петрович",
+                LocalDate.of(1986, 1, 11),
+                Gender.MALE,
+                new Passport(
+                        "1111 111111",
+                        LocalDate.of(2006,
+                                1,
+                                11),
+                        "Россия")
+        ));
+
+        passengerService.save(new Passenger(
+                "ivanov@mail.ru",
+                "79222222222",
+                "Иван",
+                "Иванов",
+                "Иванович",
+                LocalDate.of(1986, 2, 22),
+                Gender.MALE,
+                new Passport(
+                        "2222 222222",
+                        LocalDate.of(2006,
+                                2,
+                                22),
+                        "Россия")
+        ));
+
+        passengerService.save(new Passenger(
+                "sidorova@mail.ru",
+                "79333333333",
+                "Екатерина",
+                "Сидорова",
+                "Сидоровна",
+                LocalDate.of(1986, 3, 30),
+                Gender.FEMALE,
+                new Passport(
+                        "3333 333333",
+                        LocalDate.of(2006,
+                                3,
+                                30),
+                        "Россия")
+        ));
+
     }
 
     public void initSeat() {
