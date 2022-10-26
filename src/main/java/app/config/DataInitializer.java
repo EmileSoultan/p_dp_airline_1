@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -74,8 +75,8 @@ public class DataInitializer {
         System.out.println("DataInitializer сработал!");
         initDbWithRolesAndUsers();
         initDbWithDestination();
-        aircraftsInit();
         initSeat();
+        aircraftsInit();
         initFlight();
         initDbByPassengerAndPassport();
     }
@@ -149,16 +150,43 @@ public class DataInitializer {
     }
 
     private void aircraftsInit() {
-//        List<Seat> seatList1;
-//        List<Seat> seatList2;
-//        List<Seat> seatList3;
+        List<Seat> seatListFor17000012 = List.of(
+                seatService.findById(1),
+                seatService.findById(2),
+                seatService.findById(7),
+                seatService.findById(8)
+        );
+        List<Seat> seatListFor5134 = List.of(
+                seatService.findById(1),
+                seatService.findById(2),
+                seatService.findById(3),
+                seatService.findById(4),
+                seatService.findById(7),
+                seatService.findById(8),
+                seatService.findById(9),
+                seatService.findById(10)
+        );
+        List<Seat> seatListFor35283= List.of(
+                seatService.findById(1),
+                seatService.findById(2),
+                seatService.findById(3),
+                seatService.findById(4),
+                seatService.findById(5),
+                seatService.findById(6),
+                seatService.findById(7),
+                seatService.findById(8),
+                seatService.findById(9),
+                seatService.findById(10),
+                seatService.findById(11),
+                seatService.findById(12)
+        );
 
         Aircraft aircraft1 = new Aircraft();
         aircraft1.setAircraftNumber("17000012");
         aircraft1.setModel("Embraer E170STD");
         aircraft1.setModelYear(2002);
         aircraft1.setFlightRange(3800);
-//        aircraft1.setSeatList(seatList1);
+        aircraft1.setSeatList(seatListFor17000012);
         aircraftService.save(aircraft1);
 
         Aircraft aircraft2 = new Aircraft();
@@ -166,7 +194,7 @@ public class DataInitializer {
         aircraft2.setModel("Airbus A320-200");
         aircraft2.setModelYear(2011);
         aircraft2.setFlightRange(4300);
-//        aircraft2.setSeatList(seatList2);
+        aircraft2.setSeatList(seatListFor5134);
         aircraftService.save(aircraft2);
 
         Aircraft aircraft3 = new Aircraft();
@@ -174,7 +202,7 @@ public class DataInitializer {
         aircraft3.setModel("Boeing 737-800");
         aircraft3.setModelYear(2008);
         aircraft3.setFlightRange(5765);
-//        aircraft3.setSeatList(seatList3);
+        aircraft3.setSeatList(seatListFor35283);
         aircraftService.save(aircraft3);
     }
 
@@ -232,27 +260,50 @@ public class DataInitializer {
     public void initSeat() {
 
         Seat seat1 = new Seat();
-        seat1.setSeatNumber("1B");
+        seat1.setSeatNumber("1A");
         seat1.setIsNearEmergencyExit(false);
         seat1.setFare(500);
         seat1.setIsRegistered(true);
         seat1.setIsRegistered(true);
         seatService.save(seat1);
 
-        Seat seat2 = new Seat();
-        seat2.setSeatNumber("11A");
-        seat2.setIsNearEmergencyExit(true);
-        seat2.setFare(300);
-        seat2.setIsRegistered(true);
-        seat2.setIsRegistered(false);
+        Seat seat2 = new Seat("1B", false, 500, true, true);
+        Seat seat3 = new Seat("1C", false, 500, true, true);
+        Seat seat4 = new Seat("1D", false, 500, true, true);
+        Seat seat5 = new Seat("1E", false, 500, true, true);
+        Seat seat6 = new Seat("1F", false, 500, true, true);
+        Seat seat7 = new Seat("2A", true, 700, true, true);
+        Seat seat8 = new Seat("2B", true, 700, true, true);
+        Seat seat9 = new Seat("2C", true, 700, true, true);
+        Seat seat10 = new Seat("2D", true, 700, true, true);
+        Seat seat11 = new Seat("2E", true, 700, true, true);
+        Seat seat12 = new Seat("2F", true, 700, true, true);
         seatService.save(seat2);
+        seatService.save(seat3);
+        seatService.save(seat4);
+        seatService.save(seat5);
+        seatService.save(seat6);
+        seatService.save(seat7);
+        seatService.save(seat8);
+        seatService.save(seat9);
+        seatService.save(seat10);
+        seatService.save(seat11);
+        seatService.save(seat12);
 
-        Seat seat3 = new Seat();
-        seat3.setSeatNumber("21F");
-        seat3.setIsNearEmergencyExit(false);
-        seat3.setFare(100);
-        seat3.setIsRegistered(false);
-        seat3.setIsRegistered(false);
-        seatService.save(seat2);
+        Seat seat100 = new Seat();
+        seat100.setSeatNumber("11A");
+        seat100.setIsNearEmergencyExit(true);
+        seat100.setFare(300);
+        seat100.setIsRegistered(true);
+        seat100.setIsRegistered(false);
+        seatService.save(seat100);
+
+        Seat seat101 = new Seat();
+        seat101.setSeatNumber("21F");
+        seat101.setIsNearEmergencyExit(false);
+        seat101.setFare(100);
+        seat101.setIsRegistered(false);
+        seat101.setIsRegistered(false);
+        seatService.save(seat101);
     }
 }

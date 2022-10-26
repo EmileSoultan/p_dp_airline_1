@@ -7,9 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Data
@@ -37,6 +41,10 @@ public class Aircraft {
     private int flightRange;
 
 //    @NotEmpty
-//    @OneToMany(mappedBy = "aircraft")
-//    private List<Seat> seatList;
+    @ManyToMany
+    @JoinTable(
+            name = "aircraft_seat",
+            joinColumns = @JoinColumn(name = "aircraft_id"),
+            inverseJoinColumns = @JoinColumn(name = "seat_id"))
+    private List<Seat> seatList;
 }
