@@ -1,6 +1,7 @@
 package app.entities;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "seat")
 @Data
+@NoArgsConstructor
 public class Seat {
 
     @Id
@@ -55,4 +57,12 @@ public class Seat {
 
     @Column(name = "is_sold")
     private Boolean isSold;
+
+    public Seat(String seatNumber, Boolean isNearEmergencyExit, Integer fare, Boolean isRegistered, Boolean isSold) {
+        this.seatNumber = seatNumber;
+        this.isNearEmergencyExit = isNearEmergencyExit;
+        this.fare = fare;
+        this.isRegistered = isRegistered;
+        this.isSold = isSold;
+    }
 }
