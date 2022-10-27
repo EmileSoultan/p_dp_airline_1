@@ -12,6 +12,6 @@ public class MainController {
     @GetMapping("/")
     public ModelAndView index() {
         log.info("index: logging example");
-        return new ModelAndView("index");
+        return new ModelAndView("s7");
     }
 }
