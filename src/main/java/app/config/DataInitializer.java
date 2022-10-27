@@ -1,6 +1,8 @@
 package app.config;
 
+import app.entities.Admin;
 import app.entities.Aircraft;
+import app.entities.AirlineManager;
 import app.entities.Destination;
 import app.entities.Flight;
 import app.entities.Passenger;
@@ -8,14 +10,12 @@ import app.entities.Passport;
 import app.entities.Role;
 import app.entities.Seat;
 import app.entities.Ticket;
-import app.entities.User;
 import app.enums.Airport;
 import app.enums.FlightStatus;
 import app.enums.Gender;
 import app.services.AircraftService;
 import app.services.DestinationService;
 import app.services.FlightService;
-import app.services.PassengerService;
 import app.services.RoleService;
 import app.services.SeatService;
 import app.services.TicketService;
@@ -27,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -37,8 +39,6 @@ import java.util.Set;
  */
 @Component
 public class DataInitializer {
-
-    private final PassengerService passengerService;
     private final TicketService ticketService;
     private final UserService userService;
     private final RoleService roleService;
@@ -56,17 +56,16 @@ public class DataInitializer {
                            AircraftService aircraftService,
                            TicketService ticketService,
                            SeatService seatService,
-                           PasswordEncoder encoder, FlightService flightService,
-                           PassengerService passengerService) {
+                           FlightService flightService,
+                           PasswordEncoder encoder) {
         this.userService = userService;
         this.roleService = roleService;
         this.destinationService = destinationService;
         this.aircraftService = aircraftService;
         this.ticketService = ticketService;
         this.seatService = seatService;
-        this.encoder = encoder;
-        this.passengerService = passengerService;
         this.flightService = flightService;
+        this.encoder = encoder;
     }
 
     @PostConstruct
@@ -91,7 +90,7 @@ public class DataInitializer {
         Flight flight2 = new Flight(2L, "MSKVLG",
                 destinationService.findDestinationByName("Москва", "").get(0),
                 destinationService.findDestinationByName("Волгоград", "").get(0),
-                LocalDateTime.now(), LocalDateTime.now(), aircraftService.findById(1L), FlightStatus.DELAYED);
+                LocalDateTime.now(), LocalDateTime.now(), aircraftService.findById(2L), FlightStatus.DELAYED);
         flightService.save(flight2);
     }
 
@@ -108,19 +107,22 @@ public class DataInitializer {
         roleManager.setName("ROLE_MANAGER");
         roleService.saveRole(roleManager);
 
-        User admin = new User();
+        Admin admin = new Admin();
         admin.setEmail("admin@mail.ru");
         admin.setPassword(encoder.encode("admin"));
         admin.setRoles(Set.of(roleService.getRoleByName("ROLE_ADMIN")));
         userService.saveUser(admin);
 
-        User passenger = new User();
+        Passenger passenger = new Passenger();
+        passenger.setFirstName("John");
+        passenger.setLastName("Simons");
+        passenger.setBirthDate(new Date(103, Calendar.NOVEMBER, 10));
         passenger.setEmail("passenger@mail.ru");
         passenger.setPassword(encoder.encode("passenger"));
         passenger.setRoles(Set.of(roleService.getRoleByName("ROLE_PASSENGER")));
         userService.saveUser(passenger);
 
-        User manager = new User();
+        AirlineManager manager = new AirlineManager();
         manager.setEmail("manager@mail.ru");
         manager.setPassword(encoder.encode("manager"));
         manager.setRoles(Set.of(roleService.getRoleByName("ROLE_MANAGER")));
@@ -207,54 +209,47 @@ public class DataInitializer {
     }
 
     private void initDbByPassengerAndPassport() {
-        passengerService.save(new Passenger(
-                "petrov@mail.ru",
-                "79111111111",
-                "Пётр",
-                "Петров",
-                "Петрович",
-                LocalDate.of(1986, 1, 11),
-                Gender.MALE,
-                new Passport(
-                        "1111 111111",
-                        LocalDate.of(2006,
-                                1,
-                                11),
-                        "Россия")
-        ));
+        Passenger passenger1 = new Passenger();
+        passenger1.setFirstName("Пётр");
+        passenger1.setLastName("Петров");
+        passenger1.setMiddleName("Петрович");
+        passenger1.setBirthDate(new Date(86, Calendar.JANUARY, 11));
+        passenger1.setGender(Gender.MALE);
+        passenger1.setEmail("petrov@mail.ru");
+        passenger1.setPhoneNumber("79111111111");
+        passenger1.setPassword(encoder.encode("passenger1"));
+        passenger1.setPassport(new Passport("1111 111111",
+                LocalDate.of(2006, 1, 11), "Россия"));
+        passenger1.setRoles(Set.of(roleService.getRoleByName("ROLE_PASSENGER")));
+        userService.saveUser(passenger1);
 
-        passengerService.save(new Passenger(
-                "ivanov@mail.ru",
-                "79222222222",
-                "Иван",
-                "Иванов",
-                "Иванович",
-                LocalDate.of(1986, 2, 22),
-                Gender.MALE,
-                new Passport(
-                        "2222 222222",
-                        LocalDate.of(2006,
-                                2,
-                                22),
-                        "Россия")
-        ));
+        Passenger passenger2 = new Passenger();
+        passenger2.setFirstName("Иван");
+        passenger2.setLastName("Иванов");
+        passenger2.setMiddleName("Иванович");
+        passenger2.setBirthDate(new Date(86, Calendar.FEBRUARY, 22));
+        passenger2.setGender(Gender.MALE);
+        passenger2.setEmail("ivanov@mail.ru");
+        passenger2.setPhoneNumber("79222222222");
+        passenger2.setPassword(encoder.encode("passenger2"));
+        passenger2.setPassport(new Passport("2222 222222",
+                LocalDate.of(2006, 2, 22), "Россия"));
+        passenger2.setRoles(Set.of(roleService.getRoleByName("ROLE_PASSENGER")));
+        userService.saveUser(passenger2);
 
-        passengerService.save(new Passenger(
-                "sidorova@mail.ru",
-                "79333333333",
-                "Екатерина",
-                "Сидорова",
-                "Сидоровна",
-                LocalDate.of(1986, 3, 30),
-                Gender.FEMALE,
-                new Passport(
-                        "3333 333333",
-                        LocalDate.of(2006,
-                                3,
-                                30),
-                        "Россия")
-        ));
-
+        Passenger passenger3 = new Passenger();
+        passenger3.setFirstName("Екатерина");
+        passenger3.setLastName("Сидоровна");
+        passenger3.setMiddleName("Сидорова");
+        passenger3.setBirthDate(new Date(86, Calendar.MARCH, 30));
+        passenger3.setGender(Gender.FEMALE);
+        passenger3.setEmail("sidorova@mail.ru");
+        passenger3.setPhoneNumber("79333333333");
+        passenger3.setPassword(encoder.encode("passenger2"));
+        passenger3.setPassport(new Passport("3333 333333",
+                LocalDate.of(2006, 3, 30), "Россия"));
+        passenger3.setRoles(Set.of(roleService.getRoleByName("ROLE_PASSENGER")));
+        userService.saveUser(passenger3);
     }
 
     public void initSeat() {

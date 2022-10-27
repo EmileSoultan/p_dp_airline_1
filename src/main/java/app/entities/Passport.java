@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -23,7 +24,7 @@ import java.time.LocalDate;
 public class Passport {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     //TODO думаю стоит создать свой валидатор, вот только непонятны критерии для проверки

@@ -1,7 +1,9 @@
 package app.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
@@ -11,34 +13,33 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.util.Date;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Setter
 @Getter
-@RequiredArgsConstructor
-public class User {
+@NoArgsConstructor
+@AllArgsConstructor
+public abstract class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "birth_date")
-    private Date birthDate;
-
+    @NonNull
+    @NotEmpty(message = "The field cannot be empty")
     @Column(unique = true)
     private String email;
 
+    @NonNull
+    @NotEmpty(message = "The field cannot be empty")
     private String password;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
