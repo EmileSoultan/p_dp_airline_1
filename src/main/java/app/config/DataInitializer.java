@@ -8,6 +8,7 @@ import app.entities.Flight;
 import app.entities.Passenger;
 import app.entities.Passport;
 import app.entities.Role;
+import app.entities.Route;
 import app.entities.Seat;
 import app.entities.Ticket;
 import app.enums.Airport;
@@ -17,6 +18,7 @@ import app.services.AircraftService;
 import app.services.DestinationService;
 import app.services.FlightService;
 import app.services.RoleService;
+import app.services.RouteService;
 import app.services.SeatService;
 import app.services.TicketService;
 import app.services.UserService;
@@ -27,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -46,6 +49,7 @@ public class DataInitializer {
     private final PasswordEncoder encoder;
     private final AircraftService aircraftService;
     private final SeatService seatService;
+    private final RouteService routeService;
 
     private final FlightService flightService;
 
@@ -57,6 +61,7 @@ public class DataInitializer {
                            TicketService ticketService,
                            SeatService seatService,
                            FlightService flightService,
+                           RouteService routeService,
                            PasswordEncoder encoder) {
         this.userService = userService;
         this.roleService = roleService;
@@ -65,6 +70,7 @@ public class DataInitializer {
         this.ticketService = ticketService;
         this.seatService = seatService;
         this.flightService = flightService;
+        this.routeService = routeService;
         this.encoder = encoder;
     }
 
@@ -78,6 +84,7 @@ public class DataInitializer {
         aircraftsInit();
         initFlight();
         initDbByPassengerAndPassport();
+        routesInit();
     }
 
     private void initFlight() {
@@ -300,5 +307,27 @@ public class DataInitializer {
         seat101.setIsRegistered(false);
         seat101.setIsRegistered(false);
         seatService.save(seat101);
+    }
+
+    private void routesInit(){
+        Route route1 = new Route(
+                destinationService.findDestinationByName("Москва", "").get(0),
+                destinationService.findDestinationByName("Омск", "").get(0),
+                LocalDate.of(2022, Month.NOVEMBER, 30),
+                1);
+        Route route2 = new Route(
+                destinationService.findDestinationByName("омск", "").get(0),
+                destinationService.findDestinationByName("Волгоград", "").get(0),
+                LocalDate.of(2022, Month.NOVEMBER, 30),
+                2);
+        Route route3 = new Route(
+                destinationService.findDestinationByName("Волгоград", "").get(0),
+                destinationService.findDestinationByName("Москва", "").get(0),
+                LocalDate.of(2022, Month.NOVEMBER, 30),
+                1);
+
+        routeService.saveRoute(route1);
+        routeService.saveRoute(route2);
+        routeService.saveRoute(route3);
     }
 }
