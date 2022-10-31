@@ -2,6 +2,7 @@ package app.config;
 
 import app.entities.Admin;
 import app.entities.Aircraft;
+import app.entities.Category;
 import app.entities.AirlineManager;
 import app.entities.Destination;
 import app.entities.Flight;
@@ -12,9 +13,11 @@ import app.entities.Route;
 import app.entities.Seat;
 import app.entities.Ticket;
 import app.enums.Airport;
+import app.enums.CategoryType;
 import app.enums.FlightStatus;
 import app.enums.Gender;
 import app.services.AircraftService;
+import app.services.CategoryService;
 import app.services.DestinationService;
 import app.services.FlightService;
 import app.services.RoleService;
@@ -48,6 +51,7 @@ public class DataInitializer {
     private final DestinationService destinationService;
     private final PasswordEncoder encoder;
     private final AircraftService aircraftService;
+    private final CategoryService categoryService;
     private final SeatService seatService;
     private final RouteService routeService;
 
@@ -59,6 +63,7 @@ public class DataInitializer {
                            DestinationService destinationService,
                            AircraftService aircraftService,
                            TicketService ticketService,
+                           CategoryService categoryService,
                            SeatService seatService,
                            FlightService flightService,
                            RouteService routeService,
@@ -68,6 +73,7 @@ public class DataInitializer {
         this.destinationService = destinationService;
         this.aircraftService = aircraftService;
         this.ticketService = ticketService;
+        this.categoryService = categoryService;
         this.seatService = seatService;
         this.flightService = flightService;
         this.routeService = routeService;
@@ -80,11 +86,32 @@ public class DataInitializer {
         System.out.println("DataInitializer сработал!");
         initDbWithRolesAndUsers();
         initDbWithDestination();
+        aircraftsInit();
+        initCategory();
         initSeat();
         aircraftsInit();
         initFlight();
         initDbByPassengerAndPassport();
         routesInit();
+    }
+
+    private void initCategory() {
+
+        Category firstClass = new Category();
+        firstClass.setCategoryType(CategoryType.FIRST);
+        categoryService.save(firstClass);
+
+        Category businessClass = new Category();
+        businessClass.setCategoryType(CategoryType.BUSINESS);
+        categoryService.save(businessClass);
+
+        Category premiumEconomyClass = new Category();
+        premiumEconomyClass.setCategoryType(CategoryType.PREMIUM_ECONOMY);
+        categoryService.save(premiumEconomyClass);
+
+        Category economyClass = new Category();
+        economyClass.setCategoryType(CategoryType.ECONOMY);
+        categoryService.save(economyClass);
     }
 
     private void initFlight() {
