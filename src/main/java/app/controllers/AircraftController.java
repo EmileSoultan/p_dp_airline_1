@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/aircrafts")
+@RequestMapping("/api/aircraft")
 @Slf4j
 public class AircraftController {
 
@@ -32,8 +32,8 @@ public class AircraftController {
 
     @GetMapping()
     @ApiOperation(value = "Получение списка всех Aircraft")
-    public ResponseEntity<List<Aircraft>> getAllAircrafts() {
-        log.info("getAllAircrafts: all aircrafts returned");
+    public ResponseEntity<List<Aircraft>> getAllAircraft() {
+        log.info("getAllAircraft: all aircraft returned");
         return ResponseEntity.ok(aircraftService.findAll());
     }
 
