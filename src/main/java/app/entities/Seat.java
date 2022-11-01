@@ -1,5 +1,6 @@
 package app.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,11 +9,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "seat")
@@ -36,17 +39,17 @@ public class Seat {
 
 
     //TODO: add fields
-    /*
-    @Column(name = "category")
-    private Category category;
+//    @Column(name = "category")
+//    private Category category;
+
+//    @Column(name = "flight")
+//    private Flight flight;
 
     @NotNull(message = "Field aircraft cannot be null")
     @Column(name = "aircraft")
-    private Aircraft aircraft;
-
-    @Column(name = "flight")
-    private Flight flight;
-    */
+    @ManyToMany(mappedBy = "seatList")
+    @JsonIgnore
+    private List<Aircraft> aircraftList;
 
     @PositiveOrZero(message = "Fare must be positive")
     @Column(name = "fare")

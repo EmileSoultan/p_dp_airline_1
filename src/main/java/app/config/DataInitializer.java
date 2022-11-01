@@ -25,6 +25,7 @@ import app.services.RouteService;
 import app.services.SeatService;
 import app.services.TicketService;
 import app.services.UserService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,7 @@ import java.util.Set;
  * Инжектьте и используйте здесь соответствующие сервисы ваших сущностей."
  */
 @Component
+@Profile("dev")
 public class DataInitializer {
     private final TicketService ticketService;
     private final UserService userService;
