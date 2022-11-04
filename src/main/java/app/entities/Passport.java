@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
@@ -32,6 +33,7 @@ public class Passport {
     @NotEmpty(message = "The field cannot be empty")
     @Size(min = 1, max = 128, message = "Size serialNumberPassport cannot be less than 1 and more than 128 characters")
     @Column(name = "serial_number_passport",unique = true)
+    @Pattern(regexp = "\\d{4}\\s\\d{6}")
     private String serialNumberPassport;
 
     @NonNull
