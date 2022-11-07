@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +15,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -43,24 +43,24 @@ public class Passenger extends User{
     private String lastName;
 
     @NonNull
-    @NotEmpty(message = "The field cannot be empty")
+    @NotNull(message = "The field cannot be empty")
     @Column(name = "birth_date")
     private Date birthDate;
 
     @NonNull
-    @NotEmpty(message = "The field cannot be empty")
+//    @NotEmpty(message = "The field cannot be empty")
     @Size(min = 1, max = 64, message = "Size phone cannot be less than 1 and more than 64 characters")
     @Column(name = "phone_number")
     private String phoneNumber;
 
     @NonNull
-    @NotEmpty(message = "The field cannot be empty")
+//    @NotEmpty(message = "The field cannot be empty")
     @Size(min = 2, max = 128, message = "Size middle_name cannot be less than 2 and more than 128 characters")
     @Column(name = "middle_name")
     private String middleName;
 
     @NonNull
-    @NotEmpty(message = "The field cannot be empty")
+//    @NotNull(message = "The field cannot be empty")
     @ApiModelProperty(dataType = "string",
             value = "Return values \"мужской\" or \"женский\", accepts values see example",
             example = "\"male\", \"MALE\", \"m\", \"M\", \"female\", \"FEMALE\", \"f\", \"F\"")

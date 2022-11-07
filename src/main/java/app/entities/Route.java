@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -23,19 +23,19 @@ public class Route {
 
     @ManyToOne
     @JoinColumn(name = "destination_from_id", referencedColumnName = "id")
-    @NotEmpty
+    @NotNull
     private Destination destinationFrom;
 
     @ManyToOne
     @JoinColumn(name = "destination_to_id", referencedColumnName = "id")
-    @NotEmpty
+    @NotNull
     private Destination destinationTo;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "departure_date")
     private LocalDate departureDate;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "number_of_passengers")
     private Integer numberOfPassengers;
 
