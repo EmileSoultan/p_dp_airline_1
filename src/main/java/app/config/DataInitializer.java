@@ -88,7 +88,6 @@ public class DataInitializer {
         System.out.println("DataInitializer сработал!");
         initDbWithRolesAndUsers();
         initDbWithDestination();
-        aircraftsInit();
         initCategory();
         initSeat();
         aircraftsInit();

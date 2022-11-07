@@ -3,7 +3,6 @@ package app.entities;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
@@ -33,12 +32,10 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NonNull
     @NotEmpty(message = "The field cannot be empty")
     @Column(unique = true)
     private String email;
 
-    @NonNull
     @NotEmpty(message = "The field cannot be empty")
     private String password;
 

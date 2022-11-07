@@ -51,21 +51,21 @@ public class AircraftController {
 
     @PostMapping
     @ApiOperation(value = "Добавить новую запись Aircraft")
-    public ResponseEntity<HttpStatus> saveAircraft(@RequestBody @Valid Aircraft aircraft,
+    public ResponseEntity<?> saveAircraft(@RequestBody @Valid Aircraft aircraft,
                                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.error("saveAircraft: error of saving aircraft - wrong input values");
-            return ResponseEntity.badRequest().build();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         if (aircraftService.findByAircraftNumber(aircraft.getAircraftNumber()) != null){
             log.error("saveAircraft: error of saving aircraft - Aircraft with " +
                     "Aircraft Number {} already exists", aircraft.getAircraftNumber());
-            return ResponseEntity.badRequest().build();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         }
-        aircraftService.save(aircraft);
+        Aircraft savedAircraft = aircraftService.save(aircraft);
         log.info("saveAircraft: new aircraft saved.");
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(savedAircraft, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")

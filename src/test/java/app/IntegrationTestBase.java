@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @ContextConfiguration(initializers = {
         PostgresSqlContainer.Initializer.class
 })
-@WithMockUser
+@WithMockUser(roles = "ADMIN")
 @AutoConfigureMockMvc
 public abstract class IntegrationTestBase {
 

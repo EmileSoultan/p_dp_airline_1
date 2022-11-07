@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -45,5 +44,4 @@ public class Passport {
     @Size(min = 1, max = 64, message = "Size issuingCountry cannot be less than 1 and more than 64 characters")
     @Column(name = "issuing_country")
     private String issuingCountry;
-
 }

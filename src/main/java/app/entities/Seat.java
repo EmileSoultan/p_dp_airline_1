@@ -45,7 +45,7 @@ public class Seat {
 //    @Column(name = "flight")
 //    private Flight flight;
 
-    @NotNull(message = "Field aircraft cannot be null")
+//    @NotNull(message = "Field aircraft cannot be null")
     @Column(name = "aircraft")
     @ManyToMany(mappedBy = "seatList")
     @JsonIgnore
