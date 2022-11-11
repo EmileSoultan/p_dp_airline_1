@@ -2,7 +2,7 @@
 ## Работа c git
 ### Клонирование проекта
 
-1. На странице репозитория убедитесь, что выбрана ветка **dev** (1), нажмите кнопку **Clone** (2), скопируйте ссылку (3).
+1. На странице репозитория убедитесь, что выбрана ветка **master** (1), нажмите кнопку **Clone** (2), скопируйте ссылку (3).
 
 ![](src/main/resources/git_postman_and_swagger_guide/git_tutor/git_clone_url.png)
 
@@ -18,7 +18,7 @@
 
 ### Перед внесением изменений в код
 Создайте новую ветку в git-репозитории и работайте в ней. Для этого:
-1. Нажмите на текущую ветку **dev** в правом нижнем углу.
+1. Нажмите на текущую ветку **master** в правом нижнем углу.
 
 
 ![](src/main/resources/git_postman_and_swagger_guide/git_tutor/git_branch.png)
@@ -35,16 +35,16 @@
 
 Прежде чем создать merge request вам необходимо подготовить вашу ветку к отправке в общий репозиторий.
 
-1. Нажмите на текущую ветку в правом нижнем углу. Выберите опцию **dev | update**. 
-Таким образом вы скачаете в свою локальную ветку **dev** все коммиты которые были замержены, 
+1. Нажмите на текущую ветку в правом нижнем углу. Выберите опцию **master | update**. 
+Таким образом вы скачаете в свою локальную ветку **master** все коммиты которые были замержены, 
 пока вы работали в своей ветке.
 
-![](src/main/resources/git_postman_and_swagger_guide/git_tutor/git_premerge_update_dev.png)
+![](src/main/resources/git_postman_and_swagger_guide/git_tutor/git_premerge_update_master.png)
 
 2. Убедитесь, что в данный момент активна ваша рабочая ветка (занчек ярлыка слева от имени, как у ветки my-branch на скриншоте).
-Выберите опцию **dev | Merge into Current**. Таким образом вы добавите все изменения из ветки **dev** в вашу ветку. При возникновении конфликтов разрешите их.
+Выберите опцию **master | Merge into Current**. Таким образом вы добавите все изменения из ветки **master** в вашу ветку. При возникновении конфликтов разрешите их.
 
-![](src/main/resources/git_postman_and_swagger_guide/git_tutor/git_premerge_merge_dev.png)
+![](src/main/resources/git_postman_and_swagger_guide/git_tutor/git_premerge_merge_master.png)
 
 3. ---**ВАЖНО**--- Убедитесь что проект собирается и запускается.
 
@@ -54,7 +54,7 @@
 
 ### Создание merge request
 
-1. Создайте новый merge request. В качестве **Source branch** выберите свою ветку, **Target branch** - **dev**.
+1. Создайте новый merge request. В качестве **Source branch** выберите свою ветку, **Target branch** - **master**.
 
 ![](src/main/resources/git_postman_and_swagger_guide/git_tutor/git_merge_req.png)
 
