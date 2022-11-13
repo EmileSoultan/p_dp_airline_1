@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -43,44 +42,31 @@ public class AircraftController {
         Aircraft aircraft = aircraftService.findById(id);
         if (aircraft == null) {
             log.error("getAircraftById: aircraft with id={} doesn't exist.", id);
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         log.info("getAircraftById: aircraft with id={} returned.", id);
-        return ResponseEntity.ok(aircraftService.findById(id));
+        return new ResponseEntity<>(aircraft, HttpStatus.OK);
     }
 
     @PostMapping
     @ApiOperation(value = "Добавить новую запись Aircraft")
-    public ResponseEntity<?> saveAircraft(@RequestBody @Valid Aircraft aircraft,
-                                                   BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            log.error("saveAircraft: error of saving aircraft - wrong input values");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        if (aircraftService.findByAircraftNumber(aircraft.getAircraftNumber()) != null){
-            log.error("saveAircraft: error of saving aircraft - Aircraft with " +
-                    "Aircraft Number {} already exists", aircraft.getAircraftNumber());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-        }
-        Aircraft savedAircraft = aircraftService.save(aircraft);
+    public ResponseEntity<?> saveAircraft(@RequestBody @Valid Aircraft aircraft) {
         log.info("saveAircraft: new aircraft saved.");
-        return new ResponseEntity<>(savedAircraft, HttpStatus.CREATED);
+        return new ResponseEntity<>(aircraftService.save(aircraft), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")
     @ApiOperation(value = "Изменить Aircraft по \"Id\"")
     public ResponseEntity<Aircraft> editAircraft(@PathVariable("id") Long id,
-                                                 @RequestBody @Valid Aircraft aircraft,
-                                                 BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            log.error("editAircraft: error of editing aircraft with id={} - wrong input values", id);
-            return ResponseEntity.badRequest().build();
-        }
-        if (aircraftService.findById(id) == null) {
-            log.error("editAircraft: aircraft with id={} doesn't exist.", id);
-            return ResponseEntity.notFound().build();
-        }
+                                                 @RequestBody @Valid Aircraft aircraft) {
+//        if (bindingResult.hasErrors()) {
+//            log.error("editAircraft: error of editing aircraft with id={} - wrong input values", id);
+//            return ResponseEntity.badRequest().build();
+//        }
+//        if (aircraftService.findById(id) == null) {
+//            log.error("editAircraft: aircraft with id={} doesn't exist.", id);
+//            return ResponseEntity.notFound().build();
+//        }
         aircraft.setId(id);
         log.info("editAircraft: the aircraft with id={} has been edited.", id);
         return ResponseEntity.ok(aircraftService.save(aircraft));
