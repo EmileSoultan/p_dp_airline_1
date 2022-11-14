@@ -12,4 +12,6 @@ public interface DestinationService {
     void updateDestination(Destination destination);
 
     void deleteDestinationById(Long id);
+
+    Destination getDestinationById(Long id);
 }
