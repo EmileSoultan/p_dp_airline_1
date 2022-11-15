@@ -1,5 +1,6 @@
-package app.entities;
+package app.entities.user;
 
+import app.entities.Passport;
 import app.enums.Gender;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Passenger extends User{
+public class Passenger extends User {
 
     /*TODO может прописать свой валидатор для email? @Email заточен на локальную почту (а у нас её не будет)
      * и принимает значения без домена почтового сервиса, ему @ достаточно и всё

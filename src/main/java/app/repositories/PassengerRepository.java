@@ -1,6 +1,6 @@
 package app.repositories;
 
-import app.entities.Passenger;
+import app.entities.user.Passenger;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

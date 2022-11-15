@@ -1,14 +1,14 @@
 package app.config;
 
-import app.entities.Admin;
+import app.entities.user.Admin;
 import app.entities.Aircraft;
 import app.entities.Category;
-import app.entities.AirlineManager;
+import app.entities.user.AirlineManager;
 import app.entities.Destination;
 import app.entities.Flight;
-import app.entities.Passenger;
+import app.entities.user.Passenger;
 import app.entities.Passport;
-import app.entities.Role;
+import app.entities.user.Role;
 import app.entities.Route;
 import app.entities.Seat;
 import app.entities.Ticket;

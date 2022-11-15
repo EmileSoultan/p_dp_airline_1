@@ -1,6 +1,6 @@
 package app.services;
 
-import app.entities.Role;
+import app.entities.user.Role;
 
 public interface RoleService {
     Role getRoleByName(String name);

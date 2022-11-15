@@ -1,4 +1,4 @@
-package app.entities;
+package app.entities.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

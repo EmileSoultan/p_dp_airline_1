@@ -1,6 +1,6 @@
 package app.services;
 
-import app.entities.Passenger;
+import app.entities.user.Passenger;
 
 import java.util.List;
 

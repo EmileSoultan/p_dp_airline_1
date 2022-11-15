@@ -1,6 +1,6 @@
 package app.services;
 
-import app.entities.Passenger;
+import app.entities.user.Passenger;
 import app.entities.Passport;
 import app.repositories.PassengerRepository;
 import org.springframework.beans.factory.annotation.Autowired;

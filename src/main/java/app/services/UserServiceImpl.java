@@ -1,6 +1,6 @@
 package app.services;
 
-import app.entities.User;
+import app.entities.user.User;
 import app.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

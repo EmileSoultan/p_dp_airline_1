@@ -1,6 +1,6 @@
 package app.services;
 
-import app.entities.Role;
+import app.entities.user.Role;
 import app.repositories.RoleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
