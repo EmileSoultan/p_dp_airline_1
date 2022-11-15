@@ -1,4 +1,4 @@
-package app;
+package app.controllers;
 
 import app.initializer.PostgresSqlContainer;
 import com.fasterxml.jackson.databind.ObjectMapper;

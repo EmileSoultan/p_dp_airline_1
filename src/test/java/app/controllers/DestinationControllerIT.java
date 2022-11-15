@@ -1,10 +1,8 @@
-package app;
+package app.controllers;
 
 import app.entities.Destination;
 import app.enums.Airport;
-import app.services.DestinationService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +17,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql(value = {"/sqlQuery/create-destination-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = {"/sqlQuery/create-destination-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class DestinationControllerIT extends IntegrationTestBase {
-
-    @Autowired
-    private DestinationService destinationService;
 
     @Test
     void shouldCreateDestination() throws Exception {

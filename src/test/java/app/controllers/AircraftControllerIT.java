@@ -1,4 +1,4 @@
-package app;
+package app.controllers;
 
 import app.repositories.AircraftRepository;
 import org.junit.jupiter.api.Test;
@@ -13,13 +13,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Sql(value = {"/sqlQuery/create-aircraftAndSeat-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = {"/sqlQuery/create-aircraftAndSeat-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-public class AircraftControllerIT extends IntegrationTestBase{
+class AircraftControllerIT extends IntegrationTestBase {
 
     @Autowired
     private AircraftRepository aircraftRepository;
 
     @Test
-    public void getAllAircraftMethodReturnAircraft() throws Exception {
+    void getAllAircraftMethodReturnAircraft() throws Exception {
         mockMvc.perform(
                         get("http://localhost:8080/api/aircraft"))
                 .andDo(print())
