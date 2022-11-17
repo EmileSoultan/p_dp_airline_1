@@ -1,7 +1,7 @@
 package app.controllers;
 
-import app.entities.Admin;
-import app.entities.User;
+import app.entities.user.Admin;
+import app.entities.user.User;
 import app.repositories.RoleRepository;
 import app.services.UserService;
 import org.junit.jupiter.api.Test;

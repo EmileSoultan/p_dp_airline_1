@@ -1,7 +1,7 @@
 package app.controllers;
 
-import app.entities.User;
-import app.entities.UserDetailsImpl;
+import app.entities.user.User;
+import app.entities.user.UserDetailsImpl;
 import app.services.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
