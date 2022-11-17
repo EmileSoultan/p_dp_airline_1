@@ -16,7 +16,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -44,7 +43,6 @@ public class Passenger extends User {
     private String lastName;
 
     @NonNull
-    @NotEmpty(message = "The field cannot be empty")
     @Column(name = "birth_date")
     private Date birthDate;
 
