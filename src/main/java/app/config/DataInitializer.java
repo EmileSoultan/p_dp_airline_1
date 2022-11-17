@@ -26,7 +26,6 @@ import app.services.SeatService;
 import app.services.TicketService;
 import app.services.UserService;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +50,6 @@ public class DataInitializer {
     private final UserService userService;
     private final RoleService roleService;
     private final DestinationService destinationService;
-    private final PasswordEncoder encoder;
     private final AircraftService aircraftService;
     private final CategoryService categoryService;
     private final SeatService seatService;
@@ -68,8 +66,7 @@ public class DataInitializer {
                            CategoryService categoryService,
                            SeatService seatService,
                            FlightService flightService,
-                           RouteService routeService,
-                           PasswordEncoder encoder) {
+                           RouteService routeService) {
         this.userService = userService;
         this.roleService = roleService;
         this.destinationService = destinationService;
@@ -79,7 +76,6 @@ public class DataInitializer {
         this.seatService = seatService;
         this.flightService = flightService;
         this.routeService = routeService;
-        this.encoder = encoder;
     }
 
     @PostConstruct
@@ -164,7 +160,7 @@ public class DataInitializer {
 
         Admin admin = new Admin();
         admin.setEmail("admin@mail.ru");
-        admin.setPassword(encoder.encode("admin"));
+        admin.setPassword("admin");
         admin.setRoles(Set.of(roleService.getRoleByName("ROLE_ADMIN")));
         userService.saveUser(admin);
 
@@ -173,13 +169,13 @@ public class DataInitializer {
         passenger.setLastName("Simons");
         passenger.setBirthDate(new Date(103, Calendar.NOVEMBER, 10));
         passenger.setEmail("passenger@mail.ru");
-        passenger.setPassword(encoder.encode("passenger"));
+        passenger.setPassword("passenger");
         passenger.setRoles(Set.of(roleService.getRoleByName("ROLE_PASSENGER")));
         userService.saveUser(passenger);
 
         AirlineManager manager = new AirlineManager();
         manager.setEmail("manager@mail.ru");
-        manager.setPassword(encoder.encode("manager"));
+        manager.setPassword("manager");
         manager.setRoles(Set.of(roleService.getRoleByName("ROLE_MANAGER")));
         userService.saveUser(manager);
     }
@@ -272,7 +268,7 @@ public class DataInitializer {
         passenger1.setGender(Gender.MALE);
         passenger1.setEmail("petrov@mail.ru");
         passenger1.setPhoneNumber("79111111111");
-        passenger1.setPassword(encoder.encode("passenger1"));
+        passenger1.setPassword("passenger1");
         passenger1.setPassport(new Passport("1111 111111",
                 LocalDate.of(2006, 1, 11), "Россия"));
         passenger1.setRoles(Set.of(roleService.getRoleByName("ROLE_PASSENGER")));
@@ -286,7 +282,7 @@ public class DataInitializer {
         passenger2.setGender(Gender.MALE);
         passenger2.setEmail("ivanov@mail.ru");
         passenger2.setPhoneNumber("79222222222");
-        passenger2.setPassword(encoder.encode("passenger2"));
+        passenger2.setPassword("passenger2");
         passenger2.setPassport(new Passport("2222 222222",
                 LocalDate.of(2006, 2, 22), "Россия"));
         passenger2.setRoles(Set.of(roleService.getRoleByName("ROLE_PASSENGER")));
@@ -300,7 +296,7 @@ public class DataInitializer {
         passenger3.setGender(Gender.FEMALE);
         passenger3.setEmail("sidorova@mail.ru");
         passenger3.setPhoneNumber("79333333333");
-        passenger3.setPassword(encoder.encode("passenger2"));
+        passenger3.setPassword("passenger2");
         passenger3.setPassport(new Passport("3333 333333",
                 LocalDate.of(2006, 3, 30), "Россия"));
         passenger3.setRoles(Set.of(roleService.getRoleByName("ROLE_PASSENGER")));
@@ -364,7 +360,7 @@ public class DataInitializer {
                 LocalDate.of(2022, Month.NOVEMBER, 30),
                 1);
         Route route2 = new Route(
-                destinationService.findDestinationByName("омск", "").get(0),
+                destinationService.findDestinationByName("Омск", "").get(0),
                 destinationService.findDestinationByName("Волгоград", "").get(0),
                 LocalDate.of(2022, Month.NOVEMBER, 30),
                 2);

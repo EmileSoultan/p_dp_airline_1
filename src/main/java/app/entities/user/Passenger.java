@@ -44,7 +44,7 @@ public class Passenger extends User {
     private String lastName;
 
     @NonNull
-    @NotNull(message = "The field cannot be empty")
+    @NotEmpty(message = "The field cannot be empty")
     @Column(name = "birth_date")
     private Date birthDate;
 
