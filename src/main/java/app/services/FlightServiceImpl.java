@@ -1,10 +1,12 @@
 package app.services;
 
+import app.entities.Destination;
 import app.entities.Flight;
 import app.repositories.FlightRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +66,13 @@ public class FlightServiceImpl implements FlightService {
                 .filter(flight -> start == null || flight.getDepartureDateTime().isEqual(LocalDateTime.parse(start)))
                 .filter(flight -> finish == null || flight.getArrivalDateTime().isEqual(LocalDateTime.parse(finish)))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Flight> getFlightsByDestinationsAndDepartureDate(Destination from, Destination to,
+                                                                 LocalDate departureDate) {
+        return flightRepository.getByFromAndToAndDepartureDate(from, to, departureDate);
     }
 
     @Override

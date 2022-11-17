@@ -119,14 +119,34 @@ public class DataInitializer {
         Flight flight1 = new Flight(1L, "MSKOMSK",
                 destinationService.findDestinationByName("Москва", "").get(0),
                 destinationService.findDestinationByName("Омск", "").get(0),
-                LocalDateTime.now(), LocalDateTime.now(), aircraftService.findById(1L), FlightStatus.ON_TIME);
+                LocalDateTime.of(2022,Month.NOVEMBER,11,2,15),
+                LocalDateTime.now(),
+                aircraftService.findById(1L), FlightStatus.ON_TIME);
         flightService.save(flight1);
 
         Flight flight2 = new Flight(2L, "MSKVLG",
                 destinationService.findDestinationByName("Москва", "").get(0),
                 destinationService.findDestinationByName("Волгоград", "").get(0),
-                LocalDateTime.now(), LocalDateTime.now(), aircraftService.findById(2L), FlightStatus.DELAYED);
+                LocalDateTime.of(2022,Month.NOVEMBER,11,8,15),
+                LocalDateTime.now(),
+                aircraftService.findById(2L), FlightStatus.DELAYED);
         flightService.save(flight2);
+
+        Flight flight3 = new Flight(3L, "MSKOMSK",
+                destinationService.findDestinationByName("Омск", "").get(0),
+                destinationService.findDestinationByName("Москва", "").get(0),
+                LocalDateTime.of(2022,Month.NOVEMBER,15,3,00),
+                LocalDateTime.now(),
+                aircraftService.findById(1L), FlightStatus.ON_TIME);
+        flightService.save(flight3);
+
+        Flight flight4 = new Flight(4L, "MSKVLG",
+                destinationService.findDestinationByName("Москва", "").get(0),
+                destinationService.findDestinationByName("Волгоград", "").get(0),
+                LocalDateTime.of(2022,Month.NOVEMBER,11,9,30),
+                LocalDateTime.now(),
+                aircraftService.findById(2L), FlightStatus.DELAYED);
+        flightService.save(flight4);
     }
 
     private void initDbWithRolesAndUsers() {
