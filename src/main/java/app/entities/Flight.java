@@ -38,10 +38,10 @@ public class Flight {
     @ManyToOne
     private Destination to;
 
-    @Column(name = "departure_date")
+    @Column(name = "departure_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime departureDateTime;
 
-    @Column(name = "arrival_date")
+    @Column(name = "arrival_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime arrivalDateTime;
 
     @OneToOne

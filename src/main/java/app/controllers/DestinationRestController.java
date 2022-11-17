@@ -5,6 +5,7 @@ import app.services.DestinationService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,9 +41,28 @@ public class DestinationRestController {
         return new ResponseEntity<>(destination, HttpStatus.CREATED);
     }
 
+    @GetMapping()
+    @ApiOperation(value = "Get all destinations")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "destinations found"),
+            @ApiResponse(code = 404, message = "destinations not found")
+    })
+    public ResponseEntity<List<Destination>> getAllDestination() {
+
+        List<Destination> destinations = destinationService.findAllDestinations();
+
+        if (destinations != null) {
+            log.info("getAllDestination: find all destinations");
+            return new ResponseEntity<>(destinations, HttpStatus.OK);
+        } else {
+            log.info("getAllDestination: list destinations is null");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @ApiOperation(value = "Gets destinations by city name or country name", tags = "destination-rest-controller")
     @ApiResponse(code = 200, message = "Found the destinations")
-    @GetMapping
+    @GetMapping("/filter")
     public ResponseEntity<List<Destination>> showDestinationByCityName(
             @RequestParam(value = "cityName", required = false) @ApiParam("cityName") String cityName,
             @RequestParam(value = "countryName", required = false) @ApiParam("countryName") String countryName) {

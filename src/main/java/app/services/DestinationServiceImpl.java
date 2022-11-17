@@ -16,6 +16,11 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
+    public List<Destination> findAllDestinations() {
+        return destinationRepository.findAll();
+    }
+
+    @Override
     public List<Destination> findDestinationByName(String cityName, String countryName) {
         if (cityName != null) {
             return destinationRepository.findByCityNameContainingIgnoreCase(cityName);
