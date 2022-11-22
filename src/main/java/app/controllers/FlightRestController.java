@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.entities.Flight;
+import app.entities.FlightSeat;
 import app.enums.FlightStatus;
 import app.services.FlightService;
 import io.swagger.annotations.Api;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -50,14 +52,12 @@ public class FlightRestController {
             @ApiResponse(code = 200, message = "free seats found"),
             @ApiResponse(code = 204, message = "no data found")
     })
-    public ResponseEntity<Map<String, Integer>> getFreeSeats(@PathVariable Long id) {
+    public ResponseEntity<Set<FlightSeat>> getFreeSeats(@PathVariable Long id) {
 
         log.info("methodName: getFreeSeats - get get free seats on flight with id = {}", id);
-        var seats = flightService.getFreeSeats(id);
+        Set<FlightSeat> seats = flightService.getFreeSeats(id);
 
-        return seats != null
-                ? new ResponseEntity<>(seats, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok(seats);
     }
 
 

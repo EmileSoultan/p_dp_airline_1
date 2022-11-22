@@ -2,15 +2,17 @@ package app.services;
 
 import app.entities.Destination;
 import app.entities.Flight;
+import app.entities.FlightSeat;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface FlightService {
 
     List<Flight> getAllFlights();
-    Map<String, Integer> getFreeSeats(Long id);
+    Set<FlightSeat> getFreeSeats(Long id);
     Flight getFlightByCode(String code);
     List<Flight> getFlightByDestinationsAndDates(String from, String to, String start, String finish);
     List<Flight> getFlightsByDestinationsAndDepartureDate(Destination fromId, Destination toId, LocalDate departureDate);

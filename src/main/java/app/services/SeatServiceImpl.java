@@ -20,6 +20,12 @@ public class SeatServiceImpl implements SeatService {
     @Transactional
     @Override
     public void save (Seat seat) {
+        if (seat.getId() != 0) {
+            Seat aldSeat = findById(seat.getId());
+            if (aldSeat != null && aldSeat.getAircraft() != null) {
+                seat.setAircraft(aldSeat.getAircraft());
+            }
+        }
         seatRepository.save(seat);
     }
 

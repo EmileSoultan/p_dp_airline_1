@@ -8,7 +8,8 @@ import java.util.Optional;
 
 
 public interface PassengerRepository extends CrudRepository<Passenger, Long> {
-    Optional<Passenger> findByPassportId(Long passportId);
+
+    Optional<Passenger> findByPassport_serialNumberPassport(String serialNumberPassport);
 
     List<Passenger> findByLastName(String lastName);
 

@@ -14,8 +14,8 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket findTicketByBookingNumber(String bookingNumber) {
-        return ticketRepository.findByBookingNumberContainingIgnoreCase(bookingNumber);
+    public Ticket findTicketByTicketNumber(String ticketNumber) {
+        return ticketRepository.findByTicketNumberContainingIgnoreCase(ticketNumber);
     }
 
     @Override

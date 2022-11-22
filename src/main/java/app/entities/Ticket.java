@@ -1,7 +1,10 @@
 package app.entities;
 
+import app.entities.user.Passenger;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -9,6 +12,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -16,26 +23,32 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ticket")
+@Table(name = "tickets")
+@EqualsAndHashCode(of = {"ticketNumber"})
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_tickets")
+    @SequenceGenerator(name = "seq_tickets", initialValue = 1000, allocationSize = 1)
     private Long id;
 
-    @Column(name = "booking_number", nullable = false, unique = true)
     @NotNull
-    private String bookingNumber;
+    @Column(name = "ticket_number")
+    private String ticketNumber;
 
-    @Column(name = "passenger", nullable = false)
-    // @OneToOne(fetch = FetchType.LAZY) - Entity "Passenger" missing, will add later
-    private String passenger;
+    @ManyToOne
+    @JoinColumn(name = "passenger_id")
+    @JsonView
+    private Passenger passenger;
 
-    @Column(name = "flight", nullable = false)
-    // @OneToOne(fetch = FetchType.LAZY) - Entity "Flight" missing, will add later
-    private String flight;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "flight_id")
+    @JsonView
+    private Flight flight;
 
-    @Column(name = "seat", nullable = false)
-    // @OneToOne(fetch = FetchType.LAZY) - Entity "Seat" missing, will add later
-    private String seat;
+    @NotNull
+    @OneToOne
+    @JoinColumn(name = "flight_seat_id")
+    @JsonView
+    private FlightSeat flightSeat;
 }

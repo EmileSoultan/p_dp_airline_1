@@ -150,7 +150,6 @@ public class PassengerRestController {
     }
 
 
-    //TODO какой формат серии и номера паспорта, также отсюда как хранить? слитно, через пробел? сейчас они совсем разные бывают...
     @ApiOperation(value = "Find passenger by PassportSerialNumber", tags = "passenger-rest-controller")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passenger found"),
@@ -183,12 +182,10 @@ public class PassengerRestController {
     public ResponseEntity<Passenger> addPassenger(@RequestBody @Valid Passenger passenger,
                                                   BindingResult result) {
         log.info("methodName: addPassenger - add new passenger. passanger={}", passenger.toString());
-
-        //TODO обсудить с фронтом какой ответ необходим, при попытке добаления невалидных данных и существующего email
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
-        if (passenger.getId() != null || passenger.getPassport().getId() != null) {
+        if (passenger.getId() != null) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(passengerService.save(passenger));
@@ -211,14 +208,11 @@ public class PassengerRestController {
             BindingResult result,
             @PathVariable Long id) {
         log.info("methodName: editPassenger - edit passenger by id. id={} passenger={}", id, passenger.toString());
-
-        //TODO обсудить с фронтом какой ответ необходим, при попытке добаления невалидных данных и существующего email
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
-        if (id != passenger.getId()
-                || passengerService.findById(id) == null
-                || passengerService.findById(id).getPassport().getId() != passenger.getPassport().getId()) {
+        if (passengerService.findById(id) == null ||
+                !id.equals(passenger.getId())) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(passengerService.save(passenger));

@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -23,11 +24,11 @@ import javax.validation.constraints.Size;
 @Table(name = "destination")
 public class Destination {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_destination")
+    @SequenceGenerator(name = "seq_destination", initialValue = 1000, allocationSize = 1)
     private Long id;
 
-    @Column(name = "airport_code", nullable = false)
+    @Column(name = "airport_code")
     @Enumerated(EnumType.STRING)
     private Airport airportCode;
 
