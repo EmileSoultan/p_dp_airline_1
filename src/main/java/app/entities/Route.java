@@ -10,15 +10,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "route")
 @Data
 @NoArgsConstructor
 public class Route {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_route")
+    @SequenceGenerator(name = "seq_route", initialValue = 1000, allocationSize = 1)
     private Long id;
 
     @ManyToOne

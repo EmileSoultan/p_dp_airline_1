@@ -3,7 +3,7 @@ package app.services;
 import app.entities.Ticket;
 
 public interface TicketService {
-    Ticket findTicketByBookingNumber(String bookingNumber);
+    Ticket findTicketByTicketNumber(String bookingNumber);
 
     void deleteTicketById(Long id);
 

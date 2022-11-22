@@ -1,10 +1,10 @@
 package app.entities;
 
 import app.enums.FlightStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonView;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,23 +13,29 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "flight")
-@Getter
-@Setter
+@Table(name = "flights")
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
+@EqualsAndHashCode(of = {"code"})
 public class Flight {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_flights")
+    @SequenceGenerator(name = "seq_flights", initialValue = 1000, allocationSize = 1)
     private Long id;
 
+    @NotBlank(message = "Code cannot be empty")
+    @Column(name = "code")
+    @Size(min = 2, max = 15, message = "Length of Flight code should be between 2 and 15 characters")
     private String code;
 
     @ManyToOne
@@ -44,9 +50,12 @@ public class Flight {
     @Column(name = "arrival_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime arrivalDateTime;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "aircraft_id")
+    @JsonView
     private Aircraft aircraft;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "flight_status")
     private FlightStatus flightStatus;
 }

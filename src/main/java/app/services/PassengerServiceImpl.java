@@ -1,7 +1,6 @@
 package app.services;
 
 import app.entities.user.Passenger;
-import app.entities.Passport;
 import app.repositories.PassengerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +17,10 @@ public class PassengerServiceImpl implements PassengerService {
     private final int maxVolumePartsOfName = 3;
 
     private PassengerRepository passengerRepository;
-    private PassportService passportService;
 
     @Autowired
-    public PassengerServiceImpl(PassengerRepository passengerRepository, PassportService passportService) {
+    public PassengerServiceImpl(PassengerRepository passengerRepository) {
         this.passengerRepository = passengerRepository;
-        this.passportService = passportService;
     }
 
     @Override
@@ -54,11 +51,12 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     public Passenger findBySerialNumberPassport(String serialNumberPassport) {
-        Passport passport = passportService.findBySerialNumberPassport(serialNumberPassport).orElse(null);
-        if (passport == null) {
+
+        Passenger passenger = passengerRepository.findByPassport_serialNumberPassport(serialNumberPassport).orElse(null);
+        if (passenger == null) {
             return null;
         }
-        return passengerRepository.findByPassportId(passport.getId()).orElse(null);
+        return passenger;
     }
 
     @Override
@@ -122,14 +120,25 @@ public class PassengerServiceImpl implements PassengerService {
     private List<Passenger> filterListPassenger(List<Passenger> passengerList, String[] partsOfName) {
         for (int i = 0; i < partsOfName.length; i++) {
             for (int j = 0; j < passengerList.size(); j++) {
-                if (!passengerList.get(j).getLastName().equals(partsOfName[i]) &&
-                        !passengerList.get(j).getFirstName().equals(partsOfName[i]) &&
-                        !passengerList.get(j).getMiddleName().equals(partsOfName[i])) {
-                    passengerList.remove(j);
+                if (hasAllNames(passengerList.get(j))) {
+                    if (!passengerList.get(j).getLastName().equals(partsOfName[i]) &&
+                            !passengerList.get(j).getFirstName().equals(partsOfName[i]) &&
+                            !passengerList.get(j).getMiddleName().equals(partsOfName[i])) {
+                        passengerList.remove(j);
+                    }
                 }
             }
         }
         return passengerList;
+    }
+
+    private boolean hasAllNames(Passenger passenger) {
+        if (passenger.getLastName() != null &&
+                passenger.getFirstName() != null &&
+                passenger.getMiddleName() != null) {
+            return true;
+        }
+        return false;
     }
 
 

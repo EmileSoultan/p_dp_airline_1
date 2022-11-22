@@ -12,10 +12,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
+@Table(name = "search_results")
 @Data
 public class SearchResult {
 
@@ -24,16 +26,16 @@ public class SearchResult {
 
     @ManyToMany
     @JoinTable(
-            name = "depart_flight",
-            joinColumns = @JoinColumn(name = "search_result"),
+            name = "depart_flights",
+            joinColumns = @JoinColumn(name = "search_result_id"),
             inverseJoinColumns = @JoinColumn(name = "flight_id"))
     @NotNull
     private List<Flight> departFlight;
 
     @ManyToMany
     @JoinTable(
-            name = "return_flight",
-            joinColumns = @JoinColumn(name = "search_result"),
+            name = "return_flights",
+            joinColumns = @JoinColumn(name = "search_result_id"),
             inverseJoinColumns = @JoinColumn(name = "flight_id"))
     private List<Flight> returnFlight;
 

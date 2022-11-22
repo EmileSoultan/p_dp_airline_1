@@ -1,14 +1,16 @@
 package app.entities.user;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
-@Setter
-@Getter
-@RequiredArgsConstructor
+@Table(name = "admin")
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Admin extends User {
 }

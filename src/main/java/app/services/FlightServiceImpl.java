@@ -2,7 +2,9 @@ package app.services;
 
 import app.entities.Destination;
 import app.entities.Flight;
+import app.entities.FlightSeat;
 import app.repositories.FlightRepository;
+import app.repositories.FlightSeatRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,9 +20,11 @@ import java.util.stream.Collectors;
 public class FlightServiceImpl implements FlightService {
 
     private final FlightRepository flightRepository;
+    private FlightSeatRepository flightSeatRepository;
 
-    public FlightServiceImpl(FlightRepository flightRepository) {
+    public FlightServiceImpl(FlightRepository flightRepository, FlightSeatRepository flightSeatRepository) {
         this.flightRepository = flightRepository;
+        this.flightSeatRepository = flightSeatRepository;
     }
 
     @Override
@@ -30,13 +35,22 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<String, Integer> getFreeSeats(Long id) {
+    public Set<FlightSeat> getFreeSeats(Long id) {
         var flight = getById(id);
         if (flight == null) {
             return null;
         }
+        Set<FlightSeat> flightSeatSet = flightSeatRepository.findFlightSeatByFlight(flight);
+
+        if(flightSeatSet != null) {
+            flightSeatSet = flightSeatSet.stream()
+                    .filter(flightSeat -> !flightSeat.getIsRegistered())
+                    .filter(flightSeat -> !flightSeat.getIsSold())
+                    .collect(Collectors.toSet());
+        }
 
         //TODO раскомментировать после добавление сущностей Seat и Aircraft
+        //TODO по другому сделал, эта логика тоже нужна, но по моему мнению не здесь
 
         //var seats = flight.getAircraft().getSeatList()
         //        .stream().filter(seat -> !seat.getIsSold()).collect(Collectors.toList());
@@ -47,7 +61,9 @@ public class FlightServiceImpl implements FlightService {
         //freeSeats.put("бизнес", (int) seats.stream()
         //        .filter(seat -> seat.getCategory().getCategoryType() == CategoryType.BUSINESS).count());
         //return freeSeats;
-        return Map.of("NO DATA", 1);
+        //return Map.of("NO DATA", 1);
+
+        return flightSeatSet;
     }
 
     @Override

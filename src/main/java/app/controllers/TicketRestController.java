@@ -38,13 +38,13 @@ public class TicketRestController {
         return new ResponseEntity<>(ticket, HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Gets ticket by bookingNumber", tags = "ticket-rest-controller")
+    @ApiOperation(value = "Gets ticket by ticketNumber", tags = "ticket-rest-controller")
     @ApiResponse(code = 200, message = "Found the ticket")
     @GetMapping("/ticket")
     public ResponseEntity<Ticket> showTicket(
-            @RequestParam(value = "bookingNumber") @ApiParam("bookingNumber") String bookingNumber) {
-        log.info("methodName: showTicketByBookingNumber - search ticket by bookingNumber");
-        Ticket ticket = ticketService.findTicketByBookingNumber(bookingNumber);
+            @RequestParam(value = "ticketNumber") @ApiParam("ticketNumber") String ticketNumber) {
+        log.info("methodName: showTicketByTicketNumber - search ticket by ticketNumber");
+        Ticket ticket = ticketService.findTicketByTicketNumber(ticketNumber);
         return ticket != null
                 ? new ResponseEntity<>(ticket, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
