@@ -56,7 +56,7 @@ public class TicketRestController {
     public ResponseEntity<Ticket> updateTicket(@RequestBody Ticket ticket) {
         log.info("methodName: updateTicket - update of current ticket");
         ticketService.updateTicket(ticket);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(ticket, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete ticket", tags = "ticket-rest-controller")
