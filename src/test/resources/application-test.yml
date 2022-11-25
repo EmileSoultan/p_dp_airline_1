@@ -3,7 +3,9 @@ server:
   servlet:
     session:
       timeout: -1
-
+    encoding:
+      charset: UTF-8
+      force-response: true
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver

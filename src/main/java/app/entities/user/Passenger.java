@@ -2,6 +2,7 @@ package app.entities.user;
 
 import app.entities.Passport;
 import app.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,6 +35,7 @@ public class Passenger extends User {
 
     @Column(name = "birth_date")
     @Temporal(value = TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date birthDate;
 
     @Size(min = 1, max = 64, message = "Size phone cannot be less than 1 and more than 64 characters")
