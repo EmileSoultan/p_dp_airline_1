@@ -1,7 +1,7 @@
 package app.controllers;
 
 import app.entities.Aircraft;
-import app.services.AircraftService;
+import app.services.interfaces.AircraftService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

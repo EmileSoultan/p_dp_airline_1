@@ -1,7 +1,7 @@
 package app.controllers;
 
 import app.entities.Route;
-import app.services.RouteService;
+import app.services.interfaces.RouteService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

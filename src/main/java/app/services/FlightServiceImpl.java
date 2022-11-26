@@ -5,13 +5,13 @@ import app.entities.Flight;
 import app.entities.FlightSeat;
 import app.repositories.FlightRepository;
 import app.repositories.FlightSeatRepository;
+import app.services.interfaces.FlightService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 

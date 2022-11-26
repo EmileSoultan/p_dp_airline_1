@@ -1,8 +1,8 @@
 package app.controllers;
 
 import app.entities.Ticket;
-import app.services.PassengerService;
-import app.services.TicketService;
+import app.services.interfaces.PassengerService;
+import app.services.interfaces.TicketService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

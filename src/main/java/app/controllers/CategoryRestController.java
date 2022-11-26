@@ -2,7 +2,7 @@ package app.controllers;
 
 import app.entities.Category;
 import app.enums.CategoryType;
-import app.services.CategoryService;
+import app.services.interfaces.CategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

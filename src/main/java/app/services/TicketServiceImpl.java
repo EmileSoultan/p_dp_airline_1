@@ -2,6 +2,7 @@ package app.services;
 
 import app.entities.Ticket;
 import app.repositories.TicketRepository;
+import app.services.interfaces.TicketService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

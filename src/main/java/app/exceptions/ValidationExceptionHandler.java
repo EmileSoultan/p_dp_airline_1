@@ -1,4 +1,4 @@
-package app.errors;
+package app.exceptions;
 
 import app.dto.ErrorDto;
 import org.springframework.http.HttpStatus;

@@ -16,4 +16,6 @@ public interface PassengerRepository extends CrudRepository<Passenger, Long> {
     List<Passenger> findByFirstName(String firstName);
 
     List<Passenger> findByMiddleName(String middleName);
+
+    Passenger findByEmail(String email);
 }

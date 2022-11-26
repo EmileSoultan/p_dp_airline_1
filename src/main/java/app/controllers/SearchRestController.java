@@ -2,8 +2,8 @@ package app.controllers;
 
 import app.entities.search.Search;
 import app.entities.search.SearchResult;
-import app.services.SearchResultService;
-import app.services.SearchService;
+import app.services.interfaces.SearchResultService;
+import app.services.interfaces.SearchService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

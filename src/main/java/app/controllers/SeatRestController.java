@@ -1,7 +1,7 @@
 package app.controllers;
 
 import app.entities.Seat;
-import app.services.SeatService;
+import app.services.interfaces.SeatService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

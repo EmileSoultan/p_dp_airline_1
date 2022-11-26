@@ -2,6 +2,7 @@ package app.services;
 
 import app.entities.user.Passenger;
 import app.repositories.PassengerRepository;
+import app.services.interfaces.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,10 +44,7 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     public Passenger findByEmail(String email) {
-        return findAll().stream()
-                .filter(n -> n.getEmail().equals(email))
-                .findFirst()
-                .orElse(null);
+        return passengerRepository.findByEmail(email);
     }
 
     @Override

@@ -2,6 +2,7 @@ package app.services;
 
 import app.entities.search.SearchResult;
 import app.repositories.SearchResultRepository;
+import app.services.interfaces.SearchResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
