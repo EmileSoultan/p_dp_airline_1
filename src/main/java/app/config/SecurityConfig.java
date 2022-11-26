@@ -1,6 +1,8 @@
 package app.config;
 
+import app.config.security.jwt.filter.JwtFilter;
 import app.util.LoginSuccessHandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,20 +12,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final LoginSuccessHandler successHandler;
-
     private final UserDetailsService userDetailsService;
-
-    public SecurityConfig(LoginSuccessHandler successHandler, UserDetailsService userDetailsService) {
-        this.successHandler = successHandler;
-        this.userDetailsService = userDetailsService;
-    }
-
+    private final JwtFilter jwtFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -34,10 +32,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/passenger").hasRole("PASSENGER")
                 .antMatchers("/manager").hasRole("MANAGER")
+                .antMatchers("/api/auth/login", "/api/auth/token").permitAll()
+                .antMatchers("/api/**").hasRole("ADMIN")
                 .antMatchers("/api/**").hasRole("ADMIN")
                 .antMatchers("/email/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
                 .successHandler(successHandler)
                 .loginProcessingUrl("/login")

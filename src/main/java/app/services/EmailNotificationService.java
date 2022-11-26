@@ -33,8 +33,6 @@ public class EmailNotificationService {
                 .map(Booking::getPassenger)
                 .collect(Collectors.toList());
 
-        System.err.println(passengers);
-
         for (Passenger passenger : passengers) {
             mailSender.send(passenger.getEmail(), "Регистрация на рейс", "Ваш вылет через 24 часа, " +
                     "пожалуйста, зарегистрируйтесь на рейс!");
