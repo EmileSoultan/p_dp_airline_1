@@ -2,6 +2,7 @@ package app.services;
 
 import app.entities.Route;
 import app.repositories.RouteRepository;
+import app.services.interfaces.RouteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

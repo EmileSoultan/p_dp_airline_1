@@ -5,6 +5,7 @@ import app.entities.FlightSeat;
 import app.entities.Seat;
 import app.repositories.FlightRepository;
 import app.repositories.FlightSeatRepository;
+import app.services.interfaces.FlightSeatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -3,6 +3,7 @@ package app.services;
 import app.entities.Category;
 import app.enums.CategoryType;
 import app.repositories.CategoryRepository;
+import app.services.interfaces.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

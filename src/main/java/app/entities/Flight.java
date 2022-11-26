@@ -13,6 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -22,7 +23,10 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "flights")
+@Table(name = "flights",
+        indexes = {
+                @Index(columnList = "departure_date", name = "departure_index")
+        })
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"code"})

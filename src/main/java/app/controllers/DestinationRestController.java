@@ -1,7 +1,7 @@
 package app.controllers;
 
 import app.entities.Destination;
-import app.services.DestinationService;
+import app.services.interfaces.DestinationService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;

@@ -3,6 +3,9 @@ package app.services;
 import app.entities.search.Search;
 import app.entities.search.SearchResult;
 import app.repositories.SearchRepository;
+import app.services.interfaces.FlightService;
+import app.services.interfaces.SearchResultService;
+import app.services.interfaces.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -3,7 +3,7 @@ package app.controllers;
 import app.entities.Flight;
 import app.entities.FlightSeat;
 import app.enums.FlightStatus;
-import app.services.FlightService;
+import app.services.interfaces.FlightService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 

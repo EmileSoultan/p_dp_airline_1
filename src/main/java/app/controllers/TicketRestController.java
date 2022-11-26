@@ -1,7 +1,7 @@
 package app.controllers;
 
 import app.entities.Ticket;
-import app.services.TicketService;
+import app.services.interfaces.TicketService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;

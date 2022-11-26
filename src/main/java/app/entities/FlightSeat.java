@@ -41,9 +41,8 @@ public class FlightSeat {
     @Column(name = "is_sold")
     private Boolean isSold;
 
-    //TODO Не реализованно
-    /*@Column(name = "is_booking")
-    boolean isBooking;*/
+    @Column(name = "is_booking")
+    private Boolean isBooking;
 
     @NotNull
     @ManyToOne

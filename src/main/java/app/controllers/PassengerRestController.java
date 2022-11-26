@@ -1,7 +1,7 @@
 package app.controllers;
 
 import app.entities.user.Passenger;
-import app.services.PassengerService;
+import app.services.interfaces.PassengerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

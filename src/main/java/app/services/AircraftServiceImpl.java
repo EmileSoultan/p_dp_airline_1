@@ -4,6 +4,7 @@ import app.entities.Aircraft;
 import app.entities.Flight;
 import app.repositories.AircraftRepository;
 import app.repositories.FlightRepository;
+import app.services.interfaces.AircraftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -2,6 +2,7 @@ package app.services;
 
 import app.entities.Destination;
 import app.repositories.DestinationRepository;
+import app.services.interfaces.DestinationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

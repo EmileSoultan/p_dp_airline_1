@@ -5,6 +5,8 @@ server:
       timeout: -1
 
 spring:
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
   application:
     name: app
   profiles:
@@ -29,5 +31,21 @@ spring:
         format_sql: true
         jdbc:
           time_zone: Europe/Moscow
-  liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.xml
+
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    username: XXXX
+    password: XXXX
+
+    protocol: smtps
+
+mail:
+  debug: true
+
+notification:
+  periodOfDbCheck:
+    milliseconds: 10000
+  beforeDeparture:
+    seconds: 86400
+
