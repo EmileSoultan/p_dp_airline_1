@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
-        if (!user.getPassword().equals(userRepository.findByEmail(user.getEmail()).getPassword())) {
+        if (!user.getPassword().equals(userRepository.getUserByEmail(user.getEmail()).getPassword())) {
             user.setPassword(encoder.encode(user.getPassword()));
         }
         userRepository.saveAndFlush(user);
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.getUserByEmail(email);
     }
 
     @Override
