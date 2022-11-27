@@ -35,7 +35,7 @@ public class UserRestController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Get all users", tags = "User-Rest-Controller")
+    @ApiOperation(value = "Get all users", tags = "user-rest-controller")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "users found"),
             @ApiResponse(code = 204, message = "users not found")
@@ -49,7 +49,7 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get user by id", tags = "User-Rest-Controller")
+    @ApiOperation(value = "Get user by id", tags = "user-rest-controller")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "user found"),
             @ApiResponse(code = 404, message = "user not found")
@@ -63,7 +63,7 @@ public class UserRestController {
     }
 
     @GetMapping("/auth")
-    @ApiOperation(value = "Get authenticated user", tags = "User-Rest-Controller")
+    @ApiOperation(value = "Get authenticated user", tags = "user-rest-controller")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "user found")
     })
@@ -76,18 +76,18 @@ public class UserRestController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Add user", tags = "User-Rest-Controller")
+    @ApiOperation(value = "Add user", tags = "user-rest-controller")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "user added")
     })
     public ResponseEntity<User> addUser(@RequestBody User user) {
         log.info("methodName: addUser - add new user");
         userService.saveUser(user);
-        return new ResponseEntity<>(userService.getUserByEmail(user.getEmail()), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUserByEmail(user.getEmail()), HttpStatus.CREATED);
     }
 
     @PatchMapping
-    @ApiOperation(value = "Edit existed user", tags = "User-Rest-Controller")
+    @ApiOperation(value = "Edit existed user", tags = "user-rest-controller")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "user edited")
     })
@@ -98,7 +98,7 @@ public class UserRestController {
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Delete user by id", tags = "User-Rest-Controller")
+    @ApiOperation(value = "Delete user by id", tags = "user-rest-controller")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "user deleted"),
             @ApiResponse(code = 404, message = "user not found")
