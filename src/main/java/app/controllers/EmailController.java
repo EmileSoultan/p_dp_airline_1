@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping( "/email")
+@RequestMapping("/email")
 @RequiredArgsConstructor
 public class EmailController {
 
     private final MailSender mailSender;
 
     @GetMapping(value = "/simple-email/{user-email}")
-    public @ResponseBody
-    ResponseEntity sendSimpleEmail(@PathVariable("user-email") String email) {
+    public @ResponseBody ResponseEntity<String> sendSimpleEmail(
+            @PathVariable("user-email") String email) {
 
         try {
             mailSender.send(email, "Welcome", "This is a welcome email for your!!");

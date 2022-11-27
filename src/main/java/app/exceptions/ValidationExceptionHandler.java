@@ -1,6 +1,6 @@
 package app.exceptions;
 
-import app.dto.ErrorDto;
+import app.dto.ValidationExceptionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -14,20 +14,20 @@ import java.util.List;
 public class ValidationExceptionHandler {
 
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<List<ErrorDto>> handleException(BindException exception) {
-        List<ErrorDto> errorDto = convertToErrorDtoList(exception);
-        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<List<ValidationExceptionDto>> handleException(BindException exception) {
+        List<ValidationExceptionDto> validationExceptionDto = convertToErrorDtoList(exception);
+        return new ResponseEntity<>(validationExceptionDto, HttpStatus.BAD_REQUEST);
     }
 
-    private List<ErrorDto> convertToErrorDtoList(BindException e) {
-        List<ErrorDto> resultErrorDtoList = new ArrayList<>();
+    private List<ValidationExceptionDto> convertToErrorDtoList(BindException e) {
+        List<ValidationExceptionDto> resultValidationExceptionDtoList = new ArrayList<>();
         for (int i = 0; i < e.getFieldErrors().size(); i++) {
-            resultErrorDtoList.add(new ErrorDto(
+            resultValidationExceptionDtoList.add(new ValidationExceptionDto(
                     e.getFieldErrors().get(i).getField(),
                     e.getFieldErrors().get(i).getRejectedValue(),
                     e.getFieldErrors().get(i).getDefaultMessage()));
 
         }
-        return resultErrorDtoList;
+        return resultValidationExceptionDtoList;
     }
 }

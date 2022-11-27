@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ErrorDto {
+public class ValidationExceptionDto {
     private String notValidField;
     private Object notValidValue;
     private String validCondition;
