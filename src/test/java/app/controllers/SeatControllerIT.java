@@ -2,8 +2,8 @@ package app.controllers;
 
 import app.entities.Seat;
 import app.enums.CategoryType;
-import app.services.CategoryService;
-import app.services.SeatService;
+import app.services.interfaces.CategoryService;
+import app.services.interfaces.SeatService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
