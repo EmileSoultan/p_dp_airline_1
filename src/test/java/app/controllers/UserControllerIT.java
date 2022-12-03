@@ -1,8 +1,8 @@
 package app.controllers;
 
-import app.entities.user.Admin;
+import app.entities.user.AirlineManager;
 import app.entities.user.User;
-import app.repositories.RoleRepository;
+import app.services.interfaces.RoleService;
 import app.services.interfaces.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +15,17 @@ import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Sql(value = {"/sqlQuery/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(value = {"/sqlQuery/create-user-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-class UserControllerIT extends IntegrationTestBase{
+class UserControllerIT extends IntegrationTestBase {
 
     @Autowired
     private UserService userService;
 
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleService roleService;
 
     @Test
     void shouldGetAllUsers() throws Exception {
@@ -39,7 +38,7 @@ class UserControllerIT extends IntegrationTestBase{
 
     @Test
     void shouldGetUserById() throws Exception {
-        Long id = 2L;
+        Long id = 4L;
         mockMvc.perform(
                         get("http://localhost:8080/api/user/{id}", id))
                 .andDo(print())
@@ -58,24 +57,21 @@ class UserControllerIT extends IntegrationTestBase{
 
     @Test
     void shouldPostNewUser() throws Exception {
-        Admin admin = new Admin();
-        admin.setEmail("admin2@mail.ru");
-        admin.setPassword("admin2");
-        admin.setRoles(Set.of(roleRepository.findByName("ROLE_ADMIN")));
-        System.out.println(objectMapper.writeValueAsString(admin));
-        mockMvc.perform(
-                        post("http://localhost:8080/api/user")
-                                .content(objectMapper.writeValueAsString(admin))
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON))
+        AirlineManager airlineManager = new AirlineManager();
+        airlineManager.setEmail("manager2@mail.ru");
+        airlineManager.setPassword("manager2");
+        airlineManager.setRoles(Set.of(roleService.getRoleByName("ROLE_MANAGER")));
+        mockMvc.perform(post("http://localhost:8080/api/user")
+                        .content(objectMapper.writeValueAsString(airlineManager))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk());
-
+                .andExpect(status().isCreated());
     }
 
     @Test
     void shouldDeleteUserById() throws Exception {
-        Long id = 2L;
+        Long id = 4L;
         mockMvc.perform(delete("http://localhost:8080/api/user/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -87,12 +83,13 @@ class UserControllerIT extends IntegrationTestBase{
     @Transactional
     @Test
     void shouldUpdateUser() throws Exception {
-        User admin = userService.getUserById(2L).orElseThrow();
-        admin.setEmail("adminka@mail.ru");
+        User user = userService.getUserById(3L).orElseThrow();
+        user.setEmail("test@mail.ru");
         mockMvc.perform(patch("http://localhost:8080/api/user")
-                        .content(objectMapper.writeValueAsString(admin))
+                        .content(objectMapper.writeValueAsString(user))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("test@mail.ru"));
     }
 }
