@@ -37,15 +37,19 @@ public class SearchRestController {
 
     @PostMapping
     @ApiOperation(value = "Create new search")
-    public ResponseEntity<HttpStatus> saveSearch(@RequestBody @Valid Search search, BindingResult bindingResult) {
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "returned search result id 4 other methods"),
+            @ApiResponse(code = 400, message = "search return error")
+    })
+    public ResponseEntity<Long> saveSearch(@RequestBody @Valid Search search, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             log.error("saveSearch: bad request");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        searchService.saveSearch(search);
-        log.info("saveSearch: new search saved with id= {}", search.getId());
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Long result_id = searchService.saveSearch(search);
+        log.info("saveSearch: new search result saved with id= {}", result_id);
+        return new ResponseEntity<Long>(result_id, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
