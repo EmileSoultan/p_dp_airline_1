@@ -30,9 +30,9 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     @Transactional
-    public void saveSearch(Search search) {
+    public Long saveSearch(Search search) {
         searchRepository.save(search);
-        searchNonstopFlight(search);
+        return searchNonstopFlight(search);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class SearchServiceImpl implements SearchService {
         return searchRepository.findById(id).orElse(null);
     }
 
-    private void searchNonstopFlight(Search search) {
+    private Long searchNonstopFlight(Search search) {
         SearchResult searchResult = new SearchResult();
         searchResult.setSearch(search);
         searchResult.setDepartFlight(
@@ -62,5 +62,6 @@ public class SearchServiceImpl implements SearchService {
             );
         }
         searchResultService.saveSearchResult(searchResult);
+        return searchResult.getId();
     }
 }
