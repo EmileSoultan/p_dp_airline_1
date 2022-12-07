@@ -1,7 +1,10 @@
 package app.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +22,8 @@ import java.time.LocalDate;
 @Table(name = "route")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_route")
@@ -46,11 +51,4 @@ public class Route {
 //    @ManyToOne
 //    @JoinColumn(name = "category_id", referencedColumnName = "id")
 //    private Category category;
-
-    public Route(Destination destinationFrom, Destination destinationTo, LocalDate departureDate, Integer numberOfPassengers) {
-        this.destinationFrom = destinationFrom;
-        this.destinationTo = destinationTo;
-        this.departureDate = departureDate;
-        this.numberOfPassengers = numberOfPassengers;
-    }
 }

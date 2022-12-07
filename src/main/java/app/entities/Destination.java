@@ -4,6 +4,8 @@ import app.enums.Airport;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +24,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "destination")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Destination {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_destination")

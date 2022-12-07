@@ -3,6 +3,8 @@ package app.entities.search;
 import app.entities.Flight;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,6 +21,7 @@ import java.util.List;
 @Entity
 @Table(name = "search_results")
 @Data
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SearchResult {
 
     @Id
@@ -30,6 +33,7 @@ public class SearchResult {
             joinColumns = @JoinColumn(name = "search_result_id"),
             inverseJoinColumns = @JoinColumn(name = "flight_id"))
     @NotNull
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private List<Flight> departFlight;
 
     @ManyToMany
@@ -37,6 +41,7 @@ public class SearchResult {
             name = "return_flights",
             joinColumns = @JoinColumn(name = "search_result_id"),
             inverseJoinColumns = @JoinColumn(name = "flight_id"))
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private List<Flight> returnFlight;
 
     @OneToOne(fetch = FetchType.LAZY)

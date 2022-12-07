@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
@@ -21,6 +23,7 @@ import java.util.Set;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Role implements GrantedAuthority {
 
     @Id
@@ -33,6 +36,7 @@ public class Role implements GrantedAuthority {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<User> users;
 
     @JsonIgnore
