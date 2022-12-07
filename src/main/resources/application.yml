@@ -31,6 +31,12 @@ spring:
         format_sql: true
         jdbc:
           time_zone: Europe/Moscow
+        cache:
+          use_second_level_cache: true
+          region:
+            factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+          ehcache:
+            missing_cache_strategy: create
   mail:
     host: smtp.yandex.ru
     port: 465
@@ -54,4 +60,3 @@ notification:
     milliseconds: 10000
   beforeDeparture:
     seconds: 86400
-

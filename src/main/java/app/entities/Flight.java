@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +32,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"code"})
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Flight {
 
     @Id

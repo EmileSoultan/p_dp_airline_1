@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +26,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"seatNumber", "aircraft"})
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Seat {
 
     @Id

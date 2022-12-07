@@ -1,9 +1,12 @@
 package app.entities.search;
 
 import app.entities.Destination;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +24,7 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @NoArgsConstructor
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Search {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

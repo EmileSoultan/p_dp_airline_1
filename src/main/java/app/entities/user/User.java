@@ -9,6 +9,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,6 +42,7 @@ import java.util.Set;
         @JsonSubTypes.Type(value = AirlineManager.class, name = "manager"),
         @JsonSubTypes.Type(value = Passenger.class, name = "passenger")}
 )
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public abstract class User {
 
     @Id
@@ -56,5 +59,6 @@ public abstract class User {
     private String password;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Role> roles;
 }

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,6 +30,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"aircraftNumber", "model", "modelYear", "flightRange"})
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Aircraft {
 
     @Id
@@ -54,6 +57,7 @@ public class Aircraft {
 
     @OneToMany(mappedBy = "aircraft", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonManagedReference
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Seat> seatSet = new HashSet<>();
 
     @PreRemove

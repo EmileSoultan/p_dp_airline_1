@@ -3,6 +3,8 @@ package app.entities;
 import app.enums.CategoryType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +20,7 @@ import javax.persistence.Table;
 @Table(name = "category")
 @Data
 @NoArgsConstructor
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_category")
