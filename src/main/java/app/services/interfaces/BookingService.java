@@ -16,4 +16,6 @@ public interface BookingService {
     List<Booking> getAllBooksForEmailNotification(LocalDateTime departureIn, LocalDateTime gap);
 
     void deleteById(Long id);
+
+    Booking findByBookingNumber(String number);
 }

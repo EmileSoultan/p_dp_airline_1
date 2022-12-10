@@ -48,7 +48,7 @@ class UserControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldGetNotExistedUser() throws Exception {
-        Long id = 5L;
+        Long id = 100L;
         mockMvc.perform(
                         get("http://localhost:8080/api/user/{id}", id))
                 .andDo(print())
