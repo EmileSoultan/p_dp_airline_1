@@ -3,18 +3,24 @@ package app.services;
 import app.entities.Booking;
 import app.repositories.BookingRepository;
 import app.services.interfaces.BookingService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
 
+    @Autowired
+    public BookingServiceImpl(BookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
+    }
+
+    @Transactional
     @Override
     public Booking save(Booking book) {
         return bookingRepository.save(book);
@@ -30,6 +36,7 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     @Override
     public void deleteById(Long id) {
         bookingRepository.deleteById(id);
@@ -38,5 +45,10 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Booking> getAllBooksForEmailNotification(LocalDateTime departureIn, LocalDateTime gap) {
         return bookingRepository.getAllBooksForEmailNotification(departureIn, gap);
+    }
+
+    @Override
+    public Booking findByBookingNumber(String number) {
+        return bookingRepository.findByBookingNumber(number).orElse(null);
     }
 }
