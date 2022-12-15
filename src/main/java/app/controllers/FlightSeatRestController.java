@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -87,12 +86,9 @@ public class FlightSeatRestController {
             Long id,
             @RequestBody
             @Valid
-            FlightSeat flightSeat,
-            BindingResult result) {
+            FlightSeat flightSeat) {
         log.info("methodName: editFlightSeatById - edit flight seat by id. id={}", id);
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().build();
-        }
+
         if (flightSeatService.findById(id) == null ||
                 !id.equals(flightSeat.getId())) {
             return ResponseEntity.badRequest().build();

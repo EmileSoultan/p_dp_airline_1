@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -179,12 +178,8 @@ public class PassengerRestController {
             @ApiResponse(code = 400, message = "Bad request")
     })
     @PostMapping()
-    public ResponseEntity<Passenger> addPassenger(@RequestBody @Valid Passenger passenger,
-                                                  BindingResult result) {
+    public ResponseEntity<Passenger> addPassenger(@RequestBody @Valid Passenger passenger) {
         log.info("methodName: addPassenger - add new passenger. passanger={}", passenger.toString());
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().build();
-        }
         if (passenger.getId() != null) {
             return ResponseEntity.badRequest().build();
         }
@@ -205,12 +200,8 @@ public class PassengerRestController {
                     required = true
             )
             @RequestBody @Valid Passenger passenger,
-            BindingResult result,
             @PathVariable Long id) {
         log.info("methodName: editPassenger - edit passenger by id. id={} passenger={}", id, passenger.toString());
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().build();
-        }
         if (passengerService.findById(id) == null ||
                 !id.equals(passenger.getId())) {
             return ResponseEntity.badRequest().build();

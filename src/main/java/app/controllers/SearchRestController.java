@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,12 +40,8 @@ public class SearchRestController {
             @ApiResponse(code = 201, message = "returned search result id 4 other methods"),
             @ApiResponse(code = 400, message = "search return error")
     })
-    public ResponseEntity<Long> saveSearch(@RequestBody @Valid Search search, BindingResult bindingResult) {
+    public ResponseEntity<Long> saveSearch(@RequestBody @Valid Search search) {
 
-        if (bindingResult.hasErrors()) {
-            log.error("saveSearch: bad request");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         Long result_id = searchService.saveSearch(search);
         log.info("saveSearch: new search result saved with id= {}", result_id);
         return new ResponseEntity<Long>(result_id, HttpStatus.CREATED);

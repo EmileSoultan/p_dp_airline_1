@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -60,13 +59,8 @@ public class RouteController {
     @PatchMapping("/{id}")
     @ApiOperation(value = "Edit route by \"Id\"")
     public ResponseEntity<Route> editRoute(@PathVariable("id") Long id,
-                                           @RequestBody @Valid Route route,
-                                           BindingResult bindingResult) {
+                                           @RequestBody @Valid Route route) {
 
-        if (bindingResult.hasErrors()) {
-            log.error("editRoute: error of editing route with id={} - wrong input values", id);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         if (routeService.getRouteById(id) == null) {
             log.error("editRoute: route with id={} doesn't exist.", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
