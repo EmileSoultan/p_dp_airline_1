@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -67,7 +68,7 @@ public class FlightSeatRestController {
             @PathVariable
             String flightNumber) {
         log.info("methodName: addFlightSeatsByFlightNumber - add flight seats by flightNumber. flightNumber={}", flightNumber);
-        return ResponseEntity.ok(flightSeatService.addFlightSeatsByFlightNumber(flightNumber));
+        return new ResponseEntity<>(flightSeatService.addFlightSeatsByFlightNumber(flightNumber), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Edit flight seat by id", tags = "flight-seat-rest-controller")
