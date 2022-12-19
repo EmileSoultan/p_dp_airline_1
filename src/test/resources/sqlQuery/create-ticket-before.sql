@@ -1,13 +1,3 @@
-DELETE FROM tickets;
-DELETE FROM flight_seats;
-DELETE FROM passengers;
-DELETE FROM flights;
-DELETE FROM seats;
-DELETE FROM aircrafts;
-DELETE FROM category;
-DELETE FROM destination;
-
-
 INSERT INTO destination (id, airport_code, airport_name, city_name, country_name, timezone)
 VALUES (1, 'VKO', 'Внуково', 'Москва', 'GMT +3', 'Россия');
 INSERT INTO destination (id, airport_code, airport_name, city_name, country_name, timezone)

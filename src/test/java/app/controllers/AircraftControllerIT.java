@@ -1,8 +1,6 @@
 package app.controllers;
 
 import app.entities.Aircraft;
-import app.entities.Destination;
-import app.enums.Airport;
 import app.services.interfaces.AircraftService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +13,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-aircraftCategorySeat-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(value = {"/sqlQuery/create-aircraftCategorySeat-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Transactional
 class AircraftControllerIT extends IntegrationTestBase {
     @Autowired
     private AircraftService aircraftService;
-
 
     @Test
     void shouldSaveAircraft() throws Exception {

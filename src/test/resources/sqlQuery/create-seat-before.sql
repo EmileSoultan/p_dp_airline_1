@@ -1,7 +1,3 @@
-delete from seats;
-delete from category;
-delete from aircrafts;
-
 insert into aircrafts (id, aircraft_number, flight_range, model, model_year)
 values (1, '17000012', 3800, 'Embraer E170STD', 2002);
 
