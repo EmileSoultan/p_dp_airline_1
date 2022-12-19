@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
+@Sql({"/sqlQuery/delete-from-tables.sql"})
 @TestMethodOrder(MethodOrderer.MethodName.class)
 public class CachingBench extends IntegrationTestBase {
 
