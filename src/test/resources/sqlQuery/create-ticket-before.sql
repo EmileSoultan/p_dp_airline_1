@@ -97,24 +97,24 @@ VALUES (2, 'MSKVLG', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'DELAYED',
 
 
 
-INSERT INTO passengers(first_name, last_name, middle_name, birth_date, gender, email, phone_number, password,
+INSERT INTO passengers(security_question, answer_question, first_name, last_name, middle_name, birth_date, gender, email, phone_number, password,
                        serial_number_passport, passport_issuing_date, passport_issuing_country, id)
-VALUES ('Пётр', 'Петров', 'Петрович',
+VALUES ('Test', 'Test', 'Пётр', 'Петров', 'Петрович',
         TO_DATE('1986/01/11', 'YYYY/MM/DD'), 'MALE', 'petrov@mail.ru', '79111111111',
         '$2a$10$T6BsLlx63setzCLXgftVHO4gZTWtPdS3LgBAcIv37OsxvFRuo.dqG', '1111 111111',
-        TO_DATE('2006/01/11', 'YYYY/MM/DD'), 'Россия', 4);
-INSERT INTO passengers(first_name, last_name, middle_name, birth_date, gender, email, phone_number, password,
+        TO_DATE('2006/01/11', 'YYYY/MM/DD'), 'Russia', 4);
+INSERT INTO passengers(security_question, answer_question, first_name, last_name, middle_name, birth_date, gender, email, phone_number, password,
                        serial_number_passport, passport_issuing_date, passport_issuing_country, id)
-VALUES ('Иван', 'Иванов', 'Иванович',
+VALUES ('Test', 'Test', 'Иван', 'Иванов', 'Иванович',
         TO_DATE('1986/02/22', 'YYYY/MM/DD'), 'MALE', 'ivanov@mail.ru', '79222222222',
         '$2a$10$Im4zfF/3IweHa8so7YIpOu3KjTiEmHPO7V51RidAq5gNs6.4b.FfK', '2222 222222',
-        TO_DATE('2006/02/22', 'YYYY/MM/DD'), 'Россия', 5);
-INSERT INTO passengers(first_name, last_name, middle_name, birth_date, gender, email, phone_number, password,
+        TO_DATE('2006/02/22', 'YYYY/MM/DD'), 'Russia', 5);
+INSERT INTO passengers(security_question, answer_question, first_name, last_name, middle_name, birth_date, gender, email, phone_number, password,
                        serial_number_passport, passport_issuing_date, passport_issuing_country, id)
-VALUES ('Екатерина', 'Сидоровна', 'Сидорова',
+VALUES ('Test', 'Test', 'Екатерина', 'Сидоровна', 'Сидорова',
         TO_DATE('1986/03/30', 'YYYY/MM/DD'), 'FEMALE', 'sidorova@mail.ru', '79333333333',
         '$2a$10$xxeZv2D4GRgY2Cswq9o7VeilkMArCM3e.kMAW8ukPSwkoLKooVaIe', '3333 333333',
-        TO_DATE('2006/03/30', 'YYYY/MM/DD'), 'Россия', 6);
+        TO_DATE('2006/03/30', 'YYYY/MM/DD'), 'Russia', 6);
 
 
 INSERT INTO flight_seats (id, fare, is_registered, is_sold, flight_id, seat_id)

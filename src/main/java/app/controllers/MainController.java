@@ -14,6 +14,7 @@ public class MainController {
         log.info("index: logging example");
         return new ModelAndView("s7");
     }
+
     @GetMapping("/admin")
     public ModelAndView adminPage() {
         return new ModelAndView("admin");

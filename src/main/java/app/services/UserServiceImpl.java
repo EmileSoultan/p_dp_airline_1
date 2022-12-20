@@ -26,6 +26,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
+        if (user.getAnswerQuestion() != null) {
+            user.setAnswerQuestion(encoder.encode(user.getAnswerQuestion()));
+        }
         userRepository.saveAndFlush(user);
     }
 
@@ -33,6 +36,10 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user) {
         if (!user.getPassword().equals(userRepository.getUserByEmail(user.getEmail()).getPassword())) {
             user.setPassword(encoder.encode(user.getPassword()));
+        }
+        if (!user.getAnswerQuestion()
+                .equals(userRepository.findById(user.getId()).orElse(null).getAnswerQuestion())) {
+            user.setAnswerQuestion(encoder.encode(user.getAnswerQuestion()));
         }
         userRepository.saveAndFlush(user);
     }

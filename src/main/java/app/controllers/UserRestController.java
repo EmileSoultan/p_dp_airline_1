@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -80,7 +81,7 @@ public class UserRestController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "user added")
     })
-    public ResponseEntity<User> addUser(@RequestBody User user) {
+    public ResponseEntity<User> addUser(@RequestBody @Valid User user) {
         log.info("methodName: addUser - add new user");
         userService.saveUser(user);
         return new ResponseEntity<>(userService.getUserByEmail(user.getEmail()), HttpStatus.CREATED);
