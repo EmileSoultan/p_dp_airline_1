@@ -2,8 +2,10 @@ package app.services;
 
 import app.entities.user.Passenger;
 import app.repositories.PassengerRepository;
+import app.repositories.RoleRepository;
 import app.services.interfaces.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,17 +19,40 @@ import java.util.stream.Collectors;
 public class PassengerServiceImpl implements PassengerService {
     private final int maxVolumePartsOfName = 3;
 
-    private PassengerRepository passengerRepository;
+    private final PassengerRepository passengerRepository;
+
+    private final RoleRepository roleRepository;
+
+    private final PasswordEncoder encoder;
 
     @Autowired
-    public PassengerServiceImpl(PassengerRepository passengerRepository) {
+    public PassengerServiceImpl(PassengerRepository passengerRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
         this.passengerRepository = passengerRepository;
+        this.roleRepository = roleRepository;
+        this.encoder = encoder;
     }
 
     @Override
     @Transactional
     public Passenger save(Passenger passenger) {
+        passenger.setPassword(encoder.encode(passenger.getPassword()));
+        passenger.setAnswerQuestion(encoder.encode(passenger.getAnswerQuestion()));
+        passenger.setRoles(Set.of(roleRepository.findByName("ROLE_PASSENGER")));
         return passengerRepository.save(passenger);
+    }
+
+    @Override
+    @Transactional
+    public Passenger update(Passenger passenger) {
+        if (!passenger.getPassword()
+                .equals(passengerRepository.findById(passenger.getId()).orElse(null).getPassword())) {
+            passenger.setPassword(encoder.encode(passenger.getPassword()));
+        }
+        if (!passenger.getAnswerQuestion()
+                .equals(passengerRepository.findById(passenger.getId()).orElse(null).getAnswerQuestion())) {
+            passenger.setAnswerQuestion(encoder.encode(passenger.getAnswerQuestion()));
+        }
+        return passengerRepository.saveAndFlush(passenger);
     }
 
     @Override
@@ -121,7 +146,7 @@ public class PassengerServiceImpl implements PassengerService {
                 if (hasAllNames(passengerList.get(j))) {
                     if (!passengerList.get(j).getLastName().equals(partsOfName[i]) &&
                             !passengerList.get(j).getFirstName().equals(partsOfName[i]) &&
-                            !passengerList.get(j).getMiddleName().equals(partsOfName[i])) {
+                            !passengerList.get(j).getPassport().getMiddleName().equals(partsOfName[i])) {
                         passengerList.remove(j);
                     }
                 }
@@ -132,8 +157,7 @@ public class PassengerServiceImpl implements PassengerService {
 
     private boolean hasAllNames(Passenger passenger) {
         if (passenger.getLastName() != null &&
-                passenger.getFirstName() != null &&
-                passenger.getMiddleName() != null) {
+                passenger.getFirstName() != null && passenger.getPassport().getMiddleName() != null) {
             return true;
         }
         return false;

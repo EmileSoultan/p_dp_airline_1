@@ -59,7 +59,9 @@ class UserControllerIT extends IntegrationTestBase {
     void shouldPostNewUser() throws Exception {
         AirlineManager airlineManager = new AirlineManager();
         airlineManager.setEmail("manager2@mail.ru");
-        airlineManager.setPassword("manager2");
+        airlineManager.setPassword("Test123@");
+        airlineManager.setSecurityQuestion("Test");
+        airlineManager.setAnswerQuestion("Test");
         airlineManager.setRoles(Set.of(roleService.getRoleByName("ROLE_MANAGER")));
         mockMvc.perform(post("http://localhost:8080/api/user")
                         .content(objectMapper.writeValueAsString(airlineManager))

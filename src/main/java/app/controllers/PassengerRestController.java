@@ -12,14 +12,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
@@ -33,12 +26,25 @@ public class PassengerRestController {
 
     private PassengerService passengerService;
 
-
     @Autowired
     public PassengerRestController(PassengerService passengerService) {
         this.passengerService = passengerService;
     }
 
+    @ApiOperation(value = "Find passenger by Email", tags = "passenger-rest-controller")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "passenger found"),
+            @ApiResponse(code = 404, message = "Passenger not found")
+    })
+    @GetMapping("/email")
+    public ResponseEntity<Passenger> getByEmail(@RequestParam(name = "email") String email) {
+        log.info("methodName: getByEmail - find passenger by email. Email={}", email);
+        Passenger passenger = passengerService.findByEmail(email);
+        if (passenger == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(passenger);
+    }
 
     @ApiOperation(value = "Find all passengers", tags = "passenger-rest-controller")
     @ApiResponses(value = {
@@ -76,7 +82,6 @@ public class PassengerRestController {
         }
         return ResponseEntity.ok(passenger);
     }
-
 
     @ApiOperation(value = "Find passengers by full name",
             tags = "passenger-rest-controller")
@@ -199,14 +204,13 @@ public class PassengerRestController {
                     value = "User id",
                     required = true
             )
-            @RequestBody @Valid Passenger passenger,
-            @PathVariable Long id) {
+            @PathVariable("id") Long id, @RequestBody @Valid Passenger passenger) {
         log.info("methodName: editPassenger - edit passenger by id. id={} passenger={}", id, passenger.toString());
         if (passengerService.findById(id) == null ||
                 !id.equals(passenger.getId())) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(passengerService.save(passenger));
+        return ResponseEntity.ok(passengerService.update(passenger));
     }
 
 

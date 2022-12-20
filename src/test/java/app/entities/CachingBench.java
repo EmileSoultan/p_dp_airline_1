@@ -9,9 +9,8 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @TestMethodOrder(MethodOrderer.MethodName.class)
@@ -83,15 +82,18 @@ public class CachingBench extends IntegrationTestBase {
                     TimeListFindRole.add(System.currentTimeMillis() - time_load);
                 }
                 case 2:{
-                    user = new Passenger();
+                    user = new Passenger(GetRandomString(4), GetRandomString(4),
+                            LocalDate.of(2000, 1, 1),
+                            GetRandomString(8), new Passport());
                     time_load = System.currentTimeMillis();
                     user.setRoles(Set.of(roleRepository.findByName("ROLE_PASSENGER")));
                     TimeListFindRole.add(System.currentTimeMillis() - time_load);
                 }
             }
-
             user.setEmail(GetRandomMail());
-            user.setPassword(GetRandomString(8));
+            user.setPassword(GetRandomString(8) + "1A@");
+            user.setSecurityQuestion(GetRandomString(4));
+            user.setAnswerQuestion(GetRandomString(4));
 
             time_save = System.currentTimeMillis();
             //https://www.baeldung.com/spring-data-jpa-save-saveandflush

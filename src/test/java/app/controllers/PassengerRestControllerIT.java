@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
+
+import java.time.LocalDate;
 import java.util.Set;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -97,8 +99,14 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
     @Test
     void shouldPostNewPassenger() throws Exception {
         Passenger passenger = new Passenger();
+        passenger.setFirstName("Test");
+        passenger.setLastName("Test");
+        passenger.setSecurityQuestion("Test");
+        passenger.setAnswerQuestion("Test");
+        passenger.setBirthDate(LocalDate.of(2000, 1, 1));
         passenger.setEmail("test2@mail.ru");
-        passenger.setPassword("test2");
+        passenger.setPassword("Test123@");
+        passenger.setPhoneNumber("79267895643");
         passenger.setRoles(Set.of(roleService.getRoleByName("ROLE_PASSENGER")));
         mockMvc.perform(post("http://localhost:8080/api/passengers")
                         .content(objectMapper.writeValueAsString(passenger))

@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -24,7 +23,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 import java.util.Set;
 
 @Entity
@@ -50,13 +49,24 @@ public abstract class User {
     @SequenceGenerator(name = "seq_user", initialValue = 1000, allocationSize = 1)
     private Long id;
 
-    @NotEmpty(message = "The field cannot be empty")
+    @Email
+    @NotBlank(message = "The field cannot be empty")
     @Column(name = "email")
     private String email;
 
-    @NotEmpty(message = "The field cannot be empty")
+    @NotBlank(message = "The field cannot be empty")
     @Column(name = "password")
+    @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9@#$%]).{8,}", message = "min 8 characters, 1 uppercase latter" +
+            "1 lowercase latter, at least 1 number, 1 special character")
     private String password;
+
+    @NotBlank(message = "The field cannot be empty")
+    @Column (name = "security_question")
+    private String securityQuestion;
+
+    @NotBlank(message = "The field cannot be empty")
+    @Column (name = "answer_question")
+    private String answerQuestion;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
