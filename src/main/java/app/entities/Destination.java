@@ -37,12 +37,12 @@ public class Destination {
 
     @Column(name = "airport_name")
     @NotBlank
-    @Size(min = 3, max = 15)
+    @Size(min = 3, max = 15, message = "Airport name must be between 3 and 15 characters")
     private String airportName;
 
     @Column(name = "city_name")
     @NotBlank
-    @Size(min = 3, max = 15)
+    @Size(min = 3, max = 15, message = "City name must be between 3 and 15 characters")
     private String cityName;
 
     @Column(name = "timezone")
@@ -50,6 +50,7 @@ public class Destination {
 
     @Column(name = "country_name")
     @NotBlank
-    @Size(min = 3, max = 30)
+    @Size(min = 3, max = 30, message = "Country name must be between 3 and 30 characters")
     private String countryName;
+
 }
