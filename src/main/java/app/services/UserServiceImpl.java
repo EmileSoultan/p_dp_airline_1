@@ -33,15 +33,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
-        if (!user.getPassword().equals(userRepository.getUserByEmail(user.getEmail()).getPassword())) {
-            user.setPassword(encoder.encode(user.getPassword()));
+    public void updateUser(Long id, User user) {
+        var editUser = userRepository.getUserById(id);
+        if (!user.getPassword().equals(editUser.getPassword())) {
+            editUser.setPassword(encoder.encode(user.getPassword()));
         }
         if (!user.getAnswerQuestion()
                 .equals(userRepository.findById(user.getId()).orElse(null).getAnswerQuestion())) {
-            user.setAnswerQuestion(encoder.encode(user.getAnswerQuestion()));
+            editUser.setAnswerQuestion(encoder.encode(user.getAnswerQuestion()));
         }
-        userRepository.saveAndFlush(user);
+        editUser.setRoles(user.getRoles());
+        editUser.setEmail(user.getEmail());
+        userRepository.saveAndFlush(editUser);
     }
 
     @Transactional(readOnly = true)

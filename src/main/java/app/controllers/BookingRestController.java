@@ -3,6 +3,7 @@ package app.controllers;
 import app.entities.Booking;
 import app.services.interfaces.BookingService;
 import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,9 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@Api(tags = "Booking REST")
+@Tag(name = "Booking REST", description = "API для операций с бронированием")
 @RestController
 @RequestMapping("/api/booking")
-@Api("Booking API")
 @Slf4j
 public class BookingRestController {
 
@@ -26,18 +28,23 @@ public class BookingRestController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Add new booking")
+    @ApiOperation(value = "Create new Booking")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Booking added successfully"),
             @ApiResponse(code = 400, message = "Bad request")
     })
-    public ResponseEntity<Booking> createBooking(@RequestBody @Valid Booking booking) {
+    public ResponseEntity<Booking> createBooking(
+            @ApiParam(
+                    name = "booking",
+                    value = "Booking model"
+            )
+            @RequestBody @Valid Booking booking) {
         log.info("createBooking: creating a new booking");
         return new ResponseEntity<>(bookingService.save(booking), HttpStatus.CREATED);
     }
 
     @GetMapping
-    @ApiOperation(value = "Get list of all bookings")
+    @ApiOperation(value = "Get list of all Booking")
     public ResponseEntity<List<Booking>> getListOfAllBookings() {
         log.info("getListOfAllBookings: search all bookings");
         List<Booking> bookings = bookingService.findAll();
@@ -49,12 +56,17 @@ public class BookingRestController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get booking by id")
+    @ApiOperation(value = "Get Booking by \"id\"")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "booking found"),
             @ApiResponse(code = 404, message = "booking not found")
     })
-    public ResponseEntity<Booking> getBookingById(@PathVariable("id") long id) {
+    public ResponseEntity<Booking> getBookingById(
+            @ApiParam(
+                    name = "id",
+                    value = "Booking.id"
+            )
+            @PathVariable("id") long id) {
         log.info("getBookingById: search booking by id = {}", id);
         Booking booking = bookingService.findById(id);
         if (booking == null) {
@@ -65,13 +77,16 @@ public class BookingRestController {
     }
 
     @GetMapping("/number")
-    @ApiOperation(value = "Get booking by number")
+    @ApiOperation(value = "Get Booking by bookingNumber")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "booking found"),
             @ApiResponse(code = 404, message = "booking not found")
     })
     public ResponseEntity<Booking> getBookingByNumber(
-            @ApiParam(value = "Booking number", example = "SV-221122", required = true)
+            @ApiParam(
+                    value = "bookingNumber",
+                    example = "SV-221122",
+                    required = true)
             @RequestParam(value = "bookingNumber") String bookingNumber) {
         log.info("getBookingByNumber: search booking by number = {}", bookingNumber);
         Booking booking = bookingService.findByBookingNumber(bookingNumber);
@@ -83,12 +98,17 @@ public class BookingRestController {
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Delete booking by id")
+    @ApiOperation(value = "Delete Booking by \"id\"")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "booking has been deleted"),
             @ApiResponse(code = 404, message = "booking not found")
     })
-    public ResponseEntity<HttpStatus> deleteBookingById(@PathVariable("id") long id) {
+    public ResponseEntity<HttpStatus> deleteBookingById(
+            @ApiParam(
+                    name = "id",
+                    value = "Booking.id"
+            )
+            @PathVariable("id") long id) {
         log.info("deleteBookingById: deleting a booking with id = {}", id);
         try {
             bookingService.deleteById(id);
@@ -100,14 +120,23 @@ public class BookingRestController {
     }
 
     @PatchMapping("/{id}")
-    @ApiOperation(value = "Edit booking by id")
+    @ApiOperation(value = "Edit Booking by \"id\"")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "booking has been edited"),
             @ApiResponse(code = 400, message = "Bad request"),
             @ApiResponse(code = 404, message = "not found")
     })
-    public ResponseEntity<Booking> editBookingById(@PathVariable("id") long id,
-                                                   @RequestBody @Valid Booking booking) {
+    public ResponseEntity<Booking> editBookingById(
+            @ApiParam(
+                    name = "id",
+                    value = "Booking.id"
+            )
+            @PathVariable("id") long id,
+            @ApiParam(
+                    name = "booking",
+                    value = "Booking model"
+            )
+            @RequestBody @Valid Booking booking) {
         log.info("editBookingById: edit booking with id = {}", id);
         if (bookingService.findById(id) == null) {
             log.info("editBookingById: not found booking with id = {}", id);

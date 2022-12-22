@@ -3,10 +3,8 @@ package app.controllers;
 import app.entities.Category;
 import app.enums.CategoryType;
 import app.services.interfaces.CategoryService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Api("Category API")
+@Api(tags = "Category REST")
+@Tag(name = "Category REST", description = "API операция с классом перелета(эконом, бизнесс и т.д.)")
 @Slf4j
 @RestController
 @RequestMapping("/api/categories")
@@ -32,7 +31,7 @@ public class CategoryRestController {
     }
 
     @GetMapping()
-    @ApiOperation(value = "Get all categories")
+    @ApiOperation(value = "Get list of all categories")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "categories found"),
             @ApiResponse(code = 404, message = "categories not found")
@@ -51,12 +50,17 @@ public class CategoryRestController {
     }
 
     @GetMapping("/{category_type}")
-    @ApiOperation(value = "Get category by type")
+    @ApiOperation(value = "Get category by CategoryType")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "category found"),
             @ApiResponse(code = 404, message = "category not found")
     })
-    public ResponseEntity<Category> getCategoryByCategoryType(@PathVariable("category_type") CategoryType categoryType) {
+    public ResponseEntity<Category> getCategoryByCategoryType(
+            @ApiParam(
+                    name = "category_type",
+                    value = "CategoryType model"
+            )
+            @PathVariable("category_type") CategoryType categoryType) {
 
         Category category = categoryService.findByCategoryType(categoryType);
 

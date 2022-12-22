@@ -85,9 +85,10 @@ class UserControllerIT extends IntegrationTestBase {
     @Transactional
     @Test
     void shouldUpdateUser() throws Exception {
-        User user = userService.getUserById(3L).orElseThrow();
+        Long id = 3L;
+        User user = userService.getUserById(id).orElseThrow();
         user.setEmail("test@mail.ru");
-        mockMvc.perform(patch("http://localhost:8080/api/user")
+        mockMvc.perform(patch("http://localhost:8080/api/user/{id}", id)
                         .content(objectMapper.writeValueAsString(user))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

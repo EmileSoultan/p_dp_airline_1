@@ -4,9 +4,8 @@ import app.entities.search.Search;
 import app.entities.search.SearchResult;
 import app.services.interfaces.SearchResultService;
 import app.services.interfaces.SearchService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+@Api(tags = "Search")
+@Tag(name = "Search", description = "API поиска маршрутов с заданными параметрами")
 @RestController
 @RequestMapping("/api/search")
 @Slf4j
@@ -40,20 +41,30 @@ public class SearchRestController {
             @ApiResponse(code = 201, message = "returned search result id 4 other methods"),
             @ApiResponse(code = 400, message = "search return error")
     })
-    public ResponseEntity<Long> saveSearch(@RequestBody @Valid Search search) {
+    public ResponseEntity<Long> saveSearch(
+            @ApiParam(
+                    name = "search",
+                    value = "Search model"
+            )
+            @RequestBody @Valid Search search) {
 
         Long result_id = searchService.saveSearch(search);
         log.info("saveSearch: new search result saved with id= {}", result_id);
-        return new ResponseEntity<Long>(result_id, HttpStatus.CREATED);
+        return new ResponseEntity<>(result_id, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get search result by id")
+    @ApiOperation(value = "Get search result by \"id\"")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "search result found"),
             @ApiResponse(code = 404, message = "search result not found")
     })
-    public ResponseEntity<SearchResult> getSearchResultById(@PathVariable("id") long id) {
+    public ResponseEntity<SearchResult> getSearchResultById(
+            @ApiParam(
+                    name = "id",
+                    value = "SearchResult.id"
+            )
+            @PathVariable("id") long id) {
 
         SearchResult searchResult = searchResultService.findById(id);
 
