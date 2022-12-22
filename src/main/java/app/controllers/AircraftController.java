@@ -2,7 +2,10 @@ package app.controllers;
 
 import app.entities.Aircraft;
 import app.services.interfaces.AircraftService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
+@Api(tags = "Aircraft REST")
+@Tag(name = "Aircraft REST", description = "API для операций с самолётом(-ами)")
 @RestController
 @RequestMapping("/api/aircraft")
 @Slf4j
@@ -30,15 +35,20 @@ public class AircraftController {
     }
 
     @GetMapping()
-    @ApiOperation(value = "Получение списка всех Aircraft")
+    @ApiOperation(value = "Get list of all Aircraft")
     public ResponseEntity<List<Aircraft>> getAllAircraft() {
         log.info("getAllAircraft: all aircraft returned");
         return ResponseEntity.ok(aircraftService.findAll());
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Получить Aircraft по \"Id\"")
-    public ResponseEntity<Aircraft> getAircraftById(@PathVariable("id") Long id) {
+    @ApiOperation(value = "Get Aircraft by it's \"id\"")
+    public ResponseEntity<Aircraft> getAircraftById(
+            @ApiParam(
+                    name = "id",
+                    value = "Aircraft.id"
+            )
+            @PathVariable("id") Long id) {
         Aircraft aircraft = aircraftService.findById(id);
         if (aircraft == null) {
             log.error("getAircraftById: aircraft with id={} doesn't exist.", id);
@@ -49,16 +59,30 @@ public class AircraftController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Добавить новую запись Aircraft")
-    public ResponseEntity<?> saveAircraft(@RequestBody @Valid Aircraft aircraft) {
+    @ApiOperation(value = "Create new Aircraft")
+    public ResponseEntity<?> saveAircraft(
+            @ApiParam(
+                    name = "Aircraft",
+                    value = "Aircraft model"
+            )
+            @RequestBody @Valid Aircraft aircraft) {
         log.info("saveAircraft: new aircraft saved.");
         return new ResponseEntity<>(aircraftService.save(aircraft), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")
-    @ApiOperation(value = "Изменить Aircraft по \"Id\"")
-    public ResponseEntity<Aircraft> editAircraft(@PathVariable("id") Long id,
-                                                 @RequestBody @Valid Aircraft aircraft) {
+    @ApiOperation(value = "Edit Aircraft by \"id\"")
+    public ResponseEntity<Aircraft> editAircraft(
+            @ApiParam(
+                    name = "id",
+                    value = "Aircraft.id"
+            )
+            @PathVariable("id") Long id,
+            @ApiParam(
+                    name = "Aircraft",
+                    value = "Aircraft model"
+            )
+            @RequestBody @Valid Aircraft aircraft) {
 //        if (bindingResult.hasErrors()) {
 //            log.error("editAircraft: error of editing aircraft with id={} - wrong input values", id);
 //            return ResponseEntity.badRequest().build();
@@ -73,8 +97,13 @@ public class AircraftController {
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Удалить Aircraft по \"Id\"")
-    public ResponseEntity<String> deleteAircraft(@PathVariable("id") Long id) {
+    @ApiOperation(value = "Delete Aircraft by \"id\"")
+    public ResponseEntity<String> deleteAircraft(
+            @ApiParam(
+                    name = "id",
+                    value = "Aircraft.id"
+            )
+            @PathVariable("id") Long id) {
         try {
             aircraftService.delete(id);
             log.info("deleteAircraft: the aircraft with id={} has been deleted.", id);

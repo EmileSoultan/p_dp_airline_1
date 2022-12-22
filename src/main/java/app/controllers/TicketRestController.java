@@ -2,9 +2,11 @@ package app.controllers;
 
 import app.entities.Ticket;
 import app.services.interfaces.TicketService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@ApiOperation("Ticket API")
+@Api(tags = "Ticket REST")
+@Tag(name = "Ticket REST", description = "API для операций с билетами")
 @Slf4j
 @RestController
 @RequestMapping("/api/ticket")
@@ -29,20 +32,30 @@ public class TicketRestController {
         this.ticketService = ticketService;
     }
 
-    @ApiOperation(value = "Create new ticket", tags = "ticket-rest-controller")
+    @ApiOperation(value = "Create new Ticket")
     @ApiResponse(code = 201, message = "Ticket created")
     @PostMapping
-    public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket) {
+    public ResponseEntity<Ticket> createTicket(
+            @ApiParam(
+                    name = "ticket",
+                    value = "Ticket model"
+            )
+            @RequestBody Ticket ticket) {
         log.info("methodName: createTicket - create new ticket");
         ticketService.saveTicket(ticket);
         return new ResponseEntity<>(ticket, HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Gets ticket by ticketNumber", tags = "ticket-rest-controller")
+    @ApiOperation(value = "Gets Ticket by ticketNumber")
     @ApiResponse(code = 200, message = "Found the ticket")
     @GetMapping("/ticket")
     public ResponseEntity<Ticket> showTicket(
-            @RequestParam(value = "ticketNumber") @ApiParam("ticketNumber") String ticketNumber) {
+            @ApiParam(
+                    name = "ticketNumber",
+                    value = "ticketNumber",
+                    example = "SD-2222"
+            )
+            @RequestParam(value = "ticketNumber") String ticketNumber) {
         log.info("methodName: showTicketByTicketNumber - search ticket by ticketNumber");
         Ticket ticket = ticketService.findTicketByTicketNumber(ticketNumber);
         return ticket != null
@@ -50,19 +63,29 @@ public class TicketRestController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @ApiOperation(value = "Update ticket", tags = "ticket-rest-controller")
+    @ApiOperation(value = "Edit Ticket by \"id\"")
     @ApiResponse(code = 200, message = "Ticket has been updated")
     @PatchMapping("/{id}")
-    public ResponseEntity<Ticket> updateTicket(@RequestBody Ticket ticket) {
+    public ResponseEntity<Ticket> updateTicket(
+            @ApiParam(
+                    name = "ticket",
+                    value = "Ticket model"
+            )
+            @RequestBody Ticket ticket) {
         log.info("methodName: updateTicket - update of current ticket");
         ticketService.updateTicket(ticket);
         return new ResponseEntity<>(ticket, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Delete ticket", tags = "ticket-rest-controller")
+    @ApiOperation(value = "Delete Ticket by \"id\"")
     @ApiResponse(code = 200, message = "Ticket has been removed")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Ticket> deleteTicket(@PathVariable @ApiParam("id") Long id) {
+    public ResponseEntity<Ticket> deleteTicket(
+            @ApiParam(
+                    name = "id",
+                    value = "Ticket.id"
+            )
+            @PathVariable Long id) {
         log.info("methodName: deleteTicket - ticket of current destination");
         ticketService.deleteTicketById(id);
         return new ResponseEntity<>(HttpStatus.OK);

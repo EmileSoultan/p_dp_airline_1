@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.Set;
 
-@Api
+@Api(tags = "FlightSeat REST")
+@Tag(name= "FlightSeat REST", description = "Операции с посадочными местами на рейс")
 @Slf4j
 @RestController
 @RequestMapping("/api/flight_seats")
@@ -35,7 +37,7 @@ public class FlightSeatRestController {
         this.flightSeatService = flightSeatService;
     }
 
-    @ApiOperation(value = "Get flight seats by flightNumber", tags = "flight-seat-rest-controller")
+    @ApiOperation(value = "Get list of FlightSeat by code of Flight")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "flight seats found"),
             @ApiResponse(code = 400, message = "Bad request")
@@ -53,7 +55,7 @@ public class FlightSeatRestController {
         return ResponseEntity.ok(flightSeatService.findByFlightNumber(flightNumber));
     }
 
-    @ApiOperation(value = "Add flight seats by flightNumber", tags = "flight-seat-rest-controller")
+    @ApiOperation(value = "Add FlightSeat by code of Flight")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "flight seats added"),
             @ApiResponse(code = 400, message = "Bad request")
@@ -71,7 +73,7 @@ public class FlightSeatRestController {
         return new ResponseEntity<>(flightSeatService.addFlightSeatsByFlightNumber(flightNumber), HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Edit flight seat by id", tags = "flight-seat-rest-controller")
+    @ApiOperation(value = "Edit FlightSeat by \"id\"")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "flight seat edited"),
             @ApiResponse(code = 400, message = "Bad request")
@@ -83,11 +85,14 @@ public class FlightSeatRestController {
                     value = "FlightSeat.id",
                     required = true
             )
-            @PathVariable
-            Long id,
+            @PathVariable Long id,
+            @ApiParam(
+                    name = "flightSeat",
+                    value = "FlightSeat model",
+                    required = true
+            )
             @RequestBody
-            @Valid
-            FlightSeat flightSeat) {
+            @Valid FlightSeat flightSeat) {
         log.info("methodName: editFlightSeatById - edit flight seat by id. id={}", id);
 
         if (flightSeatService.findById(id) == null ||

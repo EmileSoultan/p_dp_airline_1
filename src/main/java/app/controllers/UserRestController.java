@@ -3,10 +3,8 @@ package app.controllers;
 import app.entities.user.User;
 import app.entities.user.UserDetailsImpl;
 import app.services.interfaces.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
+@Api(tags = "User REST")
+@Tag(name = "User REST", description = "API для операций с пользователем(User)")
 @RestController
 @RequestMapping("/api/user")
-@Api("User API")
 @Slf4j
 public class UserRestController {
 
@@ -36,7 +35,7 @@ public class UserRestController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Get all users", tags = "user-rest-controller")
+    @ApiOperation(value = "Get list of all User")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "users found"),
             @ApiResponse(code = 204, message = "users not found")
@@ -50,12 +49,17 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get user by id", tags = "user-rest-controller")
+    @ApiOperation(value = "Get User by \"id\"")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "user found"),
             @ApiResponse(code = 404, message = "user not found")
     })
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<User> getUserById(
+            @ApiParam(
+                    name = "id",
+                    value = "User.id"
+            )
+            @PathVariable Long id) {
         log.info("methodName: getUserById - get user by id. id = {}", id);
         var user = userService.getUserById(id);
         return user.isEmpty()
@@ -64,7 +68,7 @@ public class UserRestController {
     }
 
     @GetMapping("/auth")
-    @ApiOperation(value = "Get authenticated user", tags = "user-rest-controller")
+    @ApiOperation(value = "Get authenticated User")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "user found")
     })
@@ -77,34 +81,54 @@ public class UserRestController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Add user", tags = "user-rest-controller")
+    @ApiOperation(value = "Create User")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "user added")
     })
-    public ResponseEntity<User> addUser(@RequestBody @Valid User user) {
+    public ResponseEntity<User> addUser(
+            @ApiParam(
+                    name = "user",
+                    value = "User model"
+            )
+            @RequestBody @Valid User user) {
         log.info("methodName: addUser - add new user");
         userService.saveUser(user);
         return new ResponseEntity<>(userService.getUserByEmail(user.getEmail()), HttpStatus.CREATED);
     }
 
-    @PatchMapping
-    @ApiOperation(value = "Edit existed user", tags = "user-rest-controller")
+    @PatchMapping("/{id}")
+    @ApiOperation(value = "Edit existed User by \"id\"")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "user edited")
     })
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
-        log.info("methodName: updateUser - update user with id = {}", user.getId());
-        userService.updateUser(user);
+    public ResponseEntity<User> updateUser(
+            @ApiParam(
+                    name = "id",
+                    value = "User.id"
+            )
+            @PathVariable("id") Long id,
+            @ApiParam(
+                    name = "user",
+                    value = "User model"
+            )
+            @RequestBody User user) {
+        log.info("methodName: updateUser - update user with id = {}", id);
+        userService.updateUser(id, user);
         return new ResponseEntity<>(userService.getUserByEmail(user.getEmail()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Delete user by id", tags = "user-rest-controller")
+    @ApiOperation(value = "Delete user by \"id\"")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "user deleted"),
             @ApiResponse(code = 404, message = "user not found")
     })
-    public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUserById(
+            @ApiParam(
+                    name = "id",
+                    value = "User.id"
+            )
+            @PathVariable Long id) {
         log.info("methodName: deleteUserById - delete user with id = {}", id);
         var user = userService.getUserById(id);
         if (user.isEmpty()) {

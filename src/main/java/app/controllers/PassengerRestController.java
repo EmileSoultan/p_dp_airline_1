@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,20 +19,21 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@Api
+@Api(tags = "Passenger REST")
+@Tag(name = "Passenger REST", description = "API для операций с пассажирами")
 @Slf4j
 @RestController
 @RequestMapping("/api/passengers")
 public class PassengerRestController {
 
-    private PassengerService passengerService;
+    private final PassengerService passengerService;
 
     @Autowired
     public PassengerRestController(PassengerService passengerService) {
         this.passengerService = passengerService;
     }
 
-    @ApiOperation(value = "Find passenger by Email", tags = "passenger-rest-controller")
+    @ApiOperation(value = "Find passenger by Email")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passenger found"),
             @ApiResponse(code = 404, message = "Passenger not found")
@@ -46,7 +48,7 @@ public class PassengerRestController {
         return ResponseEntity.ok(passenger);
     }
 
-    @ApiOperation(value = "Find all passengers", tags = "passenger-rest-controller")
+    @ApiOperation(value = "Get list of all Passenger")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passengers found"),
             @ApiResponse(code = 404, message = "Passengers not found")
@@ -62,7 +64,7 @@ public class PassengerRestController {
     }
 
 
-    @ApiOperation(value = "Find passenger by ID", tags = "passenger-rest-controller")
+    @ApiOperation(value = "Get Passenger by it's \"id\"")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passenger found"),
             @ApiResponse(code = 404, message = "Passenger not found")
@@ -71,7 +73,7 @@ public class PassengerRestController {
     public ResponseEntity<Passenger> getById(
             @ApiParam(
                     name = "id",
-                    value = "User id",
+                    value = "User.id",
                     required = true
             )
             @PathVariable Long id) {
@@ -83,8 +85,8 @@ public class PassengerRestController {
         return ResponseEntity.ok(passenger);
     }
 
-    @ApiOperation(value = "Find passengers by full name",
-            tags = "passenger-rest-controller")
+
+    @ApiOperation(value = "Get list of Passenger by full name")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passengers found"),
             @ApiResponse(code = 404, message = "Passengers not found")
@@ -107,7 +109,7 @@ public class PassengerRestController {
     }
 
 
-    @ApiOperation(value = "Find passengers by last name", tags = "passenger-rest-controller")
+    @ApiOperation(value = "Get list of Passenger by last name")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passengers found"),
             @ApiResponse(code = 404, message = "Passengers not found")
@@ -129,10 +131,9 @@ public class PassengerRestController {
     }
 
 
-    @ApiOperation(value = "Find passengers by any name, any format of string. " +
+    @ApiOperation(value = "Get list of Passengers by any name, any format of string. " +
             "WARNING: this method loads the system, better use search by last name or full name. " +
-            "If you need a search by other parameters, contact the backend developer.",
-            tags = "passenger-rest-controller")
+            "If you need a search by other parameters, contact the backend developer.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passengers found"),
             @ApiResponse(code = 404, message = "Passengers not found")
@@ -154,7 +155,7 @@ public class PassengerRestController {
     }
 
 
-    @ApiOperation(value = "Find passenger by PassportSerialNumber", tags = "passenger-rest-controller")
+    @ApiOperation(value = "Get Passenger by serialNumberPassport")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passenger found"),
             @ApiResponse(code = 404, message = "Passenger not found")
@@ -165,6 +166,7 @@ public class PassengerRestController {
                     name = "serialNumber",
                     value = "Passenger serial and number of passport\n" +
                             "example: \"7777 777777\"",
+                    example = "3333 333333",
                     required = true
             )
             @PathVariable String serialNumber) {
@@ -177,14 +179,19 @@ public class PassengerRestController {
     }
 
 
-    @ApiOperation(value = "Add new passenger", tags = "passenger-rest-controller")
+    @ApiOperation(value = "Create new Passenger", notes = "Create method requires in model field \"@type\": \"passenger\"")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passenger added"),
             @ApiResponse(code = 400, message = "Bad request")
     })
     @PostMapping()
-    public ResponseEntity<Passenger> addPassenger(@RequestBody @Valid Passenger passenger) {
-        log.info("methodName: addPassenger - add new passenger. passanger={}", passenger.toString());
+    public ResponseEntity<Passenger> addPassenger(
+            @ApiParam(
+                    name = "passenger",
+                    value = "Passenger model"
+            )
+            @RequestBody @Valid Passenger passenger) {
+        log.info("methodName: addPassenger - add new passenger. passenger={}", passenger.toString());
         if (passenger.getId() != null) {
             return ResponseEntity.badRequest().build();
         }
@@ -192,7 +199,7 @@ public class PassengerRestController {
     }
 
 
-    @ApiOperation(value = "Edit passenger", tags = "passenger-rest-controller")
+    @ApiOperation(value = "Edit Passenger")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passenger edited"),
             @ApiResponse(code = 400, message = "Bad request")
@@ -201,10 +208,15 @@ public class PassengerRestController {
     public ResponseEntity<Passenger> editPassenger(
             @ApiParam(
                     name = "id",
-                    value = "User id",
+                    value = "User.id",
                     required = true
             )
-            @PathVariable("id") Long id, @RequestBody @Valid Passenger passenger) {
+            @PathVariable("id") Long id,
+            @ApiParam(
+                    name = "passenger",
+                    value = "Passenger model"
+            )
+            @RequestBody @Valid Passenger passenger) {
         log.info("methodName: editPassenger - edit passenger by id. id={} passenger={}", id, passenger.toString());
         if (passengerService.findById(id) == null ||
                 !id.equals(passenger.getId())) {
@@ -214,7 +226,7 @@ public class PassengerRestController {
     }
 
 
-    @ApiOperation(value = "Delete passenger", tags = "passenger-rest-controller")
+    @ApiOperation(value = "Delete Passenger by \"id\"")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passenger deleted")
     })
@@ -222,7 +234,7 @@ public class PassengerRestController {
     public void deletePassenger(
             @ApiParam(
                     name = "id",
-                    value = "User id",
+                    value = "User.id",
                     required = true
             )
             @PathVariable Long id) {
