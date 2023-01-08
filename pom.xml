@@ -238,6 +238,7 @@
 
 
     <build>
+        <finalName>airline-project</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
