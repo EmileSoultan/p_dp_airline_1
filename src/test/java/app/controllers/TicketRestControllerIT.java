@@ -24,10 +24,10 @@ public class TicketRestControllerIT extends IntegrationTestBase {
     @Autowired
     private PassengerService passengerService;
 
+
     @Test
     void createTicket_test() throws Exception {
         Ticket newTicket = ticketService.findTicketByTicketNumber("ZX-3333");
-        newTicket.setId(100L);
         newTicket.setTicketNumber("SJ-9346");
         mockMvc.perform(post("http://localhost:8080/api/ticket")
                         .content(objectMapper.writeValueAsString(newTicket))

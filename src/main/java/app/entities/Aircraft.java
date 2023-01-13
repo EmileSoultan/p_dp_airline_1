@@ -1,6 +1,7 @@
 package app.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,7 @@ public class Aircraft {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_aircraft")
     @SequenceGenerator(name = "seq_aircraft", initialValue = 1000, allocationSize = 1)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @NotBlank(message = "field \"aircraftNumber\" should not be empty!")

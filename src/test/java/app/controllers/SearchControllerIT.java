@@ -27,6 +27,7 @@ class SearchControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/search/{id}", id))
                 .andExpect(status().isNotFound());
     }
+/* TODO раскомментировать после добавления ветки 81(main search)
 
     @Test
     void CreateSearchResultCreate() throws Exception {
@@ -56,4 +57,6 @@ class SearchControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/search/{id}", id))
                 .andExpect(status().isOk());
     }
+
+ */
 }

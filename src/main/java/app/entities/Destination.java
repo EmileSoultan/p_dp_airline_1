@@ -1,6 +1,7 @@
 package app.entities;
 
 import app.enums.Airport;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class Destination {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_destination")
     @SequenceGenerator(name = "seq_destination", initialValue = 1000, allocationSize = 1)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @Column(name = "airport_code")

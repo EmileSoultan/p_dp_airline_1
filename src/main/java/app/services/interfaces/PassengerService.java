@@ -7,7 +7,7 @@ import java.util.List;
 public interface PassengerService {
     Passenger save(Passenger passenger);
 
-    Passenger update(Passenger passenger);
+    Passenger update(Long id, Passenger passenger);
 
     List<Passenger> findAll();
 

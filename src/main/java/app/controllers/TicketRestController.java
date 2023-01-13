@@ -42,8 +42,7 @@ public class TicketRestController {
             )
             @RequestBody Ticket ticket) {
         log.info("methodName: createTicket - create new ticket");
-        ticketService.saveTicket(ticket);
-        return new ResponseEntity<>(ticket, HttpStatus.CREATED);
+        return new ResponseEntity<>(ticketService.saveTicket(ticket), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Gets Ticket by ticketNumber")
@@ -68,13 +67,16 @@ public class TicketRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<Ticket> updateTicket(
             @ApiParam(
+                    name = "id",
+                    value = "Ticket.id"
+            ) @PathVariable Long id,
+            @ApiParam(
                     name = "ticket",
                     value = "Ticket model"
             )
             @RequestBody Ticket ticket) {
         log.info("methodName: updateTicket - update of current ticket");
-        ticketService.updateTicket(ticket);
-        return new ResponseEntity<>(ticket, HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.updateTicket(id, ticket), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete Ticket by \"id\"")

@@ -95,11 +95,10 @@ public class FlightSeatRestController {
             @Valid FlightSeat flightSeat) {
         log.info("methodName: editFlightSeatById - edit flight seat by id. id={}", id);
 
-        if (flightSeatService.findById(id) == null ||
-                !id.equals(flightSeat.getId())) {
+        if (flightSeatService.findById(id) == null) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(flightSeatService.saveFlightSeat(flightSeat));
+        return ResponseEntity.ok(flightSeatService.editFlightSeat(id, flightSeat));
     }
 
 

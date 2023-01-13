@@ -218,11 +218,11 @@ public class PassengerRestController {
             )
             @RequestBody @Valid Passenger passenger) {
         log.info("methodName: editPassenger - edit passenger by id. id={} passenger={}", id, passenger.toString());
-        if (passengerService.findById(id) == null ||
-                !id.equals(passenger.getId())) {
+        var targetPassenger = passengerService.findById(id);
+        if (targetPassenger == null) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(passengerService.update(passenger));
+        return ResponseEntity.ok(passengerService.update(id, passenger));
     }
 
 
