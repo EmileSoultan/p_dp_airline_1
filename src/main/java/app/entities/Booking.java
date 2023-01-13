@@ -1,6 +1,7 @@
 package app.entities;
 
 import app.entities.user.Passenger;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +24,7 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_booking")
     @SequenceGenerator(name = "seq_booking", initialValue = 1000, allocationSize = 1)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Column(name = "id")
     private long id;
 

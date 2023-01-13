@@ -31,7 +31,7 @@ public class SeatRestController {
             @ApiResponse(code = 201, message = "seat create"),
             @ApiResponse(code = 400, message = "seat not create")
     })
-    public ResponseEntity<HttpStatus> saveSeat(
+    public ResponseEntity<Seat> saveSeat(
             @ApiParam(
                     name = "seat",
                     value = "Seat model"
@@ -39,7 +39,7 @@ public class SeatRestController {
             @RequestBody @Valid Seat seat) {
         seatService.save(seat);
         log.info("saveSeat: new seat saved with id= {}", seat.getId());
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(seatService.findById(seat.getId()),HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -70,9 +70,10 @@ public class SeatRestController {
     @ApiOperation(value = "Edit Seat by \"id\"")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "seat edited"),
-            @ApiResponse(code = 400, message = "seat failed to edit")
+            @ApiResponse(code = 400, message = "seat failed to edit"),
+            @ApiResponse(code = 404, message = "seat not found")
     })
-    public ResponseEntity<HttpStatus> editSeat(
+    public ResponseEntity<Seat> editSeat(
             @ApiParam(
                     name = "id",
                     value = "Seat.id"
@@ -84,12 +85,11 @@ public class SeatRestController {
             )
             @RequestBody @Valid Seat seat) {
         if (seatService.findById(id) == null) {
-            log.error("editSeat: error of editing seat by id = {} - not find seat.", id);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            log.error("editSeat: error of editing seat by id = {} - not found seat.", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        seatService.save(seat);
+        seatService.editById(id, seat);
         log.info("editSeat: the seat with id = {} has been edited.", id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(seatService.findById(id), HttpStatus.OK);
     }
 }

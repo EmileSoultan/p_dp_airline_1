@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 
 @Repository
@@ -22,6 +21,6 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     List<Flight> findByFromAndToAndDepartureDateTimeBetween(Destination from, Destination to,
                                                             LocalDateTime fromDate, LocalDateTime toDate);
 
-    Set<Flight> findByAircraft_Id(Long id);
+    List <Flight> findByAircraft_Id(Long id);
 
 }

@@ -31,6 +31,7 @@ public class FlightSeat {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_flight_seats")
     @SequenceGenerator(name = "seq_flight_seats", initialValue = 1000, allocationSize = 1)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long id;
 
     @PositiveOrZero(message = "Fare must be positive")

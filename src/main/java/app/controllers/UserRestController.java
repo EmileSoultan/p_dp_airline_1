@@ -114,7 +114,7 @@ public class UserRestController {
             @RequestBody User user) {
         log.info("methodName: updateUser - update user with id = {}", id);
         userService.updateUser(id, user);
-        return new ResponseEntity<>(userService.getUserByEmail(user.getEmail()), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUserById(id).orElse(null), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

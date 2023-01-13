@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
             editUser.setPassword(encoder.encode(user.getPassword()));
         }
         if (!user.getAnswerQuestion()
-                .equals(userRepository.findById(user.getId()).orElse(null).getAnswerQuestion())) {
+                .equals(userRepository.findById(id).orElse(null).getAnswerQuestion())) {
             editUser.setAnswerQuestion(encoder.encode(user.getAnswerQuestion()));
         }
         editUser.setRoles(user.getRoles());

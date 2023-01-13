@@ -6,7 +6,6 @@ import app.entities.FlightSeat;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface FlightService {
@@ -19,5 +18,5 @@ public interface FlightService {
     Flight getFlightByIdAndDates(Long id, String start, String finish);
     Flight getById(Long id);
     void save(Flight flight);
-    void update(Flight updated);
+    Flight update(Long id, Flight updated);
 }

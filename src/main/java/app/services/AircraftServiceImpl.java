@@ -10,13 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class AircraftServiceImpl implements AircraftService {
 
-    private AircraftRepository aircraftRepository;
-    private FlightRepository flightRepository;
+    private final AircraftRepository aircraftRepository;
+    private final FlightRepository flightRepository;
 
     @Autowired
     public AircraftServiceImpl(AircraftRepository aircraftRepository, FlightRepository flightRepository) {
@@ -46,7 +45,7 @@ public class AircraftServiceImpl implements AircraftService {
 
     @Transactional
     public void delete(Long id) {
-        Set<Flight> flightSet = flightRepository.findByAircraft_Id(id);
+        List <Flight> flightSet = flightRepository.findByAircraft_Id(id);
         if (flightSet != null) {
             flightSet.forEach(flight -> flight.setAircraft(null));
         }

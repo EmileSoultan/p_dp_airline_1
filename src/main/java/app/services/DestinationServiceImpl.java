@@ -1,6 +1,7 @@
 package app.services;
 
 import app.entities.Destination;
+import app.enums.Airport;
 import app.repositories.DestinationRepository;
 import app.services.interfaces.DestinationService;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,11 @@ public class DestinationServiceImpl implements DestinationService {
 
     @Override
     public Destination getDestinationById(Long id) {
-        return destinationRepository.findById(id).get();
+        return destinationRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Destination getDestinationByAirportCode(Airport airportCode) {
+        return destinationRepository.findDestinationByAirportCode(airportCode).orElse(null);
     }
 }

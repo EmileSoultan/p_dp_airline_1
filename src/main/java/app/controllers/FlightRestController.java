@@ -151,7 +151,10 @@ public class FlightRestController {
 
     @PatchMapping("/{id}")
     @ApiOperation(value = "Edit Flight")
-    @ApiResponse(code = 200, message = "Flight updated")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Flight updated"),
+            @ApiResponse(code = 404, message = "Flight not found")
+    })
     public ResponseEntity<Flight> updateFlight(
             @ApiParam(
                     name = "id",
@@ -163,10 +166,13 @@ public class FlightRestController {
                     value = "Flight model"
             )
             @RequestBody Flight updated) {
-
+        var flight = flightService.getById(id);
+        if (flight == null) {
+            log.error("methodName: updateFlight - flight with id={} doesn't exist.", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         log.info("methodName: updateFlight - flight with id = {} updated", id);
-        flightService.update(updated);
-
+        flightService.update(id, updated);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 }

@@ -1,6 +1,7 @@
 package app.entities;
 
 import app.enums.FlightStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,6 +39,7 @@ public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_flights")
     @SequenceGenerator(name = "seq_flights", initialValue = 1000, allocationSize = 1)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @NotBlank(message = "Code cannot be empty")

@@ -43,7 +43,8 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     @Transactional
-    public Passenger update(Passenger passenger) {
+    public Passenger update(Long id, Passenger passenger) {
+        passenger.setId(id);
         if (!passenger.getPassword()
                 .equals(passengerRepository.findById(passenger.getId()).orElse(null).getPassword())) {
             passenger.setPassword(encoder.encode(passenger.getPassword()));

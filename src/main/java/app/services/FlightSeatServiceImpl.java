@@ -80,4 +80,26 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     public FlightSeat saveFlightSeat(FlightSeat flightSeat) {
         return flightSeatRepository.save(flightSeat);
     }
+
+    public FlightSeat editFlightSeat(Long id, FlightSeat flightSeat) {
+        var targetFlightSeat = flightSeatRepository.findById(id).orElse(null);
+        flightSeat.setId(id);
+
+        if(flightSeat.getFare() == null) {
+            flightSeat.setFare(targetFlightSeat.getFare());
+        }
+        if(flightSeat.getIsSold() == null) {
+            flightSeat.setIsSold(targetFlightSeat.getIsSold());
+        }
+        if(flightSeat.getIsBooking() == null) {
+            flightSeat.setIsBooking(targetFlightSeat.getIsBooking());
+        }
+        if(flightSeat.getFlight() == null) {
+            flightSeat.setFlight(targetFlightSeat.getFlight());
+        }
+        if(flightSeat.getSeat() == null) {
+            flightSeat.setSeat(targetFlightSeat.getSeat());
+        }
+        return flightSeatRepository.save(flightSeat);
+    }
 }

@@ -1,6 +1,7 @@
 package app.services.interfaces;
 
 import app.entities.Destination;
+import app.enums.Airport;
 
 import java.util.List;
 
@@ -16,4 +17,5 @@ public interface DestinationService {
     void deleteDestinationById(Long id);
 
     Destination getDestinationById(Long id);
+    Destination getDestinationByAirportCode (Airport airportCode);
 }

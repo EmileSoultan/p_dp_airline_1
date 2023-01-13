@@ -3,6 +3,8 @@ package app.services;
 import app.entities.Destination;
 import app.entities.Flight;
 import app.entities.FlightSeat;
+import app.repositories.AircraftRepository;
+import app.repositories.DestinationRepository;
 import app.repositories.FlightRepository;
 import app.repositories.FlightSeatRepository;
 import app.services.interfaces.FlightService;
@@ -20,11 +22,15 @@ import java.util.stream.Collectors;
 public class FlightServiceImpl implements FlightService {
 
     private final FlightRepository flightRepository;
-    private FlightSeatRepository flightSeatRepository;
+    private final FlightSeatRepository flightSeatRepository;
+    private final AircraftRepository aircraftRepository;
+    private final DestinationRepository destinationRepository;
 
-    public FlightServiceImpl(FlightRepository flightRepository, FlightSeatRepository flightSeatRepository) {
+    public FlightServiceImpl(FlightRepository flightRepository, FlightSeatRepository flightSeatRepository, AircraftRepository aircraftRepository, DestinationRepository destinationRepository) {
         this.flightRepository = flightRepository;
         this.flightSeatRepository = flightSeatRepository;
+        this.aircraftRepository = aircraftRepository;
+        this.destinationRepository = destinationRepository;
     }
 
     @Override
@@ -72,6 +78,7 @@ public class FlightServiceImpl implements FlightService {
         return flightRepository.getByCode(code);
     }
 
+
     @Override
     @Transactional(readOnly = true)
     public List<Flight> getFlightByDestinationsAndDates(String from, String to,
@@ -116,7 +123,23 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public void update(Flight updated) {
-        flightRepository.saveAndFlush(updated);
+    public Flight update(Long id ,Flight updated) {
+        updated.setId(id);
+        if (updated.getAircraft() == null) {
+            updated.setAircraft(getById(id).getAircraft());
+        } else {
+            updated.setAircraft(aircraftRepository.findByAircraftNumber(updated.getAircraft().getAircraftNumber()));
+        }
+        if (updated.getFrom() == null) {
+            updated.setFrom(getById(id).getFrom());
+        } else {
+            updated.setFrom(destinationRepository.findDestinationByAirportCode(updated.getFrom().getAirportCode()).orElse(null));
+        }
+        if (updated.getTo() == null) {
+            updated.setTo(getById(id).getTo());
+        } else {
+            updated.setTo(destinationRepository.findDestinationByAirportCode(updated.getTo().getAirportCode()).orElse(null));
+        }
+        return flightRepository.saveAndFlush(updated);
     }
 }
