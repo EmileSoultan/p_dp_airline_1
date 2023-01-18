@@ -262,7 +262,12 @@
 
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.0</version>
+                <version>2.22.2</version>
+                <configuration>
+                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                    <reuseForks>false</reuseForks>
+                    <forkCount>10</forkCount>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

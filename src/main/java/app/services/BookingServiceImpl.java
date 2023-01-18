@@ -1,8 +1,12 @@
 package app.services;
 
 import app.entities.Booking;
+import app.entities.Seat;
 import app.repositories.BookingRepository;
 import app.services.interfaces.BookingService;
+import app.services.interfaces.CategoryService;
+import app.services.interfaces.FlightService;
+import app.services.interfaces.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,16 +18,26 @@ import java.util.List;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
+    private final CategoryService categoryService;
+    private final PassengerService passengerService;
+    private final FlightService flightService;
 
     @Autowired
-    public BookingServiceImpl(BookingRepository bookingRepository) {
+    public BookingServiceImpl(BookingRepository bookingRepository, CategoryService categoryService, PassengerService passengerService, FlightService flightService) {
         this.bookingRepository = bookingRepository;
+        this.categoryService = categoryService;
+        this.passengerService = passengerService;
+        this.flightService = flightService;
     }
 
     @Transactional
     @Override
-    public Booking save(Booking book) {
-        return bookingRepository.save(book);
+    public Booking save(Booking booking) {
+        booking.setPassenger(passengerService.findByEmail(booking.getPassenger().getEmail()));
+        booking.setFlight(flightService.getFlightByCode(booking.getFlight().getCode()));
+        booking.setCategory(categoryService.findByCategoryType(booking.getCategory().getCategoryType()));
+
+        return bookingRepository.save(booking);
     }
 
     @Override
