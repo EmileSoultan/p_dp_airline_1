@@ -12,12 +12,13 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightSeatServiceImpl implements FlightSeatService {
 
-    private FlightSeatRepository flightSeatRepository;
-    private FlightRepository flightRepository;
+    private final FlightSeatRepository flightSeatRepository;
+    private final FlightRepository flightRepository;
 
     @Autowired
     public FlightSeatServiceImpl(FlightSeatRepository flightSeatRepository, FlightRepository flightRepository) {
@@ -101,5 +102,23 @@ public class FlightSeatServiceImpl implements FlightSeatService {
             flightSeat.setSeat(targetFlightSeat.getSeat());
         }
         return flightSeatRepository.save(flightSeat);
+    }
+
+   @Override
+    public int getNumberOfFreeSeatOnFlight(Flight flight) {
+        return flight.getAircraft().getSeatSet().size() - flightSeatRepository.findFlightSeatByFlight(flight).size();
+    }
+
+    @Override
+    public Set<Seat> getSetOfFeeSeatOnFlightByFlightId(Long id) {
+        var targetFlight = flightRepository.getById(id);
+        var setOfSeat = targetFlight.getAircraft().getSeatSet();
+        var setOfReservedSeat = flightSeatRepository.findFlightSeatByFlight(targetFlight)
+                .stream().map(FlightSeat::getSeat)
+                .collect(Collectors.toSet());
+        for(Seat s : setOfReservedSeat) {
+            setOfSeat.remove(s);
+        }
+        return setOfSeat;
     }
 }

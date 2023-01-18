@@ -5,6 +5,7 @@ import app.entities.Flight;
 import app.entities.FlightSeat;
 import app.repositories.AircraftRepository;
 import app.repositories.DestinationRepository;
+import app.enums.Airport;
 import app.repositories.FlightRepository;
 import app.repositories.FlightSeatRepository;
 import app.services.interfaces.FlightService;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -78,7 +80,6 @@ public class FlightServiceImpl implements FlightService {
         return flightRepository.getByCode(code);
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public List<Flight> getFlightByDestinationsAndDates(String from, String to,
@@ -96,6 +97,17 @@ public class FlightServiceImpl implements FlightService {
     public List<Flight> getFlightsByDestinationsAndDepartureDate(Destination from, Destination to,
                                                                  LocalDate departureDate) {
         return flightRepository.getByFromAndToAndDepartureDate(from, to, departureDate);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Flight> getListDirectFlightsByFromAndToAndDepartureDate(Airport airportCodeFrom, Airport airportCodeTo, Date departureDate) {
+        return flightRepository.getListDirectFlightsByFromAndToAndDepartureDate(airportCodeFrom, airportCodeTo, departureDate);
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public List<Flight> getListNonDirectFlightsByFromAndToAndDepartureDate(int airportIdFrom, int airportIdTo, Date departureDate) {
+        return flightRepository.getListNonDirectFlightsByFromAndToAndDepartureDate(airportIdFrom, airportIdTo, departureDate);
     }
 
     @Override
