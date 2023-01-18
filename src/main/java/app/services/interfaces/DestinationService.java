@@ -17,5 +17,5 @@ public interface DestinationService {
     void deleteDestinationById(Long id);
 
     Destination getDestinationById(Long id);
-    Destination getDestinationByAirportCode (Airport airportCode);
+    Destination findDestinationByAirportCode(Airport airportCode);
 }

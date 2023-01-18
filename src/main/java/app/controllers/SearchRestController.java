@@ -2,7 +2,6 @@ package app.controllers;
 
 import app.entities.search.Search;
 import app.entities.search.SearchResult;
-import app.services.interfaces.SearchResultService;
 import app.services.interfaces.SearchService;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,31 +25,42 @@ import javax.validation.Valid;
 @Slf4j
 public class SearchRestController {
     private final SearchService searchService;
-    private final SearchResultService searchResultService;
 
     @Autowired
-    public SearchRestController(SearchService searchService,
-                                SearchResultService searchResultService) {
+    public SearchRestController(SearchService searchService) {
         this.searchService = searchService;
-        this.searchResultService =searchResultService;
     }
 
     @PostMapping
-    @ApiOperation(value = "Create new search")
+    @ApiOperation(value = "Create new search",
+            notes = "Минимально необходимые поля для корретной работы контроллера:\n" +
+                    " \"from\": {\"airportCode\": \"value\"},\n" +
+                    " \"to\": {\"airportCode\": \"value\"},\n" +
+                    " \"departureDate\": \"yyyy-mm-dd\",\n" +
+                    " \"numberOfPassengers\": value (value - mast be bigger then 0)")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "returned search result id 4 other methods"),
-            @ApiResponse(code = 400, message = "search return error")
+            @ApiResponse(code = 201, message = "returned \"id\" of SearchResult"),
+            @ApiResponse(code = 400, message = "search return error. check validField "),
+            @ApiResponse(code = 404, message = "Destination.from is null")
     })
-    public ResponseEntity<Long> saveSearch(
+    public ResponseEntity<SearchResult> saveSearch(
             @ApiParam(
                     name = "search",
                     value = "Search model"
             )
             @RequestBody @Valid Search search) {
-
-        Long result_id = searchService.saveSearch(search);
-        log.info("saveSearch: new search result saved with id= {}", result_id);
-        return new ResponseEntity<>(result_id, HttpStatus.CREATED);
+        if(search.getFrom() == null) {
+            log.info("saveSearch: Destination.from is null");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            if(search.getReturnDate() !=null && !search.getReturnDate().isAfter(search.getDepartureDate())) {
+                log.info("saveSearch: DepartureDate must be earlier then ReturnDate");
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            SearchResult searchResult = searchService.saveSearch(search);
+            log.info("saveSearch: new search result saved with id= {}", searchResult.getId());
+            return new ResponseEntity<>(searchResult, HttpStatus.CREATED);
+        }
     }
 
     @GetMapping("/{id}")
@@ -66,7 +76,7 @@ public class SearchRestController {
             )
             @PathVariable("id") long id) {
 
-        SearchResult searchResult = searchResultService.findById(id);
+        SearchResult searchResult = searchService.findSearchResultByID(id);
 
         if (searchResult != null) {
             log.info("getSearchResultById: find search result with id = {}", id);

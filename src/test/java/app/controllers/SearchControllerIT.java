@@ -4,6 +4,7 @@ package app.controllers;
 import app.entities.Destination;
 import app.entities.search.Search;
 import app.services.interfaces.DestinationService;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,14 +28,12 @@ class SearchControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/search/{id}", id))
                 .andExpect(status().isNotFound());
     }
-/* TODO раскомментировать после добавления ветки 81(main search)
 
     @Test
     void CreateSearchResultCreate() throws Exception {
         Destination from = destinationService.getDestinationById(2L);
-        Destination to = destinationService.getDestinationById(4L);
-
-        Search search = new Search(from, to, LocalDate.now(), LocalDate.now(), 1);
+        Destination to = destinationService.getDestinationById(5L);
+        Search search = new Search(from, to, LocalDate.now(), LocalDate.now().plusDays(1L), 1);
         mockMvc.perform(post("http://localhost:8080/api/search")
                         .content(objectMapper.writeValueAsString(search))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -43,20 +42,17 @@ class SearchControllerIT extends IntegrationTestBase {
 
     @Test
     void CheckSearchResult() throws Exception {
-        Destination from = destinationService.getDestinationById(4L);
+        Destination from = destinationService.getDestinationById(5L);
         Destination to = destinationService.getDestinationById(2L);
-
-        Search search = new Search(from, to, LocalDate.now(), LocalDate.now(), 1);
+        Search search = new Search(from, to, LocalDate.now(), LocalDate.now().plusDays(1L), 1);
         String search_result = mockMvc.perform(post("http://localhost:8080/api/search")
                         .content(objectMapper.writeValueAsString(search))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
-
-        Long id = Long.valueOf(search_result);
+        Long id = new JSONObject(search_result).getLong("id");
 
         mockMvc.perform(get("http://localhost:8080/api/search/{id}", id))
                 .andExpect(status().isOk());
     }
 
- */
 }

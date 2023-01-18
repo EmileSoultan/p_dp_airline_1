@@ -13,6 +13,7 @@ public interface DestinationRepository extends JpaRepository<Destination, Long> 
     List<Destination> findByCityNameContainingIgnoreCase(String name);
 
     List<Destination> findByCountryNameContainingIgnoreCase(String name);
+    Destination getDestinationByAirportCode(Airport airportCode);
 
     Optional <Destination> findDestinationByAirportCode(Airport airportCode);
 }

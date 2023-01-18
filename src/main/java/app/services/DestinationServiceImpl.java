@@ -55,7 +55,7 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
-    public Destination getDestinationByAirportCode(Airport airportCode) {
+    public Destination findDestinationByAirportCode(Airport airportCode) {
         return destinationRepository.findDestinationByAirportCode(airportCode).orElse(null);
     }
 }
