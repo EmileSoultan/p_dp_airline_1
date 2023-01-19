@@ -4,13 +4,16 @@ server:
     session:
       timeout: -1
 
+#name of Spring active profile is linked with log4j2 logging configuration name of file as log4j2-spring_active_profile_name.yaml.
+#there are log4j2-dev.yaml and log4j2-prod.yaml configuration files now available for corresponding
+#profiles: dev - only LogToConsole, prod - LogToRollingFile + LogToConsole
 spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
   application:
     name: app
   profiles:
-    active: dev, prod
+    active: dev
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/airline_db?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Europe/Moscow
@@ -60,3 +63,6 @@ notification:
     milliseconds: 10000
   beforeDeparture:
     seconds: 86400
+
+logging:
+  config: classpath:log4j2-${spring.profiles.active}.yaml
