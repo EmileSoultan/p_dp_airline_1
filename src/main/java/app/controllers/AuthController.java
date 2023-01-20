@@ -10,12 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.message.AuthException;
+import javax.servlet.http.HttpServletRequest;
 
 @Api(tags = "JWT")
 @Tag(name = "JWT", description = "Авторизация и операции с JWT")
@@ -85,5 +83,24 @@ public class AuthController {
             log.info("getNewRefreshToken: this refresh token doesn't exist");
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @GetMapping("/login")
+    @ApiOperation(value = "Get login page")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Got login page"),
+            @ApiResponse(code = 401, message = "Not enough rights")
+    })
+    public String loginPage(
+            @ApiParam(
+            name = "request",
+            value = "HttpServletRequest"
+            )
+            HttpServletRequest request) {
+        String referrer = request.getHeader("Referer");
+        if(referrer != null){
+            request.getSession().setAttribute("url_prior_login", referrer);
+        }
+        return "login";
     }
 }
