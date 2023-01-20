@@ -1,31 +1,36 @@
 package app.util;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Component
-public class LoginSuccessHandler implements AuthenticationSuccessHandler {
+public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    public LoginSuccessHandler(@Value("/") String defaultTargetUrl) {
+        setDefaultTargetUrl(defaultTargetUrl);
+    }
+
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
-                                        HttpServletResponse httpServletResponse,
-                                        Authentication authentication) throws IOException{
-
-        var rolesSet = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-
-        if(rolesSet.contains("ROLE_ADMIN")) {
-            httpServletResponse.sendRedirect("/admin");
-        } else if(rolesSet.contains("ROLE_MANAGER")) {
-            httpServletResponse.sendRedirect("/manager");
-        } else if(rolesSet.contains("ROLE_PASSENGER")) {
-            httpServletResponse.sendRedirect("/passenger");
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if (session != null) {
+            String redirectUrl = (String) session.getAttribute("url_prior_login");
+            if (redirectUrl != null) {
+                session.removeAttribute("url_prior_login");
+                getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+            } else {
+                super.onAuthenticationSuccess(request, response, authentication);
+            }
         } else {
-            httpServletResponse.sendRedirect("/");
+            super.onAuthenticationSuccess(request, response, authentication);
         }
     }
 }
