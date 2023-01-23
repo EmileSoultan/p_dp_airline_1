@@ -1,11 +1,11 @@
 INSERT INTO destination (id, airport_code, airport_name, city_name, country_name, timezone)
-VALUES (1, 'VKO', 'Внуково', 'Москва', 'GMT +3', 'Россия');
+VALUES (1, 'VKO', 'Внуково', 'Москва', 'Россия', 'GMT +3');
 INSERT INTO destination (id, airport_code, airport_name, city_name, country_name, timezone)
-VALUES (2, 'VOG', 'Гумрак', 'Волгоград', 'GMT +3', 'Россия');
+VALUES (2, 'VOG', 'Гумрак', 'Волгоград', 'Россия', 'GMT +3');
 INSERT INTO destination (id, airport_code, airport_name, city_name, country_name, timezone)
-VALUES (3, 'MQF', 'Магнитогорск', 'Магнитогорск', 'GMT +5', 'Россия');
+VALUES (3, 'MQF', 'Магнитогорск', 'Магнитогорск', 'Россия', 'GMT +5');
 INSERT INTO destination (id, airport_code, airport_name, city_name, country_name, timezone)
-VALUES (4, 'OMS', 'Омск', 'Омск', 'GMT +6', 'Россия');
+VALUES (4, 'OMS', 'Омск', 'Омск', 'Россия', 'GMT +6');
 
 
 INSERT INTO category (id, category_type)

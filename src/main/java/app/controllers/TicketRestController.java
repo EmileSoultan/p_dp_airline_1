@@ -1,13 +1,17 @@
 package app.controllers;
 
 import app.entities.Ticket;
+import app.repositories.DestinationRepository;
 import app.services.interfaces.TicketService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -76,7 +80,8 @@ public class TicketRestController {
             )
             @RequestBody Ticket ticket) {
         log.info("methodName: updateTicket - update of current ticket");
-        return new ResponseEntity<>(ticketService.updateTicket(id, ticket), HttpStatus.OK);
+        ticket.setId(id);
+        return new ResponseEntity<>(ticketService.saveTicket(ticket), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete Ticket by \"id\"")
