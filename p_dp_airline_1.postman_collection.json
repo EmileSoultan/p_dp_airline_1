@@ -1,0 +1,272 @@
+{
+	"info": {
+		"_postman_id": "8ec93258-6f90-474f-919f-4b92514f245a",
+		"name": "p_dp_airline_1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24984780"
+	},
+	"item": [
+		{
+			"name": "Booking",
+			"item": [
+				{
+					"name": "Get  All Booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/booking",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"bookingNumber\": \"BK-111111\",\r\n  \"bookingData\": \"2023-01-20T17:02:05.003992\",\r\n  \"passenger\": {\r\n    \"@type\": \"passenger\",\r\n    \"id\": 0,\r\n    \"email\": \"user13@mail.ru\",\r\n    \"password\": \"$2a$12$XTtAr5.9Lg3PDFJuseBleOFNBFFKoyK4d6CW96VVYXm/X4eYDPHsa\",\r\n    \"securityQuestion\": null,\r\n    \"answerQuestion\": null,\r\n    \"roles\": [],\r\n    \"firstName\": \"Юзер13\",\r\n    \"lastName\": \"Юзеров\",\r\n    \"birthDate\": \"1982-03-12\",\r\n    \"phoneNumber\": \"79101111118\",\r\n    \"passport\": null\r\n  },\r\n  \"flight\": {\r\n    \"id\": 0,\r\n    \"code\": \"NALVKO\",\r\n    \"from\": null,\r\n    \"to\": null,\r\n    \"departureDateTime\": \"2023-01-20T17:02:04.942362\",\r\n    \"arrivalDateTime\": \"2023-01-20T17:02:04.942362\",\r\n    \"aircraft\": null,\r\n    \"flightStatus\": \"ON_TIME\"\r\n  },\r\n  \"category\": {\r\n    \"id\": 5002,\r\n    \"categoryType\": \"ECONOMY\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/booking",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Booking by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"bookingNumber\": \"BK-777777\",\r\n  \"bookingData\": \"2023-01-20T17:02:05.003992\",\r\n  \"passenger\": {\r\n    \"@type\": \"passenger\",\r\n    \"id\": 0,\r\n    \"email\": \"user13@mail.ru\",\r\n    \"password\": \"$2a$12$XTtAr5.9Lg3PDFJuseBleOFNBFFKoyK4d6CW96VVYXm/X4eYDPHsa\",\r\n    \"securityQuestion\": null,\r\n    \"answerQuestion\": null,\r\n    \"roles\": [],\r\n    \"firstName\": \"Юзер13\",\r\n    \"lastName\": \"Юзеров\",\r\n    \"birthDate\": \"1982-03-12\",\r\n    \"phoneNumber\": \"79101111118\",\r\n    \"passport\": null\r\n  },\r\n  \"flight\": {\r\n    \"id\": 0,\r\n    \"code\": \"NALVKO\",\r\n    \"from\": null,\r\n    \"to\": null,\r\n    \"departureDateTime\": \"2023-01-20T17:02:04.942362\",\r\n    \"arrivalDateTime\": \"2023-01-20T17:02:04.942362\",\r\n    \"aircraft\": null,\r\n    \"flightStatus\": \"ON_TIME\"\r\n  },\r\n  \"category\": {\r\n    \"id\": 5002,\r\n    \"categoryType\": \"ECONOMY\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/booking/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"booking",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/booking/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"booking",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Booking by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/booking/2",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"booking",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking by Number",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/booking/number?bookingNumber=BK-111111",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"booking",
+								"number"
+							],
+							"query": [
+								{
+									"key": "bookingNumber",
+									"value": "BK-111111"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const usernameAndPassword = {",
+					"    username: pm.collectionVariables.get(\"userName\"),",
+					"    password: pm.collectionVariables.get(\"userPassword\")",
+					"};",
+					"",
+					"const requestForToken = {",
+					"    url: 'http://localhost:8080/api/auth/login',",
+					"    method: 'POST',",
+					"    header: 'Content-Type: application/json',",
+					"    body: {",
+					"        mode: 'raw',",
+					"        raw: JSON.stringify(usernameAndPassword)",
+					"    }",
+					"};",
+					"",
+					"pm.sendRequest(requestForToken, (err, res) => {",
+					"    const {accessToken, refreshToken} = res.json();",
+					"",
+					"    console.log(res.json());",
+					"",
+					"    pm.collectionVariables.set(\"ACCESS_TOKEN\", accessToken);",
+					"    pm.collectionVariables.set(\"REFRESH_TOKEN\", refreshToken);",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "userName",
+			"value": "admin@mail.ru",
+			"type": "string"
+		},
+		{
+			"key": "userPassword",
+			"value": "admin",
+			"type": "string"
+		},
+		{
+			"key": "HOST",
+			"value": "http://localhost:8080/api",
+			"type": "string"
+		},
+		{
+			"key": "ACCESS_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "REFRESH_TOKEN",
+			"value": ""
+		}
+	]
+}
