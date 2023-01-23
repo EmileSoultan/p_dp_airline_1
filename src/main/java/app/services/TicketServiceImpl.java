@@ -1,10 +1,7 @@
 package app.services;
 
 import app.entities.Ticket;
-import app.repositories.FlightRepository;
-import app.repositories.FlightSeatRepository;
-import app.repositories.PassengerRepository;
-import app.repositories.TicketRepository;
+import app.repositories.*;
 import app.services.interfaces.TicketService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,24 +35,12 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public Ticket saveTicket(Ticket ticket) {
         ticket.setPassenger(passengerRepository.findByEmail(ticket.getPassenger().getEmail()));
-        ticket.setFlight(flightRepository.getByCode(ticket.getFlight().getCode()));
+        ticket.setFlight(flightRepository.findByCodeWithLinkedEntities(ticket.getFlight().getCode()));
         ticket.setFlightSeat(flightSeatRepository
                 .findFlightSeatByFlightAndSeat(
                 ticket.getFlight().getCode(),
                 ticket.getFlightSeat().getSeat().getSeatNumber()
                 ).orElse(null));
         return ticketRepository.save(ticket);
-    }
-
-    @Override
-    @Transactional
-    public Ticket updateTicket(Long id, Ticket ticket) {
-        var targetTicket = findTicketByTicketNumber(ticketRepository.getById(id).getTicketNumber());
-        targetTicket.setTicketNumber(ticket.getTicketNumber());
-
-        if (ticket.getPassenger() != null && !ticket.getPassenger().equals(targetTicket.getPassenger())) {
-            targetTicket.setPassenger(passengerRepository.findByEmail(ticket.getPassenger().getEmail()));
-        }
-        return ticketRepository.saveAndFlush(targetTicket);
     }
 }

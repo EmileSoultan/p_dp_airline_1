@@ -8,6 +8,4 @@ public interface TicketService {
     void deleteTicketById(Long id);
 
     Ticket saveTicket(Ticket ticket);
-
-    Ticket updateTicket(Long id, Ticket ticket);
 }

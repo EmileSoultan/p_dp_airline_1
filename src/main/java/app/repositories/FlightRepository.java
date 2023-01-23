@@ -20,6 +20,12 @@ import java.util.Set;
 public interface FlightRepository extends JpaRepository<Flight, Long> {
     Flight getByCode(String code);
 
+    @Query("SELECT flight FROM Flight flight LEFT JOIN FETCH flight.from from1 " +
+            "LEFT JOIN FETCH flight.to to LEFT JOIN FETCH flight.aircraft aircraft " +
+            "LEFT JOIN FETCH aircraft.seatSet seatSet " +
+            "WHERE flight.code = ?1")
+    Flight findByCodeWithLinkedEntities(String code);
+
     default List<Flight> getByFromAndToAndDepartureDate(Destination from, Destination to, LocalDate departureDate) {
         return findByFromAndToAndDepartureDateTimeBetween(from, to,
                 departureDate.atStartOfDay(), departureDate.plusDays(1).atStartOfDay());
