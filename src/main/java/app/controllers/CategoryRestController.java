@@ -63,7 +63,6 @@ public class CategoryRestController {
             @PathVariable("category_type") CategoryType categoryType) {
 
         Category category = categoryService.findByCategoryType(categoryType);
-
         if (category != null) {
             log.info("getCategoryByCategoryType: find category with category type = {}. id = {} ", categoryType, category.getId());
             return new ResponseEntity<>(category, HttpStatus.OK);
