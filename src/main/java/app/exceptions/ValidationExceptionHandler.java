@@ -4,10 +4,8 @@ import app.dto.ResponseExceptionDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -29,6 +27,9 @@ public class ValidationExceptionHandler {
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<ResponseExceptionDTO> handleException(SQLException exception) {
         ResponseExceptionDTO sqlExceptionDto = new ResponseExceptionDTO(exception.getMessage(), LocalDateTime.now());
+        if (exception.getSQLState().equals("23505")) {
+            return new ResponseEntity<>(sqlExceptionDto, HttpStatus.CONFLICT);
+        }
         return new ResponseEntity<>(sqlExceptionDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -41,7 +42,7 @@ public class ValidationExceptionHandler {
         return entityFieldsErrorList;
     }
 
-    @ExceptionHandler({ ConstraintViolationException.class })
+    @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity<ResponseExceptionDTO> handleConstraintViolation(ConstraintViolationException ex) {
         List<String> errors = new ArrayList<>();
         for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
@@ -53,3 +54,4 @@ public class ValidationExceptionHandler {
 
 
 }
+
