@@ -74,9 +74,8 @@ public class UserRestController {
     })
     public ResponseEntity<User> getAuthenticatedUser() {
         log.info("methodName: getAuthenticatedUser - get authenticated user");
-        UserDetailsImpl details = (UserDetailsImpl) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
-        return new ResponseEntity<>(userService.getUserByEmail(details.getUsername()),
+        return new ResponseEntity<>(userService.getUserByEmail((String) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal()),
                 HttpStatus.OK);
     }
 
