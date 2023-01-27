@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "8ec93258-6f90-474f-919f-4b92514f245a",
+		"_postman_id": "7ba8fa89-56ba-4881-bf6f-eac41184748d",
 		"name": "p_dp_airline_1",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "24984780"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "25455016"
 	},
 	"item": [
 		{
@@ -14,25 +14,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{ACCESS_TOKEN}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{ACCESS_TOKEN}}"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{HOST}}/booking",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"booking"
-							]
-						}
+						"url": "{{HOST}}/booking"
 					},
 					"response": []
 				},
@@ -41,13 +29,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{ACCESS_TOKEN}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{ACCESS_TOKEN}}"
+							}
 						},
 						"method": "POST",
 						"header": [],
@@ -60,15 +44,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{HOST}}/booking",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"booking"
-							]
-						}
+						"url": "{{HOST}}/booking"
 					},
 					"response": []
 				},
@@ -77,13 +53,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{ACCESS_TOKEN}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{ACCESS_TOKEN}}"
+							}
 						},
 						"method": "PATCH",
 						"header": [],
@@ -96,16 +68,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{HOST}}/booking/1",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"booking",
-								"1"
-							]
-						}
+						"url": "{{HOST}}/booking/1"
 					},
 					"response": []
 				},
@@ -114,26 +77,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{ACCESS_TOKEN}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{ACCESS_TOKEN}}"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{HOST}}/booking/1",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"booking",
-								"1"
-							]
-						}
+						"url": "{{HOST}}/booking/1"
 					},
 					"response": []
 				},
@@ -142,26 +92,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{ACCESS_TOKEN}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{ACCESS_TOKEN}}"
+							}
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": {
-							"raw": "{{HOST}}/booking/2",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"booking",
-								"2"
-							]
-						}
+						"url": "{{HOST}}/booking/2"
 					},
 					"response": []
 				},
@@ -170,13 +107,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{ACCESS_TOKEN}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{ACCESS_TOKEN}}"
+							}
 						},
 						"method": "GET",
 						"header": [],
@@ -198,6 +131,145 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "UserController",
+			"item": [
+				{
+					"name": "Get all users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{ACCESS_TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{HOST}}/user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{ACCESS_TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{HOST}}/user/1"
+					},
+					"response": []
+				},
+				{
+					"name": "get authenticated user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{ACCESS_TOKEN}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{HOST}}/user/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "add user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{ACCESS_TOKEN}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"@type\": \"passenger\",\r\n        \"email\": \"use255@mail.ru\",\r\n        \"password\": \"$2a$10$3NirK3T6cYWgR5NkJCQgSezPH7JfsDGCCAd/fE.5sAKiRiWlXbKiG\",\r\n        \"securityQuestion\": \"вопрос 24\",\r\n        \"answerQuestion\": \"$2a$10$0GsheYeivQ5GLbB/OC9UCO7SRXyU1Gp1hP1uiT38Dyi/RyPjHZfaO\",\r\n        \"roles\": [\r\n            {\r\n                \"id\": 2,\r\n                \"name\": \"ROLE_PASSENGER\"\r\n            }\r\n        ],\r\n        \"firstName\": \"Юзер24\",\r\n        \"lastName\": \"Юзерова\",\r\n        \"birthDate\": \"1993-09-20\",\r\n        \"phoneNumber\": \"79101111129\",\r\n        \"passport\": {\r\n            \"middleName\": \"Юзеровна\",\r\n            \"gender\": \"female\",\r\n            \"serialNumberPassport\": \"1321 111129\",\r\n            \"passportIssuingDate\": \"2008-09-19\",\r\n            \"passportIssuingCountry\": \"Россия\"\r\n        }\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{HOST}}/user"
+					},
+					"response": []
+				},
+				{
+					"name": "update user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{ACCESS_TOKEN}}"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"@type\": \"passenger\",\r\n    \"id\": 0,\r\n    \"email\": \"user150@mail.ru\",\r\n    \"password\": \"100\",\r\n    \"securityQuestion\": \"вопрос 15\",\r\n    \"answerQuestion\": \"ответ 49\",\r\n    \"roles\": [\r\n        {\r\n            \"id\": 0,\r\n            \"name\": \"ROLE_PASSENGER\"\r\n        }\r\n    ],\r\n    \"firstName\": \"Юзер15\",\r\n    \"lastName\": \"Юзерова\",\r\n    \"birthDate\": \"1987-03-30\",\r\n    \"phoneNumber\": \"79101111120\",\r\n    \"passport\": {\r\n        \"middleName\": \"Юзеровна\",\r\n        \"gender\": \"female\",\r\n        \"serialNumberPassport\": \"1111 111120\",\r\n        \"passportIssuingDate\": \"2004-04-20\",\r\n        \"passportIssuingCountry\": \"Россия\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{HOST}}/user/15"
+					},
+					"response": []
+				},
+				{
+					"name": "delete user by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{ACCESS_TOKEN}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{HOST}}/user/3"
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": {
+					"token": "{{ACCESS_TOKEN}}"
+				}
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}
