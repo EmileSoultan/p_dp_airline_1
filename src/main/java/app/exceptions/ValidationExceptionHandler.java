@@ -1,11 +1,10 @@
 package app.exceptions;
 
-import app.dto.ConstraintViolationExceptionDto;
-import app.dto.SqlExceptionDto;
-import app.dto.ValidationExceptionDto;
+import app.dto.ResponseExceptionDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -22,37 +21,33 @@ import java.util.List;
 public class ValidationExceptionHandler {
 
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<List<ValidationExceptionDto>> handleException(BindException exception) {
-        List<ValidationExceptionDto> validationExceptionDto = convertToErrorDtoList(exception);
+    public ResponseEntity<List<ResponseExceptionDTO>> handleException(BindException exception) {
+        List<ResponseExceptionDTO> validationExceptionDto = bindFieldsExceptionsToList(exception, new ArrayList<>());
         return new ResponseEntity<>(validationExceptionDto, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(SQLException.class)
-    public ResponseEntity<SqlExceptionDto> handleException(SQLException exception) {
-            SqlExceptionDto sqlExceptionDto = new SqlExceptionDto(exception.getMessage(), LocalDateTime.now());
-            return new ResponseEntity<>(sqlExceptionDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ResponseExceptionDTO> handleException(SQLException exception) {
+        ResponseExceptionDTO sqlExceptionDto = new ResponseExceptionDTO(exception.getMessage(), LocalDateTime.now());
+        return new ResponseEntity<>(sqlExceptionDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private List<ValidationExceptionDto> convertToErrorDtoList(BindException e) {
-        List<ValidationExceptionDto> resultValidationExceptionDtoList = new ArrayList<>();
-        for (int i = 0; i < e.getFieldErrors().size(); i++) {
-            resultValidationExceptionDtoList.add(new ValidationExceptionDto(
-                    e.getFieldErrors().get(i).getField(),
-                    e.getFieldErrors().get(i).getRejectedValue(),
-                    e.getFieldErrors().get(i).getDefaultMessage()));
-
-        }
-        return resultValidationExceptionDtoList;
+    private List<ResponseExceptionDTO> bindFieldsExceptionsToList(
+            BindException e,
+            List<ResponseExceptionDTO> entityFieldsErrorList) {
+        e.getFieldErrors().stream().forEach(a -> {
+            entityFieldsErrorList.add(new ResponseExceptionDTO(a.getField() + " " + a.getDefaultMessage(), LocalDateTime.now()));
+        });
+        return entityFieldsErrorList;
     }
 
     @ExceptionHandler({ ConstraintViolationException.class })
-    public ResponseEntity<Object> handleConstraintViolation(
-            ConstraintViolationException ex) {
+    public ResponseEntity<ResponseExceptionDTO> handleConstraintViolation(ConstraintViolationException ex) {
         List<String> errors = new ArrayList<>();
         for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
             errors.add(violation.getMessage());
         }
-        ConstraintViolationExceptionDto constraintViolationExceptionDto = new ConstraintViolationExceptionDto(errors.toString(), LocalDateTime.now());
+        ResponseExceptionDTO constraintViolationExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
         return new ResponseEntity<>(constraintViolationExceptionDto, HttpStatus.BAD_REQUEST);
     }
 
