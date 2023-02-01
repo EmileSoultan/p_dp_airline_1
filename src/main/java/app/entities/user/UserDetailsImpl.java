@@ -2,6 +2,7 @@ package app.entities.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Collection;
 
@@ -20,6 +21,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
+        if (user == null) throw new UsernameNotFoundException("there's no User with this Username");
         return user.getPassword();
     }
 
