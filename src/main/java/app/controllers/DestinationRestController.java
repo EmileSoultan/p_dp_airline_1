@@ -40,7 +40,7 @@ public class DestinationRestController {
                     value = "Destination model"
             )
             @RequestBody Destination destination) {
-        log.info("methodName: createDestination - create new destination");
+        log.info("createDestination: create new destination");
         destinationService.saveDestination(destination);
         return new ResponseEntity<>(destination, HttpStatus.CREATED);
     }
@@ -79,7 +79,7 @@ public class DestinationRestController {
                     value = "countryName"
             )
             @RequestParam(value = "countryName", required = false) String countryName) {
-        log.info("methodName: showDestinationByCityName - search destination by cityName or countryName");
+        log.info("showDestinationByCityName: search destination by cityName or countryName.countryName={} / cityName={}", countryName, cityName);
         List<Destination> destination = destinationService.findDestinationByName(cityName, countryName);
         return destination != null
                 ? new ResponseEntity<>(destination, HttpStatus.OK)
@@ -95,7 +95,7 @@ public class DestinationRestController {
                     value = "Destination model"
             )
             @RequestBody Destination destination) {
-        log.info("methodName: updateDestination - update of current destination");
+        log.info("updateDestination: update of current destination.");
         destinationService.updateDestination(destination);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -104,7 +104,7 @@ public class DestinationRestController {
     @ApiResponse(code = 200, message = "Destination has been removed")
     @DeleteMapping("/{id}")
     public ResponseEntity<Destination> deleteDestination(@PathVariable @ApiParam("id") Long id) {
-        log.info("methodName: deleteDestination - delete of current destination");
+        log.info("deleteDestination: delete of current destination. id={}", id);
         destinationService.deleteDestinationById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
