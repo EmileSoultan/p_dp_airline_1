@@ -13,7 +13,7 @@ public interface AircraftRepository extends JpaRepository<Aircraft, Long> {
     Aircraft findByAircraftNumber(String aircraftNumber);
 
     @Query(
-            value = "SELECT aircraft FROM Aircraft aircraft LEFT JOIN FETCH aircraft.seatSet WHERE aircraft.id > 0"
+            value = "SELECT DISTINCT aircraft FROM Aircraft aircraft LEFT JOIN FETCH aircraft.seatSet WHERE aircraft.id > 0"
     )
     List<Aircraft> findAll();
 }
