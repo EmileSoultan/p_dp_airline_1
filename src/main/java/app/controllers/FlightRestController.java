@@ -41,7 +41,7 @@ public class FlightRestController {
             )
             @PathVariable Long id) {
 
-        log.info("methodName: getFlightById - get flight by id. id = {}", id);
+        log.info("getFlightById: get flight by id. id = {}", id);
         var flight = flightService.getById(id);
 
         return flight != null
@@ -62,7 +62,7 @@ public class FlightRestController {
             )
             @PathVariable Long id) {
 
-        log.info("methodName: getFreeSeats - get get free seats on flight with id = {}", id);
+        log.info("getFreeSeats: get get free seats on flight with id = {}", id);
         Set<FlightSeat> seats = flightService.getFreeSeats(id);
 
         return ResponseEntity.ok(seats);
@@ -85,7 +85,7 @@ public class FlightRestController {
             @ApiParam(value = "Arrival Data-Time", example = "2022-12-10T15:57:49")
             @RequestParam(name = "date_finish", required = false) String finish) {
 
-        log.info("methodName: getFlightsByFromAndToAndDates - get flights with params");
+        log.info("getFlightsByFromAndToAndDates: get flights with params");
         var flightsList = flightService.getFlightByDestinationsAndDates(from, to, start, finish);
 
         return flightsList.isEmpty()
@@ -116,7 +116,7 @@ public class FlightRestController {
             )
             @RequestParam(name = "date_finish") String finish) {
 
-        log.info("methodName: getFlightByIdAndDates - get flight by id and dates");
+        log.info("getFlightByIdAndDates: get flight by id={} and dates from {} to {}", id, start, finish);
         var flight = flightService.getFlightByIdAndDates(id, start, finish);
 
         return flight != null
@@ -168,10 +168,10 @@ public class FlightRestController {
             @RequestBody Flight updated) {
         var flight = flightService.getById(id);
         if (flight == null) {
-            log.error("methodName: updateFlight - flight with id={} doesn't exist.", id);
+            log.error("updateFlight: flight with id={} doesn't exist.", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        log.info("methodName: updateFlight - flight with id = {} updated", id);
+        log.info("updateFlight: flight with id = {} updated", id);
         flightService.update(id, updated);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }

@@ -40,7 +40,7 @@ public class PassengerRestController {
     })
     @GetMapping("/email")
     public ResponseEntity<Passenger> getByEmail(@RequestParam(name = "email") String email) {
-        log.info("methodName: getByEmail - find passenger by email. Email={}", email);
+        log.info("getByEmail: find passenger by email. Email={}", email);
         Passenger passenger = passengerService.findByEmail(email);
         if (passenger == null) {
             return ResponseEntity.notFound().build();
@@ -55,7 +55,7 @@ public class PassengerRestController {
     })
     @GetMapping()
     public ResponseEntity<List<Passenger>> getAll() {
-        log.info("methodName: getAll - find all passengers");
+        log.info("getAll: find all passengers");
         List<Passenger> passengers = passengerService.findAll();
         if (passengers == null) {
             return ResponseEntity.notFound().build();
@@ -77,7 +77,7 @@ public class PassengerRestController {
                     required = true
             )
             @PathVariable Long id) {
-        log.info("methodName: getById - find passenger by ID. id={}", id);
+        log.info("getById: find passenger by ID. id={}", id);
         Passenger passenger = passengerService.findById(id);
         if (passenger == null) {
             return ResponseEntity.notFound().build();
@@ -101,6 +101,7 @@ public class PassengerRestController {
                     required = true
             )
             @PathVariable String passengerFullName) {
+        log.info("getByFullName: find passenger by fullName = {}", passengerFullName);
         List<Passenger> passengerList = passengerService.findByFullName(passengerFullName);
         if (passengerList == null) {
             return ResponseEntity.notFound().build();
@@ -123,6 +124,7 @@ public class PassengerRestController {
                     required = true
             )
             @PathVariable String passengerLastName) {
+        log.info("getByLastName: find passengers by Last Name = {}", passengerLastName);
         List<Passenger> passengerList = passengerService.findByLastName(passengerLastName);
         if (passengerList == null) {
             return ResponseEntity.notFound().build();
@@ -147,6 +149,7 @@ public class PassengerRestController {
                     required = true
             )
             @PathVariable String passengerAnyName) {
+        log.info("getByAnyName: find passenger by anyName = {}", passengerAnyName);
         List<Passenger> passengerList = passengerService.findByAnyName(passengerAnyName);
         if (passengerList == null) {
             return ResponseEntity.notFound().build();
@@ -170,7 +173,7 @@ public class PassengerRestController {
                     required = true
             )
             @PathVariable String serialNumber) {
-        log.info("methodName: getByPassportSerialNumber - find passenger by PassportSerialNumber. serialNumber={}", serialNumber);
+        log.info("getByPassportSerialNumber: find passenger by PassportSerialNumber. serialNumber={}", serialNumber);
         Passenger passenger = passengerService.findBySerialNumberPassport(serialNumber);
         if (passenger == null) {
             return ResponseEntity.notFound().build();
@@ -191,7 +194,7 @@ public class PassengerRestController {
                     value = "Passenger model"
             )
             @RequestBody @Valid Passenger passenger) {
-        log.info("methodName: addPassenger - add new passenger. passenger={}", passenger.toString());
+        log.info("addPassenger: add new passenger. passenger={}", passenger.toString());
         if (passenger.getId() != null) {
             return ResponseEntity.badRequest().build();
         }
@@ -217,7 +220,7 @@ public class PassengerRestController {
                     value = "Passenger model"
             )
             @RequestBody @Valid Passenger passenger) {
-        log.info("methodName: editPassenger - edit passenger by id. id={} passenger={}", id, passenger.toString());
+        log.info("editPassenger: edit passenger by id. id={} passenger={}", id, passenger.toString());
         var targetPassenger = passengerService.findById(id);
         if (targetPassenger == null) {
             return ResponseEntity.badRequest().build();
@@ -238,7 +241,7 @@ public class PassengerRestController {
                     required = true
             )
             @PathVariable Long id) {
-        log.info("methodName: deletePassenger - delete passenger by id. id={}", id);
+        log.info("deletePassenger: delete passenger by id. id={}", id);
         passengerService.deleteById(id);
     }
 

@@ -51,7 +51,7 @@ public class FlightSeatRestController {
             )
             @PathVariable
             String flightNumber) {
-        log.info("methodName: getFlightSeatsByFlightNumber - get flight seats by flightNumber. flightNumber={}", flightNumber);
+        log.info("getFlightSeatsByFlightNumber: get flight seats by flightNumber. flightNumber={}", flightNumber);
         return ResponseEntity.ok(flightSeatService.findByFlightNumber(flightNumber));
     }
 
@@ -69,7 +69,7 @@ public class FlightSeatRestController {
             )
             @PathVariable
             String flightNumber) {
-        log.info("methodName: addFlightSeatsByFlightNumber - add flight seats by flightNumber. flightNumber={}", flightNumber);
+        log.info("addFlightSeatsByFlightNumber: add flight seats by flightNumber. flightNumber={}", flightNumber);
         return new ResponseEntity<>(flightSeatService.addFlightSeatsByFlightNumber(flightNumber), HttpStatus.CREATED);
     }
 
@@ -93,7 +93,7 @@ public class FlightSeatRestController {
             )
             @RequestBody
             @Valid FlightSeat flightSeat) {
-        log.info("methodName: editFlightSeatById - edit flight seat by id. id={}", id);
+        log.info("editFlightSeatById: edit flight seat by id. id={}", id);
 
         if (flightSeatService.findById(id) == null) {
             return ResponseEntity.badRequest().build();

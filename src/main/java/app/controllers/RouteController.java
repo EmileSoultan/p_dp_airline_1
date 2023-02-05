@@ -44,7 +44,7 @@ public class RouteController {
                     value = "Route model"
             )
             @RequestBody Route route) {
-        log.info("addRoute : new Route with id={} added", route.getId());
+        log.info("addRoute: new Route with id={} added", route.getId());
         return new ResponseEntity<>(routeService.saveRoute(route), HttpStatus.CREATED);
     }
 

@@ -1,7 +1,6 @@
 package app.controllers;
 
 import app.entities.user.User;
-import app.entities.user.UserDetailsImpl;
 import app.services.interfaces.UserService;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,7 +40,7 @@ public class UserRestController {
             @ApiResponse(code = 204, message = "users not found")
     })
     public ResponseEntity<List<User>> getAllUsers() {
-        log.info("methodName: getAllUsers - get all users");
+        log.info("getAllUsers: get all users");
         var users = userService.getAllUsers();
         return users.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
@@ -60,7 +59,7 @@ public class UserRestController {
                     value = "User.id"
             )
             @PathVariable Long id) {
-        log.info("methodName: getUserById - get user by id. id = {}", id);
+        log.info("getUserById: get user by id. id = {}", id);
         var user = userService.getUserById(id);
         return user.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
@@ -73,7 +72,7 @@ public class UserRestController {
             @ApiResponse(code = 200, message = "user found")
     })
     public ResponseEntity<User> getAuthenticatedUser() {
-        log.info("methodName: getAuthenticatedUser - get authenticated user");
+        log.info("getAuthenticatedUser: get authenticated user");
         return new ResponseEntity<>(userService.getUserByEmail((String) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal()),
                 HttpStatus.OK);
@@ -90,7 +89,7 @@ public class UserRestController {
                     value = "User model"
             )
             @RequestBody @Valid User user) {
-        log.info("methodName: addUser - add new user");
+        log.info("addUser: add new user with email={}", user.getEmail());
         userService.saveUser(user);
         return new ResponseEntity<>(userService.getUserByEmail(user.getEmail()), HttpStatus.CREATED);
     }
@@ -111,7 +110,7 @@ public class UserRestController {
                     value = "User model"
             )
             @RequestBody User user) {
-        log.info("methodName: updateUser - update user with id = {}", id);
+        log.info("updateUser - update user with id = {}", id);
         userService.updateUser(id, user);
         return new ResponseEntity<>(userService.getUserById(id).orElse(null), HttpStatus.OK);
     }
@@ -128,7 +127,7 @@ public class UserRestController {
                     value = "User.id"
             )
             @PathVariable Long id) {
-        log.info("methodName: deleteUserById - delete user with id = {}", id);
+        log.info("deleteUserById: delete user with id = {}", id);
         var user = userService.getUserById(id);
         if (user.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
