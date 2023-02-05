@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "7ba8fa89-56ba-4881-bf6f-eac41184748d",
+		"_postman_id": "8e259c26-dbb8-4326-8d2c-6a21e6343fa2",
 		"name": "p_dp_airline_1",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "25455016"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23987454"
 	},
 	"item": [
 		{
@@ -14,13 +14,25 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{ACCESS_TOKEN}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{HOST}}/booking"
+						"url": {
+							"raw": "{{HOST}}/booking",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
 					},
 					"response": []
 				},
@@ -29,9 +41,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{ACCESS_TOKEN}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
@@ -44,7 +60,15 @@
 								}
 							}
 						},
-						"url": "{{HOST}}/booking"
+						"url": {
+							"raw": "{{HOST}}/booking",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
 					},
 					"response": []
 				},
@@ -53,9 +77,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{ACCESS_TOKEN}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "PATCH",
 						"header": [],
@@ -68,7 +96,16 @@
 								}
 							}
 						},
-						"url": "{{HOST}}/booking/1"
+						"url": {
+							"raw": "{{HOST}}/booking/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"booking",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -77,13 +114,26 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{ACCESS_TOKEN}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{HOST}}/booking/1"
+						"url": {
+							"raw": "{{HOST}}/booking/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"booking",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -92,13 +142,26 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{ACCESS_TOKEN}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "{{HOST}}/booking/2"
+						"url": {
+							"raw": "{{HOST}}/booking/2",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"booking",
+								"2"
+							]
+						}
 					},
 					"response": []
 				},
@@ -107,9 +170,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{ACCESS_TOKEN}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
@@ -142,13 +209,25 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{ACCESS_TOKEN}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{HOST}}/user"
+						"url": {
+							"raw": "{{HOST}}/user",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"user"
+							]
+						}
 					},
 					"response": []
 				},
@@ -157,13 +236,26 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{ACCESS_TOKEN}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{HOST}}/user/1"
+						"url": {
+							"raw": "{{HOST}}/user/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"user",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -172,13 +264,26 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{ACCESS_TOKEN}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{HOST}}/user/auth"
+						"url": {
+							"raw": "{{HOST}}/user/auth",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"user",
+								"auth"
+							]
+						}
 					},
 					"response": []
 				},
@@ -187,9 +292,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{ACCESS_TOKEN}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
@@ -202,7 +311,15 @@
 								}
 							}
 						},
-						"url": "{{HOST}}/user"
+						"url": {
+							"raw": "{{HOST}}/user",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"user"
+							]
+						}
 					},
 					"response": []
 				},
@@ -211,9 +328,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{ACCESS_TOKEN}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "PATCH",
 						"header": [],
@@ -226,7 +347,16 @@
 								}
 							}
 						},
-						"url": "{{HOST}}/user/15"
+						"url": {
+							"raw": "{{HOST}}/user/15",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"user",
+								"15"
+							]
+						}
 					},
 					"response": []
 				},
@@ -235,22 +365,39 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{ACCESS_TOKEN}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "{{HOST}}/user/3"
+						"url": {
+							"raw": "{{HOST}}/user/3",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"user",
+								"3"
+							]
+						}
 					},
 					"response": []
 				}
 			],
 			"auth": {
 				"type": "bearer",
-				"bearer": {
-					"token": "{{ACCESS_TOKEN}}"
-				}
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{ACCESS_TOKEN}}",
+						"type": "string"
+					}
+				]
 			},
 			"event": [
 				{
@@ -270,6 +417,19 @@
 							""
 						]
 					}
+				}
+			]
+		},
+		{
+			"name": "EmailController",
+			"item": [
+				{
+					"name": "Get Simple Email",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		}
