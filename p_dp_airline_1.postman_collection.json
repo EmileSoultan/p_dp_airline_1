@@ -421,19 +421,305 @@
 			]
 		},
 		{
-			"name": "EmailController",
+			"name": "PassengerController",
 			"item": [
 				{
-					"name": "Get Simple Email",
+					"name": "Get list of passengers with pagination",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/passengers/wPagination?page=1&perPage=2",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"passengers",
+								"wPagination"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "perPage",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find All passengers",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/passengers/",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"passengers",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find passengers by Email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/passengers/email?email=passenger@mail.ru",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"passengers",
+								"email"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "passenger@mail.ru"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get passenger by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/passengers/5",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"passengers",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get passenger by Fullname",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/passengers/fullName/Иванов Иван Иванович ",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"passengers",
+								"fullName",
+								"Иванов Иван Иванович "
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list of Passenger by last name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/passengers/lastName/Иванов",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"passengers",
+								"lastName",
+								"Иванов"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list of Passengers by any name, any format of string.",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/passengers/anyName/Иванов",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"passengers",
+								"anyName",
+								"Иванов"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Passenger by serialNumberPassport",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/passengers/passport/3333 333333",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"passengers",
+								"passport",
+								"3333 333333"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new Passenger",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"@type\": \"passenger\",\r\n        \"id\": 6,\r\n        \"email\": \"test@mail.ru\",\r\n        \"password\": \"123AD#testtest\",\r\n        \"securityQuestion\": \"question\",\r\n        \"answerQuestion\": \"answer\",\r\n        \"roles\": [\r\n            {\r\n                \"id\": 2,\r\n                \"name\": \"ROLE_PASSENGER\"\r\n            }\r\n        ],\r\n        \"firstName\": \"TEST\",\r\n        \"lastName\": \"Testovna\",\r\n        \"birthDate\": \"1986-03-30\",\r\n        \"phoneNumber\": \"79333333323\",\r\n        \"passport\": {\r\n            \"middleName\": \"Сидорова\",\r\n            \"gender\": \"female\",\r\n            \"serialNumberPassport\": \"3333 123213\",\r\n            \"passportIssuingDate\": \"2006-03-30\",\r\n            \"passportIssuingCountry\": \"Россия\"\r\n        }\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/passengers",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"passengers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Passenger",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"@type\": \"passenger\",\r\n        \"id\": 5,\r\n        \"email\": \"ivanovvvv@mail.ru\",\r\n        \"password\": \"$2a$10$Im4zfF/3IweHa8so7YIpOu3KjTiEmHPO7V51RidAq5gNs6.4b.FfK\",\r\n        \"securityQuestion\": \"answerQuestion\",\r\n        \"answerQuestion\": \"answerQuestion\",\r\n        \"roles\": [\r\n            {\r\n                \"id\": 2,\r\n                \"name\": \"ROLE_PASSENGER\"\r\n            }\r\n        ],\r\n        \"firstName\": \"Иван\",\r\n        \"lastName\": \"Иванов\",\r\n        \"birthDate\": \"1986-02-22\",\r\n        \"phoneNumber\": \"79222222222\",\r\n        \"passport\": {\r\n            \"middleName\": \"Иванович\",\r\n            \"gender\": \"male\",\r\n            \"serialNumberPassport\": \"2222 222222\",\r\n            \"passportIssuingDate\": \"2006-02-22\",\r\n            \"passportIssuingCountry\": \"Россия\"\r\n        }\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/passengers/5",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"passengers",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Passenger by \"id\"",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/passengers/1000",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"passengers",
+								"1000"
+							]
+						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "login to get token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin@mail.ru\",\r\n    \"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLnJ1IiwiZXhwIjoxNjc1NDAxMTk1LCJyb2xlcyI6W3siaWQiOjEsIm5hbWUiOiJST0xFX0FETUlOIn1dfQ.TnFSi8Or2EWgAooSE5W7_rVL_H_6Rstk4pYLuuZfP0Bhq1F0JVuvX0FqrgP_vrltfBKcAve--9rm8WjezGIEOQ",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
