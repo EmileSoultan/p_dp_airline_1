@@ -443,22 +443,82 @@
 									"language": "json"
 								}
 							}
+						},
+						"url": {
+							"raw": "{{HOST}}/search",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"search"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
-					"name" : "get search by id",
+					"name": "get search by id",
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{ACCESS_TOKEN}}"
-							}
+							"bearer": [
+								{
+									"key": "undefined",
+									"type": "any"
+								}
+							]
 						},
-						"url" : "{{HOST}}/search/{{id}}",
-						"method" : "GET",
-						"header" : []
-					}
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/search/{{id}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"search",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TicketController",
+			"item": [
+				{
+					"name": "Create new Ticket",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Ticket by ticketNumber",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Ticket by ID",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Ticket by ID",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},
