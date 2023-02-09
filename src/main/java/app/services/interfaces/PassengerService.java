@@ -1,6 +1,8 @@
 package app.services.interfaces;
 
 import app.entities.user.Passenger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -9,7 +11,7 @@ public interface PassengerService {
 
     Passenger update(Long id, Passenger passenger);
 
-    List<Passenger> findAll();
+    Page<Passenger> findAll(Pageable pageable);
 
     Passenger findById(Long id);
 
@@ -24,5 +26,4 @@ public interface PassengerService {
     List<Passenger> findByAnyName(String name);
 
     void deleteById(Long id);
-
 }

@@ -2,9 +2,15 @@ package app.controllers;
 
 import app.entities.user.User;
 import app.services.interfaces.UserService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,13 +45,14 @@ public class UserRestController {
             @ApiResponse(code = 200, message = "users found"),
             @ApiResponse(code = 204, message = "users not found")
     })
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<User>> getAllUsers(@PageableDefault(sort = {"id"})  Pageable pageable) {
         log.info("getAllUsers: get all users");
-        var users = userService.getAllUsers();
+        var users = userService.getAllUsers(pageable);
         return users.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(users, HttpStatus.OK);
+                : new ResponseEntity<>(users.getContent(), HttpStatus.OK);
     }
+
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Get User by \"id\"")

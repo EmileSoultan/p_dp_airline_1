@@ -5,11 +5,12 @@ import app.repositories.PassengerRepository;
 import app.repositories.RoleRepository;
 import app.services.interfaces.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,10 +58,8 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public List<Passenger> findAll() {
-        List<Passenger> passengerList = new ArrayList<>();
-        passengerRepository.findAll().forEach(n -> passengerList.add(n));
-        return passengerList;
+    public Page<Passenger> findAll(Pageable pageable) {
+        return passengerRepository.findAll(pageable);
     }
 
     @Override
@@ -163,6 +162,5 @@ public class PassengerServiceImpl implements PassengerService {
         }
         return false;
     }
-
 
 }
