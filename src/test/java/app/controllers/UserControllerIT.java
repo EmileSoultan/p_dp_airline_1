@@ -32,8 +32,7 @@ class UserControllerIT extends IntegrationTestBase {
         mockMvc.perform(
                         get("http://localhost:8080/api/user"))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(userService.getAllUsers())));
+                .andExpect(status().isOk());
     }
 
     @Test

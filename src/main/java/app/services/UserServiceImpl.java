@@ -3,12 +3,12 @@ package app.services;
 import app.entities.user.User;
 import app.repositories.UserRepository;
 import app.services.interfaces.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,10 +49,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> getAllUsers() {
-        var users = userRepository.findAll();
-        users.sort(Comparator.comparingLong(User::getId));
-        return users;
+    public Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Transactional(readOnly = true)

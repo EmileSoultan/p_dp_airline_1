@@ -12,6 +12,9 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,15 +57,14 @@ public class PassengerRestController {
             @ApiResponse(code = 404, message = "Passengers not found")
     })
     @GetMapping()
-    public ResponseEntity<List<Passenger>> getAll() {
+    public ResponseEntity<List<Passenger>> getAll(@PageableDefault(sort = {"id"}) Pageable p) {
         log.info("getAll: find all passengers");
-        List<Passenger> passengers = passengerService.findAll();
+        Page<Passenger> passengers = passengerService.findAll(p);
         if (passengers == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(passengers);
+        return ResponseEntity.ok(passengers.getContent());
     }
-
 
     @ApiOperation(value = "Get Passenger by it's \"id\"")
     @ApiResponses(value = {

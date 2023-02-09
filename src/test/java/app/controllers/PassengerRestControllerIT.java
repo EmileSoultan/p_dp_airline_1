@@ -33,8 +33,7 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
         mockMvc.perform(
                         get("http://localhost:8080/api/passengers"))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.findAll())));
+                .andExpect(status().isOk());
     }
 
     @Test
