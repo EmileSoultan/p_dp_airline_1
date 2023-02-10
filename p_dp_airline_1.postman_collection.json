@@ -421,23 +421,26 @@
 			]
 		},
 		{
-			"name" : "SearchRestController",
-			"item" : [
+			"name": "DestinationRestController",
+			"item": [
 				{
-					"name": "save search",
+					"name": "Create new Destination",
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{ACCESS_TOKEN}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
 						},
-						"url" : "{{HOST}}/search",
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"from\" : {\n        \"airportCode\" : \"AAQ\",\n        \"airportName\" : \"Sheremetyevo\",\n        \"cityName\" : \"Moscow\",\n        \"timezone\" : \"GMT+3\",\n        \"countryName\" : \"Russian\"\n    },\n    \"to\" : {\n        \"airportCode\" : \"KLD\",\n        \"airportName\" : \"AstanaAir\",\n        \"cityName\" : \"Astana\",\n        \"timezone\" : \"GMT+6\",\n        \"countryName\" : \"Kazakhstan\"\n    },\n    \"departureDate\" : \"2023-01-31\",\n    \"returnDate\" : \"2023-02-31\",\n    \"numberOfPassengers\" : \"100\"\n}",
+							"raw": "{\r\n        \"airportCode\": \"AER\",\r\n        \"airportName\": \"Мигалово\",\r\n        \"cityName\": \"Тверь\",\r\n        \"timezone\": \"GMT +3\",\r\n        \"countryName\": \"Россия\"\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -445,78 +448,145 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}/search",
+							"raw": "{{HOST}}/destination/",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"search"
+								"destination",
+								""
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "get search by id",
+					"name": "Get list of all Destination",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
-									"key": "undefined",
-									"type": "any"
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
 								}
 							]
 						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/search/{{id}}",
+							"raw": "{{HOST}}/destination",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"search",
-								"{{id}}"
+								"destination"
 							]
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "TicketController",
-			"item": [
+				},
 				{
-					"name": "Create new Ticket",
+					"name": "Gets list of Destination by cityName or countryName",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/destination/filter?cityName=Петропавловск",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"destination",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "cityName",
+									"value": "Петропавловск"
+								}
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get Ticket by ticketNumber",
+					"name": "Gets list of Destination by cityName or countryName Copy",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/destination/filter?countryName=Россия",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"destination",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "countryName",
+									"value": "Россия"
+								}
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "Edit Ticket by ID",
+					"name": "Edit Destination by id",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": 2,\r\n        \"airportCode\": \"PKC\",\r\n        \"airportName\": \"Елизово\",\r\n        \"cityName\": \"Петропавловск\",\r\n        \"timezone\": \"Россия\",\r\n        \"countryName\": \"GMT +3\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/destination/2",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"destination",
+								"2"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "Delete Ticket by ID",
+					"name": "Delete destination by \"id\\\"",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/destination/1008",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"destination",
+								"1008"
+							]
+						}
 					},
 					"response": []
 				}

@@ -12,7 +12,7 @@ public interface DestinationService {
 
     void saveDestination(Destination destination);
 
-    void updateDestination(Destination destination);
+    void updateDestination(Long id, Destination destination);
 
     void deleteDestinationById(Long id);
 
