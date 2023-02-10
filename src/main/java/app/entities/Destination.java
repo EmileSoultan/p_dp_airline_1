@@ -44,7 +44,7 @@ public class Destination {
 
     @Column(name = "city_name")
     @NotBlank
-    @Size(min = 3, max = 15, message = "City name must be between 3 and 15 characters")
+    @Size(min = 3, max = 30, message = "City name must be between 3 and 30 characters")
     private String cityName;
 
     @Column(name = "timezone")

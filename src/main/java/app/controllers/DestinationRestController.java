@@ -86,17 +86,21 @@ public class DestinationRestController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @ApiOperation(value = "Edit Destination")
+    @ApiOperation(value = "Edit Destination by id")
     @ApiResponse(code = 200, message = "Destination has been updated")
     @PatchMapping("/{id}")
     public ResponseEntity<Destination> updateDestination(
+            @ApiParam(
+                    name = "id",
+                    value = "Destination.id"
+            ) @PathVariable Long id,
             @ApiParam(
                     name = "destination",
                     value = "Destination model"
             )
             @RequestBody Destination destination) {
-        log.info("updateDestination: update of current destination.");
-        destinationService.updateDestination(destination);
+        log.info("updateDestination: update of current destination WITH id={}", id);
+        destinationService.updateDestination(id, destination);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
