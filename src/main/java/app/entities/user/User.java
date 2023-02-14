@@ -70,7 +70,7 @@ public abstract class User {
     @Column (name = "answer_question")
     private String answerQuestion;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Role> roles;
 }

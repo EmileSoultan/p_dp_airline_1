@@ -2,7 +2,9 @@ package app.services;
 
 import app.entities.user.User;
 import app.repositories.UserRepository;
+import app.services.interfaces.RoleService;
 import app.services.interfaces.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,19 +15,16 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
+    private final RoleServiceImpl roleService;
     private final PasswordEncoder encoder;
-
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder encoder) {
-        this.userRepository = userRepository;
-        this.encoder = encoder;
-    }
     @Override
     public void saveUser(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
+        user.setRoles(roleService.saveRolesToUser(user));
         if (user.getAnswerQuestion() != null) {
             user.setAnswerQuestion(encoder.encode(user.getAnswerQuestion()));
         }
@@ -42,7 +41,7 @@ public class UserServiceImpl implements UserService {
                 .equals(userRepository.findById(id).orElse(null).getAnswerQuestion())) {
             editUser.setAnswerQuestion(encoder.encode(user.getAnswerQuestion()));
         }
-        editUser.setRoles(user.getRoles());
+        editUser.setRoles(roleService.saveRolesToUser(user));
         editUser.setEmail(user.getEmail());
         userRepository.saveAndFlush(editUser);
     }
