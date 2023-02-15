@@ -6,12 +6,13 @@ import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Api(tags = "Booking REST")
 @Tag(name = "Booking REST", description = "API для операций с бронированием")
@@ -45,9 +46,9 @@ public class BookingRestController {
 
     @GetMapping
     @ApiOperation(value = "Get list of all Booking")
-    public ResponseEntity<List<Booking>> getListOfAllBookings() {
+    public ResponseEntity<Page<Booking>> getListOfAllBookings(Pageable pageable) {
         log.info("getListOfAllBookings: search all bookings");
-        List<Booking> bookings = bookingService.findAll();
+        Page<Booking> bookings = bookingService.findAll(pageable);
         if (bookings == null) {
             log.info("getListOfAllBookings: list of bookings is null");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

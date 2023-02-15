@@ -1,13 +1,14 @@
 package app.services;
 
 import app.entities.Booking;
-import app.entities.Seat;
 import app.repositories.BookingRepository;
 import app.services.interfaces.BookingService;
 import app.services.interfaces.CategoryService;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,8 +42,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> findAll() {
-        return bookingRepository.findAll();
+    public Page<Booking> findAll(Pageable pageable) {
+        return bookingRepository.findAll(pageable);
     }
 
     @Override
