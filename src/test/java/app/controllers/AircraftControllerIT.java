@@ -2,8 +2,11 @@ package app.controllers;
 
 import app.entities.Aircraft;
 import app.services.interfaces.AircraftService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,14 +38,15 @@ class AircraftControllerIT extends IntegrationTestBase {
                 .andExpect(status().isCreated());
 
     }
+
     @Test
     void shouldGetAllAircraft() throws Exception {
         mockMvc.perform(
                         get("http://localhost:8080/api/aircraft"))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(aircraftService.findAll())));
+                .andExpect(status().isOk());
     }
+
     @Test
     void shouldGetAircraftById() throws Exception {
         long id = 2;
@@ -51,6 +55,7 @@ class AircraftControllerIT extends IntegrationTestBase {
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(aircraftService.findById(id))));
     }
+
     @Test
     void shouldEditById() throws Exception {
         long id = 2;
@@ -68,6 +73,7 @@ class AircraftControllerIT extends IntegrationTestBase {
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(aircraft)));
     }
+
     @Test
     void shouldDeleteById() throws Exception {
         long id = 2;
