@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,9 +37,12 @@ public class AircraftController {
 
     @GetMapping()
     @ApiOperation(value = "Get list of all Aircraft")
-    public ResponseEntity<List<Aircraft>> getAllAircraft() {
-        log.info("getAllAircraft: all aircraft returned");
-        return ResponseEntity.ok(aircraftService.findAll());
+    public ResponseEntity<List<Aircraft>> getAllAircraft(Pageable pageable) {
+        log.info("getAllAircraft: get all aircrafts");
+        var aircrafts = aircraftService.findAll(pageable);
+        return aircrafts.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(aircrafts.getContent(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

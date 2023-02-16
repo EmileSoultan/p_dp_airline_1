@@ -6,6 +6,8 @@ import app.repositories.AircraftRepository;
 import app.repositories.FlightRepository;
 import app.services.interfaces.AircraftService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,8 +33,8 @@ public class AircraftServiceImpl implements AircraftService {
         return aircraftRepository.save(aircraft);
     }
 
-    public List<Aircraft> findAll() {
-        return aircraftRepository.findAll();
+    public Page<Aircraft> findAll(Pageable pageable) {
+        return aircraftRepository.findAll(pageable);
     }
 
     public Aircraft findById(Long id) {
@@ -45,7 +47,7 @@ public class AircraftServiceImpl implements AircraftService {
 
     @Transactional
     public void delete(Long id) {
-        List <Flight> flightSet = flightRepository.findByAircraft_Id(id);
+        List<Flight> flightSet = flightRepository.findByAircraft_Id(id);
         if (flightSet != null) {
             flightSet.forEach(flight -> flight.setAircraft(null));
         }
