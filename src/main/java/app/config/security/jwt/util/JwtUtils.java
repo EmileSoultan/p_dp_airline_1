@@ -1,7 +1,7 @@
 package app.config.security.jwt.util;
 
 import app.config.security.jwt.domain.JwtAuthentication;
-import app.entities.user.Role;
+import app.entities.account.Role;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

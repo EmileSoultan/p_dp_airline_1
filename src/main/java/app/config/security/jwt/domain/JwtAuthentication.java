@@ -1,6 +1,6 @@
 package app.config.security.jwt.domain;
 
-import app.entities.user.Role;
+import app.entities.account.Role;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.Authentication;

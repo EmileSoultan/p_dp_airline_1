@@ -1,6 +1,6 @@
 package app.controllers;
 
-import app.entities.user.Passenger;
+import app.entities.account.Passenger;
 import app.services.interfaces.PassengerService;
 import app.services.interfaces.RoleService;
 import org.junit.jupiter.api.Test;

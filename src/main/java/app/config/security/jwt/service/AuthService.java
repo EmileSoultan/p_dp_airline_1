@@ -2,8 +2,8 @@ package app.config.security.jwt.service;
 
 import app.config.security.jwt.domain.JwtRequest;
 import app.config.security.jwt.domain.JwtResponse;
-import app.entities.user.User;
-import app.services.interfaces.UserService;
+import app.entities.account.Account;
+import app.services.interfaces.AccountService;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -21,13 +21,13 @@ public class AuthService {
 
     private static final String USER_NOT_FOUND_MESSAGE = "Пользователь не найден";
 
-    private final UserService userService;
+    private final AccountService accountService;
     private final Map<String, String> refreshStorage = new HashMap<>();
     private final JwtProvider jwtProvider;
     private final PasswordEncoder encoder;
 
     public JwtResponse login(@NonNull JwtRequest authRequest) throws AuthException {
-        final User user = Optional.of(userService.getUserByEmail(authRequest.getUsername()))
+        final Account user = Optional.of(accountService.getAccountByEmail(authRequest.getUsername()))
                 .orElseThrow(() -> new AuthException(USER_NOT_FOUND_MESSAGE));
         if (encoder.matches(authRequest.getPassword(), user.getPassword())) {
             final String accessToken = jwtProvider.generateAccessToken(user);
@@ -45,7 +45,7 @@ public class AuthService {
             final String login = claims.getSubject();
             final String saveRefreshToken = refreshStorage.get(login);
             if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
-                final User user = Optional.of(userService.getUserByEmail(login))
+                final Account user = Optional.of(accountService.getAccountByEmail(login))
                         .orElseThrow(() -> new AuthException(USER_NOT_FOUND_MESSAGE));
                 final String accessToken = jwtProvider.generateAccessToken(user);
                 return new JwtResponse(accessToken, null);
@@ -60,7 +60,7 @@ public class AuthService {
             final String login = claims.getSubject();
             final String saveRefreshToken = refreshStorage.get(login);
             if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
-                final User user = Optional.of(userService.getUserByEmail(login))
+                final Account user = Optional.of(accountService.getAccountByEmail(login))
                         .orElseThrow(() -> new AuthException(USER_NOT_FOUND_MESSAGE));
                 final String accessToken = jwtProvider.generateAccessToken(user);
                 final String newRefreshToken = jwtProvider.generateRefreshToken(user);
