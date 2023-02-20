@@ -1,6 +1,7 @@
-package app.entities;
+package app.entities.account;
 
 import app.dto.account.AdminDTO;
+import app.entities.EntityTest;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -109,6 +110,34 @@ public class  AdminTest extends EntityTest {
         AdminDTO testAdmin;
         JSONObject adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("password", "ADMIN@ADMIN");
+
+        try {
+            testAdmin = mapper.readValue(adminJsonObject.toString(), AdminDTO.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Assertions.assertFalse(isSetWithViolationIsEmpty(validator, testAdmin));
+    }
+
+    @Test
+    public void passwordWithoutNumberShouldNotValidate() {
+        AdminDTO testAdmin;
+        JSONObject adminJsonObject = initValidableJSONObject();
+        adminJsonObject.replace("password", "@Password");
+
+        try {
+            testAdmin = mapper.readValue(adminJsonObject.toString(), AdminDTO.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Assertions.assertFalse(isSetWithViolationIsEmpty(validator, testAdmin));
+    }
+
+    @Test
+    public void passwordWithoutSpecialCharShouldNotValidate() {
+        AdminDTO testAdmin;
+        JSONObject adminJsonObject = initValidableJSONObject();
+        adminJsonObject.replace("password", "1Password");
 
         try {
             testAdmin = mapper.readValue(adminJsonObject.toString(), AdminDTO.class);
