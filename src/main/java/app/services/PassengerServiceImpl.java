@@ -1,6 +1,6 @@
 package app.services;
 
-import app.entities.user.Passenger;
+import app.entities.account.Passenger;
 import app.repositories.PassengerRepository;
 import app.repositories.RoleRepository;
 import app.services.interfaces.PassengerService;

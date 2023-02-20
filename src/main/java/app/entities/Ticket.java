@@ -1,6 +1,6 @@
 package app.entities;
 
-import app.entities.user.Passenger;
+import app.entities.account.Passenger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;

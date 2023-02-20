@@ -1,16 +1,12 @@
 package app.entities;
 
-import app.entities.user.Passenger;
-import net.minidev.json.JSONObject;
+import app.entities.account.Passenger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import java.util.Set;
 
 public class TicketTest extends EntityTest {
 

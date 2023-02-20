@@ -1,6 +1,6 @@
 package app.services.interfaces;
 
-import app.entities.user.Passenger;
+import app.entities.account.Passenger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

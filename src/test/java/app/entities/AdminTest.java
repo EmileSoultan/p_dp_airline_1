@@ -1,6 +1,6 @@
 package app.entities;
 
-import app.entities.user.Admin;
+import app.dto.account.AdminDTO;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +11,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import java.io.IOException;
 
-public class AdminTest extends EntityTest {
+public class  AdminTest extends EntityTest {
     private Validator validator;
     private ObjectMapper mapper;
 
@@ -37,11 +37,11 @@ public class AdminTest extends EntityTest {
 
     @Test
     public void validAdminShouldValidate() {
-        Admin testAdmin;
+        AdminDTO testAdmin;
         JSONObject adminJsonObject = initValidableJSONObject();
 
         try {
-            testAdmin = mapper.readValue(adminJsonObject.toString(), Admin.class);
+            testAdmin = mapper.readValue(adminJsonObject.toString(), AdminDTO.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -50,12 +50,12 @@ public class AdminTest extends EntityTest {
 
     @Test
     public void blankEmailShouldNotValidate() {
-        Admin testAdmin;
+        AdminDTO testAdmin;
         JSONObject adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("email", "");
 
         try {
-            testAdmin = mapper.readValue(adminJsonObject.toString(), Admin.class);
+            testAdmin = mapper.readValue(adminJsonObject.toString(), AdminDTO.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -64,12 +64,12 @@ public class AdminTest extends EntityTest {
 
     @Test
     public void blankPasswordShouldNotValidate() {
-        Admin testAdmin;
+        AdminDTO testAdmin;
         JSONObject adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("password", "");
 
         try {
-            testAdmin = mapper.readValue(adminJsonObject.toString(), Admin.class);
+            testAdmin = mapper.readValue(adminJsonObject.toString(), AdminDTO.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -78,12 +78,12 @@ public class AdminTest extends EntityTest {
 
     @Test
     public void passwordUnder8CharShouldNotValidate() {
-        Admin testAdmin;
+        AdminDTO testAdmin;
         JSONObject adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("password", "1Admin@");
 
         try {
-            testAdmin = mapper.readValue(adminJsonObject.toString(), Admin.class);
+            testAdmin = mapper.readValue(adminJsonObject.toString(), AdminDTO.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -92,12 +92,12 @@ public class AdminTest extends EntityTest {
 
     @Test
     public void passwordWithoutUpperCaseCharShouldNotValidate() {
-        Admin testAdmin;
+        AdminDTO testAdmin;
         JSONObject adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("password", "1admin@admin");
 
         try {
-            testAdmin = mapper.readValue(adminJsonObject.toString(), Admin.class);
+            testAdmin = mapper.readValue(adminJsonObject.toString(), AdminDTO.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -106,12 +106,12 @@ public class AdminTest extends EntityTest {
 
     @Test
     public void passwordWithoutLowerCharShouldNotValidate() {
-        Admin testAdmin;
+        AdminDTO testAdmin;
         JSONObject adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("password", "ADMIN@ADMIN");
 
         try {
-            testAdmin = mapper.readValue(adminJsonObject.toString(), Admin.class);
+            testAdmin = mapper.readValue(adminJsonObject.toString(), AdminDTO.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -120,12 +120,12 @@ public class AdminTest extends EntityTest {
 
     @Test
     public void blankQuestionShouldNotValidate() {
-        Admin testAdmin;
+        AdminDTO testAdmin;
         JSONObject adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("securityQuestion", "");
 
         try {
-            testAdmin = mapper.readValue(adminJsonObject.toString(), Admin.class);
+            testAdmin = mapper.readValue(adminJsonObject.toString(), AdminDTO.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -134,12 +134,12 @@ public class AdminTest extends EntityTest {
 
     @Test
     public void blankAnswerShouldNotValidate() {
-        Admin testAdmin;
+        AdminDTO testAdmin;
         JSONObject adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("answerQuestion", "");
 
         try {
-            testAdmin = mapper.readValue(adminJsonObject.toString(), Admin.class);
+            testAdmin = mapper.readValue(adminJsonObject.toString(), AdminDTO.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

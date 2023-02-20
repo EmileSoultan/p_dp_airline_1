@@ -1,6 +1,6 @@
 package app.config.security.jwt.service;
 
-import app.entities.user.User;
+import app.entities.account.Account;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -42,7 +42,7 @@ public class JwtProvider {
         this.refreshExpirationRefreshToken = refreshExpirationRefreshToken;
     }
 
-    public String generateAccessToken(@NonNull User user) {
+    public String generateAccessToken(@NonNull Account user) {
         final LocalDateTime now = LocalDateTime.now();
         final Instant accessExpirationInstant = now.plusMinutes(refreshExpirationAccessToken).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
@@ -54,7 +54,7 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String generateRefreshToken(@NonNull User user) {
+    public String generateRefreshToken(@NonNull Account user) {
         final LocalDateTime now = LocalDateTime.now();
         final Instant refreshExpirationInstant = now.plusDays(refreshExpirationRefreshToken).atZone(ZoneId.systemDefault()).toInstant();
         final Date refreshExpiration = Date.from(refreshExpirationInstant);

@@ -1,7 +1,7 @@
 package app.services;
 
-import app.repositories.UserRepository;
-import app.entities.user.UserDetailsImpl;
+import app.repositories.AccountRepository;
+import app.entities.account.AccountDetailsImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserRepository repository;
+    private final AccountRepository repository;
 
-    public UserDetailsServiceImpl(UserRepository repository) {
+    public UserDetailsServiceImpl(AccountRepository repository) {
         this.repository = repository;
     }
 
@@ -20,6 +20,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return new UserDetailsImpl(repository.getUserByEmail(s));
+        return new AccountDetailsImpl(repository.getAccountByEmail(s));
     }
 }

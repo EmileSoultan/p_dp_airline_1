@@ -1,7 +1,7 @@
 package app.services;
 
 import app.entities.Booking;
-import app.entities.user.Passenger;
+import app.entities.account.Passenger;
 import app.services.interfaces.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
