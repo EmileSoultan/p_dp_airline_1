@@ -11,14 +11,12 @@ services:
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
-      - SPRING_DATASOURCE_USERNAME=compose-postgres
-      - SPRING_DATASOURCE_PASSWORD=compose-postgres
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/airline_db
 
   db:
     image: 'postgres:12.12'
     container_name: db
     environment:
-      - POSTGRES_USER=compose-postgres
-      - POSTGRES_PASSWORD=compose-postgres
+      - POSTGRES_DB=airline_db
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
