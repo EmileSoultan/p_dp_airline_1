@@ -68,4 +68,5 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
             "and cast(f.departureDateTime as date) = ?2\n" +
             "and cast(date_trunc('second',f.departureDateTime) as time) = ?3")
     Optional<Flight> getFlightByCodeAndDepartureDateAndTime (String flightCode, Date departureDate, Time departureTime);
+    void deleteById(Long id);
 }

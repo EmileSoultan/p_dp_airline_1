@@ -50,7 +50,7 @@ public class FlightServiceImpl implements FlightService {
         }
         Set<FlightSeat> flightSeatSet = flightSeatRepository.findFlightSeatByFlight(flight);
 
-        if(flightSeatSet != null) {
+        if (flightSeatSet != null) {
             flightSeatSet = flightSeatSet.stream()
                     .filter(flightSeat -> !flightSeat.getIsRegistered())
                     .filter(flightSeat -> !flightSeat.getIsSold())
@@ -104,6 +104,7 @@ public class FlightServiceImpl implements FlightService {
     public List<Flight> getListDirectFlightsByFromAndToAndDepartureDate(Airport airportCodeFrom, Airport airportCodeTo, Date departureDate) {
         return flightRepository.getListDirectFlightsByFromAndToAndDepartureDate(airportCodeFrom, airportCodeTo, departureDate);
     }
+
     @Override
     @Transactional(readOnly = true)
     public List<Flight> getListNonDirectFlightsByFromAndToAndDepartureDate(int airportIdFrom, int airportIdTo, Date departureDate) {
@@ -116,7 +117,7 @@ public class FlightServiceImpl implements FlightService {
         var flight = flightRepository.findById(id);
         if (flight.isPresent()) {
             if (flight.get().getDepartureDateTime().isEqual(LocalDateTime.parse(start))
-            && flight.get().getArrivalDateTime().isEqual(LocalDateTime.parse(finish))) {
+                    && flight.get().getArrivalDateTime().isEqual(LocalDateTime.parse(finish))) {
                 return flight.get();
             }
         }
@@ -135,7 +136,7 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public Flight update(Long id ,Flight updated) {
+    public Flight update(Long id, Flight updated) {
         updated.setId(id);
         if (updated.getAircraft() == null) {
             updated.setAircraft(getById(id).getAircraft());
@@ -153,5 +154,10 @@ public class FlightServiceImpl implements FlightService {
             updated.setTo(destinationRepository.findDestinationByAirportCode(updated.getTo().getAirportCode()).orElse(null));
         }
         return flightRepository.saveAndFlush(updated);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        flightRepository.deleteById(id);
     }
 }

@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.dto.FlightDTO;
 import app.entities.Flight;
 import app.entities.FlightSeat;
 import app.enums.FlightStatus;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static app.dto.FlightDTO.convertToFlightEntity;
 
 @Api(tags = "Flight REST")
 @Tag(name = "Flight REST", description = "API для операций с рейсами")
@@ -34,7 +37,7 @@ public class FlightRestController {
             @ApiResponse(code = 200, message = "flight found"),
             @ApiResponse(code = 404, message = "flight not found")
     })
-    public ResponseEntity<Flight> getFlightById(
+    public ResponseEntity<FlightDTO> getFlightById(
             @ApiParam(
                     name = "id",
                     value = "Flight.id"
@@ -45,7 +48,7 @@ public class FlightRestController {
         var flight = flightService.getById(id);
 
         return flight != null
-                ? new ResponseEntity<>(flight, HttpStatus.OK)
+                ? new ResponseEntity<>(new FlightDTO(flight), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -75,13 +78,13 @@ public class FlightRestController {
             @ApiResponse(code = 200, message = "one or more flights found"),
             @ApiResponse(code = 204, message = "No one flight found")
     })
-    public ResponseEntity<List<Flight>> getFlightsByFromAndToAndDates(
+    public ResponseEntity<List<FlightDTO>> getFlightsByFromAndToAndDates(
             @ApiParam(name = "from", value = "Departure cityName", example = "Москва")
             @RequestParam(name = "from", required = false) String from,
             @ApiParam(name = "to", value = "Arrival cityName", example = "Омск")
             @RequestParam(name = "to", required = false) String to,
             @ApiParam(value = "Departure Data-Time", example = "2022-12-10T15:56:49")
-            @RequestParam(name = "date_start", required = false)  String start,
+            @RequestParam(name = "date_start", required = false) String start,
             @ApiParam(value = "Arrival Data-Time", example = "2022-12-10T15:57:49")
             @RequestParam(name = "date_finish", required = false) String finish) {
 
@@ -90,7 +93,8 @@ public class FlightRestController {
 
         return flightsList.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(flightsList, HttpStatus.OK);
+                : new ResponseEntity<>(flightsList.stream().map(FlightDTO::new)
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping("/filter/dates")
@@ -99,7 +103,7 @@ public class FlightRestController {
             @ApiResponse(code = 200, message = "flight found"),
             @ApiResponse(code = 404, message = "flight not found")
     })
-    public ResponseEntity<Flight> getFlightByIdAndDates(
+    public ResponseEntity<FlightDTO> getFlightByIdAndDates(
             @ApiParam(
                     name = "id",
                     value = "Flight.id"
@@ -109,7 +113,7 @@ public class FlightRestController {
                     value = "Departure Data-Time",
                     example = "2022-12-10T15:56:49"
             )
-            @RequestParam (name = "date_start") String start,
+            @RequestParam(name = "date_start") String start,
             @ApiParam(
                     value = "Arrival Data-Time",
                     example = "2022-12-10T15:57:49"
@@ -120,7 +124,7 @@ public class FlightRestController {
         var flight = flightService.getFlightByIdAndDates(id, start, finish);
 
         return flight != null
-                ? new ResponseEntity<>(flight, HttpStatus.OK)
+                ? new ResponseEntity<>(new FlightDTO(flight), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -129,7 +133,8 @@ public class FlightRestController {
     @ApiResponse(code = 200, message = "Flight statuses found")
     public ResponseEntity<FlightStatus[]> getAllFlightStatus() {
         log.info("methodName: getAllFlightStatus - get all flight statuses");
-        return new ResponseEntity<>(flightService.getAllFlights().stream().map(Flight::getFlightStatus)
+        return new ResponseEntity<>(flightService.getAllFlights().stream().map(FlightDTO::new)
+                .map(FlightDTO::getFlightStatus)
                 .distinct().collect(Collectors.toList()).toArray(FlightStatus[]::new), HttpStatus.OK);
     }
 
@@ -141,12 +146,13 @@ public class FlightRestController {
                     name = "flight",
                     value = "Flight model"
             )
-            @RequestBody Flight flight) {
+            @RequestBody FlightDTO flightDTO) {
 
         log.info("methodName: createFlight - create new flight");
-        flightService.save(flight);
+        flightService.save(convertToFlightEntity(flightDTO));
 
-        return new ResponseEntity<>(flightService.getFlightByCode(flight.getCode()), HttpStatus.CREATED);
+        return new ResponseEntity<>(flightService.getFlightByCode(convertToFlightEntity(flightDTO).getCode()),
+                HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")
@@ -165,14 +171,36 @@ public class FlightRestController {
                     name = "flight",
                     value = "Flight model"
             )
-            @RequestBody Flight updated) {
+            @RequestBody FlightDTO updated) {
         var flight = flightService.getById(id);
         if (flight == null) {
             log.error("updateFlight: flight with id={} doesn't exist.", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         log.info("updateFlight: flight with id = {} updated", id);
-        flightService.update(id, updated);
-        return new ResponseEntity<>(updated, HttpStatus.OK);
+        flightService.update(id, convertToFlightEntity(updated));
+        return new ResponseEntity<>(convertToFlightEntity(updated), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete Flight by \"id\"")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "flight has been deleted"),
+            @ApiResponse(code = 404, message = "flight not found")
+    })
+    public ResponseEntity<HttpStatus> deleteBookingById(
+            @ApiParam(
+                    name = "id",
+                    value = "Booking.id"
+            )
+            @PathVariable("id") long id) {
+        log.info("deleteFlightById: deleting a flight with id = {}", id);
+        try {
+            flightService.deleteById(id);
+        } catch (Exception e) {
+            log.error("deleteFlightById: error of deleting - flight with id = {} not found", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

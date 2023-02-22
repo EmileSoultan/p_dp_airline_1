@@ -21,8 +21,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
@@ -42,9 +40,7 @@ public class Flight {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
-    @NotBlank(message = "Code cannot be empty")
     @Column(name = "code")
-    @Size(min = 2, max = 15, message = "Length of Flight code should be between 2 and 15 characters")
     private String code;
 
     @ManyToOne
