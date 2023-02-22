@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.dto.FlightDTO;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +12,7 @@ import javax.validation.Validator;
 import java.io.IOException;
 
 
-public class FlightTest extends EntityTest {
+class FlightTest extends EntityTest {
     private Validator validator;
     private ObjectMapper mapper;
 
@@ -29,13 +30,13 @@ public class FlightTest extends EntityTest {
     }
 
     @Test
-    public void emptyFlightCodeFieldShouldNotValidate() {
-        Flight testFlight;
+    void emptyFlightCodeFieldShouldNotValidate() {
+        FlightDTO testFlight;
         JSONObject flightJSON = initJSONObject();
         flightJSON.replace("code", "");
         try {
             testFlight = mapper.readValue(flightJSON.toString(),
-                    Flight.class);
+                    FlightDTO.class);
         } catch (IOException e) {
             throw new RuntimeException("Exception during mapping from JSON");
         }
@@ -43,13 +44,13 @@ public class FlightTest extends EntityTest {
     }
 
     @Test
-    public void lessThan2CharCodeSizeShouldNotValidate() {
-        Flight testFlight;
+    void lessThan2CharCodeSizeShouldNotValidate() {
+        FlightDTO testFlight;
         JSONObject flightJSON = initJSONObject();
         flightJSON.replace("code", "1");
         try {
             testFlight = mapper.readValue(flightJSON.toString(),
-                    Flight.class);
+                    FlightDTO.class);
         } catch (IOException e) {
             throw new RuntimeException("Exception during mapping from JSON");
         }
@@ -57,12 +58,12 @@ public class FlightTest extends EntityTest {
     }
 
     @Test
-    public void between2And15CodeSizeShouldValidate() {
-        Flight testFlight;
+    void between2And15CodeSizeShouldValidate() {
+        FlightDTO testFlight;
         JSONObject flightJSON = initJSONObject();
         try {
             testFlight = mapper.readValue(flightJSON.toString(),
-                    Flight.class);
+                    FlightDTO.class);
         } catch (IOException e) {
             throw new RuntimeException("Exception during mapping from JSON");
         }
@@ -70,13 +71,13 @@ public class FlightTest extends EntityTest {
     }
 
     @Test
-    public void moreThan15CharCodeSizeShouldNotValidate() {
-        Flight testFlight;
+    void moreThan15CharCodeSizeShouldNotValidate() {
+        FlightDTO testFlight;
         JSONObject flightJSON = initJSONObject();
         flightJSON.replace("code", "123456789101112131415");
         try {
             testFlight = mapper.readValue(flightJSON.toString(),
-                    Flight.class);
+                    FlightDTO.class);
         } catch (IOException e) {
             throw new RuntimeException("Exception during mapping from JSON");
         }
