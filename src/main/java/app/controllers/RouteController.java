@@ -22,22 +22,23 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
-@Api(tags = "Route REST")
-@Tag(name = "Route REST", description = "API для операций с маршрутами полетов")
-@RestController
-@RequestMapping("/api/routes")
+//@Api(tags = "Route REST")
+//@Tag(name = "Route REST", description = "API для операций с маршрутами полетов")
+//@RestController
+//@RequestMapping("/api/routes")
 @Slf4j
+@Deprecated
 public class RouteController {
 
     private final RouteService routeService;
 
-    @Autowired
+//    @Autowired
     public RouteController(RouteService service) {
         this.routeService = service;
     }
 
-    @PostMapping
-    @ApiOperation(value = "Create new Route")
+//    @PostMapping
+//    @ApiOperation(value = "Create new Route")
     public ResponseEntity<Route> addRoute(
             @ApiParam(
                     name = "route",
@@ -48,15 +49,15 @@ public class RouteController {
         return new ResponseEntity<>(routeService.saveRoute(route), HttpStatus.CREATED);
     }
 
-    @GetMapping
-    @ApiOperation(value = "Get list of all Route")
+//    @GetMapping
+//    @ApiOperation(value = "Get list of all Route")
     public ResponseEntity<List<Route>> getAllRoutes() {
         log.info("getAllRoutes : all routes returned");
         return new ResponseEntity<>(routeService.getAllRoutes(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    @ApiOperation(value = "Get Route by \"id\"")
+//    @GetMapping("/{id}")
+//    @ApiOperation(value = "Get Route by \"id\"")
     public ResponseEntity<Route> getRouteById(
             @ApiParam(
                     name = "id",
@@ -71,8 +72,8 @@ public class RouteController {
         return new ResponseEntity<>(routeService.getRouteById(id), HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}")
-    @ApiOperation(value = "Edit Route by \"id\"")
+//    @PatchMapping("/{id}")
+//    @ApiOperation(value = "Edit Route by \"id\"")
     public ResponseEntity<Route> editRoute(
             @ApiParam(
                     name = "id",
@@ -94,8 +95,8 @@ public class RouteController {
         return new ResponseEntity<>(routeService.saveRoute(route), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    @ApiOperation(value = "Delete Route by \"id\"")
+//    @DeleteMapping("/{id}")
+//    @ApiOperation(value = "Delete Route by \"id\"")
     public ResponseEntity<HttpStatus> deleteRoute(
             @ApiParam(
                     name = "id",

@@ -4,6 +4,7 @@ import app.entities.Route;
 
 import java.util.List;
 
+@Deprecated
 public interface RouteService {
 
     Route saveRoute(Route route);
