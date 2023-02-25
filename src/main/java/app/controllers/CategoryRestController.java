@@ -16,26 +16,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Api(tags = "Category REST")
-@Tag(name = "Category REST", description = "API операция с классом перелета(эконом, бизнесс и т.д.)")
+//@Api(tags = "Category REST")
+//@Tag(name = "Category REST", description = "API операция с классом перелета(эконом, бизнесс и т.д.)")
 @Slf4j
-@RestController
-@RequestMapping("/api/categories")
+@Deprecated
+//@RestController
+//@RequestMapping("/api/categories")
 public class CategoryRestController {
 
     CategoryService categoryService;
 
-    @Autowired
+//    @Autowired
     public CategoryRestController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
-    @GetMapping()
-    @ApiOperation(value = "Get list of all categories")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "categories found"),
-            @ApiResponse(code = 404, message = "categories not found")
-    })
+//    @GetMapping()
+//    @ApiOperation(value = "Get list of all categories")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "categories found"),
+//            @ApiResponse(code = 404, message = "categories not found")
+//    })
     public ResponseEntity<List<Category>> getAllCategories() {
 
         List<Category> categories = categoryService.findAll();
@@ -49,12 +50,12 @@ public class CategoryRestController {
         }
     }
 
-    @GetMapping("/{category_type}")
-    @ApiOperation(value = "Get category by CategoryType")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "category found"),
-            @ApiResponse(code = 404, message = "category not found")
-    })
+//    @GetMapping("/{category_type}")
+//    @ApiOperation(value = "Get category by CategoryType")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "category found"),
+//            @ApiResponse(code = 404, message = "category not found")
+//    })
     public ResponseEntity<Category> getCategoryByCategoryType(
             @ApiParam(
                     name = "category_type",
