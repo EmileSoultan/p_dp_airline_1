@@ -9,6 +9,7 @@ import app.enums.Airport;
 import app.repositories.FlightRepository;
 import app.repositories.FlightSeatRepository;
 import app.services.interfaces.FlightService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class FlightServiceImpl implements FlightService {
 
     private final FlightRepository flightRepository;
@@ -28,12 +30,6 @@ public class FlightServiceImpl implements FlightService {
     private final AircraftRepository aircraftRepository;
     private final DestinationRepository destinationRepository;
 
-    public FlightServiceImpl(FlightRepository flightRepository, FlightSeatRepository flightSeatRepository, AircraftRepository aircraftRepository, DestinationRepository destinationRepository) {
-        this.flightRepository = flightRepository;
-        this.flightSeatRepository = flightSeatRepository;
-        this.aircraftRepository = aircraftRepository;
-        this.destinationRepository = destinationRepository;
-    }
 
     @Override
     @Transactional(readOnly = true)

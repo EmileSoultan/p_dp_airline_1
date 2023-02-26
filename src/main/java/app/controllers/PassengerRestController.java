@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiResponses;
 
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,14 +28,10 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/passengers")
+@RequiredArgsConstructor
 public class PassengerRestController {
 
     private final PassengerService passengerService;
-
-    @Autowired
-    public PassengerRestController(PassengerService passengerService) {
-        this.passengerService = passengerService;
-    }
 
     @ApiOperation(value = "Find passenger by Email")
     @ApiResponses(value = {

@@ -5,6 +5,7 @@ import app.entities.Flight;
 import app.repositories.AircraftRepository;
 import app.repositories.FlightRepository;
 import app.services.interfaces.AircraftService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,16 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AircraftServiceImpl implements AircraftService {
 
     private final AircraftRepository aircraftRepository;
     private final FlightRepository flightRepository;
-
-    @Autowired
-    public AircraftServiceImpl(AircraftRepository aircraftRepository, FlightRepository flightRepository) {
-        this.aircraftRepository = aircraftRepository;
-        this.flightRepository = flightRepository;
-    }
 
     @Transactional
     public Aircraft save(Aircraft aircraft) {

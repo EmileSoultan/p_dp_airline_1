@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,14 +29,10 @@ import java.util.Set;
 @Slf4j
 @RestController
 @RequestMapping("/api/flight_seats")
+@RequiredArgsConstructor
 public class FlightSeatRestController {
 
-    FlightSeatServiceImpl flightSeatService;
-
-    @Autowired
-    public FlightSeatRestController(FlightSeatServiceImpl flightSeatService) {
-        this.flightSeatService = flightSeatService;
-    }
+    private final FlightSeatServiceImpl flightSeatService;
 
     @ApiOperation(value = "Get list of FlightSeat by code of Flight")
     @ApiResponses(value = {

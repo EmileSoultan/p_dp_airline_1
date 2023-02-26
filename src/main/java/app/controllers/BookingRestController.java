@@ -4,6 +4,7 @@ import app.entities.Booking;
 import app.services.interfaces.BookingService;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,14 +21,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/booking")
 @Slf4j
+@RequiredArgsConstructor
 public class BookingRestController {
 
     private final BookingService bookingService;
-
-    @Autowired
-    public BookingRestController(BookingService bookingService) {
-        this.bookingService = bookingService;
-    }
 
     @PostMapping
     @ApiOperation(value = "Create new Booking")

@@ -5,24 +5,19 @@ import app.repositories.SeatRepository;
 import app.services.interfaces.AircraftService;
 import app.services.interfaces.CategoryService;
 import app.services.interfaces.SeatService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
+@RequiredArgsConstructor
 public class SeatServiceImpl implements SeatService {
 
     private final SeatRepository seatRepository;
     private final CategoryService categoryService;
     private final AircraftService aircraftService;
-
-    @Autowired
-    public SeatServiceImpl(SeatRepository seatRepository, CategoryService categoryService, AircraftService aircraftService) {
-        this.seatRepository = seatRepository;
-        this.categoryService = categoryService;
-        this.aircraftService = aircraftService;
-    }
 
     @Transactional
     @Override

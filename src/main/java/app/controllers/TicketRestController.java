@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/ticket")
+@RequiredArgsConstructor
 public class TicketRestController {
     private final TicketService ticketService;
-
-    public TicketRestController(TicketService ticketService) {
-        this.ticketService = ticketService;
-    }
 
     @ApiOperation(value = "Create new Ticket")
     @ApiResponse(code = 201, message = "Ticket created")
