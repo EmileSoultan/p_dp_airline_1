@@ -26,7 +26,7 @@ public interface FlightService {
 
     Flight getById(Long id);
 
-    void save(Flight flight);
+    Flight save(Flight flight);
 
     Flight update(Long id, Flight updated);
 

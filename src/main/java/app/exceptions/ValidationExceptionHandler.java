@@ -1,6 +1,5 @@
 package app.exceptions;
 
-import app.dto.ResponseExceptionDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;

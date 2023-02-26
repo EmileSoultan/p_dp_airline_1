@@ -37,7 +37,6 @@ public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_flights")
     @SequenceGenerator(name = "seq_flights", initialValue = 1000, allocationSize = 1)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @Column(name = "code")
@@ -57,7 +56,6 @@ public class Flight {
 
     @ManyToOne
     @JoinColumn(name = "aircraft_id")
-    @JsonView
     private Aircraft aircraft;
 
     @Enumerated(EnumType.STRING)

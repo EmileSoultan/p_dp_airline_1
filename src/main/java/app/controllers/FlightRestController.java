@@ -4,9 +4,11 @@ import app.dto.FlightDTO;
 import app.entities.Flight;
 import app.entities.FlightSeat;
 import app.enums.FlightStatus;
+import app.util.mappers.FlightMapper;
 import app.services.interfaces.FlightService;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +18,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static app.dto.FlightDTO.convertToFlightEntity;
-
 @Api(tags = "Flight REST")
 @Tag(name = "Flight REST", description = "API для операций с рейсами")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/flight")
 @Slf4j
 public class FlightRestController {
 
     private final FlightService flightService;
-
-    public FlightRestController(FlightService flightService) {
-        this.flightService = flightService;
-    }
+    private final FlightMapper flightMapper;
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Get Flight by \"id\"")
@@ -149,9 +147,7 @@ public class FlightRestController {
             @RequestBody FlightDTO flightDTO) {
 
         log.info("methodName: createFlight - create new flight");
-        flightService.save(convertToFlightEntity(flightDTO));
-
-        return new ResponseEntity<>(flightService.getFlightByCode(convertToFlightEntity(flightDTO).getCode()),
+        return new ResponseEntity<>(flightService.save(flightMapper.convertToFlightEntity(flightDTO)),
                 HttpStatus.CREATED);
     }
 
@@ -171,15 +167,15 @@ public class FlightRestController {
                     name = "flight",
                     value = "Flight model"
             )
-            @RequestBody FlightDTO updated) {
+            @RequestBody FlightDTO flightDTO) {
         var flight = flightService.getById(id);
         if (flight == null) {
             log.error("updateFlight: flight with id={} doesn't exist.", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         log.info("updateFlight: flight with id = {} updated", id);
-        flightService.update(id, convertToFlightEntity(updated));
-        return new ResponseEntity<>(convertToFlightEntity(updated), HttpStatus.OK);
+        return new ResponseEntity<>(flightService.update(id, flightMapper.convertToFlightEntity(flightDTO)),
+                HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
