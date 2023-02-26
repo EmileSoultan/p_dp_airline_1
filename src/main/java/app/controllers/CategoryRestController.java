@@ -3,11 +3,14 @@ package app.controllers;
 import app.entities.Category;
 import app.enums.CategoryType;
 import app.services.interfaces.CategoryService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,23 +20,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-//@Api(tags = "Category REST")
-//@Tag(name = "Category REST", description = "API операция с классом перелета(эконом, бизнесс и т.д.)")
+@Api(tags = "Category REST")
+@Tag(name = "Category REST", description = "API операция с классом перелета(эконом, бизнесс и т.д.)")
 @Slf4j
-@Deprecated
-//@RestController
-//@RequestMapping("/api/categories")
+@RestController
+@RequestMapping("/api/categories")
 @RequiredArgsConstructor
 public class CategoryRestController {
 
     private final CategoryService categoryService;
 
-//    @GetMapping()
-//    @ApiOperation(value = "Get list of all categories")
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "categories found"),
-//            @ApiResponse(code = 404, message = "categories not found")
-//    })
+    @GetMapping()
+    @ApiOperation(value = "Get list of all categories")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "categories found"),
+            @ApiResponse(code = 404, message = "categories not found")
+    })
     public ResponseEntity<List<Category>> getAllCategories() {
 
         List<Category> categories = categoryService.findAll();
