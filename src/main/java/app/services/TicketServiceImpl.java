@@ -3,22 +3,17 @@ package app.services;
 import app.entities.Ticket;
 import app.repositories.*;
 import app.services.interfaces.TicketService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
     private final PassengerRepository passengerRepository;
     private final FlightRepository flightRepository;
     private final FlightSeatRepository flightSeatRepository;
-
-    public TicketServiceImpl(TicketRepository ticketRepository, PassengerRepository passengerRepository, FlightRepository flightRepository, FlightSeatRepository flightSeatRepository) {
-        this.ticketRepository = ticketRepository;
-        this.passengerRepository = passengerRepository;
-        this.flightRepository = flightRepository;
-        this.flightSeatRepository = flightSeatRepository;
-    }
 
     @Override
     public Ticket findTicketByTicketNumber(String ticketNumber) {

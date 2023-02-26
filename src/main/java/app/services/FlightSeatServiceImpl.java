@@ -6,6 +6,7 @@ import app.entities.Seat;
 import app.repositories.FlightRepository;
 import app.repositories.FlightSeatRepository;
 import app.services.interfaces.FlightSeatService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +16,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class FlightSeatServiceImpl implements FlightSeatService {
 
     private final FlightSeatRepository flightSeatRepository;
     private final FlightRepository flightRepository;
 
-    @Autowired
-    public FlightSeatServiceImpl(FlightSeatRepository flightSeatRepository, FlightRepository flightRepository) {
-        this.flightSeatRepository = flightSeatRepository;
-        this.flightRepository = flightRepository;
-    }
 
     @Override
     public Set<FlightSeat> findAll() {

@@ -3,6 +3,7 @@ package app.services;
 import app.entities.Route;
 import app.repositories.RouteRepository;
 import app.services.interfaces.RouteService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +11,10 @@ import java.util.List;
 
 @Service
 @Deprecated
+@RequiredArgsConstructor
 public class RouteServiceImpl implements RouteService {
 
     private RouteRepository routeRepository;
-
-    @Autowired
-    public RouteServiceImpl(RouteRepository routeRepository) {
-        this.routeRepository = routeRepository;
-    }
 
     @Override
     public Route saveRoute(Route route) {

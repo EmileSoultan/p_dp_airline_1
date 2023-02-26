@@ -1,18 +1,15 @@
 package app.entities.account;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Collection;
-
+@RequiredArgsConstructor
 public class AccountDetailsImpl implements UserDetails {
 
     private final Account user;
-
-    public AccountDetailsImpl(Account account) {
-        this.user = account;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -4,6 +4,7 @@ import app.entities.Seat;
 import app.services.interfaces.SeatService;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,13 +18,9 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/seats")
 @Slf4j
+@RequiredArgsConstructor
 public class SeatRestController {
     private final SeatService seatService;
-
-    @Autowired
-    public SeatRestController(SeatService seatService) {
-        this.seatService = seatService;
-    }
 
     @PostMapping
     @ApiOperation(value = "Create new Seat")

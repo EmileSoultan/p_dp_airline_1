@@ -4,18 +4,16 @@ import app.entities.Destination;
 import app.enums.Airport;
 import app.repositories.DestinationRepository;
 import app.services.interfaces.DestinationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DestinationServiceImpl implements DestinationService {
     private final DestinationRepository destinationRepository;
-
-    public DestinationServiceImpl(DestinationRepository destinationRepository) {
-        this.destinationRepository = destinationRepository;
-    }
 
     @Override
     public List<Destination> findAllDestinations() {

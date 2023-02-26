@@ -4,6 +4,7 @@ import app.entities.account.Passenger;
 import app.repositories.PassengerRepository;
 import app.repositories.RoleRepository;
 import app.services.interfaces.PassengerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PassengerServiceImpl implements PassengerService {
     private final int maxVolumePartsOfName = 3;
 
@@ -25,13 +27,6 @@ public class PassengerServiceImpl implements PassengerService {
     private final RoleRepository roleRepository;
 
     private final PasswordEncoder encoder;
-
-    @Autowired
-    public PassengerServiceImpl(PassengerRepository passengerRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
-        this.passengerRepository = passengerRepository;
-        this.roleRepository = roleRepository;
-        this.encoder = encoder;
-    }
 
     @Override
     @Transactional

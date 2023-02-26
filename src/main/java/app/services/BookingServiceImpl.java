@@ -6,6 +6,7 @@ import app.services.interfaces.BookingService;
 import app.services.interfaces.CategoryService;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.PassengerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
@@ -23,13 +25,6 @@ public class BookingServiceImpl implements BookingService {
     private final PassengerService passengerService;
     private final FlightService flightService;
 
-    @Autowired
-    public BookingServiceImpl(BookingRepository bookingRepository, CategoryService categoryService, PassengerService passengerService, FlightService flightService) {
-        this.bookingRepository = bookingRepository;
-        this.categoryService = categoryService;
-        this.passengerService = passengerService;
-        this.flightService = flightService;
-    }
 
     @Transactional
     @Override

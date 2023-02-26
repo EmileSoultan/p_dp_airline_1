@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,14 +29,10 @@ import java.util.List;
 //@RequestMapping("/api/routes")
 @Slf4j
 @Deprecated
+@RequiredArgsConstructor
 public class RouteController {
 
     private final RouteService routeService;
-
-//    @Autowired
-    public RouteController(RouteService service) {
-        this.routeService = service;
-    }
 
 //    @PostMapping
 //    @ApiOperation(value = "Create new Route")

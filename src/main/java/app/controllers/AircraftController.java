@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -27,13 +28,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/aircraft")
 @Slf4j
+@RequiredArgsConstructor
 public class AircraftController {
 
     private final AircraftService aircraftService;
-
-    public AircraftController(AircraftService aircraftService) {
-        this.aircraftService = aircraftService;
-    }
 
     @GetMapping()
     @ApiOperation(value = "Get list of all Aircraft")

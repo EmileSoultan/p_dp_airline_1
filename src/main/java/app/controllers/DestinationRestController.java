@@ -4,6 +4,7 @@ import app.entities.Destination;
 import app.services.interfaces.DestinationService;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +25,9 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/destination")
+@RequiredArgsConstructor
 public class DestinationRestController {
     private final DestinationService destinationService;
-
-    public DestinationRestController(DestinationService destinationService) {
-        this.destinationService = destinationService;
-    }
 
     @ApiOperation(value = "Create new Destination")
     @ApiResponse(code = 201, message = "Destination created")

@@ -10,6 +10,7 @@ import app.services.interfaces.FlightSeatService;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.SearchService;
 import app.util.LogsUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService {
 
     private final SearchRepository searchRepository;
@@ -29,16 +31,6 @@ public class SearchServiceImpl implements SearchService {
     private final DestinationService destinationService;
     private final FlightSeatService flightSeatService;
     private final SearchResultRepository searchResultRepository;
-
-    @Autowired
-    public SearchServiceImpl(SearchRepository searchRepository,
-                             FlightService flightService, DestinationService destinationService, FlightSeatService flightSeatService, SearchResultRepository searchResultRepository) {
-        this.searchRepository = searchRepository;
-        this.flightService = flightService;
-        this.destinationService = destinationService;
-        this.flightSeatService = flightSeatService;
-        this.searchResultRepository = searchResultRepository;
-    }
 
     @Override
     @Transactional

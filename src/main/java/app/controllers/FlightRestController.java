@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 @Api(tags = "Flight REST")
 @Tag(name = "Flight REST", description = "API для операций с рейсами")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/flight")
 @Slf4j
+@RequiredArgsConstructor
 public class FlightRestController {
 
     private final FlightService flightService;

@@ -5,6 +5,7 @@ import app.entities.search.SearchResult;
 import app.services.interfaces.SearchService;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,13 +24,9 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/search")
 @Slf4j
+@RequiredArgsConstructor
 public class SearchRestController {
     private final SearchService searchService;
-
-    @Autowired
-    public SearchRestController(SearchService searchService) {
-        this.searchService = searchService;
-    }
 
     @PostMapping
     @ApiOperation(value = "Create new search",
