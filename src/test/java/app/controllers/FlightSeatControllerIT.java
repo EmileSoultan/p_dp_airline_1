@@ -1,48 +1,69 @@
 package app.controllers;
 
+import app.dto.FlightSeatDTO;
 import app.entities.FlightSeat;
 import app.services.interfaces.FlightSeatService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-flightSeat-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class FlightSeatControllerIT extends IntegrationTestBase {
+class FlightSeatControllerIT extends IntegrationTestBase {
 
     @Autowired
     private FlightSeatService flightSeatService;
 
     @Test
-    @Transactional
-    void shouldGetFlightSeatsByFlightNumber() throws Exception {
-        String flightNumber = "MSKOMSK";
-        mockMvc.perform(
-                        get("http://localhost:8080/api/flight_seats/{flightNumber}", flightNumber))
+    void shouldGetFlightSeatsByFlightId() throws Exception {
+        String flightNumber = "1";
+        String expected = objectMapper.writeValueAsString(flightSeatService.findByFlightId(Long.parseLong(flightNumber))
+                .stream()
+                .map(FlightSeatDTO::new)
+                .collect(Collectors.toSet()));
+
+        String actual = mockMvc.perform(
+                        get("http://localhost:8080/api/flight-seats/all-flight-seats/{flightNumber}", flightNumber))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(flightSeatService.findAll())));
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    @Transactional
-    void shouldAddFlightSeatsByFlightNumber() throws Exception {
-        String flightNumber = "MSKOMSK";
-        Set<FlightSeat> flightSeatSet = flightSeatService.addFlightSeatsByFlightNumber(flightNumber);
+    void shouldGetNonSoldFlightSeatsByFlightId() throws Exception {
+        String flightNumber = "1";
+        String expected = objectMapper.writeValueAsString(flightSeatService.findNotSoldById(Long.parseLong(flightNumber))
+                .stream()
+                .map(FlightSeatDTO::new)
+                .collect(Collectors.toSet()));
+
+        String actual = mockMvc.perform(
+                        get("http://localhost:8080/api/flight-seats/all-flight-seats/{flightNumber}", flightNumber).param("isSold", "false"))
+                .andDo(print())
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldAddFlightSeatsByFlightId() throws Exception {
+        String flightId = "1";
+        Set<FlightSeat> flightSeatSet = flightSeatService.addFlightSeatsByFlightNumber(flightId);
 
         mockMvc.perform(
-                        post("http://localhost:8080/api/flight_seats/addByFlightNumber/{flightNumber}", flightNumber)
+                        post("http://localhost:8080/api/flight-seats/all-flight-seats/{flightId}", flightId)
                                 .content(objectMapper.writeValueAsString(flightSeatSet))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
@@ -51,16 +72,14 @@ public class FlightSeatControllerIT extends IntegrationTestBase {
     }
 
     @Test
-    @Transactional
     void shouldEditFlightSeatById() throws Exception {
         Long id = (long) 2;
         FlightSeat flightSeat = flightSeatService.findById(id);
         flightSeat.setFare(100);
         flightSeat.setIsSold(false);
         flightSeat.setIsRegistered(false);
-
-        mockMvc.perform(patch("http://localhost:8080/api/flight_seats/{id}", id)
-                        .content(objectMapper.writeValueAsString(flightSeat))
+        mockMvc.perform(patch("http://localhost:8080/api/flight-seats/{id}", id)
+                        .content(objectMapper.writeValueAsString(new FlightSeatDTO(flightSeat)))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());

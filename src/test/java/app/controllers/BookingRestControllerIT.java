@@ -47,7 +47,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         booking.setFlight(flightService.getById(4001L));
         booking.setCategory(categoryService.findByCategoryType(CategoryType.ECONOMY));
 
-        mockMvc.perform(post("http://localhost:8080/api/booking")
+        mockMvc.perform(post("http://localhost:8080/api/bookings")
                         .content(objectMapper.writeValueAsString(booking))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -60,7 +60,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @DisplayName("Get All Bookings")
     void shouldGetAllBookings() throws Exception {
         Pageable pageable = PageRequest.of(0,1);
-        mockMvc.perform(get("http://localhost:8080/api/booking?page=0&size=1"))
+        mockMvc.perform(get("http://localhost:8080/api/bookings?page=0&size=1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(bookingService.findAll(pageable).getContent())));
@@ -71,7 +71,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @DisplayName("Get Booking by ID")
     void shouldGetBookingById() throws Exception {
         long id = 6001;
-        mockMvc.perform(get("http://localhost:8080/api/booking/{id}", id))
+        mockMvc.perform(get("http://localhost:8080/api/bookings/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(bookingService.findById(id))));
@@ -82,7 +82,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @DisplayName("Get Booking by Number")
     void shouldGetBookingByNumber() throws Exception {
         String bookingNumber = "000000001";
-        mockMvc.perform(get("http://localhost:8080/api/booking/number")
+        mockMvc.perform(get("http://localhost:8080/api/bookings/number")
                         .param("bookingNumber", bookingNumber))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -101,7 +101,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         booking.setFlight(flightService.getById(4002L));
         booking.setCategory(categoryService.findByCategoryType(CategoryType.BUSINESS));
 
-        mockMvc.perform(patch("http://localhost:8080/api/booking/{id}", id)
+        mockMvc.perform(patch("http://localhost:8080/api/bookings/{id}", id)
                         .content(
                                 objectMapper.writeValueAsString(booking)
                         )
@@ -116,10 +116,10 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @DisplayName("Delete Booking by ID")
     void shouldDeleteById() throws Exception {
         long id = 6003;
-        mockMvc.perform(delete("http://localhost:8080/api/booking/{id}", id))
+        mockMvc.perform(delete("http://localhost:8080/api/bookings/{id}", id))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        mockMvc.perform(get("http://localhost:8080/api/booking/{id}", id))
+        mockMvc.perform(get("http://localhost:8080/api/bookings/{id}", id))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }

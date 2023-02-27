@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-ticket-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class TicketRestControllerIT extends IntegrationTestBase {
+class TicketRestControllerIT extends IntegrationTestBase {
     @Autowired
     private TicketService ticketService;
     @Autowired
@@ -29,7 +29,7 @@ public class TicketRestControllerIT extends IntegrationTestBase {
     void createTicket_test() throws Exception {
         Ticket newTicket = ticketService.findTicketByTicketNumber("ZX-3333");
         newTicket.setTicketNumber("SJ-9346");
-        mockMvc.perform(post("http://localhost:8080/api/ticket")
+        mockMvc.perform(post("http://localhost:8080/api/tickets")
                         .content(objectMapper.writeValueAsString(newTicket))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -39,7 +39,7 @@ public class TicketRestControllerIT extends IntegrationTestBase {
 
     @Test
     void showTicketByBookingNumber_test() throws Exception {
-        mockMvc.perform(get("http://localhost:8080/api/ticket/ticket")
+        mockMvc.perform(get("http://localhost:8080/api/tickets/ticket")
                         .param("ticketNumber", "SD-2222"))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -50,7 +50,7 @@ public class TicketRestControllerIT extends IntegrationTestBase {
         Ticket updatedTicket = ticketService.findTicketByTicketNumber("ZX-3333");
         Long ticketId = updatedTicket.getId();
         updatedTicket.setPassenger(passengerService.findById(4L));
-        mockMvc.perform(patch("http://localhost:8080/api/ticket/{id}", ticketId)
+        mockMvc.perform(patch("http://localhost:8080/api/tickets/{id}", ticketId)
                         .content(
                                 objectMapper.writeValueAsString(updatedTicket)
                         )
@@ -63,7 +63,7 @@ public class TicketRestControllerIT extends IntegrationTestBase {
     @Test
     void deleteTicket_test() throws Exception {
         Long id = 2L;
-        mockMvc.perform(delete("http://localhost:8080/api/ticket/{id}", id))
+        mockMvc.perform(delete("http://localhost:8080/api/tickets/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

@@ -22,7 +22,7 @@ class DestinationControllerIT extends IntegrationTestBase {
     void shouldCreateDestination() throws Exception {
         Destination destination = new Destination(4L, Airport.OMS, "Moscow", "Moscow", "+3", "Russia");
         System.out.println(objectMapper.writeValueAsString(destination));
-        mockMvc.perform(post("http://localhost:8080/api/destination")
+        mockMvc.perform(post("http://localhost:8080/api/destinations")
                         .content(objectMapper.writeValueAsString(destination))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -34,7 +34,7 @@ class DestinationControllerIT extends IntegrationTestBase {
     void shouldShowDestinationByName() throws Exception {
         String city = "Абакан";
         String country = "";
-        mockMvc.perform(get("http://localhost:8080/api/destination")
+        mockMvc.perform(get("http://localhost:8080/api/destinations")
                         .param("cityName", city)
                         .param("countryName", country))
                 .andExpect(status().isOk());
@@ -44,7 +44,7 @@ class DestinationControllerIT extends IntegrationTestBase {
     @Test
     void shouldUpdateDestination() throws Exception {
         Long id = 3L;
-        mockMvc.perform(patch("http://localhost:8080/api/destination/{id}", id)
+        mockMvc.perform(patch("http://localhost:8080/api/destinations/{id}", id)
                         .content(objectMapper.writeValueAsString(new Destination(3L, Airport.RAT, "Радужный", "Радужный", "+3", "Россия")))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -54,7 +54,7 @@ class DestinationControllerIT extends IntegrationTestBase {
     @Test
     void shouldDeleteDestinationById() throws Exception {
         long id = 2;
-        mockMvc.perform(delete("http://localhost:8080/api/destination/{id}", id))
+        mockMvc.perform(delete("http://localhost:8080/api/destinations/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
