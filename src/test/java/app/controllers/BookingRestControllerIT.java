@@ -1,9 +1,8 @@
 package app.controllers;
 
-import app.entities.Booking;
+import app.dto.BookingDTO;
 import app.enums.CategoryType;
 import app.services.interfaces.BookingService;
-import app.services.interfaces.CategoryService;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.PassengerService;
 import org.junit.jupiter.api.DisplayName;
@@ -16,8 +15,12 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,20 +35,18 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @Autowired
     private PassengerService passengerService;
     @Autowired
-    private CategoryService categoryService;
-    @Autowired
     private FlightService flightService;
 
 
     @Test
     @DisplayName("Save Booking")
     void shouldSaveBooking() throws Exception {
-        Booking booking = new Booking();
+        BookingDTO booking = new BookingDTO();
         booking.setBookingNumber("BK-111111");
         booking.setBookingData(LocalDateTime.now());
         booking.setPassenger(passengerService.findById(1001L));
-        booking.setFlight(flightService.getById(4001L));
-        booking.setCategory(categoryService.findByCategoryType(CategoryType.ECONOMY));
+        booking.setFlightId(flightService.getById(4001L).getId());
+        booking.setCategoryType(CategoryType.ECONOMY);
 
         mockMvc.perform(post("http://localhost:8080/api/bookings")
                         .content(objectMapper.writeValueAsString(booking))
@@ -63,7 +64,8 @@ class BookingRestControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/bookings?page=0&size=1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.findAll(pageable).getContent())));
+                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.findAll(pageable).getContent()
+                        .stream().map(BookingDTO::new).collect(Collectors.toList()))));
     }
 
 
@@ -74,7 +76,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/bookings/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.findById(id))));
+                .andExpect(content().json(objectMapper.writeValueAsString(new BookingDTO(bookingService.findById(id)))));
     }
 
 
@@ -86,7 +88,8 @@ class BookingRestControllerIT extends IntegrationTestBase {
                         .param("bookingNumber", bookingNumber))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.findByBookingNumber(bookingNumber))));
+                .andExpect(content().json(objectMapper.writeValueAsString(new BookingDTO(bookingService
+                        .findByBookingNumber(bookingNumber)))));
     }
 
 
@@ -94,12 +97,12 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @DisplayName("Edit Booking by ID")
     void shouldEditBookingById() throws Exception {
         long id = 6002;
-        Booking booking = bookingService.findById(id);
+        BookingDTO booking = new BookingDTO(bookingService.findById(id));
         booking.setBookingNumber("BK-222222");
         booking.setBookingData(LocalDateTime.now());
         booking.setPassenger(passengerService.findById(1002L));
-        booking.setFlight(flightService.getById(4002L));
-        booking.setCategory(categoryService.findByCategoryType(CategoryType.BUSINESS));
+        booking.setFlightId(4002L);
+        booking.setCategoryType(CategoryType.BUSINESS);
 
         mockMvc.perform(patch("http://localhost:8080/api/bookings/{id}", id)
                         .content(
