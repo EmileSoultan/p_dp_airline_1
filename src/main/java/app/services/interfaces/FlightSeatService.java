@@ -12,7 +12,10 @@ public interface FlightSeatService {
 
     FlightSeat findById(Long id);
 
+    Set<FlightSeat> findByFlightId(Long flightId);
     Set<FlightSeat> findByFlightNumber(String flightNumber);
+
+    Set<FlightSeat> addFlightSeatsByFlightId(Long flightId);
 
     Set<FlightSeat> addFlightSeatsByFlightNumber(String flightNumber);
 
@@ -20,4 +23,7 @@ public interface FlightSeatService {
     int getNumberOfFreeSeatOnFlight(Flight flight);
     Set<Seat> getSetOfFeeSeatOnFlightByFlightId(Long id);
 
+    void deleteById(Long id);
+
+    Set<FlightSeat> findNotSoldById(Long id);
 }

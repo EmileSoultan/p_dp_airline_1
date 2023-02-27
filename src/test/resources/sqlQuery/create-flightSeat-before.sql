@@ -81,4 +81,7 @@ VALUES (2, 600, true, true,
 INSERT INTO flight_seats (id, fare, is_registered, is_sold, flight_id, seat_id)
 VALUES (3, 650, true, true, (SELECT flights.id FROM flights WHERE flights.id = 1),
         (SELECT seats.id FROM seats WHERE seats.id = 3));
-
+INSERT INTO flight_seats (id, fare, is_registered, is_sold, flight_id, seat_id)
+VALUES (4, 500, true, false,
+        (SELECT flights.id FROM flights WHERE flights.id = 1),
+        (SELECT seats.id FROM seats WHERE seats.id = 4));
