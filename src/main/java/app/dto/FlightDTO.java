@@ -4,6 +4,7 @@ import app.entities.Destination;
 import app.entities.Flight;
 import app.enums.FlightStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class FlightDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

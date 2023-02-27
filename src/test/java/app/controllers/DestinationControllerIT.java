@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.dto.DestinationDTO;
 import app.entities.Destination;
 import app.enums.Airport;
 import org.junit.jupiter.api.Test;
@@ -7,10 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -21,9 +19,10 @@ class DestinationControllerIT extends IntegrationTestBase {
     @Test
     void shouldCreateDestination() throws Exception {
         Destination destination = new Destination(4L, Airport.OMS, "Moscow", "Moscow", "+3", "Russia");
+        DestinationDTO destinationDTO = new DestinationDTO(destination);
         System.out.println(objectMapper.writeValueAsString(destination));
         mockMvc.perform(post("http://localhost:8080/api/destinations")
-                        .content(objectMapper.writeValueAsString(destination))
+                        .content(objectMapper.writeValueAsString(destinationDTO))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -45,7 +44,8 @@ class DestinationControllerIT extends IntegrationTestBase {
     void shouldUpdateDestination() throws Exception {
         Long id = 3L;
         mockMvc.perform(patch("http://localhost:8080/api/destinations/{id}", id)
-                        .content(objectMapper.writeValueAsString(new Destination(3L, Airport.RAT, "Радужный", "Радужный", "+3", "Россия")))
+                        .content(objectMapper.writeValueAsString(new DestinationDTO
+                                (new Destination(3L, Airport.RAT, "Радужный", "Радужный", "+3", "Россия"))))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
