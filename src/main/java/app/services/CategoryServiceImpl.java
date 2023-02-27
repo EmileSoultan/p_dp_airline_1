@@ -5,7 +5,6 @@ import app.enums.CategoryType;
 import app.repositories.CategoryRepository;
 import app.services.interfaces.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +24,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findByCategoryType(CategoryType categoryType) {
-
-        return categoryRepository.findByCategoryType(categoryType).orElse(null);
+        return categoryRepository
+                .findByCategoryType(categoryType)
+                .orElseThrow(() -> new RuntimeException("Передан несуществующий CategoryType"));
     }
 
     @Override

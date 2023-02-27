@@ -1,12 +1,13 @@
 package app.controllers.rest;
 
+import app.dto.BookingDTO;
 import app.entities.Booking;
 import app.services.interfaces.BookingService;
+import app.util.mappers.BookingMapper;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(tags = "Booking REST")
 @Tag(name = "Booking REST", description = "API для операций с бронированием")
@@ -26,32 +28,37 @@ public class BookingRestController {
 
     private final BookingService bookingService;
 
+    private final BookingMapper bookingMapper;
+
     @PostMapping
     @ApiOperation(value = "Create new Booking")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Booking added successfully"),
             @ApiResponse(code = 400, message = "Bad request")
     })
-    public ResponseEntity<Booking> createBooking(
+    public ResponseEntity<BookingDTO> createBooking(
             @ApiParam(
                     name = "booking",
                     value = "Booking model"
             )
-            @RequestBody @Valid Booking booking) {
+            @RequestBody @Valid BookingDTO bookingDTO) {
         log.info("createBooking: creating a new booking");
-        return new ResponseEntity<>(bookingService.save(booking), HttpStatus.CREATED);
+        return new ResponseEntity<>(new BookingDTO(bookingService.save(bookingMapper
+                .convertToBookingEntity(bookingDTO))),
+                HttpStatus.CREATED);
     }
 
     @GetMapping
     @ApiOperation(value = "Get list of all Booking")
-    public ResponseEntity<List<Booking>> getListOfAllBookings(Pageable pageable) {
+    public ResponseEntity<List<BookingDTO>> getListOfAllBookings(Pageable pageable) {
         log.info("getListOfAllBookings: search all bookings");
         Page<Booking> bookings = bookingService.findAll(pageable);
         if (bookings == null) {
             log.info("getListOfAllBookings: list of bookings is null");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(bookings.getContent(), HttpStatus.OK);
+        return new ResponseEntity<>(bookings.getContent().stream().map(BookingDTO::new)
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -60,7 +67,7 @@ public class BookingRestController {
             @ApiResponse(code = 201, message = "booking found"),
             @ApiResponse(code = 404, message = "booking not found")
     })
-    public ResponseEntity<Booking> getBookingById(
+    public ResponseEntity<BookingDTO> getBookingById(
             @ApiParam(
                     name = "id",
                     value = "Booking.id"
@@ -72,7 +79,7 @@ public class BookingRestController {
             log.info("getBookingById: not found booking with id = {}", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(booking, HttpStatus.OK);
+        return new ResponseEntity<>(new BookingDTO(booking), HttpStatus.OK);
     }
 
     @GetMapping("/number")
@@ -81,7 +88,7 @@ public class BookingRestController {
             @ApiResponse(code = 201, message = "booking found"),
             @ApiResponse(code = 404, message = "booking not found")
     })
-    public ResponseEntity<Booking> getBookingByNumber(
+    public ResponseEntity<BookingDTO> getBookingByNumber(
             @ApiParam(
                     value = "bookingNumber",
                     example = "SV-221122",
@@ -93,7 +100,7 @@ public class BookingRestController {
             log.info("getBookingByNumber: not found booking with number = {}", bookingNumber);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(booking, HttpStatus.OK);
+        return new ResponseEntity<>(new BookingDTO(booking), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -125,7 +132,7 @@ public class BookingRestController {
             @ApiResponse(code = 400, message = "Bad request"),
             @ApiResponse(code = 404, message = "not found")
     })
-    public ResponseEntity<Booking> editBookingById(
+    public ResponseEntity<BookingDTO> editBookingById(
             @ApiParam(
                     name = "id",
                     value = "Booking.id"
@@ -135,13 +142,15 @@ public class BookingRestController {
                     name = "booking",
                     value = "Booking model"
             )
-            @RequestBody @Valid Booking booking) {
+            @RequestBody @Valid BookingDTO bookingDTO) {
         log.info("editBookingById: edit booking with id = {}", id);
         if (bookingService.findById(id) == null) {
             log.info("editBookingById: not found booking with id = {}", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        booking.setId(id);
-        return new ResponseEntity<>(bookingService.save(booking), HttpStatus.OK);
+        bookingDTO.setId(id);
+        return new ResponseEntity<>(new BookingDTO(bookingService.save(bookingMapper
+                .convertToBookingEntity(bookingDTO))),
+                HttpStatus.OK);
     }
 }
