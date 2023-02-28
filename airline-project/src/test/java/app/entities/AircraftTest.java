@@ -1,6 +1,7 @@
 package app.entities;
 
 
+import app.dto.AircraftDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,8 +32,9 @@ public class AircraftTest extends EntityTest {
         aircraft.setModelYear(2054);
         aircraft.setFlightRange(250);
         aircraft.setSeatSet(newSeat);
+        AircraftDTO aircraftDTO = new AircraftDTO(aircraft);
 
-        Assertions.assertFalse(isSetWithViolationIsEmpty(validator, aircraft));
+        Assertions.assertFalse(isSetWithViolationIsEmpty(validator, aircraftDTO));
     }
 
     @Test
@@ -45,8 +47,9 @@ public class AircraftTest extends EntityTest {
         aircraft.setModelYear(2054);
         aircraft.setFlightRange(250);
         aircraft.setSeatSet(newSeat);
+        AircraftDTO aircraftDTO = new AircraftDTO(aircraft);
 
-        Assertions.assertTrue(isSetWithViolationIsEmpty(validator, aircraft));
+        Assertions.assertTrue(isSetWithViolationIsEmpty(validator, aircraftDTO));
     }
 
     @Test
@@ -59,8 +62,9 @@ public class AircraftTest extends EntityTest {
         aircraft.setModelYear(2054);
         aircraft.setFlightRange(250);
         aircraft.setSeatSet(newSeat);
+        AircraftDTO aircraftDTO = new AircraftDTO(aircraft);
 
-        Assertions.assertFalse(isSetWithViolationIsEmpty(validator, aircraft));
+        Assertions.assertFalse(isSetWithViolationIsEmpty(validator, aircraftDTO));
     }
 
     @Test
@@ -73,8 +77,9 @@ public class AircraftTest extends EntityTest {
         aircraft.setModelYear(2054);
         aircraft.setFlightRange(250);
         aircraft.setSeatSet(newSeat);
+        AircraftDTO aircraftDTO = new AircraftDTO(aircraft);
 
-        Assertions.assertTrue(isSetWithViolationIsEmpty(validator, aircraft));
+        Assertions.assertTrue(isSetWithViolationIsEmpty(validator, aircraftDTO));
     }
 
     @Test
@@ -87,8 +92,9 @@ public class AircraftTest extends EntityTest {
         aircraft.setModelYear(2);
         aircraft.setFlightRange(250);
         aircraft.setSeatSet(newSeat);
+        AircraftDTO aircraftDTO = new AircraftDTO(aircraft);
 
-        Assertions.assertFalse(isSetWithViolationIsEmpty(validator, aircraft));
+        Assertions.assertFalse(isSetWithViolationIsEmpty(validator, aircraftDTO));
     }
 
     @Test
@@ -101,8 +107,9 @@ public class AircraftTest extends EntityTest {
         aircraft.setModelYear(2005);
         aircraft.setFlightRange(250);
         aircraft.setSeatSet(newSeat);
+        AircraftDTO aircraftDTO = new AircraftDTO(aircraft);
 
-        Assertions.assertTrue(isSetWithViolationIsEmpty(validator, aircraft));
+        Assertions.assertTrue(isSetWithViolationIsEmpty(validator, aircraftDTO));
     }
 
     @Test
@@ -114,8 +121,9 @@ public class AircraftTest extends EntityTest {
         aircraft.setModel("boeing435");
         aircraft.setModelYear(2005);
         aircraft.setSeatSet(newSeat);
+        AircraftDTO aircraftDTO = new AircraftDTO(aircraft);
 
-        Assertions.assertTrue(isSetWithViolationIsEmpty(validator, aircraft));
+        Assertions.assertTrue(isSetWithViolationIsEmpty(validator, aircraftDTO));
     }
 
     @Test
@@ -128,8 +136,8 @@ public class AircraftTest extends EntityTest {
         aircraft.setModelYear(2005);
         aircraft.setFlightRange(200);
         aircraft.setSeatSet(newSeat);
+        AircraftDTO aircraftDTO = new AircraftDTO(aircraft);
 
-        Assertions.assertTrue(isSetWithViolationIsEmpty(validator, aircraft));
+        Assertions.assertTrue(isSetWithViolationIsEmpty(validator, aircraftDTO));
     }
-
 }

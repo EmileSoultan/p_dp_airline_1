@@ -1,7 +1,9 @@
 package app.controllers.rest;
 
+import app.dto.AircraftDTO;
 import app.entities.Aircraft;
 import app.services.interfaces.AircraftService;
+import app.util.mappers.AircraftMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(tags = "Aircraft REST")
 @Tag(name = "Aircraft REST", description = "API для операций с самолётом(-ами)")
@@ -32,20 +35,22 @@ import java.util.List;
 public class AircraftRestController {
 
     private final AircraftService aircraftService;
+    private final AircraftMapper aircraftMapper;
 
     @GetMapping()
     @ApiOperation(value = "Get list of all Aircraft")
-    public ResponseEntity<List<Aircraft>> getAllAircraft(Pageable pageable) {
+    public ResponseEntity<List<AircraftDTO>> getAllAircraft(Pageable pageable) {
         log.info("getAllAircraft: get all aircrafts");
         var aircrafts = aircraftService.findAll(pageable);
         return aircrafts.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(aircrafts.getContent(), HttpStatus.OK);
+                : new ResponseEntity<>(aircrafts.getContent().stream().map(AircraftDTO::new)
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Get Aircraft by it's \"id\"")
-    public ResponseEntity<Aircraft> getAircraftById(
+    public ResponseEntity<AircraftDTO> getAircraftById(
             @ApiParam(
                     name = "id",
                     value = "Aircraft.id"
@@ -57,7 +62,7 @@ public class AircraftRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         log.info("getAircraftById: aircraft with id={} returned.", id);
-        return new ResponseEntity<>(aircraft, HttpStatus.OK);
+        return new ResponseEntity<>(new AircraftDTO(aircraft), HttpStatus.OK);
     }
 
     @PostMapping
@@ -67,14 +72,16 @@ public class AircraftRestController {
                     name = "Aircraft",
                     value = "Aircraft model"
             )
-            @RequestBody @Valid Aircraft aircraft) {
+            @RequestBody @Valid AircraftDTO aircraftDTO) {
         log.info("saveAircraft: new aircraft saved.");
-        return new ResponseEntity<>(aircraftService.save(aircraft), HttpStatus.CREATED);
+        return new ResponseEntity<>(aircraftService.save(aircraftMapper
+                .convertToAircraftEntity(aircraftDTO)),
+                HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")
     @ApiOperation(value = "Edit Aircraft by \"id\"")
-    public ResponseEntity<Aircraft> editAircraft(
+    public ResponseEntity<?> editAircraft(
             @ApiParam(
                     name = "id",
                     value = "Aircraft.id"
@@ -84,23 +91,20 @@ public class AircraftRestController {
                     name = "Aircraft",
                     value = "Aircraft model"
             )
-            @RequestBody @Valid Aircraft aircraft) {
-//        if (bindingResult.hasErrors()) {
-//            log.error("editAircraft: error of editing aircraft with id={} - wrong input values", id);
-//            return ResponseEntity.badRequest().build();
-//        }
-//        if (aircraftService.findById(id) == null) {
-//            log.error("editAircraft: aircraft with id={} doesn't exist.", id);
-//            return ResponseEntity.notFound().build();
-//        }
-        aircraft.setId(id);
+            @RequestBody @Valid AircraftDTO aircraftDTO) {
+        if (aircraftService.findById(id) == null) {
+            log.error("editAircraft: aircraft with id={} doesn't exist.", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        aircraftDTO.setId(id);
         log.info("editAircraft: the aircraft with id={} has been edited.", id);
-        return ResponseEntity.ok(aircraftService.save(aircraft));
+        return ResponseEntity.ok(aircraftService.save(aircraftMapper
+                .convertToAircraftEntity(aircraftDTO)));
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete Aircraft by \"id\"")
-    public ResponseEntity<String> deleteAircraft(
+    public ResponseEntity<HttpStatus> deleteAircraft(
             @ApiParam(
                     name = "id",
                     value = "Aircraft.id"
