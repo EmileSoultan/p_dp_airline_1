@@ -2,6 +2,7 @@ package app.repositories;
 
 import app.entities.Flight;
 import app.entities.FlightSeat;
+import app.entities.Seat;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -23,4 +24,5 @@ public interface FlightSeatRepository extends CrudRepository<FlightSeat, Long> {
             "where f.code = ?1 and s.seatNumber  = ?2")
     Optional<FlightSeat> findFlightSeatByFlightAndSeat(String flightCode, String seatNumber);
 
+    Set<FlightSeat> findFlightSeatsBySeat(Seat seat);
 }

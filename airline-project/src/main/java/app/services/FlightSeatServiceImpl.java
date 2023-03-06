@@ -152,6 +152,11 @@ public class FlightSeatServiceImpl implements FlightSeatService {
         }
         return setOfSeat;
     }
+    @Override
+    public Set<FlightSeat> findFlightSeatsBySeat(Seat seat){
+        return flightSeatRepository.findFlightSeatsBySeat(seat);
+    }
+
 
     @Override
     public void deleteById(Long id) {

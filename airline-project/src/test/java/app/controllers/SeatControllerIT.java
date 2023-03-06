@@ -1,6 +1,6 @@
 package app.controllers;
 
-import app.entities.Seat;
+import app.dto.SeatDTO;
 import app.enums.CategoryType;
 import app.services.interfaces.CategoryService;
 import app.services.interfaces.SeatService;
@@ -27,18 +27,20 @@ public class SeatControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldSaveSeat() throws Exception {
-        Seat seat = new Seat();
-        seat.setSeatNumber("1B");
-        seat.setIsLockedBack(true);
-        seat.setIsNearEmergencyExit(false);
-        seat.setCategory(categoryService.findByCategoryType(CategoryType.ECONOMY));
+        SeatDTO seatDTO = new SeatDTO();
+        seatDTO.setSeatNumber("1B");
+        seatDTO.setIsLockedBack(true);
+        seatDTO.setIsNearEmergencyExit(false);
+        seatDTO.setCategory(categoryService.findByCategoryType(CategoryType.ECONOMY));
+        seatDTO.setAircraftId(1);
 
         mockMvc.perform(post("http://localhost:8080/api/seats")
-                        .content(objectMapper.writeValueAsString(seat))
+                        .content(objectMapper.writeValueAsString(seatDTO))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated());
+
     }
 
     @Test
@@ -47,7 +49,7 @@ public class SeatControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/seats/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(seatService.findById(id))));
+                .andExpect(content().json(objectMapper.writeValueAsString(new SeatDTO(seatService.findById(id)))));
     }
 
     @Test
@@ -60,14 +62,14 @@ public class SeatControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldEditSeat() throws Exception {
-        Seat seat = seatService.findById(1);
-        seat.setSeatNumber("1B");
-        seat.setIsLockedBack(false);
-        seat.setIsNearEmergencyExit(true);
-        long id = seat.getId();
+        SeatDTO seatDTO = new SeatDTO(seatService.findById(1));
+        seatDTO.setSeatNumber("1B");
+        seatDTO.setIsLockedBack(false);
+        seatDTO.setIsNearEmergencyExit(true);
+        long id = seatDTO.getId();
 
         mockMvc.perform(patch("http://localhost:8080/api/seats/{id}", id)
-                        .content(objectMapper.writeValueAsString(seat))
+                        .content(objectMapper.writeValueAsString(seatDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -85,20 +87,20 @@ public class SeatControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldGetValidError() throws Exception {
-        Seat seat = new Seat();
-        seat.setSeatNumber("1");
+        SeatDTO seatDTO = new SeatDTO();
+        seatDTO.setSeatNumber("1");
 
         mockMvc.perform(post("http://localhost:8080/api/seats")
-                        .content(objectMapper.writeValueAsString(seat))
+                        .content(objectMapper.writeValueAsString(seatDTO))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        seat.setId(1);
-        long id = seat.getId();
+        seatDTO.setId(1);
+        long id = seatDTO.getId();
         mockMvc.perform(patch("http://localhost:8080/api/seats/{id}", id)
-                        .content(objectMapper.writeValueAsString(seat))
+                        .content(objectMapper.writeValueAsString(seatDTO))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
