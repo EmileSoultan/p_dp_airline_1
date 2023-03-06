@@ -7,6 +7,9 @@ import app.services.interfaces.DestinationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 import java.util.List;
 
@@ -16,8 +19,8 @@ public class DestinationServiceImpl implements DestinationService {
     private final DestinationRepository destinationRepository;
 
     @Override
-    public List<Destination> findAllDestinations() {
-        return destinationRepository.findAll();
+    public Page<Destination> findAll(Pageable pageable) {
+        return destinationRepository.findAll(pageable);
     }
 
     @Override

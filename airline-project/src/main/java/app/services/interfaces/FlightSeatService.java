@@ -22,6 +22,7 @@ public interface FlightSeatService {
     FlightSeat saveFlightSeat(FlightSeat flightSeat);
     int getNumberOfFreeSeatOnFlight(Flight flight);
     Set<Seat> getSetOfFeeSeatOnFlightByFlightId(Long id);
+    Set<FlightSeat> findFlightSeatsBySeat(Seat seat);
 
     void deleteById(Long id);
 

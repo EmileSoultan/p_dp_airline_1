@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.dto.SeatDTO;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +24,7 @@ public class SeatTest extends EntityTest {
 
     @Test
     public void wrongSeatNumberTest() {
-        Seat seat;
+        SeatDTO seat;
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", 1);
@@ -34,32 +35,23 @@ public class SeatTest extends EntityTest {
         JSONObject jsonCategory = new JSONObject();
         jsonCategory.put("id", 1);
         jsonCategory.put("categoryType", "FIRST");
-
         jsonObject.put("category", jsonCategory);
 
-        JSONObject jsonAircraft = new JSONObject();
-        jsonAircraft.put("id", 7);
-        jsonAircraft.put("aircraftNumber", "33012");
-        jsonAircraft.put("model", "Boeing 737-700");
-        jsonAircraft.put("modelYear", 2027);
-        jsonAircraft.put("flightRange", 6040);
-
-        jsonObject.put("aircraft", jsonAircraft);
+        jsonObject.put("aircraftId", 1);
         String testJSON = jsonObject.toString();
 
         try {
-            seat = mapper.readValue(testJSON, Seat.class);
+            seat = mapper.readValue(testJSON, SeatDTO.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
         Assertions.assertFalse(isSetWithViolationIsEmpty(validator, seat));
-
     }
 
     @Test
     public void wrongSeatIsNearEmergencyExitTest() {
-        Seat seat;
+        SeatDTO seat;
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", 1);
@@ -72,29 +64,20 @@ public class SeatTest extends EntityTest {
         jsonCategory.put("categoryType", "FIRST");
 
         jsonObject.put("category", jsonCategory);
-
-        JSONObject jsonAircraft = new JSONObject();
-        jsonAircraft.put("id", 7);
-        jsonAircraft.put("aircraftNumber", "33012");
-        jsonAircraft.put("model", "Boeing 737-700");
-        jsonAircraft.put("modelYear", 2027);
-        jsonAircraft.put("flightRange", 6040);
-
-        jsonObject.put("aircraft", jsonAircraft);
+        jsonObject.put("aircraftId", 1);
         String testJSON = jsonObject.toString();
 
         try {
-            seat = mapper.readValue(testJSON, Seat.class);
+            seat = mapper.readValue(testJSON, SeatDTO.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         Assertions.assertFalse(isSetWithViolationIsEmpty(validator, seat));
-
     }
 
     @Test
     public void wrongSeatIsLockedBackTest() {
-        Seat seat;
+        SeatDTO seat;
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", 1);
@@ -108,18 +91,11 @@ public class SeatTest extends EntityTest {
 
         jsonObject.put("category", jsonCategory);
 
-        JSONObject jsonAircraft = new JSONObject();
-        jsonAircraft.put("id", 7);
-        jsonAircraft.put("aircraftNumber", "33012");
-        jsonAircraft.put("model", "Boeing 737-700");
-        jsonAircraft.put("modelYear", 2027);
-        jsonAircraft.put("flightRange", 6040);
-
-        jsonObject.put("aircraft", jsonAircraft);
+        jsonObject.put("aircraftId", 1);
         String testJSON = jsonObject.toString();
 
         try {
-            seat = mapper.readValue(testJSON, Seat.class);
+            seat = mapper.readValue(testJSON, SeatDTO.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

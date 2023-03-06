@@ -2,12 +2,16 @@ package app.services.interfaces;
 
 import app.entities.Destination;
 import app.enums.Airport;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 import java.util.List;
 
 public interface DestinationService {
 
-    List<Destination> findAllDestinations();
+    Page<Destination> findAll(Pageable pageable);
+
     List<Destination> findDestinationByName(String cityName, String countryName);
 
     void saveDestination(Destination destination);
@@ -17,5 +21,6 @@ public interface DestinationService {
     void deleteDestinationById(Long id);
 
     Destination getDestinationById(Long id);
+
     Destination findDestinationByAirportCode(Airport airportCode);
 }
