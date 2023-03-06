@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.dto.AircraftDTO;
 import app.entities.Aircraft;
 import app.services.interfaces.AircraftService;
 import org.junit.jupiter.api.Test;
@@ -25,11 +26,12 @@ class AircraftRestControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldSaveAircraft() throws Exception {
-        Aircraft aircraft = new Aircraft();
+        AircraftDTO aircraft = new AircraftDTO();
         aircraft.setAircraftNumber("412584");
         aircraft.setModel("Boeing 777");
         aircraft.setModelYear(2005);
         aircraft.setFlightRange(2800);
+
         mockMvc.perform(post("http://localhost:8080/api/aircrafts")
                         .content(objectMapper.writeValueAsString(aircraft))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -53,21 +55,21 @@ class AircraftRestControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/aircrafts/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(aircraftService.findById(id))));
+                .andExpect(content().json(objectMapper
+                        .writeValueAsString(new AircraftDTO(aircraftService.findById(id)))));
     }
 
     @Test
     void shouldEditById() throws Exception {
         long id = 2;
-        Aircraft aircraft = aircraftService.findById(id);
+        AircraftDTO aircraft = new AircraftDTO(aircraftService.findById(id));
         aircraft.setAircraftNumber("531487");
         aircraft.setModel("Boeing 737");
         aircraft.setModelYear(2001);
         aircraft.setFlightRange(5000);
+
         mockMvc.perform(patch("http://localhost:8080/api/aircrafts/{id}", id)
-                        .content(
-                                objectMapper.writeValueAsString(aircraft)
-                        )
+                        .content(objectMapper.writeValueAsString(aircraft))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
