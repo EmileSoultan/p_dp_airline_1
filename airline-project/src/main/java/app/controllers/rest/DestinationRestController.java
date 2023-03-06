@@ -11,6 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,9 +49,9 @@ public class DestinationRestController {
             @ApiResponse(code = 200, message = "destinations found"),
             @ApiResponse(code = 404, message = "destinations not found")
     })
-    public ResponseEntity<List<DestinationDTO>> getAllDestination() {
+    public ResponseEntity<List<DestinationDTO>> getAllDestination(@PageableDefault(sort = {"id"}) Pageable p) {
 
-        List<Destination> destinations = destinationService.findAllDestinations();
+        Page<Destination> destinations = destinationService.findAll(p);
 
         if (destinations != null) {
             log.info("getAllDestination: find all destinations");
