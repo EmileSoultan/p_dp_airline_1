@@ -25,12 +25,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/booking",
+							"raw": "{{HOST}}/bookings",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"booking"
+								"bookings"
 							]
 						}
 					},
@@ -61,12 +61,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}/booking",
+							"raw": "{{HOST}}/bookings",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"booking"
+								"bookings"
 							]
 						}
 					},
@@ -97,12 +97,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}/booking/1",
+							"raw": "{{HOST}}/bookings/1",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"booking",
+								"bookings",
 								"1"
 							]
 						}
@@ -125,12 +125,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/booking/1",
+							"raw": "{{HOST}}/bookings/1",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"booking",
+								"bookings",
 								"1"
 							]
 						}
@@ -153,12 +153,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/booking/2",
+							"raw": "{{HOST}}/bookings/2",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"booking",
+								"bookings",
 								"2"
 							]
 						}
@@ -181,12 +181,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/booking/number?bookingNumber=BK-111111",
+							"raw": "{{HOST}}/bookings/number?bookingNumber=BK-111111",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"booking",
+								"bookings",
 								"number"
 							],
 							"query": [
@@ -220,12 +220,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/account",
+							"raw": "{{HOST}}/accounts",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"account"
+								"accounts"
 							]
 						}
 					},
@@ -247,12 +247,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/account/1",
+							"raw": "{{HOST}}/accounts/1",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"account",
+								"accounts",
 								"1"
 							]
 						}
@@ -275,12 +275,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/account/auth",
+							"raw": "{{HOST}}/accounts/auth",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"account",
+								"accounts",
 								"auth"
 							]
 						}
@@ -312,12 +312,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}/account",
+							"raw": "{{HOST}}/accounts",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"account"
+								"accounts"
 							]
 						}
 					},
@@ -348,12 +348,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}/account/15",
+							"raw": "{{HOST}}/accounts/15",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"account",
+								"accounts",
 								"15"
 							]
 						}
@@ -376,12 +376,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/account/3",
+							"raw": "{{HOST}}/accounts/3",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"account",
+								"accounts",
 								"3"
 							]
 						}
@@ -448,12 +448,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}/destination/",
+							"raw": "{{HOST}}/destinations/",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"destination",
+								"destinations",
 								""
 							]
 						}
@@ -476,12 +476,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/destination",
+							"raw": "{{HOST}}/destinations",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"destination"
+								"destinations"
 							]
 						}
 					},
@@ -493,12 +493,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/destination/filter?cityName=Петропавловск",
+							"raw": "{{HOST}}/destinations/filter?cityName=Петропавловск",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"destination",
+								"destinations",
 								"filter"
 							],
 							"query": [
@@ -527,12 +527,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/destination/filter?countryName=Россия",
+							"raw": "{{HOST}}/destinations/filter?countryName=Россия",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"destination",
+								"destinations",
 								"filter"
 							],
 							"query": [
@@ -560,12 +560,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}/destination/2",
+							"raw": "{{HOST}}/destinations/2",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"destination",
+								"destinations",
 								"2"
 							]
 						}
@@ -578,12 +578,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/destination/1008",
+							"raw": "{{HOST}}/destinations/1008",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
-								"destination",
+								"destinations",
 								"1008"
 							]
 						}
