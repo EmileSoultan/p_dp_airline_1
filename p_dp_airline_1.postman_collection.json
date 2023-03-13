@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "b86a9037-ecad-48b8-95c7-bd5e08ef1914",
+		"_postman_id": "8ad2788d-dc33-439a-ae09-5288dba2b46d",
 		"name": "p_dp_airline_1",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25527016"
+		"_exporter_id": "25403053"
 	},
 	"item": [
 		{
@@ -585,6 +585,197 @@
 							"path": [
 								"destination",
 								"1008"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SeatRestController",
+			"item": [
+				{
+					"name": "Get Seat by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/seats/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"seats",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new Seat",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"seatNumber\": \"33C\",\r\n    \"isNearEmergencyExit\": false,\r\n    \"isLockedBack\": false,\r\n    \"category\": {\r\n        \"id\": 3,\r\n        \"categoryType\": \"PREMIUM_ECONOMY\"\r\n    },\r\n    \"aircraftId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/seats",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"seats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Seat by id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"seatNumber\": \"35F\",\r\n    \"isNearEmergencyExit\": false,\r\n    \"isLockedBack\": false,\r\n    \"category\": {\r\n        \"id\": 4,\r\n        \"categoryType\": \"ECONOMY\"\r\n    },\r\n    \"aircraftId\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/seats/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"seats",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Seat by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/seats/1000",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"seats",
+								"1000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Seats by aircraft id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/seats/aircraft/2",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"seats",
+								"aircraft",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Seats by aircraft id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"seatNumber\": \"43E\",\r\n        \"isNearEmergencyExit\": false,\r\n        \"isLockedBack\": true,\r\n        \"category\": {\r\n            \"id\": 3,\r\n            \"categoryType\": \"PREMIUM_ECONOMY\"\r\n        },\r\n        \"aircraftId\": 2\r\n    },\r\n    {\r\n        \"seatNumber\": \"65F\",\r\n        \"isNearEmergencyExit\": false,\r\n        \"isLockedBack\": true,\r\n        \"category\": {\r\n            \"id\": 4,\r\n            \"categoryType\": \"ECONOMY\"\r\n        },\r\n        \"aircraftId\": 2\r\n    },\r\n    {\r\n        \"seatNumber\": \"54A\",\r\n        \"isNearEmergencyExit\": true,\r\n        \"isLockedBack\": true,\r\n        \"category\": {\r\n            \"id\": 2,\r\n            \"categoryType\": \"BUSINESS\"\r\n        },\r\n        \"aircraftId\": 2\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/seats/aircraft/2",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"seats",
+								"aircraft",
+								"2"
 							]
 						}
 					},
