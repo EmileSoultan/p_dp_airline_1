@@ -10,16 +10,15 @@ import app.services.interfaces.FlightSeatService;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.SearchService;
 import app.util.LogsUtils;
+import app.util.aop.Loggable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Slf4j
 @Service
@@ -34,6 +33,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     @Transactional
+    @Loggable
     public SearchResult saveSearch(Search search) {
         log.debug("saveSearch: incoming data, search = {}", LogsUtils.objectToJson(search));
         search.setFrom(destinationService.findDestinationByAirportCode(search.getFrom().getAirportCode()));
@@ -45,6 +45,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
+    @Loggable
     public Search findSearchById(long id) {
         log.debug("findSearchById: incoming data, search \"id\" = {}", id);
         Search search = searchRepository.findById(id).orElse(null);
@@ -52,6 +53,7 @@ public class SearchServiceImpl implements SearchService {
         return search;
     }
 
+    @Loggable
     private SearchResult searchDirectAndNonDirectFlights(Search search) {
         log.debug("searchDirectAndNonDirectFlights: incoming data, search = {}", LogsUtils.objectToJson(search));
         SearchResult searchResult = new SearchResult();
@@ -76,25 +78,29 @@ public class SearchServiceImpl implements SearchService {
         return searchResult;
     }
 
+    @Loggable
     private void addDirectDepartFlightsToSearchDepartFlight(Search search, List<Flight> searchFlightList) {
         List<Flight> departFlight = findDirectDepartFlights(search);
         //проверка рейсов на наличие мест. если места есть, то рейс добавлется в список рейсов
-        for(Flight f : departFlight) {
-            if(checkFlightForNumberSeats(f,search)) {
-                searchFlightList.add(f);
-            }
-        }
-    }
-    private void addDirectReturnFlightsToSearchReturnFlight(Search search, List<Flight> searchFlightList) {
-        List<Flight> returnFlight = findDirectReturnFlights(search);
-        //проверка прямых рейсов на наличие мест. если места есть, то рейс добавлется в список рейсов
-        for(Flight f : returnFlight) {
-            if(checkFlightForNumberSeats(f,search)) {
+        for (Flight f : departFlight) {
+            if (checkFlightForNumberSeats(f, search)) {
                 searchFlightList.add(f);
             }
         }
     }
 
+    @Loggable
+    private void addDirectReturnFlightsToSearchReturnFlight(Search search, List<Flight> searchFlightList) {
+        List<Flight> returnFlight = findDirectReturnFlights(search);
+        //проверка прямых рейсов на наличие мест. если места есть, то рейс добавлется в список рейсов
+        for (Flight f : returnFlight) {
+            if (checkFlightForNumberSeats(f, search)) {
+                searchFlightList.add(f);
+            }
+        }
+    }
+
+    @Loggable
     private void addNonDirectDepartFlightsToSearchDepartFlight(Search search, List<Flight> searchFlightList) {
         List<Flight> nonDirectDepartFlights = findNonDirectDepartFlights(search);
         //проверка непрямых рейсов на наличие мест. если места есть, то соответствующая пара добавляется в список рейсов
@@ -109,13 +115,15 @@ public class SearchServiceImpl implements SearchService {
             }
         }
     }
+
+    @Loggable
     private void addNonDirectDepartFlightsToSearchReturnFlight(Search search, List<Flight> searchFlightList) {
         List<Flight> nonDirectReturnFlights = findNonDirectReturnFlights(search);
         //проверка непрямых обратных рейсов на наличие мест: если места есть, то соответствующая пара добавляется в список рейсов
-        for(Flight f : nonDirectReturnFlights) {
-            if(checkFlightForNumberSeats(f,search)) {
+        for (Flight f : nonDirectReturnFlights) {
+            if (checkFlightForNumberSeats(f, search)) {
                 for (Flight connected_flight : nonDirectReturnFlights) {
-                    if(f.getTo().equals(connected_flight.getFrom()) && checkFlightForNumberSeats(connected_flight,search)) {
+                    if (f.getTo().equals(connected_flight.getFrom()) && checkFlightForNumberSeats(connected_flight, search)) {
                         searchFlightList.add(f);
                         searchFlightList.add(connected_flight);
                     }
@@ -123,6 +131,8 @@ public class SearchServiceImpl implements SearchService {
             }
         }
     }
+
+    @Loggable
     private List<Flight> findDirectDepartFlights(Search search) {
         return flightService.getListDirectFlightsByFromAndToAndDepartureDate(
                 search.getFrom().getAirportCode(),
@@ -130,6 +140,8 @@ public class SearchServiceImpl implements SearchService {
                 Date.valueOf(search.getDepartureDate())
         );
     }
+
+    @Loggable
     private List<Flight> findDirectReturnFlights(Search search) {
         return flightService.getListDirectFlightsByFromAndToAndDepartureDate(
                 search.getTo().getAirportCode(),
@@ -137,6 +149,8 @@ public class SearchServiceImpl implements SearchService {
                 Date.valueOf(search.getReturnDate())
         );
     }
+
+    @Loggable
     private List<Flight> findNonDirectDepartFlights(Search search) {
         return flightService.getListNonDirectFlightsByFromAndToAndDepartureDate(
                 search.getFrom().getId().intValue(),
@@ -144,6 +158,8 @@ public class SearchServiceImpl implements SearchService {
                 Date.valueOf(search.getDepartureDate())
         );
     }
+
+    @Loggable
     private List<Flight> findNonDirectReturnFlights(Search search) {
         return flightService.getListNonDirectFlightsByFromAndToAndDepartureDate(
                 search.getTo().getId().intValue(),
@@ -151,17 +167,22 @@ public class SearchServiceImpl implements SearchService {
                 Date.valueOf(search.getReturnDate())
         );
     }
+
+    @Loggable
     private boolean checkFlightForNumberSeats(Flight f, Search search) {
         return (flightSeatService.getNumberOfFreeSeatOnFlight(f) - search.getNumberOfPassengers()) >= 0;
     }
 
     @Override
+    @Loggable
     public void saveSearchResult(SearchResult searchResult) {
         log.debug("saveSearchResult: incoming data, searchResult = {}", LogsUtils.objectToJson(searchResult));
         searchResultRepository.save(searchResult);
         log.debug("saveSearchResult: output data is void");
     }
+
     @Override
+    @Loggable
     public SearchResult findSearchResultByID(Long id) {
         log.debug("findSearchResultByID: incoming data, searchResult \"id\" = {}", id);
         SearchResult searchResult = searchResultRepository.findById(id).orElse(null);

@@ -9,6 +9,7 @@ import app.enums.Airport;
 import app.repositories.FlightRepository;
 import app.repositories.FlightSeatRepository;
 import app.services.interfaces.FlightService;
+import app.util.aop.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,21 +25,21 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class FlightServiceImpl implements FlightService {
-
     private final FlightRepository flightRepository;
     private final FlightSeatRepository flightSeatRepository;
     private final AircraftRepository aircraftRepository;
     private final DestinationRepository destinationRepository;
 
-
     @Override
     @Transactional(readOnly = true)
+    @Loggable
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
+    @Loggable
     public Set<FlightSeat> getFreeSeats(Long id) {
         var flight = getById(id);
         if (flight == null) {
@@ -72,12 +73,14 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     @Transactional(readOnly = true)
+    @Loggable
     public Flight getFlightByCode(String code) {
         return flightRepository.getByCode(code);
     }
 
     @Override
     @Transactional(readOnly = true)
+    @Loggable
     public List<Flight> getFlightByDestinationsAndDates(String from, String to,
                                                         String start, String finish) {
         return getAllFlights().stream()
@@ -90,6 +93,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     @Transactional(readOnly = true)
+    @Loggable
     public List<Flight> getFlightsByDestinationsAndDepartureDate(Destination from, Destination to,
                                                                  LocalDate departureDate) {
         return flightRepository.getByFromAndToAndDepartureDate(from, to, departureDate);
@@ -97,18 +101,21 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     @Transactional(readOnly = true)
+    @Loggable
     public List<Flight> getListDirectFlightsByFromAndToAndDepartureDate(Airport airportCodeFrom, Airport airportCodeTo, Date departureDate) {
         return flightRepository.getListDirectFlightsByFromAndToAndDepartureDate(airportCodeFrom, airportCodeTo, departureDate);
     }
 
     @Override
     @Transactional(readOnly = true)
+    @Loggable
     public List<Flight> getListNonDirectFlightsByFromAndToAndDepartureDate(int airportIdFrom, int airportIdTo, Date departureDate) {
         return flightRepository.getListNonDirectFlightsByFromAndToAndDepartureDate(airportIdFrom, airportIdTo, departureDate);
     }
 
     @Override
     @Transactional(readOnly = true)
+    @Loggable
     public Flight getFlightByIdAndDates(Long id, String start, String finish) {
         var flight = flightRepository.findById(id);
         if (flight.isPresent()) {
@@ -122,16 +129,19 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     @Transactional(readOnly = true)
+    @Loggable
     public Flight getById(Long id) {
         return flightRepository.findById(id).orElse(null);
     }
 
     @Override
+    @Loggable
     public Flight save(Flight flight) {
         return flightRepository.save(flight);
     }
 
     @Override
+    @Loggable
     public Flight update(Long id, Flight updated) {
         updated.setId(id);
         if (updated.getAircraft() == null) {
@@ -153,6 +163,7 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
+    @Loggable
     public void deleteById(Long id) {
         flightRepository.deleteById(id);
     }
