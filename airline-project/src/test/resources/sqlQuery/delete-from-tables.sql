@@ -16,3 +16,5 @@ delete from user_roles;
 delete from roles;
 delete from admin;
 delete from airline_manager;
+delete from payments;
+delete from payments_bookings_id;

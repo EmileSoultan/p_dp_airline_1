@@ -11,6 +11,8 @@ import app.repositories.FlightSeatRepository;
 import app.services.interfaces.FlightService;
 import app.util.aop.Loggable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,13 @@ public class FlightServiceImpl implements FlightService {
     @Loggable
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Loggable
+    public Page<Flight> getAllFlights(Pageable pageable) {
+        return flightRepository.findAll(pageable);
     }
 
     @Override
@@ -82,8 +91,9 @@ public class FlightServiceImpl implements FlightService {
     @Transactional(readOnly = true)
     @Loggable
     public List<Flight> getFlightByDestinationsAndDates(String from, String to,
-                                                        String start, String finish) {
-        return getAllFlights().stream()
+                                                        String start, String finish,
+                                                        Pageable pageable) {
+        return getAllFlights(pageable).stream()
                 .filter(flight -> from == null || flight.getFrom().getCityName().equals(from))
                 .filter(flight -> to == null || flight.getTo().getCityName().equals(to))
                 .filter(flight -> start == null || flight.getDepartureDateTime().isEqual(LocalDateTime.parse(start)))
