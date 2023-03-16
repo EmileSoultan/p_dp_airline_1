@@ -10,6 +10,7 @@ import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -84,10 +85,12 @@ public class FlightRestController {
             @ApiParam(value = "Departure Data-Time", example = "2022-12-10T15:56:49")
             @RequestParam(name = "date_start", required = false) String start,
             @ApiParam(value = "Arrival Data-Time", example = "2022-12-10T15:57:49")
-            @RequestParam(name = "date_finish", required = false) String finish) {
+            @RequestParam(name = "date_finish", required = false) String finish,
+            Pageable pageable) {
+
 
         log.info("getFlightsByFromAndToAndDates: get flights with params");
-        var flightsList = flightService.getFlightByDestinationsAndDates(from, to, start, finish);
+        var flightsList = flightService.getFlightByDestinationsAndDates(from, to, start, finish, pageable);
 
         return flightsList.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
