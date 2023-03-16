@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "8ad2788d-dc33-439a-ae09-5288dba2b46d",
+		"_postman_id": "299424b1-63fc-42de-9a46-a25522b8b573",
 		"name": "p_dp_airline_1",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25403053"
+		"_exporter_id": "25907012"
 	},
 	"item": [
 		{
@@ -931,6 +931,355 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "FlightRestController",
+			"item": [
+				{
+					"name": "Get Free Seats by Flight ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{HOST}}/seats/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"seats",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Flight by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/flights/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"flights",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Flights By From And To And Dates",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"from\": {\r\n        \"id\": 1,\r\n        \"airportCode\": \"VKO\",\r\n        \"airportName\": \"Внуково\",\r\n        \"cityName\": \"Москва\",\r\n        \"timezone\": \"Россия\",\r\n        \"countryName\": \"GMT +3\"\r\n    },\r\n    \"to\": {\r\n        \"id\": 4,\r\n        \"airportCode\": \"OMS\",\r\n        \"airportName\": \"Омск\",\r\n        \"cityName\": \"Омск\",\r\n        \"timezone\": \"Россия\",\r\n        \"countryName\": \"GMT +6\"\r\n    },\r\n    \"departureDateTime\": \"2023-03-09T21:46:48.228593\",\r\n    \"arrivalDateTime\": \"2023-03-09T21:46:48.228593\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/flights/filter?from=Воронеж&to=Москва&date_start=2022-11-30T16:05:00&date_finish=2022-11-30T14:40:00",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"flights",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "Воронеж"
+								},
+								{
+									"key": "to",
+									"value": "Москва"
+								},
+								{
+									"key": "date_start",
+									"value": "2022-11-30T16:05:00"
+								},
+								{
+									"key": "date_finish",
+									"value": "2022-11-30T14:40:00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Flight By ID And Dates",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/flights/filter/dates?id=5&date_start=2022-11-30T22:30:00&date_finish=2022-11-30T18:25:00",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"flights",
+								"filter",
+								"dates"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5"
+								},
+								{
+									"key": "date_start",
+									"value": "2022-11-30T22:30:00"
+								},
+								{
+									"key": "date_finish",
+									"value": "2022-11-30T18:25:00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Flight Status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/flights/status",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"flights",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Flight",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"VKOOMS\",\r\n    \"from\": {\r\n        \"id\": 1,\r\n        \"airportCode\": \"VKO\",\r\n        \"airportName\": \"Внуково\",\r\n        \"cityName\": \"Москва\",\r\n        \"timezone\": \"Россия\",\r\n        \"countryName\": \"GMT +3\"\r\n    },\r\n    \"to\": {\r\n        \"id\": 4,\r\n        \"airportCode\": \"OMS\",\r\n        \"airportName\": \"Омск\",\r\n        \"cityName\": \"Омск\",\r\n        \"timezone\": \"Россия\",\r\n        \"countryName\": \"GMT +6\"\r\n    },\r\n    \"departureDateTime\": \"2023-03-09T21:46:48.228593\",\r\n    \"arrivalDateTime\": \"2023-03-09T21:46:48.228593\",\r\n    \"aircraftId\": 1,\r\n    \"flightStatus\": \"ON_TIME\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/flights",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"flights"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Flight",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"VKOOMS\",\r\n    \"from\": {\r\n        \"id\": 1,\r\n        \"airportCode\": \"VKO\",\r\n        \"airportName\": \"Внуково\",\r\n        \"cityName\": \"Москва\",\r\n        \"timezone\": \"Россия\",\r\n        \"countryName\": \"GMT +3\"\r\n    },\r\n    \"to\": {\r\n        \"id\": 4,\r\n        \"airportCode\": \"OMS\",\r\n        \"airportName\": \"Омск\",\r\n        \"cityName\": \"Омск\",\r\n        \"timezone\": \"Россия\",\r\n        \"countryName\": \"GMT +6\"\r\n    },\r\n    \"departureDateTime\": \"2023-03-09T21:46:48.228593\",\r\n    \"arrivalDateTime\": \"2023-03-09T21:46:48.228593\",\r\n    \"aircraftId\": 1,\r\n    \"flightStatus\": \"DELAYED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/flights/1",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"flights",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Booking by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/flights/10",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"flights",
+								"10"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{ACCESS_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
