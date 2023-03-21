@@ -6,6 +6,7 @@ import app.entities.Seat;
 import app.repositories.FlightRepository;
 import app.repositories.FlightSeatRepository;
 import app.services.interfaces.FlightSeatService;
+import app.util.aop.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class FlightSeatServiceImpl implements FlightSeatService {
-
     private final FlightSeatRepository flightSeatRepository;
     private final FlightRepository flightRepository;
 
-
     @Override
+    @Loggable
     public Set<FlightSeat> findAll() {
         Set<FlightSeat> flightSeatSet = new HashSet<>();
         flightSeatRepository.findAll().forEach(flightSeatSet::add);
@@ -30,17 +30,20 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     }
 
     @Override
+    @Loggable
     public FlightSeat findById(Long id) {
         return flightSeatRepository.findById(id).orElse(null);
     }
 
     @org.springframework.transaction.annotation.Transactional(readOnly = true)
     @Override
+    @Loggable
     public Set<FlightSeat> findByFlightId(Long flightId) {
         return flightSeatRepository.findFlightSeatsByFlightId(flightId);
     }
 
     @Override
+    @Loggable
     public Set<FlightSeat> findByFlightNumber(String flightNumber) {
         Set<FlightSeat> flightSeatSet = new HashSet<>();
         flightSeatRepository.findFlightSeatByFlight(flightRepository.getByCode(flightNumber))
@@ -50,6 +53,7 @@ public class FlightSeatServiceImpl implements FlightSeatService {
 
     @Transactional
     @Override
+    @Loggable
     public Set<FlightSeat> addFlightSeatsByFlightId(Long flightId) {
         Set<FlightSeat> seatsForAdd = new HashSet<>();
         Set<FlightSeat> allFlightSeats = findAll();
@@ -79,6 +83,7 @@ public class FlightSeatServiceImpl implements FlightSeatService {
 
     @Override
     @Transactional
+    @Loggable
     public Set<FlightSeat> addFlightSeatsByFlightNumber(String flightNumber) {
         Set<FlightSeat> seatsForAdd = new HashSet<>();
         Set<FlightSeat> allFlightSeats = findAll();
@@ -99,7 +104,6 @@ public class FlightSeatServiceImpl implements FlightSeatService {
                 seatsForAdd.add(flightSeat);
             }
 
-
             for (FlightSeat f : seatsForAdd) {
                 f = flightSeatRepository.save(f);
             }
@@ -109,61 +113,68 @@ public class FlightSeatServiceImpl implements FlightSeatService {
 
     @Override
     @Transactional
+    @Loggable
     public FlightSeat saveFlightSeat(FlightSeat flightSeat) {
         return flightSeatRepository.save(flightSeat);
     }
 
+    @Loggable
     public FlightSeat editFlightSeat(Long id, FlightSeat flightSeat) {
         var targetFlightSeat = flightSeatRepository.findById(id).orElse(null);
         flightSeat.setId(id);
 
-        if(flightSeat.getFare() == null) {
+        if (flightSeat.getFare() == null) {
             flightSeat.setFare(targetFlightSeat.getFare());
         }
-        if(flightSeat.getIsSold() == null) {
+        if (flightSeat.getIsSold() == null) {
             flightSeat.setIsSold(targetFlightSeat.getIsSold());
         }
-        if(flightSeat.getIsBooking() == null) {
+        if (flightSeat.getIsBooking() == null) {
             flightSeat.setIsBooking(targetFlightSeat.getIsBooking());
         }
-        if(flightSeat.getFlight() == null) {
+        if (flightSeat.getFlight() == null) {
             flightSeat.setFlight(targetFlightSeat.getFlight());
         }
-        if(flightSeat.getSeat() == null) {
+        if (flightSeat.getSeat() == null) {
             flightSeat.setSeat(targetFlightSeat.getSeat());
         }
         return flightSeatRepository.save(flightSeat);
     }
 
-   @Override
+    @Override
+    @Loggable
     public int getNumberOfFreeSeatOnFlight(Flight flight) {
         return flight.getAircraft().getSeatSet().size() - flightSeatRepository.findFlightSeatByFlight(flight).size();
     }
 
     @Override
+    @Loggable
     public Set<Seat> getSetOfFeeSeatOnFlightByFlightId(Long id) {
         var targetFlight = flightRepository.getById(id);
         var setOfSeat = targetFlight.getAircraft().getSeatSet();
         var setOfReservedSeat = flightSeatRepository.findFlightSeatByFlight(targetFlight)
                 .stream().map(FlightSeat::getSeat)
                 .collect(Collectors.toSet());
-        for(Seat s : setOfReservedSeat) {
+        for (Seat s : setOfReservedSeat) {
             setOfSeat.remove(s);
         }
         return setOfSeat;
     }
+
     @Override
-    public Set<FlightSeat> findFlightSeatsBySeat(Seat seat){
+    @Loggable
+    public Set<FlightSeat> findFlightSeatsBySeat(Seat seat) {
         return flightSeatRepository.findFlightSeatsBySeat(seat);
     }
 
-
     @Override
+    @Loggable
     public void deleteById(Long id) {
         flightSeatRepository.deleteById(id);
     }
 
     @Override
+    @Loggable
     public Set<FlightSeat> findNotSoldById(Long id) {
         return flightSeatRepository.findAllFlightsSeatByFlightIdAndIsSoldFalse(id);
     }
