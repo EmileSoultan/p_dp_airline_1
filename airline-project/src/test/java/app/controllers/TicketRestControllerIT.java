@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.dto.TicketDTO;
 import app.entities.Ticket;
 import app.services.interfaces.PassengerService;
 import app.services.interfaces.TicketService;
@@ -29,8 +30,9 @@ class TicketRestControllerIT extends IntegrationTestBase {
     void createTicket_test() throws Exception {
         Ticket newTicket = ticketService.findTicketByTicketNumber("ZX-3333");
         newTicket.setTicketNumber("SJ-9346");
+        TicketDTO ticketDTO = new TicketDTO(newTicket);
         mockMvc.perform(post("http://localhost:8080/api/tickets")
-                        .content(objectMapper.writeValueAsString(newTicket))
+                        .content(objectMapper.writeValueAsString(ticketDTO))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -50,9 +52,10 @@ class TicketRestControllerIT extends IntegrationTestBase {
         Ticket updatedTicket = ticketService.findTicketByTicketNumber("ZX-3333");
         Long ticketId = updatedTicket.getId();
         updatedTicket.setPassenger(passengerService.findById(4L));
+        TicketDTO ticketDTO = new TicketDTO(updatedTicket);
         mockMvc.perform(patch("http://localhost:8080/api/tickets/{id}", ticketId)
                         .content(
-                                objectMapper.writeValueAsString(updatedTicket)
+                                objectMapper.writeValueAsString(ticketDTO)
                         )
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

@@ -1,7 +1,10 @@
 package app.controllers.rest;
 
+
+import app.dto.TicketDTO;
 import app.entities.Ticket;
 import app.services.interfaces.TicketService;
+import app.util.mappers.TicketMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @Api(tags = "Ticket REST")
 @Tag(name = "Ticket REST", description = "API для операций с билетами")
 @Slf4j
@@ -30,23 +35,26 @@ import org.springframework.web.bind.annotation.RestController;
 public class TicketRestController {
     private final TicketService ticketService;
 
+    private final TicketMapper ticketMapper;
+
     @ApiOperation(value = "Create new Ticket")
     @ApiResponse(code = 201, message = "Ticket created")
     @PostMapping
-    public ResponseEntity<Ticket> createTicket(
+    public ResponseEntity<TicketDTO> createTicket(
             @ApiParam(
                     name = "ticket",
                     value = "Ticket model"
             )
-            @RequestBody Ticket ticket) {
+            @RequestBody @Valid TicketDTO ticketDTO) {
         log.info("methodName: createTicket - create new ticket");
-        return new ResponseEntity<>(ticketService.saveTicket(ticket), HttpStatus.CREATED);
+        ticketService.saveTicket(ticketMapper.convertToTicketEntity(ticketDTO));
+        return new ResponseEntity<>(ticketDTO, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Gets Ticket by ticketNumber")
     @ApiResponse(code = 200, message = "Found the ticket")
     @GetMapping("/ticket")
-    public ResponseEntity<Ticket> showTicket(
+    public ResponseEntity<TicketDTO> showTicket(
             @ApiParam(
                     name = "ticketNumber",
                     value = "ticketNumber",
@@ -56,14 +64,14 @@ public class TicketRestController {
         log.info("methodName: showTicketByTicketNumber - search ticket by ticketNumber");
         Ticket ticket = ticketService.findTicketByTicketNumber(ticketNumber);
         return ticket != null
-                ? new ResponseEntity<>(ticket, HttpStatus.OK)
+                ? new ResponseEntity<>(new TicketDTO(ticket), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @ApiOperation(value = "Edit Ticket by \"id\"")
     @ApiResponse(code = 200, message = "Ticket has been updated")
     @PatchMapping("/{id}")
-    public ResponseEntity<Ticket> updateTicket(
+    public ResponseEntity<?> updateTicket(
             @ApiParam(
                     name = "id",
                     value = "Ticket.id"
@@ -72,23 +80,28 @@ public class TicketRestController {
                     name = "ticket",
                     value = "Ticket model"
             )
-            @RequestBody Ticket ticket) {
+            @RequestBody @Valid TicketDTO ticketDTO) {
         log.info("methodName: updateTicket - update of current ticket");
-        ticket.setId(id);
-        return new ResponseEntity<>(ticketService.saveTicket(ticket), HttpStatus.OK);
+        ticketDTO.setId(id);
+        return new ResponseEntity<>(ticketService.saveTicket(ticketMapper.convertToTicketEntity(ticketDTO)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete Ticket by \"id\"")
     @ApiResponse(code = 200, message = "Ticket has been removed")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Ticket> deleteTicket(
+    public ResponseEntity<HttpStatus> deleteTicket(
             @ApiParam(
                     name = "id",
                     value = "Ticket.id"
             )
             @PathVariable Long id) {
-        log.info("deleteTicket: ticket of current destination. id={}", id);
-        ticketService.deleteTicketById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            ticketService.deleteTicketById(id);
+            log.info("deleteTicket: ticket of current destination. id={}", id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error("deleteTicket: error of deleting - ticket with id={} not found.", id);
+            return ResponseEntity.notFound().build();
+        }
     }
 }
