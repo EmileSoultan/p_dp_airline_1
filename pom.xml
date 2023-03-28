@@ -9,6 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>common</module>
         <module>airline-payments</module>
         <module>airline-project</module>
     </modules>
