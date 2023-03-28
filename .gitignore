@@ -1,4 +1,5 @@
-/target/
+/airline-project/target/
+/airline-payments/target/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
