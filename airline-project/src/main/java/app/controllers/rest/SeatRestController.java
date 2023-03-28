@@ -11,11 +11,13 @@ import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -135,13 +137,14 @@ public class SeatRestController {
             @ApiResponse(code = 404, message = "Seats not found")
     })
     public ResponseEntity<List<SeatDTO>> getAllSeatsByAircraftId(
+            @PageableDefault(sort = {"seatId"}) Pageable pageable,
             @ApiParam(
                     name = "aircraftId",
                     value = "Aircraft.id"
             )
             @PathVariable("aircraftId") long aircraftId) {
 
-        List<Seat> seats = seatService.findByAircraftId(aircraftId);
+        Page<Seat> seats = seatService.findByAircraftId(aircraftId, pageable);
 
         if (!seats.isEmpty()) {
             List<SeatDTO> seatDTOs = seats.stream().map(SeatDTO::new).collect(Collectors.toList());

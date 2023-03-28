@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import app.util.mappers.SeatMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 import java.util.ArrayList;
@@ -73,8 +75,8 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public List<Seat> findByAircraftId(Long id){
-        return seatRepository.findByAircraftId(id);
+    public Page<Seat> findByAircraftId(Long id, Pageable pageable){
+        return seatRepository.findByAircraftId(id, pageable);
     }
 
     @Override
