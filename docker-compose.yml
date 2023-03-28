@@ -4,7 +4,8 @@ services:
   app:
     image: 'airline-project:latest'
     build:
-      context: ""
+      context: .
+      dockerfile: Dockerfile_Project
     container_name: app
     ports:
       - "8080:8080"
@@ -12,7 +13,14 @@ services:
       - db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/airline_db
-
+  app-payment:
+    image: 'airline-payments:latest'
+    build:
+      context: .
+      dockerfile: Dockerfile_Payments
+    container_name: app-payment
+    ports:
+      - "8081:8081"
   db:
     image: 'postgres:12.12'
     container_name: db
