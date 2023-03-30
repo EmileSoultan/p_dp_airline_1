@@ -1,6 +1,5 @@
 package app.controllers;
 
-
 import app.entities.Destination;
 import app.entities.search.Search;
 import app.services.interfaces.DestinationService;
@@ -31,20 +30,21 @@ class SearchControllerIT extends IntegrationTestBase {
 
     @Test
     void CreateSearchResultCreate() throws Exception {
-        Destination from = destinationService.getDestinationById(2L);
-        Destination to = destinationService.getDestinationById(5L);
-        Search search = new Search(from, to, LocalDate.now(), LocalDate.now().plusDays(1L), 1);
+        Destination from = destinationService.getDestinationById(1L);
+        Destination to = destinationService.getDestinationById(2L);
+        Search search = new Search(from, to, LocalDate.of(2023, 04, 01), null, 1);
         mockMvc.perform(post("http://localhost:8080/api/search")
                         .content(objectMapper.writeValueAsString(search))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
     }
 
+
     @Test
     void CheckSearchResult() throws Exception {
-        Destination from = destinationService.getDestinationById(5L);
+        Destination from = destinationService.getDestinationById(1L);
         Destination to = destinationService.getDestinationById(2L);
-        Search search = new Search(from, to, LocalDate.now(), LocalDate.now().plusDays(1L), 1);
+        Search search = new Search(from, to, LocalDate.of(2023, 04, 01), null, 1);
         String search_result = mockMvc.perform(post("http://localhost:8080/api/search")
                         .content(objectMapper.writeValueAsString(search))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -54,5 +54,17 @@ class SearchControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/search/{id}", id))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void CheckSearchNotFound() throws Exception {
+        Destination from = destinationService.getDestinationById(1L);
+        Destination to = destinationService.getDestinationById(2L);
+        Search search = new Search(from, to, LocalDate.of(1999, 12, 01), null, 1);
+        mockMvc.perform(post("http://localhost:8080/api/search")
+                        .content(objectMapper.writeValueAsString(search))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
 
 }

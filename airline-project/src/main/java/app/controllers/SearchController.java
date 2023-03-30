@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.dto.SearchResultDTO;
 import app.entities.search.Search;
 import app.entities.search.SearchResult;
 import app.services.interfaces.SearchService;
@@ -37,25 +38,30 @@ public class SearchController {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "returned \"id\" of SearchResult"),
             @ApiResponse(code = 400, message = "search return error. check validField "),
-            @ApiResponse(code = 404, message = "Destination.from is null")
+            @ApiResponse(code = 404, message = "Destinations not found")
     })
-    public ResponseEntity<SearchResult> saveSearch(
+    public ResponseEntity<SearchResultDTO> saveSearch(
             @ApiParam(
                     name = "search",
                     value = "Search model"
             )
             @RequestBody @Valid Search search) {
-        if(search.getFrom() == null) {
+        if (search.getFrom() == null) {
             log.info("saveSearch: Destination.from is null");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            if(search.getReturnDate() !=null && !search.getReturnDate().isAfter(search.getDepartureDate())) {
+            if (search.getReturnDate() != null && !search.getReturnDate().isAfter(search.getDepartureDate())) {
                 log.info("saveSearch: DepartureDate must be earlier then ReturnDate");
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             SearchResult searchResult = searchService.saveSearch(search);
+            if (searchResult.getDepartFlight().isEmpty()) {
+                log.info("saveSearch: Destinations not found");
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
             log.info("saveSearch: new search result saved with id= {}", searchResult.getId());
-            return new ResponseEntity<>(searchResult, HttpStatus.CREATED);
+            SearchResultDTO result = new SearchResultDTO(searchResult);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
         }
     }
 
@@ -65,7 +71,7 @@ public class SearchController {
             @ApiResponse(code = 200, message = "search result found"),
             @ApiResponse(code = 404, message = "search result not found")
     })
-    public ResponseEntity<SearchResult> getSearchResultById(
+    public ResponseEntity<SearchResultDTO> getSearchResultById(
             @ApiParam(
                     name = "id",
                     value = "SearchResult.id"
@@ -76,7 +82,7 @@ public class SearchController {
 
         if (searchResult != null) {
             log.info("getSearchResultById: find search result with id = {}", id);
-            return new ResponseEntity<>(searchResult, HttpStatus.OK);
+            return new ResponseEntity<>(new SearchResultDTO(searchResult), HttpStatus.OK);
         } else {
             log.info("getSearchResultById: not find search result with id = {}", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

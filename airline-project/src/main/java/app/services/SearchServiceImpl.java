@@ -24,12 +24,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService {
-
     private final SearchRepository searchRepository;
     private final FlightService flightService;
     private final DestinationService destinationService;
     private final FlightSeatService flightSeatService;
     private final SearchResultRepository searchResultRepository;
+
 
     @Override
     @Transactional
