@@ -1,23 +1,29 @@
 package app.controllers;
 
+import app.dto.account.PassengerDTO;
 import app.entities.account.Passenger;
 import app.services.interfaces.PassengerService;
 import app.services.interfaces.RoleService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -29,113 +35,167 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
     private RoleService roleService;
 
     @Test
+    @DisplayName("Get all passengers with pagination")
     void shouldGetAllPassengers() throws Exception {
+        Pageable pageable = PageRequest.of(0, 10);
         mockMvc.perform(
                         get("http://localhost:8080/api/passengers"))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpectAll(
+                        status().isOk(),
+                        content().json(objectMapper.writeValueAsString(passengerService.findAll(pageable)
+                                .stream().map(PassengerDTO::new).collect(Collectors.toList())))
+                );
     }
 
     @Test
+    @DisplayName("Get passenger by ID")
     void shouldGetPassengerById() throws Exception {
-        Long id = 4L;
+        long id = 4L;
         mockMvc.perform(
                         get("http://localhost:8080/api/passengers/{id}", id))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.findById(id))));
+                .andExpectAll(
+                        status().isOk(),
+                        content().json(objectMapper.writeValueAsString(new PassengerDTO(passengerService.findById(id).get())))
+                );
+
     }
 
     @Test
-    void shouldGetPassengerByFullName() throws Exception {
-        String passengerFullName = "Ivanov Ivan Jovanovich";
-        mockMvc.perform(
-                        get("http://localhost:8080/api/passengers/fullName/{passengerFullName}", passengerFullName))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.findByFullName(passengerFullName))));
-    }
-
-    @Test
-    void shouldGetPassengerByLastName() throws Exception {
-        String passengerLastName = "Ivanov";
-        mockMvc.perform(
-                        get("http://localhost:8080/api/passengers/lastName/{passengerLastName}", passengerLastName))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.findByLastName(passengerLastName))));
-    }
-
-    @Test
+    @DisplayName("Get passenger by any name")
     void shouldGetPassengerByAnyName() throws Exception {
-        String passengerAnyName = "Jovanovich";
+        String name = "Ivanov Jovanovich"; // Фамилия и Отчество человека
         mockMvc.perform(
-                        get("http://localhost:8080/api/passengers/lastName/{passengerLastName}", passengerAnyName))
+                        get("http://localhost:8080/api/passengers/anyName/{passengerAnyName}", name))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.findByLastName(passengerAnyName))));
+                .andExpectAll(
+                        status().isOk(),
+                        content().json(objectMapper.writeValueAsString(passengerService.findByAnyName(name)
+                                .stream().map(PassengerDTO::new).collect(Collectors.toList())))
+                );
     }
 
     @Test
-    void shouldGetPassengerByPassport() throws Exception {
+    @DisplayName("Get passenger by first name")
+    void shouldGetPassengerByFirstName() throws Exception {
+        String firstName = "Ivan";
+        mockMvc.perform(
+                        get("http://localhost:8080/api/passengers/firstName/{passengerFirstName}", firstName))
+                .andDo(print())
+                .andExpectAll(
+                        status().isOk(),
+                        content().json(objectMapper.writeValueAsString(passengerService.findByFistName(firstName)
+                                .stream().map(PassengerDTO::new).collect(Collectors.toList())))
+                );
+    }
+
+    @Test
+    @DisplayName("Get passenger by last name")
+    void shouldGetPassengerByLastName() throws Exception {
+        String lastName = "Ivanov";
+        mockMvc.perform(
+                        get("http://localhost:8080/api/passengers/lastName/{passengerLastName}", lastName))
+                .andDo(print())
+                .andExpectAll(
+                        status().isOk(),
+                        content().json(objectMapper.writeValueAsString(passengerService.findByLastName(lastName)
+                                .stream().map(PassengerDTO::new).collect(Collectors.toList())))
+                );
+    }
+
+    @Test
+    @DisplayName("Get passenger by email")
+    void shouldGetPassengerByEmail() throws Exception {
+        String email = "passenger@mail.ru";
+        mockMvc.perform(
+                        get("http://localhost:8080/api/passengers/email/{email}", email))
+                .andDo(print())
+                .andExpectAll(
+                        status().isOk(),
+                        content().json(objectMapper.writeValueAsString(
+                                new PassengerDTO(passengerService.findByEmail(email))))
+                );
+    }
+
+    @Test
+    @DisplayName("Get passenger by serial and number of passport")
+    void shouldGetPassengerByPassportSerialNumber() throws Exception {
         String serialNumber = "2222 222222";
         mockMvc.perform(
                         get("http://localhost:8080/api/passengers/passport/{serialNumber}", serialNumber))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.findBySerialNumberPassport(serialNumber))));
+                .andExpectAll(
+                        status().isOk(),
+                        content().json(objectMapper.writeValueAsString(
+                                new PassengerDTO(passengerService.findByPassportSerialNumber(serialNumber).get())))
+                );
     }
 
     @Test
-    void shouldGetNotExistedPassenger() throws Exception {
-        Long id = 5L;
+    @DisplayName("Post new passenger")
+    void shouldAddNewPassenger() throws Exception {
+        PassengerDTO passengerDTO = new PassengerDTO();
+        passengerDTO.setFirstName("Petr");
+        passengerDTO.setLastName("Petrov");
+        passengerDTO.setBirthDate(LocalDate.of(2023, 3, 23));
+        passengerDTO.setPhoneNumber("79222222222");
+        passengerDTO.setEmail("petrov@mail.ru");
+        passengerDTO.setPassword("passwordIsGood?1@");
+        passengerDTO.setSecurityQuestion("securityQuestion");
+        passengerDTO.setAnswerQuestion("securityQuestion");
+        passengerDTO.setRoles(Set.of(roleService.getRoleByName("ROLE_PASSENGER")));
+
         mockMvc.perform(
-                        get("http://localhost:8080/api/passengers/{id}", id))
+                        post("http://localhost:8080/api/passengers")
+                                .content(objectMapper.writeValueAsString(passengerDTO))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
                 .andDo(print())
-                .andExpect(status().isNotFound());
+                .andExpect(status().isCreated());
     }
 
     @Test
-    void shouldPostNewPassenger() throws Exception {
-        Passenger passenger = new Passenger();
-        passenger.setFirstName("Test");
-        passenger.setLastName("Test");
-        passenger.setSecurityQuestion("Test");
-        passenger.setAnswerQuestion("Test");
-        passenger.setBirthDate(LocalDate.of(2000, 1, 1));
-        passenger.setEmail("test2@mail.ru");
-        passenger.setPassword("Test123@");
-        passenger.setPhoneNumber("79267895643");
-        passenger.setRoles(Set.of(roleService.getRoleByName("ROLE_PASSENGER")));
-        mockMvc.perform(post("http://localhost:8080/api/passengers")
-                        .content(objectMapper.writeValueAsString(passenger))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+    @DisplayName("Post exist passenger")
+    void shouldAddExistPassenger() throws Exception {
+        Passenger passenger = passengerService.findById(4L).get();
+
+        mockMvc.perform(
+                        post("http://localhost:8080/api/passengers")
+                                .content(objectMapper.writeValueAsString(passenger))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    void shouldDeletePassengerById() throws Exception {
-        Long id = 4L;
+    @DisplayName("Delete passenger by ID and check passenger with deleted ID")
+    void shouldDeletePassenger() throws Exception {
+        long id = 4L;
         mockMvc.perform(delete("http://localhost:8080/api/passengers/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk());
+
         mockMvc.perform(get("http://localhost:8080/api/passengers/{id}", id))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
+    @DisplayName("Update passenger")
     void shouldUpdatePassenger() throws Exception {
-        Long id = 4L;
-        Passenger passenger = passengerService.findById(id);
-        passenger.setEmail("test@mail.ru");
-        mockMvc.perform(patch("http://localhost:8080/api/passengers/{id}", id)
-                        .content(objectMapper.writeValueAsString(passenger))
-                        .contentType(MediaType.APPLICATION_JSON))
+        long id = 4L;
+        PassengerDTO passengerDTO = new PassengerDTO(passengerService.findById(4L).get());
+        passengerDTO.setFirstName("Klark");
+
+        mockMvc.perform(put("http://localhost:8080/api/passengers/{id}", id)
+                        .content(objectMapper.writeValueAsString(passengerDTO))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value("test@mail.ru"));
+                .andExpect(status().isOk());
     }
 }

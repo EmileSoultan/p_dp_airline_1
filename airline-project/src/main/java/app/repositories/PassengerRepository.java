@@ -12,17 +12,22 @@ import java.util.Optional;
 
 public interface PassengerRepository extends JpaRepository<Passenger, Long> {
 
-
     Page<Passenger> findAll(Pageable pageable);
 
-    Optional<Passenger> findByPassport_serialNumberPassport(String serialNumberPassport);
+    @Query(value = "SELECT p from Passenger p WHERE p.passport.serialNumberPassport = ?1")
+    Optional<Passenger> findByPassportSerialNumber(String passportSerialNumber);
 
     List<Passenger> findByLastName(String lastName);
 
     List<Passenger> findByFirstName(String firstName);
 
-    @Query(value = "SELECT passengers from Passenger passengers WHERE passengers.passport.middleName = ?1")
+    @Query(value = "SELECT passengers FROM Passenger passengers WHERE passengers.passport.middleName = :middleName")
     List<Passenger> findByMiddleName(String middleName);
+
+    @Query("SELECT p FROM Passenger p WHERE p.lastName = ?1 OR p.firstName = :name OR p.passport.middleName = :name")
+    List<Passenger> findByAnyName(String name);
+
+//    List<Passenger> findAllByFirstNameOrLastNameOrPassport_MiddleName(List<Passenger> passengersNames);
 
     Passenger findByEmail(String email);
 }

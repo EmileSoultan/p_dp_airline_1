@@ -1,5 +1,6 @@
 package app.controllers.rest;
 
+import app.dto.account.PassengerDTO;
 import app.entities.account.Passenger;
 import app.services.interfaces.PassengerService;
 import io.swagger.annotations.Api;
@@ -7,21 +8,27 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
-
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Api(tags = "Passenger REST")
 @Tag(name = "Passenger REST", description = "API для операций с пассажирами")
@@ -38,14 +45,22 @@ public class PassengerRestController {
             @ApiResponse(code = 200, message = "passenger found"),
             @ApiResponse(code = 404, message = "Passenger not found")
     })
-    @GetMapping("/email")
-    public ResponseEntity<Passenger> getByEmail(@RequestParam(name = "email") String email) {
-        log.info("getByEmail: find passenger by email. Email={}", email);
+    @GetMapping("/email/{email}")
+    public ResponseEntity<PassengerDTO> getByEmail(
+            @ApiParam(
+                    name = "email",
+                    example = "passenger@mail.ru",
+                    required = true
+            )
+            @PathVariable String email) {
+        log.info("getByEmail: find passenger by email = {}", email);
         Passenger passenger = passengerService.findByEmail(email);
+
         if (passenger == null) {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(passenger);
+
+        return new ResponseEntity<>(new PassengerDTO(passenger), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get list of all Passenger")
@@ -54,58 +69,63 @@ public class PassengerRestController {
             @ApiResponse(code = 404, message = "Passengers not found")
     })
     @GetMapping()
-    public ResponseEntity<List<Passenger>> getAll(@PageableDefault(sort = {"id"}) Pageable p) {
+    public ResponseEntity<List<PassengerDTO>> getAll(@PageableDefault(sort = {"id"}) Pageable p) {
         log.info("getAll: find all passengers");
         Page<Passenger> passengers = passengerService.findAll(p);
-        if (passengers == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(passengers.getContent());
+
+        return passengers.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(passengers.stream().map(PassengerDTO::new)
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get Passenger by it's \"id\"")
+
+    @ApiOperation(value = "Get Passenger by \"id\"")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passenger found"),
             @ApiResponse(code = 404, message = "Passenger not found")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Passenger> getById(
+    public ResponseEntity<PassengerDTO> getById(
             @ApiParam(
                     name = "id",
                     value = "User.id",
                     required = true
             )
             @PathVariable Long id) {
-        log.info("getById: find passenger by ID. id={}", id);
-        Passenger passenger = passengerService.findById(id);
-        if (passenger == null) {
-            return ResponseEntity.notFound().build();
+        log.info("getById: find passenger by ID = {}", id);
+        Optional<Passenger> passenger = passengerService.findById(id);
+
+        if (passenger.isEmpty()) {
+            log.error("getById: passenger with this id={} doesnt exist", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
         }
-        return ResponseEntity.ok(passenger);
+        return new ResponseEntity<>(new PassengerDTO(passenger.get()), HttpStatus.OK);
+
     }
 
 
-    @ApiOperation(value = "Get list of Passenger by full name")
+    @ApiOperation(value = "Get list of Passenger by first name", notes = "Be careful with letter 'ё' ")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passengers found"),
             @ApiResponse(code = 404, message = "Passengers not found")
     })
-    @GetMapping("/fullName/{passengerFullName}")
-    public ResponseEntity<List<Passenger>> getByFullName(
+    @GetMapping("/firstName/{passengerFirstName}")
+    public ResponseEntity<List<PassengerDTO>> getByFirstName(
             @ApiParam(
-                    name = "passengerFullName",
-                    value = "Passenger full name\n" +
-                            "format {lastName firstName middleName}\n" +
-                            "example: \"Иванов Пётр Владимирович\"",
+                    name = "passengerFirstName",
+                    example = " \"Иван\", \"Пётр\"",
                     required = true
             )
-            @PathVariable String passengerFullName) {
-        log.info("getByFullName: find passenger by fullName = {}", passengerFullName);
-        List<Passenger> passengerList = passengerService.findByFullName(passengerFullName);
-        if (passengerList == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(passengerList);
+            @PathVariable String passengerFirstName) {
+        log.info("getByFullName: find passenger by firstname = {}", passengerFirstName);
+        List<Passenger> passengerList = passengerService.findByFistName(passengerFirstName);
+
+        return passengerList.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(passengerList.stream().map(PassengerDTO::new)
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
 
@@ -115,99 +135,104 @@ public class PassengerRestController {
             @ApiResponse(code = 404, message = "Passengers not found")
     })
     @GetMapping("/lastName/{passengerLastName}")
-    public ResponseEntity<List<Passenger>> getByLastName(
+    public ResponseEntity<List<PassengerDTO>> getByLastName(
             @ApiParam(
                     name = "passengerLastName",
-                    value = "Passenger last name\n" +
-                            "example: \"Иванов\" \"Петров\" \"Евдокимов\"",
+                    value = "Passenger last name",
+                    example = "\"Иванов\" \"Петров\" \"Евдокимов\"",
                     required = true
             )
             @PathVariable String passengerLastName) {
-        log.info("getByLastName: find passengers by Last Name = {}", passengerLastName);
+        log.info("getByLastName: find passengers by lastname = {}", passengerLastName);
         List<Passenger> passengerList = passengerService.findByLastName(passengerLastName);
-        if (passengerList == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(passengerList);
+
+        return passengerList.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(passengerList.stream().map(PassengerDTO::new)
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
 
-    @ApiOperation(value = "Get list of Passengers by any name, any format of string. " +
-            "WARNING: this method loads the system, better use search by last name or full name. " +
-            "If you need a search by other parameters, contact the backend developer.")
+    @ApiOperation(value = "Get list of Passengers by any name (firstname, lastname, middlename")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passengers found"),
             @ApiResponse(code = 404, message = "Passengers not found")
     })
     @GetMapping("/anyName/{passengerAnyName}")
-    public ResponseEntity<List<Passenger>> getByAnyName(
+    public ResponseEntity<List<PassengerDTO>> getByAnyName(
             @ApiParam(
                     name = "passengerAnyName",
-                    value = "Passenger any name, custom format\n" +
-                            "example: \"Пётр\" \"Петрович Пётр\" \"Пётр Петров Петрович\"",
+                    value = "Passenger any name, custom format\n",
+                    example = "\"Пётр\" \"Петрович Пётр\" \"Пётр Петров Петрович\"",
                     required = true
             )
             @PathVariable String passengerAnyName) {
         log.info("getByAnyName: find passenger by anyName = {}", passengerAnyName);
         List<Passenger> passengerList = passengerService.findByAnyName(passengerAnyName);
-        if (passengerList == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(passengerList);
+
+        return passengerList.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(passengerList.stream().map(PassengerDTO::new)
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
 
-    @ApiOperation(value = "Get Passenger by serialNumberPassport")
+    @ApiOperation(value = "Get Passenger by passportSerialNumber")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passenger found"),
             @ApiResponse(code = 404, message = "Passenger not found")
     })
     @GetMapping("/passport/{serialNumber}")
-    public ResponseEntity<Passenger> getByPassportSerialNumber(
+    public ResponseEntity<PassengerDTO> getByPassportSerialNumber(
             @ApiParam(
-                    name = "serialNumber",
-                    value = "Passenger serial and number of passport\n" +
-                            "example: \"7777 777777\"",
+                    name = "passportSerialNumber",
+                    value = "Passenger serial and number of passport\n",
                     example = "3333 333333",
                     required = true
             )
             @PathVariable String serialNumber) {
         log.info("getByPassportSerialNumber: find passenger by PassportSerialNumber. serialNumber={}", serialNumber);
-        Passenger passenger = passengerService.findBySerialNumberPassport(serialNumber);
-        if (passenger == null) {
-            return ResponseEntity.notFound().build();
+        Optional<Passenger> passenger = passengerService.findByPassportSerialNumber(serialNumber);
+
+        if (passenger.isEmpty()) {
+            log.error("getByPassportSerialNumber: passenger with this serial number doesnt exist");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(passengerService.findBySerialNumberPassport(serialNumber));
+
+        return new ResponseEntity<>(new PassengerDTO(passenger.get()), HttpStatus.OK);
     }
 
 
     @ApiOperation(value = "Create new Passenger", notes = "Create method requires in model field \"@type\": \"passenger\"")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "passenger added"),
+            @ApiResponse(code = 201, message = "passenger created"),
             @ApiResponse(code = 400, message = "Bad request")
     })
     @PostMapping()
-    public ResponseEntity<Passenger> addPassenger(
+    public ResponseEntity<PassengerDTO> addPassenger(
             @ApiParam(
                     name = "passenger",
                     value = "Passenger model"
             )
-            @RequestBody @Valid Passenger passenger) {
-        log.info("addPassenger: add new passenger. passenger={}", passenger.toString());
-        if (passenger.getId() != null) {
-            return ResponseEntity.badRequest().build();
+            @RequestBody @Valid PassengerDTO passengerDTO) {
+
+        if (passengerDTO.getId() != null) {
+            log.error("addPassenger: passenger already exist in database");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok(passengerService.save(passenger));
+
+        log.info("addPassenger: new passenger added");
+        return new ResponseEntity<>(new PassengerDTO(passengerService.save(passengerDTO.convertToEntity())),
+                HttpStatus.CREATED);
     }
 
-
-    @ApiOperation(value = "Edit Passenger")
+    @ApiOperation(value = "Edit Passenger", notes = "Update method requires in model field \"@type\": \"passenger\"")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "passenger edited"),
-            @ApiResponse(code = 400, message = "Bad request")
+            @ApiResponse(code = 404, message = "passenger for edit not found")
     })
-    @PatchMapping(value = "/{id}")
-    public ResponseEntity<Passenger> editPassenger(
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<PassengerDTO> editPassenger(
             @ApiParam(
                     name = "id",
                     value = "User.id",
@@ -218,30 +243,33 @@ public class PassengerRestController {
                     name = "passenger",
                     value = "Passenger model"
             )
-            @RequestBody @Valid Passenger passenger) {
-        log.info("editPassenger: edit passenger by id. id={} passenger={}", id, passenger.toString());
-        var targetPassenger = passengerService.findById(id);
-        if (targetPassenger == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(passengerService.update(id, passenger));
+            @RequestBody @Valid PassengerDTO passengerDTO) {
+        passengerDTO.setId(id);
+
+        log.info("editPassenger: edit passenger={}", passengerDTO);
+        return new ResponseEntity<>(new PassengerDTO(passengerService.update(passengerDTO.convertToEntity())),
+                HttpStatus.OK);
     }
 
 
     @ApiOperation(value = "Delete Passenger by \"id\"")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "passenger deleted")
+            @ApiResponse(code = 200, message = "passenger deleted"),
+            @ApiResponse(code = 404, message = "passenger for delete not found")
     })
     @DeleteMapping(value = "/{id}")
-    public void deletePassenger(
+    public ResponseEntity<HttpStatus> deletePassenger(
             @ApiParam(
                     name = "id",
                     value = "User.id",
                     required = true
             )
             @PathVariable Long id) {
-        log.info("deletePassenger: delete passenger by id. id={}", id);
-        passengerService.deleteById(id);
-    }
 
+        log.info("deletePassenger: passenger with id={} deleted", id);
+        passengerService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
+
+

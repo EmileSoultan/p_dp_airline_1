@@ -53,6 +53,7 @@ public class AccountDTO {
     private Set<Role> roles;
 
     public AccountDTO(Account account) {
+        this.id = account.getId();
         this.email = account.getEmail();
         this.password = account.getPassword();
         this.securityQuestion = account.getSecurityQuestion();
