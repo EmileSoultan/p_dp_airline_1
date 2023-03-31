@@ -12,11 +12,15 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,7 +62,8 @@ public class FlightSeatRestController {
             @ApiResponse(code = 404, message = "Not found")
     })
     @GetMapping("/all-flight-seats/{flightId}")
-    public ResponseEntity<Set<FlightSeatDTO>> getFlightSeatsByFlightId(
+    public ResponseEntity<List<FlightSeatDTO>> getFlightSeatsByFlightId(
+            @PageableDefault(sort = {"seatId"}) Pageable pageable,
             @ApiParam(
                     name = "flightId",
                     value = "Flight.id",
@@ -73,23 +78,23 @@ public class FlightSeatRestController {
 
         if (isSold != null && !isSold) {
             log.info("getFlightSeatById: get not sold FlightSeat by id={}", flightId);
-            Set<FlightSeat> result = flightSeatService.findNotSoldById(flightId);
+            Page<FlightSeat> result = flightSeatService.findNotSoldById(flightId, pageable);
             return (result.isEmpty()) ?
                     ResponseEntity.notFound().build() :
                     ResponseEntity.ok(result
                             .stream()
                             .map(FlightSeatDTO::new)
-                            .collect(Collectors.toSet()));
+                            .collect(Collectors.toList()));
         }
 
         log.info("getFlightSeatsByFlightId: get flight seats by flightId. flightId={}", flightId);
-        Set<FlightSeat> result = flightSeatService.findByFlightId(flightId);
+        Page<FlightSeat> result = flightSeatService.findByFlightId(flightId, pageable);
         return (result.isEmpty()) ?
                 ResponseEntity.notFound().build() :
                 ResponseEntity.ok(result
                         .stream()
                         .map(FlightSeatDTO::new)
-                        .collect(Collectors.toSet())
+                        .collect(Collectors.toList() )
                 );
     }
 

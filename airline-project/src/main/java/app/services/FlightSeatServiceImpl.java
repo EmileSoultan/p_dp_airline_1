@@ -8,6 +8,8 @@ import app.repositories.FlightSeatRepository;
 import app.services.interfaces.FlightSeatService;
 import app.util.aop.Loggable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,7 +32,11 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     }
 
     @Override
-    @Loggable
+    public Page<FlightSeat> findAll(Pageable pageable) {
+        return flightSeatRepository.findAll(pageable);
+    }
+
+    @Override
     public FlightSeat findById(Long id) {
         return flightSeatRepository.findById(id).orElse(null);
     }
@@ -43,7 +49,11 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     }
 
     @Override
-    @Loggable
+    public Page<FlightSeat> findByFlightId(Long flightId, Pageable pageable) {
+        return flightSeatRepository.findFlightSeatsByFlightId(flightId, pageable);
+    }
+
+    @Override
     public Set<FlightSeat> findByFlightNumber(String flightNumber) {
         Set<FlightSeat> flightSeatSet = new HashSet<>();
         flightSeatRepository.findFlightSeatByFlight(flightRepository.getByCode(flightNumber))
@@ -177,5 +187,10 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     @Loggable
     public Set<FlightSeat> findNotSoldById(Long id) {
         return flightSeatRepository.findAllFlightsSeatByFlightIdAndIsSoldFalse(id);
+    }
+
+    @Override
+    public Page<FlightSeat> findNotSoldById(Long id, Pageable pageable) {
+        return flightSeatRepository.findAllFlightsSeatByFlightIdAndIsSoldFalse(id, pageable);
     }
 }
