@@ -51,7 +51,7 @@ class TicketRestControllerIT extends IntegrationTestBase {
     void updateTicket_test() throws Exception {
         Ticket updatedTicket = ticketService.findTicketByTicketNumber("ZX-3333");
         Long ticketId = updatedTicket.getId();
-        updatedTicket.setPassenger(passengerService.findById(4L));
+        updatedTicket.setPassenger(passengerService.findById(4L).get());
         TicketDTO ticketDTO = new TicketDTO(updatedTicket);
         mockMvc.perform(patch("http://localhost:8080/api/tickets/{id}", ticketId)
                         .content(

@@ -43,6 +43,7 @@ public class AccountRestController {
     public ResponseEntity<List<AccountDTO>> getAllAccounts(@PageableDefault(sort = {"id"})  Pageable pageable) {
         log.info("getAllUsers: get all users");
         var users = accountService.getAllAccounts(pageable);
+
         return users.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(
