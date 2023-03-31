@@ -6,6 +6,8 @@ import app.services.interfaces.FlightSeatService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -28,10 +30,10 @@ class FlightSeatControllerIT extends IntegrationTestBase {
     @Test
     void shouldGetFlightSeatsByFlightId() throws Exception {
         String flightNumber = "1";
-        String expected = objectMapper.writeValueAsString(flightSeatService.findByFlightId(Long.parseLong(flightNumber))
+        String expected = objectMapper.writeValueAsString(flightSeatService.findByFlightId((Long.parseLong(flightNumber)), PageRequest.of(0, 835, Sort.by("seatId")))
                 .stream()
                 .map(FlightSeatDTO::new)
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toList()));
 
         String actual = mockMvc.perform(
                         get("http://localhost:8080/api/flight-seats/all-flight-seats/{flightNumber}", flightNumber))
@@ -44,10 +46,10 @@ class FlightSeatControllerIT extends IntegrationTestBase {
     @Test
     void shouldGetNonSoldFlightSeatsByFlightId() throws Exception {
         String flightNumber = "1";
-        String expected = objectMapper.writeValueAsString(flightSeatService.findNotSoldById(Long.parseLong(flightNumber))
+        String expected = objectMapper.writeValueAsString(flightSeatService.findNotSoldById((Long.parseLong(flightNumber)), PageRequest.of(0, 835, Sort.by("seatId")))
                 .stream()
                 .map(FlightSeatDTO::new)
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toList()));
 
         String actual = mockMvc.perform(
                         get("http://localhost:8080/api/flight-seats/all-flight-seats/{flightNumber}", flightNumber).param("isSold", "false"))

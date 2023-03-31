@@ -3,6 +3,8 @@ package app.repositories;
 import app.entities.Flight;
 import app.entities.FlightSeat;
 import app.entities.Seat;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -11,9 +13,13 @@ import java.util.Set;
 
 public interface FlightSeatRepository extends CrudRepository<FlightSeat, Long> {
 
+    Page<FlightSeat> findAll(Pageable pageable);
+
     Set<FlightSeat> findFlightSeatsByFlightId(Long flightId);
+    Page<FlightSeat> findFlightSeatsByFlightId(Long flightId, Pageable pageable);
 
     Set<FlightSeat> findAllFlightsSeatByFlightIdAndIsSoldFalse(Long flightId);
+    Page<FlightSeat> findAllFlightsSeatByFlightIdAndIsSoldFalse(Long flightId, Pageable pageable);
 
     Set<FlightSeat> findFlightSeatByFlight(Flight flight);
 

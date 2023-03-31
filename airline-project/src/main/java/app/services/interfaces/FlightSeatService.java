@@ -3,6 +3,8 @@ package app.services.interfaces;
 import app.entities.Flight;
 import app.entities.FlightSeat;
 import app.entities.Seat;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Set;
 
@@ -10,9 +12,12 @@ public interface FlightSeatService {
 
     Set<FlightSeat> findAll();
 
+    Page<FlightSeat> findAll(Pageable pageable);
+
     FlightSeat findById(Long id);
 
     Set<FlightSeat> findByFlightId(Long flightId);
+    Page<FlightSeat> findByFlightId(Long flightId, Pageable pageable);
     Set<FlightSeat> findByFlightNumber(String flightNumber);
 
     Set<FlightSeat> addFlightSeatsByFlightId(Long flightId);
@@ -27,4 +32,5 @@ public interface FlightSeatService {
     void deleteById(Long id);
 
     Set<FlightSeat> findNotSoldById(Long id);
+    Page<FlightSeat> findNotSoldById(Long id, Pageable pageable);
 }
