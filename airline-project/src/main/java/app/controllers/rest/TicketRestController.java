@@ -1,6 +1,7 @@
 package app.controllers.rest;
 
 
+import app.dto.AircraftDTO;
 import app.dto.TicketDTO;
 import app.entities.Ticket;
 import app.services.interfaces.TicketService;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(tags = "Ticket REST")
 @Tag(name = "Ticket REST", description = "API для операций с билетами")
@@ -33,9 +37,20 @@ import javax.validation.Valid;
 @RequestMapping("/api/tickets")
 @RequiredArgsConstructor
 public class TicketRestController {
-    private final TicketService ticketService;
 
+    private final TicketService ticketService;
     private final TicketMapper ticketMapper;
+
+    @GetMapping()
+    @ApiOperation(value = "Get list of all Tickets")
+    public ResponseEntity<List<TicketDTO>> getAllTicket(Pageable pageable) {
+        log.info("getAllTicket: get all tickets");
+        var tickets = ticketService.findAll(pageable);
+        return tickets.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(tickets.getContent().stream().map(TicketDTO::new)
+                .collect(Collectors.toList()), HttpStatus.OK);
+    }
 
     @ApiOperation(value = "Create new Ticket")
     @ApiResponse(code = 201, message = "Ticket created")
@@ -83,7 +98,8 @@ public class TicketRestController {
             @RequestBody @Valid TicketDTO ticketDTO) {
         log.info("methodName: updateTicket - update of current ticket");
         ticketDTO.setId(id);
-        return new ResponseEntity<>(ticketService.saveTicket(ticketMapper.convertToTicketEntity(ticketDTO)), HttpStatus.OK);
+        return new ResponseEntity<>(ticketService.updateTicket(id, ticketMapper.convertToTicketEntity(ticketDTO)),
+                HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete Ticket by \"id\"")

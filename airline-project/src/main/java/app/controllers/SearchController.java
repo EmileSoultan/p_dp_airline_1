@@ -30,7 +30,7 @@ public class SearchController {
 
     @PostMapping
     @ApiOperation(value = "Create new search",
-            notes = "Минимально необходимые поля для корретной работы контроллера:\n" +
+            notes = "Минимально необходимые поля для корректной работы контроллера:\n" +
                     " \"from\": {\"airportCode\": \"value\"},\n" +
                     " \"to\": {\"airportCode\": \"value\"},\n" +
                     " \"departureDate\": \"yyyy-mm-dd\",\n" +

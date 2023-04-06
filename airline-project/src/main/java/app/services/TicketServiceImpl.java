@@ -4,6 +4,8 @@ import app.entities.Ticket;
 import app.repositories.*;
 import app.services.interfaces.TicketService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +18,15 @@ public class TicketServiceImpl implements TicketService {
     private final FlightSeatRepository flightSeatRepository;
 
     @Override
+    public Page<Ticket> findAll(Pageable pageable) {
+        return ticketRepository.findAll(pageable);
+    }
+
+    @Override
     public Ticket findTicketByTicketNumber(String ticketNumber) {
         return ticketRepository.findByTicketNumberContainingIgnoreCase(ticketNumber);
     }
+
 
     @Override
     @Transactional
@@ -38,4 +46,24 @@ public class TicketServiceImpl implements TicketService {
                 ).orElse(null));
         return ticketRepository.save(ticket);
     }
+
+    @Override
+    @Transactional
+    public Ticket updateTicket(Long id, Ticket updatedTicket) {
+        updatedTicket.setId(id);
+        if (updatedTicket.getFlight() == null) {
+            updatedTicket.setFlight(ticketRepository.findTicketById(id).getFlight());
+        }
+        if (updatedTicket.getTicketNumber() == null) {
+            updatedTicket.setTicketNumber(ticketRepository.findTicketById(updatedTicket.getId()).getTicketNumber());
+        }
+        if (updatedTicket.getPassenger() == null) {
+            updatedTicket.setPassenger(ticketRepository.findTicketById(id).getPassenger());
+        }
+        if (updatedTicket.getFlightSeat() == null) {
+            updatedTicket.setFlightSeat(ticketRepository.findTicketById(id).getFlightSeat());
+        }
+        return updatedTicket;
+    }
+
 }
