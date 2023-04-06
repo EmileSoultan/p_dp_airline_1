@@ -12,4 +12,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             "LEFT JOIN FETCH flight.aircraft aircraft LEFT JOIN FETCH aircraft.seatSet seatSet " +
             "WHERE ticket.ticketNumber = ?1")
     Ticket findByTicketNumberContainingIgnoreCase(String ticketNumber);
+
+
+    Ticket findTicketById(long id);
 }
