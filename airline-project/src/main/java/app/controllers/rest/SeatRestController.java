@@ -156,7 +156,6 @@ public class SeatRestController {
         }
     }
 
-
     @PostMapping("/aircraft/{aircraftId}")
     @ApiOperation(value = "Create new array of Seat")
     @ApiResponses(value = {
@@ -164,25 +163,31 @@ public class SeatRestController {
             @ApiResponse(code = 400, message = "seats not created"),
             @ApiResponse(code = 404, message = "aircraft with this id not found")
     })
-    public ResponseEntity<List<SeatDTO>> saveManySeatsByAircraftId(
-            @ApiParam(
-                    name = "aircraftId",
-                    value = "Aircraft.id"
-            )
-            @PathVariable("aircraftId") long aircraftId,
-            @ApiParam(
-                    name = "seats",
-                    value = "Seat model"
-            )
-            @RequestBody @Valid List<SeatDTO> seatsDTO) {
-
+    public ResponseEntity<List<SeatDTO>> saveManySeatsByAircraftId(@PathVariable("aircraftId") long aircraftId) {
         if (aircraftService.findById(aircraftId) == null){
             log.error("saveManySeatsByAircraftId: aircraft with id = {} not found", aircraftId);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        List<SeatDTO> savedSeats = seatService.saveManySeats(seatsDTO, aircraftId);
+        List<SeatDTO> savedSeats = seatService.saveManySeats(aircraftId);
         log.info("saveManySeatsByAircraftId: saved {} new seats with aircraft.id = {}", savedSeats.size(), aircraftId);
         return new ResponseEntity<>(savedSeats, HttpStatus.CREATED);
+    }
 
+    @GetMapping
+    @ApiOperation(value = "Get all Seats")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Seats found"),
+            @ApiResponse(code = 404, message = "Seats not found")
+    })
+    public ResponseEntity<List<SeatDTO>> getAllSeats(@PageableDefault() Pageable pageable) {
+        Page<Seat> seats = seatService.findAll(pageable);
+        if (!seats.isEmpty()) {
+            List<SeatDTO> seatDTOs = seats.stream().map(SeatDTO::new).collect(Collectors.toList());
+            log.info("getAllSeats: found {} seats", seatDTOs.size());
+            return new ResponseEntity<>(seatDTOs, HttpStatus.OK);
+        } else {
+            log.info("getAllSeats: seats not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
