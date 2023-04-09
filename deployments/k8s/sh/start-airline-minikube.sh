@@ -3,7 +3,7 @@ minikube start
 # останавливаем существующие поды приложения, чтобы впоследствии закешировать актуальный образ
 kubectl --namespace default scale deployment airline-project-deployment --replicas 0
 kubectl --namespace default scale deployment airline-payments-deployment --replicas 0
-# приостанавливаем выполнение скрипта на 10 секунд, чтобы контейнер успел остановиться
+# приостанавливаем выполнение скрипта на 10 секунд, чтобы пода успела удалиться
 sleep 10
 # удаляем закешированный в миникубе образ приложения (airline-project)
 # если на этом шаге в логах видите ошибку, попробуйте увеличить время на предыдущем шаге

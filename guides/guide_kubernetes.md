@@ -63,11 +63,11 @@ Minikube - это Kubernetes с одной нодой. Из-за этой осо
 Ознакомьтесь с существующими Kubernetes-объектами в нашем проекте в директории deployments/k8s. Попробуем их развернуть:
 
 1. Запустите Minikube <code>minikube start</code>
-2. Находясь в директории deployments/k8s, выполните команду <code>kubectl apply -f db-deployment.yaml</code>, чтобы развернуть БД
+2. Находясь в директории deployments/k8s, выполните команду <code>kubectl apply -f db-statefulset.yaml</code>, чтобы развернуть БД
 3. Выполните команду <code>kubectl apply -f db-service.yaml</code>, чтобы создать Service для БД 
 4. Выполните команду <code>minikube image load airline-project</code>, чтобы загрузить образ нашего основого приложения в кеш Minikube
 5. Разверните оставшиеся объекты (ingress.yaml можно пока не трогать)
-6. Выполните команды <code>kubectl get service</code>, <code>kubectl get deployment</code>, <code>kubectl get pod</code>, чтобы увидеть созданные вами объекты
+6. Выполните команды <code>kubectl get service</code>, <code>kubectl get deployment</code>, <code>kubectl get statefulset</code>, <code>kubectl get pod</code>, чтобы увидеть созданные вами объекты
 7. Выполните команду <code>minikube dashboard</code>. У вас откроется браузер с графическим интерфейсом Kubernetes
 8. Ознакомьтесь с дашбордом. Он позволяет взаимодействовать с Kubernetes в графической среде, что в некоторых случаях может быть удобнее, чем использовать kubectl. Здесь вы можете найти ранее созданные объекты. Попробуйте посмотреть логи нашего приложения. Для этого перейдите во вкладку Pods, нажмите на значок с тремя точками справа от нужной Pod'ы, нажмите Logs.
 
@@ -97,7 +97,7 @@ Minikube - это Kubernetes с одной нодой. Из-за этой осо
 
 1. Удалим контейнер <code>docker rm airline-project</code>
 2. Удалим старый образ <code>docker image rm airline-project</code>
-3. Сделаем новый образ, находясь в директории нашего проекта <code>docker build -t airline-project .</code>
+3. Сделаем новый образ, находясь в корне нашего проекта <code>docker build -f Dockerfile_Project -t airline-project .</code>
 4. Запустим minikube <code>minikube start</code>
 5. Остановим ранее запущенные Pod'ы проекта <code>kubectl --namespace default scale deployment airline-project-deployment --replicas 0</code>
 6. Удалим старый закешированный minikube'ом образ приложения <code>minikube image rm airline-project</code>
