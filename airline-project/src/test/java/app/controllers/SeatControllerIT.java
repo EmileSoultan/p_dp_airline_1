@@ -105,6 +105,25 @@ public class SeatControllerIT extends IntegrationTestBase {
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
 
+    @Test
+    void shouldGetAllSeats() throws Exception {
+        mockMvc.perform(get("http://localhost:8080/api/seats"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldCreateManySeats() throws Exception {
+        mockMvc.perform(post("http://localhost:8080/api/seats/aircraft/{aircraftId}", 1))
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    void creatingManySeatsForNotExistedAircraft() throws Exception {
+        mockMvc.perform(post("http://localhost:8080/api/seats/aircraft/{aircraftId}", 100))
+                .andExpect(status().isNotFound());
     }
 }

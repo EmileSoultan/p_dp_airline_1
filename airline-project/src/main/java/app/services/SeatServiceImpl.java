@@ -1,7 +1,10 @@
 package app.services;
 
 import app.dto.SeatDTO;
+import app.entities.Category;
 import app.entities.Seat;
+import app.enums.AirbusA320Seats;
+import app.enums.CategoryType;
 import app.exceptions.ViolationOfForeignKeyConstraintException;
 import app.repositories.FlightSeatRepository;
 import app.repositories.SeatRepository;
@@ -18,6 +21,8 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -80,14 +85,36 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public List<SeatDTO> saveManySeats(List<SeatDTO> seatsDTO, long aircraftId) {
-        List<SeatDTO> savedSeatsDTO = new ArrayList<>();
+    @Transactional
+    public List<SeatDTO> saveManySeats(long aircraftId) {
+        Category economyCategory = categoryService.findByCategoryType(CategoryType.ECONOMY);
+        Category businessCategory = categoryService.findByCategoryType(CategoryType.BUSINESS);
+        List<SeatDTO> savedSeatsDTO = new ArrayList<>(158); //158 - количество мест в enum AirbusA320Seats
+        AirbusA320Seats[] enumSeats = AirbusA320Seats.values();
+        List<SeatDTO> seatsDTO = Stream.generate(SeatDTO::new)
+                .limit(158).collect(Collectors.toList());
+        int enumSeatsCounter = 0;
         for (SeatDTO seatDTO : seatsDTO) {
+            seatDTO.setSeatNumber(enumSeats[enumSeatsCounter].getNumber());
             seatDTO.setAircraftId(aircraftId);
+            if (enumSeatsCounter < 8) {                     //назначаем категории (8 - бизнес, остальное - эконом)
+                seatDTO.setCategory(businessCategory);
+            } else {
+                seatDTO.setCategory(economyCategory);
+            }
+            seatDTO.setIsNearEmergencyExit(enumSeats[enumSeatsCounter].isNearEmergencyExit());
+            seatDTO.setIsLockedBack(enumSeats[enumSeatsCounter].isLockedBack());
+            enumSeatsCounter += 1;
+
             Seat savedSeat = save(seatMapper.convertToSeatEntity(seatDTO));
             savedSeatsDTO.add(new SeatDTO(savedSeat));
         }
         return savedSeatsDTO;
+    }
+
+    @Override
+    public Page<Seat> findAll(Pageable pageable) {
+        return seatRepository.findAll(pageable);
     }
 
 }
