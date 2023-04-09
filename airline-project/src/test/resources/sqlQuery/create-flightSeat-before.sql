@@ -2,6 +2,15 @@ insert into aircrafts(id, aircraft_number, model, model_year, flight_range)
 values (1, '17000012', 'Embraer E170STD', 2002, 3800),
        (2, '5134', 'Airbus A320-200', 2011, 4300);
 
+INSERT INTO category(id, category_type)
+VALUES (1, 'FIRST');
+INSERT INTO category(id, category_type)
+VALUES (2, 'BUSINESS');
+INSERT INTO category(id, category_type)
+VALUES (3, 'PREMIUM_ECONOMY');
+INSERT INTO category(id, category_type)
+VALUES (4, 'ECONOMY');
+
 INSERT INTO flights (id, code, arrival_date, departure_date, flight_status, aircraft_id, from_id, to_id)
 VALUES (1, 'MSKOMSK', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ON_TIME',
         (SELECT aircrafts.id FROM aircrafts WHERE aircrafts.id = 1),
@@ -85,3 +94,4 @@ INSERT INTO flight_seats (id, fare, is_registered, is_sold, flight_id, seat_id)
 VALUES (4, 500, true, false,
         (SELECT flights.id FROM flights WHERE flights.id = 1),
         (SELECT seats.id FROM seats WHERE seats.id = 4));
+

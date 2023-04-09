@@ -3,9 +3,14 @@ package app.services.interfaces;
 import app.entities.Flight;
 import app.entities.FlightSeat;
 import app.entities.Seat;
+import app.enums.CategoryType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface FlightSeatService {
@@ -32,5 +37,10 @@ public interface FlightSeatService {
     void deleteById(Long id);
 
     Set<FlightSeat> findNotSoldById(Long id);
+
+    List<FlightSeat> findFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type);
+
+    List<FlightSeat> findSingleFlightSeatByFlightIdAndSeatCategory(Long id, CategoryType type);
+
     Page<FlightSeat> findNotSoldById(Long id, Pageable pageable);
 }
