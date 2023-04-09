@@ -38,7 +38,7 @@ INSERT INTO user_roles(users_id, roles_id)
 VALUES ((SELECT airline_manager.id FROM airline_manager WHERE airline_manager.email = 'manager@mail.ru'),
         (SELECT roles.id FROM roles WHERE roles.name = 'ROLE_MANAGER'));
 
--- changeset alex_evdokimov:1.0.6
+--changeset alex_evdokimov:1.0.6
 INSERT INTO destination (airport_code, airport_name, city_name, country_name, timezone)
 VALUES ('VKO', 'Внуково', 'Москва', 'GMT +3', 'Россия');
 INSERT INTO destination (airport_code, airport_name, city_name, country_name, timezone)
@@ -47,6 +47,7 @@ INSERT INTO destination (airport_code, airport_name, city_name, country_name, ti
 VALUES ('MQF', 'Магнитогорск', 'Магнитогорск', 'GMT +5', 'Россия');
 INSERT INTO destination (airport_code, airport_name, city_name, country_name, timezone)
 VALUES ('OMS', 'Омск', 'Омск', 'GMT +6', 'Россия');
+
 
 -- changeset alex_evdokimov:1.0.7
 INSERT INTO category (category_type)
