@@ -1,9 +1,10 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: db-deployment
+  name: db-statefulset
 spec:
   replicas: 1
+  serviceName: db-service
   template:
     metadata:
       labels:
@@ -20,6 +21,18 @@ spec:
               value: postgres
           ports:
             - containerPort: 5432
+          volumeMounts:
+            - name: db-data
+              mountPath: /usr/data
   selector:
     matchLabels:
       app: db
+  volumeClaimTemplates:
+    - metadata:
+        name: db-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
