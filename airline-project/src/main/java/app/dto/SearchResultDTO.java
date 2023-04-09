@@ -1,6 +1,7 @@
 package app.dto;
 
 import app.entities.search.SearchResult;
+import app.repositories.SearchResultProjection;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,5 +33,13 @@ public class SearchResultDTO {
             this.returnFlight = searchResult.getReturnFlight().stream().map(FlightDTO::new).collect(Collectors.toList());
         }
         this.searchId = searchResult.getSearch().getId();
+    }
+
+    public SearchResultDTO(SearchResultProjection searchResultProjection) {
+        this.id = searchResultProjection.getId();
+        this.departFlight = searchResultProjection.getDepartFlight().stream().map(FlightDTO::new).collect(Collectors.toList());
+        if (searchResultProjection.getReturnFlight() != null) {
+            this.returnFlight = searchResultProjection.getReturnFlight().stream().map(FlightDTO::new).collect(Collectors.toList());
+        }
     }
 }
