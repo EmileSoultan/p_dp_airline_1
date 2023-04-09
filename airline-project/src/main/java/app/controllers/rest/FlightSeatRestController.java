@@ -2,6 +2,7 @@ package app.controllers.rest;
 
 import app.dto.FlightSeatDTO;
 import app.entities.FlightSeat;
+import app.enums.CategoryType;
 import app.services.FlightSeatServiceImpl;
 import app.util.mappers.FlightSeatMapper;
 import io.swagger.annotations.Api;
@@ -96,6 +97,48 @@ public class FlightSeatRestController {
                         .map(FlightSeatDTO::new)
                         .collect(Collectors.toList() )
                 );
+    }
+
+    @ApiOperation(value = "Get flight seats by flight and category")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "flightSeat found"),
+            @ApiResponse(code = 404, message = "flightSeat not found")
+    })
+    @GetMapping("/cheapest")
+    public ResponseEntity<List<FlightSeatDTO>> getFlightSeatsByFlightAndSeatCategory(
+            @RequestParam(name = "flightID") Long flightID,
+            @RequestParam(name = "category") CategoryType category
+    ) {
+        log.info("getFlightSeatsByFlightAndSeatCategory: find flightSeats by flight ID = {} and seat category = {}", flightID, category);
+        List<FlightSeat> flightSeat = flightSeatService.findFlightSeatsByFlightIdAndSeatCategory(flightID, category);
+
+        if (flightSeat.isEmpty()) {
+            log.error("getFlightSeatsByFlightAndSeatCategory: flightSeats with flightID = {} or seat category = {} not found", flightID, category);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(flightSeat.stream().map(FlightSeatDTO::new).collect(Collectors.toList()), HttpStatus.OK);
+
+    }
+
+    @ApiOperation(value = "Get SINGLE flight seat by flight and seat category",
+            notes = "Use getFlightSeatsByFlightAndSeatCategory method instead")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "flight seat found"),
+            @ApiResponse(code = 404, message = "flight seat not found")
+    })
+    @GetMapping("/cheapest_one")
+    public ResponseEntity<List<FlightSeatDTO>> getSingleFlightSeatByFlightAndSeatCategory(
+            @RequestParam(name = "flightID") Long id,
+            @RequestParam(name = "category") CategoryType seatCategoryType
+    ) {
+        List<FlightSeat> singleFlightSeat = flightSeatService.findSingleFlightSeatByFlightIdAndSeatCategory(id, seatCategoryType);
+
+        if (singleFlightSeat.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(singleFlightSeat.stream().map(FlightSeatDTO::new).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Add FlightSeat by ID of Flight")

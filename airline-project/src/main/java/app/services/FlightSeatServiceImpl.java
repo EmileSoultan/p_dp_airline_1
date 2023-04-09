@@ -3,6 +3,7 @@ package app.services;
 import app.entities.Flight;
 import app.entities.FlightSeat;
 import app.entities.Seat;
+import app.enums.CategoryType;
 import app.repositories.FlightRepository;
 import app.repositories.FlightSeatRepository;
 import app.services.interfaces.FlightSeatService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -190,6 +192,19 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     }
 
     @Override
+    public List<FlightSeat> findFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type) {
+        return flightSeatRepository.findFlightSeatsByFlightIdAndSeatCategory(id, type);
+    }
+
+    @Override
+    public List<FlightSeat> findSingleFlightSeatByFlightIdAndSeatCategory(Long id, CategoryType type) {
+        return flightSeatRepository.findFlightSeatsByFlightIdAndSeatCategory(id, type)
+                .stream()
+                .limit(1)
+                .collect(Collectors.toList());
+    }
+
+
     public Page<FlightSeat> findNotSoldById(Long id, Pageable pageable) {
         return flightSeatRepository.findAllFlightsSeatByFlightIdAndIsSoldFalse(id, pageable);
     }
