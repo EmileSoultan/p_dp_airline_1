@@ -1,5 +1,5 @@
 insert into aircrafts (id, aircraft_number, flight_range, model, model_year)
-values (1, '17000012', 3800, 'Embraer E170STD', 2002);
+values (1, '17000012', 3800, 'Airbus A319', 2002);
 
 insert into category (id, category_type) values (1, 'ECONOMY');
 insert into category (id, category_type) values (2, 'BUSINESS');

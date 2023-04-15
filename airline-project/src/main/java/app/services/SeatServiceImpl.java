@@ -1,9 +1,11 @@
 package app.services;
 
 import app.dto.SeatDTO;
+import app.entities.Aircraft;
 import app.entities.Category;
 import app.entities.Seat;
-import app.enums.AirbusA320Seats;
+import app.enums.seats.SeatsNumbersByAircraft;
+import app.enums.seats.interfaces.AircraftSeats;
 import app.enums.CategoryType;
 import app.exceptions.ViolationOfForeignKeyConstraintException;
 import app.repositories.FlightSeatRepository;
@@ -89,21 +91,27 @@ public class SeatServiceImpl implements SeatService {
     public List<SeatDTO> saveManySeats(long aircraftId) {
         Category economyCategory = categoryService.findByCategoryType(CategoryType.ECONOMY);
         Category businessCategory = categoryService.findByCategoryType(CategoryType.BUSINESS);
-        List<SeatDTO> savedSeatsDTO = new ArrayList<>(158); //158 - количество мест в enum AirbusA320Seats
-        AirbusA320Seats[] enumSeats = AirbusA320Seats.values();
+
+        Aircraft aircraft = aircraftService.findById(aircraftId);
+        SeatsNumbersByAircraft numbersOfSeats = SeatsNumbersByAircraft.valueOf(aircraft.getModel()
+                .toUpperCase().replace(" ", "_")); //приводим к нужному виду и находим самолет
+
+        AircraftSeats[] aircraftSeats = numbersOfSeats.getAircraftSeats(); //получаем места в конкретном самолете
+
+        List<SeatDTO> savedSeatsDTO = new ArrayList<>(numbersOfSeats.getTotalNumberOfSeats());
         List<SeatDTO> seatsDTO = Stream.generate(SeatDTO::new)
-                .limit(158).collect(Collectors.toList());
+                .limit(numbersOfSeats.getTotalNumberOfSeats()).collect(Collectors.toList());
         int enumSeatsCounter = 0;
         for (SeatDTO seatDTO : seatsDTO) {
-            seatDTO.setSeatNumber(enumSeats[enumSeatsCounter].getNumber());
+            seatDTO.setSeatNumber(aircraftSeats[enumSeatsCounter].getNumber());
             seatDTO.setAircraftId(aircraftId);
-            if (enumSeatsCounter < 8) {                     //назначаем категории (8 - бизнес, остальное - эконом)
+            if (enumSeatsCounter < numbersOfSeats.getNumberOfBusinessClassSeats()) { //Назначаем категории
                 seatDTO.setCategory(businessCategory);
             } else {
                 seatDTO.setCategory(economyCategory);
             }
-            seatDTO.setIsNearEmergencyExit(enumSeats[enumSeatsCounter].isNearEmergencyExit());
-            seatDTO.setIsLockedBack(enumSeats[enumSeatsCounter].isLockedBack());
+            seatDTO.setIsNearEmergencyExit(aircraftSeats[enumSeatsCounter].isNearEmergencyExit());
+            seatDTO.setIsLockedBack(aircraftSeats[enumSeatsCounter].isLockedBack());
             enumSeatsCounter += 1;
 
             Seat savedSeat = save(seatMapper.convertToSeatEntity(seatDTO));
