@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -62,13 +63,28 @@ class FlightSeatControllerIT extends IntegrationTestBase {
     }
 
     @Test
-    void shouldAddFlightSeatsByFlightId() throws Exception {
+    void shouldReturnExistingFlightSeatsByFlightId() throws Exception {
         String flightId = "1";
         Set<FlightSeat> flightSeatSet = flightSeatService.addFlightSeatsByFlightNumber(flightId);
-
         mockMvc.perform(
                         post("http://localhost:8080/api/flight-seats/all-flight-seats/{flightId}", flightId)
                                 .content(objectMapper.writeValueAsString(flightSeatSet))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldAddFlightSeatsByFlightId() throws Exception {
+        String flightId = "1";
+        Set<FlightSeat> flightSeatSet = flightSeatService.findByFlightId(1L);
+        List<Long> idList = flightSeatSet.stream().map(FlightSeat::getId).collect(Collectors.toList());
+        for (Long id : idList) {
+            flightSeatService.deleteById(id);
+        }
+        mockMvc.perform(
+                        post("http://localhost:8080/api/flight-seats/all-flight-seats/{flightId}", flightId)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())

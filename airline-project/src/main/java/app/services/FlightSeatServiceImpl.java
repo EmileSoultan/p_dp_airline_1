@@ -6,7 +6,9 @@ import app.entities.Seat;
 import app.enums.CategoryType;
 import app.repositories.FlightRepository;
 import app.repositories.FlightSeatRepository;
+import app.repositories.SeatRepository;
 import app.services.interfaces.FlightSeatService;
+import app.services.interfaces.FlightService;
 import app.util.aop.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,8 @@ import java.util.stream.Collectors;
 public class FlightSeatServiceImpl implements FlightSeatService {
     private final FlightSeatRepository flightSeatRepository;
     private final FlightRepository flightRepository;
+    private final SeatRepository seatRepository;
+    private final FlightService flightService;
 
     @Override
     @Loggable
@@ -67,30 +71,23 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     @Override
     @Loggable
     public Set<FlightSeat> addFlightSeatsByFlightId(Long flightId) {
-        Set<FlightSeat> seatsForAdd = new HashSet<>();
-        Set<FlightSeat> allFlightSeats = findAll();
-        Flight flight = flightRepository.getById(flightId);
-        if (flight != null) {
-            Set<Seat> seatsAircraft = flight.getAircraft().getSeatSet();
-
-            for (Seat s : seatsAircraft) {
-                FlightSeat flightSeat = new FlightSeat();
-                flightSeat.setSeat(s);
-                flightSeat.setFlight(flight);
-                if (allFlightSeats.contains(flightSeat)) {
-                    continue;
-                }
-                flightSeat.setFare(0);
-                flightSeat.setIsSold(false);
-                flightSeat.setIsRegistered(false);
-                seatsForAdd.add(flightSeat);
-            }
-
-            for (FlightSeat f : seatsForAdd) {
-                f = flightSeatRepository.save(f);
-            }
+        Set<FlightSeat> newFlightSeats = new HashSet<>();
+        Flight flight = flightService.getById(flightId);
+        Set<Seat> seats = seatRepository.findByAircraftId(flight.getAircraft().getId());
+        for (Seat s : seats) {
+            FlightSeat flightSeat = new FlightSeat();
+            flightSeat.setSeat(s);
+            flightSeat.setFlight(flight);
+            flightSeat.setIsBooking(false);
+            flightSeat.setIsSold(false);
+            flightSeat.setIsRegistered(false);
+            flightSeat.setFare(generateFareForFlightseat(s));
+            newFlightSeats.add(flightSeat);
         }
-        return seatsForAdd;
+        for (FlightSeat f : newFlightSeats) {
+            saveFlightSeat(f);
+        }
+        return newFlightSeats;
     }
 
     @Override
@@ -207,5 +204,28 @@ public class FlightSeatServiceImpl implements FlightSeatService {
 
     public Page<FlightSeat> findNotSoldById(Long id, Pageable pageable) {
         return flightSeatRepository.findAllFlightsSeatByFlightIdAndIsSoldFalse(id, pageable);
+    }
+
+    public int generateFareForFlightseat(Seat seat) {
+        int baseFare = 5000;
+        float emergencyExitRatio;
+        float categoryRatio;
+        float lockedBackRatio;
+        if (seat.getIsNearEmergencyExit()) {
+            emergencyExitRatio = 1.3f;
+        } else emergencyExitRatio = 1f;
+        if (seat.getIsLockedBack()) {
+            lockedBackRatio = 0.8f;
+        } else lockedBackRatio = 1f;
+        switch (seat.getCategory().getCategoryType()) {
+            case PREMIUM_ECONOMY : categoryRatio = 1.2f;
+                break;
+            case BUSINESS : categoryRatio = 2f;
+                break;
+            case FIRST : categoryRatio = 2.5f;
+                break;
+            default : categoryRatio = 1f;
+        }
+        return Math.round(baseFare * emergencyExitRatio * categoryRatio * lockedBackRatio);
     }
 }

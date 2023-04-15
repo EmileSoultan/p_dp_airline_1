@@ -143,7 +143,8 @@ public class FlightSeatRestController {
 
     @ApiOperation(value = "Add FlightSeat by ID of Flight")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "flight seats added"),
+            @ApiResponse(code = 200, message = "Existed flight seats"),
+            @ApiResponse(code = 201, message = "Flight seats added"),
             @ApiResponse(code = 400, message = "Bad request")
     })
     @PostMapping("/all-flight-seats/{flightId}")
@@ -156,6 +157,11 @@ public class FlightSeatRestController {
             @PathVariable
             Long flightId) {
         log.info("addFlightSeatsByFlightNumber: add flight seats by flightId. flightId={}", flightId);
+        Set<FlightSeat> flightSeats = flightSeatService.findByFlightId(flightId);
+        if (!flightSeats.isEmpty()) {
+            return new ResponseEntity<>(flightSeats.stream().map(FlightSeatDTO::new)
+                    .collect(Collectors.toSet()), HttpStatus.OK);
+        }
         return new ResponseEntity<>(flightSeatService.addFlightSeatsByFlightId(flightId)
                 .stream()
                 .map(FlightSeatDTO::new)
