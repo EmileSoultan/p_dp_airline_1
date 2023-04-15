@@ -202,4 +202,21 @@ public class FlightRestController {
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/all")
+    @ApiOperation(value = "Get all flights")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Flights found"),
+            @ApiResponse(code = 404, message = "Flights not found")
+    })
+    public ResponseEntity<List<FlightDTO>> getAllFlights(){
+        List<FlightDTO> allFlights = flightService.getAllFlights()
+                .stream().map(flightMapper::convertToFlightDTOEntity).collect(Collectors.toList());
+        log.info("getAllFlights: get all flights");
+        return allFlights.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(allFlights, HttpStatus.OK);
+    }
+
+
 }
