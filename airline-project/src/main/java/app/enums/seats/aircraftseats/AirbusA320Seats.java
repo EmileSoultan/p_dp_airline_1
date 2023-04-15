@@ -1,12 +1,13 @@
-package app.enums;
+package app.enums.seats.aircraftseats;
 
+import app.enums.seats.interfaces.AircraftSeats;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum AirbusA320Seats {
-    //Для Airbus A320 S7 Airlines
+public enum AirbusA320Seats implements AircraftSeats {
+
     //Бизнес
     A1("A1", false, false),
     C1("C1", false, false),
@@ -61,19 +62,19 @@ public enum AirbusA320Seats {
     E8("E8", false, false),
     F8("F8", false, false),
 
-    A9("A9", true, false),
-    B9("B9", true, false),
-    C9("C9", true, false),
-    D9("D9", true, false),
-    E9("E9", true, false),
-    F9("F9", true, false),
+    A9("A9", true, true),
+    B9("B9", true, true),
+    C9("C9", true, true),
+    D9("D9", true, true),
+    E9("E9", true, true),
+    F9("F9", true, true),
 
-    A10("A10", true, false),
-    B10("B10", true, false),
-    C10("C10", true, false),
-    D10("D10", true, false),
-    E10("E10", true, false),
-    F10("F10", true, false),
+    A10("A10", true, true),
+    B10("B10", true, true),
+    C10("C10", true, true),
+    D10("D10", true, true),
+    E10("E10", true, true),
+    F10("F10", true, true),
 
     A11("A11", true, false),
     B11("B11", true, false),
