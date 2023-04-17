@@ -7,6 +7,8 @@ import app.repositories.PaymentRepository;
 import app.services.interfaces.BookingService;
 import app.services.interfaces.PaymentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -43,6 +45,11 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentRepository.findById(id).orElse(null);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Payment> pagePagination(int page, int count) {
+        return paymentRepository.findAll(PageRequest.of(page, count));
+    }
 
 
 }

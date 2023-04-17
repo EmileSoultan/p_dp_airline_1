@@ -1,6 +1,8 @@
 package app.services.interfaces;
 
 import app.entities.Payment;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface PaymentService {
@@ -11,4 +13,5 @@ public interface PaymentService {
 
     Payment findPaymentById(long id);
 
+    Page<Payment> pagePagination (int page, int count);
 }
