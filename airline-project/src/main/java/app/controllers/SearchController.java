@@ -1,11 +1,11 @@
 package app.controllers;
 
-import app.dto.FlightSeatDTO;
 import app.dto.SearchResultDTO;
 import app.entities.search.Search;
 import app.entities.search.SearchResult;
 import app.repositories.SearchResultProjection;
 import app.services.interfaces.SearchService;
+import app.util.LogsUtils;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +53,7 @@ public class SearchController {
                     value = "Search model"
             )
             @RequestBody @Valid Search search) {
+        log.debug("saveSearch: incoming data, search = {}", LogsUtils.objectToJson(search));
         if (search.getFrom() == null) {
             log.info("saveSearch: Destination.from is null");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -68,6 +69,7 @@ public class SearchController {
             }
             log.info("saveSearch: new search result saved with id= {}", searchResult.getId());
             SearchResultDTO result = new SearchResultDTO(searchResult);
+            log.debug("saveSearch: outgoing data, searchResultDTO = {}", LogsUtils.objectToJson(result));
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         }
     }
