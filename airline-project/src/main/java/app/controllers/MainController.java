@@ -18,7 +18,13 @@ public class MainController {
     @ApiOperation(value = "Get view \"s7\"")
     public ModelAndView index() {
         log.info("index: logging example");
-        return new ModelAndView("s7");
+        return new ModelAndView("index");
+    }
+
+    @GetMapping("/searchResult")
+    @ApiOperation(value = "Get view \"searchResult\"")
+    public ModelAndView searchResult() {
+        return new ModelAndView("searchResult");
     }
 
     @ApiOperation(value = "Get view \"admin\"")
