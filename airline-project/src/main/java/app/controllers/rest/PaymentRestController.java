@@ -6,11 +6,14 @@ import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -74,19 +77,22 @@ public class PaymentRestController {
 
 
     @GetMapping
-    @ApiOperation(value = "Get list of all Payments")
+    @ApiOperation(value = "Get list of all Payments pagination")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "payments found"),
             @ApiResponse(code = 404, message = "payments not found")
     })
-    public ResponseEntity<List<Payment>> getListOfAllPayments() {
+    public ResponseEntity<Page<Payment>> getListOfAllPayments(
+            @RequestParam(value = "page", defaultValue = "0") @Min(0) int page,
+            @RequestParam(value = "count", defaultValue = "10") @Min(1) @Max(10) int count
+    ) {
         List<Payment> payments = paymentService.findAllPayments();
         if (payments == null) {
             log.info("getListOfAllPayments: not found any payments");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         log.info("getListOfAllPayments: found {} payments", payments.size());
-        return new ResponseEntity<>(payments, HttpStatus.OK);
+        return new ResponseEntity<>(paymentService.pagePagination(page,count), HttpStatus.OK);
     }
 
 }
