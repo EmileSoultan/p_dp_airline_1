@@ -7,12 +7,15 @@ import app.services.interfaces.RoleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,14 +40,22 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
     @Test
     @DisplayName("Get all passengers with pagination")
     void shouldGetAllPassengers() throws Exception {
-        Pageable pageable = PageRequest.of(0, 10);
-        mockMvc.perform(
-                        get("http://localhost:8080/api/passengers"))
+        int page = 0;
+        int size = 10;
+
+        Page<Passenger>  passengerPage = passengerService.findAll(page, size);
+
+        this.mockMvc.perform(get("http://localhost:8080/api/passengers"))
                 .andDo(print())
                 .andExpectAll(
                         status().isOk(),
-                        content().json(objectMapper.writeValueAsString(passengerService.findAll(pageable)
-                                .stream().map(PassengerDTO::new).collect(Collectors.toList())))
+                        content().json(objectMapper.writeValueAsString(
+                                new PageImpl<>(
+                                        passengerPage.stream().map(PassengerDTO::new).collect(Collectors.toList()),
+                                        PageRequest.of(page, size),
+                                        passengerPage.getTotalElements())
+                        )
+                    )
                 );
     }
 

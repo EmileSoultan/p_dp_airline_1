@@ -6,6 +6,7 @@ import app.repositories.RoleRepository;
 import app.services.interfaces.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,11 +36,6 @@ public class PassengerServiceImpl implements PassengerService {
         passenger.setAnswerQuestion(encoder.encode(passenger.getAnswerQuestion()));
         passenger.setRoles(Set.of(roleRepository.findByName("ROLE_PASSENGER")));
         return passengerRepository.save(passenger);
-    }
-
-    @Override
-    public Page<Passenger> findAll(Pageable pageable) {
-        return passengerRepository.findAll(pageable);
     }
 
     @Override
@@ -90,6 +86,11 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public void deleteById(Long id) {
         passengerRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Passenger> findAll(int page, int size) {
+        return passengerRepository.findAll(PageRequest.of(page, size));
     }
 
     private List<Passenger> findPassengersByAnyName(String[] partsOfName) {
