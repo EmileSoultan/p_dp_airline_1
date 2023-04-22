@@ -12,8 +12,6 @@ public interface PassengerService {
 
     Passenger update(Passenger passenger);
 
-    Page<Passenger> findAll(Pageable pageable);
-
     Optional<Passenger> findById(Long id);
 
     Optional<Passenger> findByPassportSerialNumber(String passportSerialNumber);
@@ -29,4 +27,6 @@ public interface PassengerService {
     List<Passenger> findByAnyName(String name);
 
     void deleteById(Long id);
+
+    Page <Passenger> findAll (int page, int size);
 }

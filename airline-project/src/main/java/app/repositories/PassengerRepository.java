@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface PassengerRepository extends JpaRepository<Passenger, Long> {
 
-    Page<Passenger> findAll(Pageable pageable);
+//    Page<Passenger> findAll(Pageable pageable);
 
     @Query(value = "SELECT p from Passenger p WHERE p.passport.serialNumberPassport = ?1")
     Optional<Passenger> findByPassportSerialNumber(String passportSerialNumber);
