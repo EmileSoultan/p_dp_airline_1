@@ -3,10 +3,7 @@ package app.dto;
 import app.entities.Destination;
 import app.enums.Airport;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -15,6 +12,7 @@ import javax.validation.constraints.Size;
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 public class DestinationDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;

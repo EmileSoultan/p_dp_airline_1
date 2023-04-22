@@ -1,6 +1,6 @@
-package app.entities;
+package app.dto;
 
-import app.dto.TicketDTO;
+import app.entities.EntityTest;
 import app.enums.Airport;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import net.minidev.json.JSONObject;
@@ -13,7 +13,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import java.io.IOException;
 
-public class TicketTest extends EntityTest {
+public class TicketDTOTest extends EntityTest {
 
     private Validator validator;
     private ObjectMapper mapper;
