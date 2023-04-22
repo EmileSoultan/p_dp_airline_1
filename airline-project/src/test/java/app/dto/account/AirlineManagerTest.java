@@ -1,4 +1,4 @@
-package app.entities.account;
+package app.dto.account;
 
 import app.dto.account.AirlineManagerDTO;
 import app.entities.EntityTest;

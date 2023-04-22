@@ -1,19 +1,19 @@
+package app.dto;
 
-package app.entities;
-
-import app.dto.BookingDTO;
+import app.entities.EntityTest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.io.IOException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
-public class BookingTest extends EntityTest {
+class BookingDTOTest extends EntityTest {
 
     private Validator validator;
     private ObjectMapper mapper;

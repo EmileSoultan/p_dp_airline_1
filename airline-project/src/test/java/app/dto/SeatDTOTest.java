@@ -1,6 +1,6 @@
-package app.entities;
+package app.dto;
 
-import app.dto.SeatDTO;
+import app.entities.EntityTest;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 
-public class SeatTest extends EntityTest {
+public class SeatDTOTest extends EntityTest {
 
     private Validator validator;
 

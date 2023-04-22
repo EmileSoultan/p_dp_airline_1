@@ -1,6 +1,6 @@
-package app.entities;
+package app.dto;
 
-import app.dto.FlightDTO;
+import app.entities.EntityTest;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,7 @@ import javax.validation.Validator;
 import java.io.IOException;
 
 
-class FlightTest extends EntityTest {
+class FlightDTOTest extends EntityTest {
     private Validator validator;
     private ObjectMapper mapper;
 
