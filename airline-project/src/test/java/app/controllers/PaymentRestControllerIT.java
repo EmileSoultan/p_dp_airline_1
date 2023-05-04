@@ -1,15 +1,20 @@
 package app.controllers;
 
+import app.clients.PaymentFeignClient;
+import app.dto.PaymentDto;
 import app.entities.Payment;
+import app.enums.State;
 import app.services.interfaces.PaymentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -22,6 +27,9 @@ public class PaymentRestControllerIT  extends IntegrationTestBase {
     @Autowired
     private PaymentService paymentService;
 
+    @MockBean
+    private PaymentFeignClient paymentFeignClient;
+
     @Test
     void shouldSavePayment() throws Exception {
         Payment payment = new Payment();
@@ -30,6 +38,11 @@ public class PaymentRestControllerIT  extends IntegrationTestBase {
         bookingsId.add(6002L);
         payment.setBookingsId(bookingsId);
 
+        PaymentDto paymentDto = new PaymentDto();
+        paymentDto.setBookingsId(bookingsId);
+        paymentDto.setPaymentState(State.CREATED);
+
+        when(paymentFeignClient.savePayment(payment)).thenReturn(paymentDto);
         mockMvc.perform(post("http://localhost:8080/api/payments")
                         .content(objectMapper.writeValueAsString(payment))
                         .contentType(MediaType.APPLICATION_JSON)

@@ -1,11 +1,12 @@
 package app.services;
 
+import app.clients.PaymentFeignClient;
 import app.entities.Booking;
 import app.entities.Payment;
-import app.enums.State;
 import app.repositories.PaymentRepository;
 import app.services.interfaces.BookingService;
 import app.services.interfaces.PaymentService;
+import app.util.mappers.PaymentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,18 +22,19 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final BookingService bookingService;
+    private final PaymentFeignClient feignClientPayment;
+    private final PaymentMapper paymentMapper;
 
     @Override
     @Transactional
     public Payment savePayment(Payment payment) {
-        payment.getBookingsId().stream().forEach(b -> {
+        payment.getBookingsId().forEach(b -> {
             Booking bookingFromDb = bookingService.findById(b);
             if (bookingFromDb == null) {
                 throw new NoSuchElementException(String.format("booking with id=%d not exists", b));
             }
         });
-        payment.setPaymentState(State.CREATED);
-        return paymentRepository.save(payment);
+        return paymentRepository.save(paymentMapper.convertToPaymentEntity(feignClientPayment.savePayment(payment)));
     }
 
     @Override
@@ -50,6 +52,5 @@ public class PaymentServiceImpl implements PaymentService {
     public Page<Payment> pagePagination(int page, int count) {
         return paymentRepository.findAll(PageRequest.of(page, count));
     }
-
 
 }
