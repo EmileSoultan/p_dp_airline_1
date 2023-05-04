@@ -22,6 +22,14 @@ spring:
     hikari:
       leak-detection-threshold: 60000
       maximum-pool-size: 20
+      cloud:
+        openfeign:
+          client:
+            config:
+              default:
+                connectTimeout: 5000
+                readTimeout: 5000
+                loggerLevel: basic
   jpa:
     show-sql: false
     hibernate:
@@ -47,6 +55,10 @@ spring:
     password: XXXX
 
     protocol: smtps
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
 jwt:
   secret:
     access: QZnCUVCnP3aukiTOa8XxPkfHODqpXB9xkg/o72yhIh4GE3BPiZszU4fYjJZTbcUcyGM/Bb5N81rv9Csq7blwCA==
@@ -67,3 +79,8 @@ notification:
 logging:
   config: classpath:log4j2-${spring.profiles.active}.yaml
 
+app:
+  feign:
+    config:
+      name: Payments
+      url: http://localhost:8081

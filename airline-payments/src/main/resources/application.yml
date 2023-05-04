@@ -3,3 +3,9 @@ server:
   servlet:
     session:
       timeout: -1
+ru:
+  airline:
+    payment:
+      url: "http://localhost:8081"
+    project:
+      url: "http://localhost:8080"
