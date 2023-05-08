@@ -20,11 +20,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-ticket-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class TicketRestControllerIT extends IntegrationTestBase {
+
     @Autowired
     private TicketService ticketService;
     @Autowired
     private PassengerService passengerService;
-
 
     @Test
     void createTicket_test() throws Exception {
@@ -40,8 +40,9 @@ class TicketRestControllerIT extends IntegrationTestBase {
     }
 
     @Test
+    // fixme тест написан неправильно
     void showTicketByBookingNumber_test() throws Exception {
-        mockMvc.perform(get("http://localhost:8080/api/tickets/ticket")
+        mockMvc.perform(get("http://localhost:8080/api/tickets/")
                         .param("ticketNumber", "SD-2222"))
                 .andDo(print())
                 .andExpect(status().isOk());

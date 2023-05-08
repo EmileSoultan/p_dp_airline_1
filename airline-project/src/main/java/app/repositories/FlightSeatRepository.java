@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -35,6 +34,6 @@ public interface FlightSeatRepository extends CrudRepository<FlightSeat, Long> {
     Set<FlightSeat> findFlightSeatsBySeat(Seat seat);
 
     @Query(value = "SELECT fs from FlightSeat fs WHERE fs.flight.id = ?1 AND fs.seat.category.categoryType = ?2 ORDER BY fs.fare")
-    List<FlightSeat> findFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type);
+    FlightSeat findFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type);
 
 }

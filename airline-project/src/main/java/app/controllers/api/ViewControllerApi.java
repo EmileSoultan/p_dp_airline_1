@@ -1,47 +1,34 @@
-package app.controllers;
+package app.controllers.api;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import springfox.documentation.annotations.ApiIgnore;
 
+@ApiIgnore
 @Api(tags = "Main")
 @Tag(name = "Main", description = "Получение различных view")
-@RestController
-@Slf4j
-public class MainController {
+public interface ViewControllerApi {
 
     @GetMapping("/")
     @ApiOperation(value = "Get view \"s7\"")
-    public ModelAndView index() {
-        log.info("index: logging example");
-        return new ModelAndView("index");
-    }
+    ModelAndView index();
 
     @GetMapping("/searchResult")
     @ApiOperation(value = "Get view \"searchResult\"")
-    public ModelAndView searchResult() {
-        return new ModelAndView("searchResult");
-    }
+    ModelAndView searchResult();
 
     @ApiOperation(value = "Get view \"admin\"")
     @GetMapping("/admin")
-    public ModelAndView adminPage() {
-        return new ModelAndView("admin");
-    }
+    ModelAndView adminPage();
 
     @ApiOperation(value = "Get view \"manager\"")
     @GetMapping("/manager")
-    public ModelAndView managerPage() {
-        return new ModelAndView("manager");
-    }
+    ModelAndView managerPage();
 
     @ApiOperation(value = "Get view \"passenger\"")
     @GetMapping("/passenger")
-    public ModelAndView passengerPage() {
-        return new ModelAndView("passenger");
-    }
+    ModelAndView passengerPage();
 }

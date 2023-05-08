@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class FlightSeatServiceImpl implements FlightSeatService {
+
     private final FlightSeatRepository flightSeatRepository;
     private final FlightRepository flightRepository;
     private final SeatRepository seatRepository;
@@ -189,16 +190,8 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     }
 
     @Override
-    public List<FlightSeat> findFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type) {
+    public FlightSeat getCheapestFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type) {
         return flightSeatRepository.findFlightSeatsByFlightIdAndSeatCategory(id, type);
-    }
-
-    @Override
-    public List<FlightSeat> findSingleFlightSeatByFlightIdAndSeatCategory(Long id, CategoryType type) {
-        return flightSeatRepository.findFlightSeatsByFlightIdAndSeatCategory(id, type)
-                .stream()
-                .limit(1)
-                .collect(Collectors.toList());
     }
 
 

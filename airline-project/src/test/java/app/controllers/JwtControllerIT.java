@@ -15,12 +15,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-auth-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class AuthControllerIT extends IntegrationTestBase {
+public class JwtControllerIT extends IntegrationTestBase {
 
     private final AuthService authService;
 
     @Autowired
-    public AuthControllerIT(AuthService authService) {
+    public JwtControllerIT(AuthService authService) {
         this.authService = authService;
     }
 
