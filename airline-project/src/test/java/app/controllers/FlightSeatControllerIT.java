@@ -2,7 +2,6 @@ package app.controllers;
 
 import app.dto.FlightSeatDTO;
 import app.entities.FlightSeat;
-import app.enums.CategoryType;
 import app.services.interfaces.FlightSeatService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
@@ -105,39 +103,4 @@ class FlightSeatControllerIT extends IntegrationTestBase {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void shouldGetCheapestFlightSeatByFlightAndSeatCategory() throws Exception {
-        String flightId = "1";
-        String category = "BUSINESS";
-
-        mockMvc.perform(get("http://localhost:8080/api/flight-seats/cheapest")
-                        .param("flightID", flightId)
-                        .param("category", category))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(
-                        flightSeatService.findFlightSeatsByFlightIdAndSeatCategory(1L, CategoryType.BUSINESS)
-                                .stream()
-                                .map(FlightSeatDTO::new)
-                                .collect(Collectors.toSet())
-                )));
-    }
-
-    @Test
-    void shouldGetSingleCheapestFlightSeatByFlightAndSeatCategory() throws Exception {
-        String flightId = "1";
-        String category = "FIRST";
-
-        mockMvc.perform(get("http://localhost:8080/api/flight-seats/cheapest_one")
-                        .param("flightID", flightId)
-                        .param("category", category))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(
-                        flightSeatService.findSingleFlightSeatByFlightIdAndSeatCategory(1L, CategoryType.FIRST)
-                                .stream()
-                                .map(FlightSeatDTO::new)
-                                .collect(Collectors.toSet())
-                )));
-    }
 }

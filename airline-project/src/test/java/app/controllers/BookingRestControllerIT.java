@@ -30,13 +30,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql({"/sqlQuery/create-passengerAircraftDestinationFlightsCategoryBooking-before.sql"})
 @Transactional
 class BookingRestControllerIT extends IntegrationTestBase {
+
     @Autowired
     private BookingService bookingService;
     @Autowired
     private PassengerService passengerService;
     @Autowired
     private FlightService flightService;
-
 
     @Test
     @DisplayName("Save Booking")
@@ -60,7 +60,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @Test
     @DisplayName("Get All Bookings")
     void shouldGetAllBookings() throws Exception {
-        Pageable pageable = PageRequest.of(0,1);
+        Pageable pageable = PageRequest.of(0, 1);
         mockMvc.perform(get("http://localhost:8080/api/bookings?page=0&size=1"))
                 .andDo(print())
                 .andExpect(status().isOk())
