@@ -21,7 +21,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 @Api(tags = "Payment REST")
-@Tag(name = "Payment REST", description = "API для операций с оплатой билетов")
+@Tag(name = "Payment REST", description = "API для оплаты бронирования")
 @RequestMapping("/api/payments")
 public interface PaymentRestApi {
 

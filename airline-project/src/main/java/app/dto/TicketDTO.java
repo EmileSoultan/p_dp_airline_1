@@ -12,12 +12,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-
+@Deprecated
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 public class TicketDTO {
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
     @NotBlank(message = "Field should not be empty")
