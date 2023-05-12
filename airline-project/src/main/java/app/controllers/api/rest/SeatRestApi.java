@@ -41,7 +41,7 @@ public interface SeatRestApi {
             @ApiResponse(code = 404, message = "Seats not found")
     })
     ResponseEntity<List<SeatDTO>> getAllByAircraftId(
-            @PageableDefault(sort = {"seatId"}) Pageable pageable,
+            @PageableDefault(sort = {"id"}, value = 30) Pageable pageable,
             @ApiParam(
                     name = "aircraftId",
                     value = "Aircraft.id"
