@@ -9,18 +9,20 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.util.HashSet;
+import java.util.List;
+
 @Configuration
 public class SwaggerConfig {
-    public static final String BASE_PACKAGE = "app.controllers";
 
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("ALL")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage(BASE_PACKAGE))
+                .apis(RequestHandlerSelectors.basePackage("app.controllers"))
                 .paths(PathSelectors.any())
                 .build()
+                .protocols(new HashSet<>(List.of("http")))
                 .apiInfo(apiInfo());
     }
 

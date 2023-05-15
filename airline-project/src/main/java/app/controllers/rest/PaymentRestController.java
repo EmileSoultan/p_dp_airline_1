@@ -1,6 +1,8 @@
 package app.controllers.rest;
 
 import app.controllers.api.rest.PaymentRestApi;
+import app.dto.PaymentRequest;
+import app.dto.PaymentResponse;
 import app.entities.Payment;
 import app.services.interfaces.PaymentService;
 import lombok.RequiredArgsConstructor;
@@ -44,13 +46,13 @@ public class PaymentRestController implements PaymentRestApi {
     }
 
     @Override
-    public ResponseEntity<?> create(Payment payment) {
+    public ResponseEntity<?> create(PaymentRequest paymentDto) {
         try {
-            Payment savedPayment = paymentService.savePayment(payment);
-            log.info("create: new payment saved with id= {}", savedPayment.getId());
-            return new ResponseEntity<>(savedPayment, HttpStatus.CREATED);
+            ResponseEntity<PaymentResponse> response = paymentService.createPayment(paymentDto);
+            String paypalUrl = response.getHeaders().getFirst("url");
+            PaymentResponse responseDto = response.getBody();
+            return ResponseEntity.status(HttpStatus.CREATED).header("paypalurl", paypalUrl).body(responseDto);
         } catch (NoSuchElementException e) {
-            log.error("create: some bookings not exist");
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

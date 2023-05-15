@@ -1,4 +1,5 @@
 package app.entities;
+import app.enums.Currency;
 import app.enums.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,4 +40,11 @@ public class Payment {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Enumerated(EnumType.STRING)
     private State paymentState;
+
+    @Column
+    private BigDecimal price;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 }

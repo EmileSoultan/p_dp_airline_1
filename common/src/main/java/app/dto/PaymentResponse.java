@@ -1,19 +1,26 @@
 package app.dto;
 
+import app.enums.Currency;
 import app.enums.State;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 @Data
 @NoArgsConstructor
-public class PaymentDto {
+public class PaymentResponse {
+
     private Long id;
 
-    @NotEmpty
+
     private List<Long> bookingsId = new ArrayList<>();
 
+
     private State paymentState;
+
+    private BigDecimal price;
+
+    private Currency currency;
 }

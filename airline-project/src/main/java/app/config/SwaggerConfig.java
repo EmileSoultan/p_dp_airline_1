@@ -15,13 +15,11 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
 
-    public static final String BASE_PACKAGE = "app.controllers";
-
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage(BASE_PACKAGE))
+                .apis(RequestHandlerSelectors.basePackage("app.controllers"))
                 .paths(PathSelectors.any())
                 .build()
                 .protocols(new HashSet<>(List.of("http")))
