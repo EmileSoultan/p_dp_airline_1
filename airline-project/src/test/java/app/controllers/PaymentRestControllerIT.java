@@ -1,34 +1,39 @@
 package app.controllers;
 
 import app.clients.PaymentFeignClient;
-import app.dto.PaymentDto;
+import app.dto.PaymentRequest;
+import app.dto.PaymentResponse;
 import app.entities.Payment;
-import app.enums.State;
 import app.services.interfaces.PaymentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-payment-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class PaymentRestControllerIT  extends IntegrationTestBase {
+public class PaymentRestControllerIT extends IntegrationTestBase {
 
     @Autowired
     private PaymentService paymentService;
 
     @MockBean
-    private PaymentFeignClient paymentFeignClient;
+    private PaymentFeignClient feignClientPayment;
 
     @Test
     void shouldSavePayment() throws Exception {
@@ -38,11 +43,12 @@ public class PaymentRestControllerIT  extends IntegrationTestBase {
         bookingsId.add(6002L);
         payment.setBookingsId(bookingsId);
 
-        PaymentDto paymentDto = new PaymentDto();
-        paymentDto.setBookingsId(bookingsId);
-        paymentDto.setPaymentState(State.CREATED);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("url", "testUrl");
 
-        when(paymentFeignClient.savePayment(payment)).thenReturn(paymentDto);
+        ResponseEntity<PaymentResponse> response = new ResponseEntity<>(httpHeaders, HttpStatus.OK);
+
+        when(feignClientPayment.makePayment(any(PaymentRequest.class))).thenReturn(response);
         mockMvc.perform(post("http://localhost:8080/api/payments")
                         .content(objectMapper.writeValueAsString(payment))
                         .contentType(MediaType.APPLICATION_JSON)

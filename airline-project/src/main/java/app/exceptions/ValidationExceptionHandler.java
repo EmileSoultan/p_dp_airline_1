@@ -32,15 +32,6 @@ public class ValidationExceptionHandler {
         return new ResponseEntity<>(sqlExceptionDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private List<ResponseExceptionDTO> bindFieldsExceptionsToList(
-            BindException e,
-            List<ResponseExceptionDTO> entityFieldsErrorList) {
-        e.getFieldErrors().stream().forEach(a -> {
-            entityFieldsErrorList.add(new ResponseExceptionDTO(a.getField() + " " + a.getDefaultMessage(), LocalDateTime.now()));
-        });
-        return entityFieldsErrorList;
-    }
-
     @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity<ResponseExceptionDTO> handleConstraintViolation(ConstraintViolationException ex) {
         List<String> errors = new ArrayList<>();
@@ -51,6 +42,12 @@ public class ValidationExceptionHandler {
         return new ResponseEntity<>(constraintViolationExceptionDto, HttpStatus.BAD_REQUEST);
     }
 
-
+    private List<ResponseExceptionDTO> bindFieldsExceptionsToList(
+            BindException e,
+            List<ResponseExceptionDTO> entityFieldsErrorList) {
+        e.getFieldErrors().stream().forEach(a -> {
+            entityFieldsErrorList.add(new ResponseExceptionDTO(a.getField() + " " + a.getDefaultMessage(), LocalDateTime.now()));
+        });
+        return entityFieldsErrorList;
+    }
 }
-
