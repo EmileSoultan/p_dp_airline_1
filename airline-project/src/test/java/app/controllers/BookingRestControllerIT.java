@@ -44,7 +44,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         BookingDTO booking = new BookingDTO();
         booking.setBookingNumber("BK-111111");
         booking.setBookingData(LocalDateTime.now());
-        booking.setPassenger(passengerService.findById(1001L).get());
+        booking.setPassengerId(passengerService.findById(1001L).get().getId());
         booking.setFlightId(flightService.getById(4001L).getId());
         booking.setCategoryType(CategoryType.ECONOMY);
 
@@ -100,7 +100,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         BookingDTO booking = new BookingDTO(bookingService.findById(id));
         booking.setBookingNumber("BK-222222");
         booking.setBookingData(LocalDateTime.now());
-        booking.setPassenger(passengerService.findById(1002L).get());
+        booking.setPassengerId(passengerService.findById(1002L).get().getId());
         booking.setFlightId(4002L);
         booking.setCategoryType(CategoryType.BUSINESS);
 

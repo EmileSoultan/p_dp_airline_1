@@ -31,7 +31,7 @@ class BookingDTOTest extends EntityTest {
         bookingDtoJSON.put("id", 10000L);
         bookingDtoJSON.put("bookingNumber", "BK-111111");
         bookingDtoJSON.put("bookingData", "2023-01-20T17:02:05.003992");
-        bookingDtoJSON.put("passenger", new JSONObject());
+        bookingDtoJSON.put("passengerId", 1000L);
         bookingDtoJSON.put("flightId", 1L);
         bookingDtoJSON.put("categoryType", "BUSINESS");
 
@@ -107,10 +107,10 @@ class BookingDTOTest extends EntityTest {
     }
 
     @Test
-    public void nullPassengerShouldNotValidate() {
+    public void nullIdPassengerShouldNotValidate() {
         BookingDTO testBooking;
         JSONObject bookingJson = initJSONObject();
-        bookingJson.replace("passenger", null);
+        bookingJson.replace("passengerId", null);
         try {
             testBooking = mapper.readValue(bookingJson.toString(), BookingDTO.class);
         } catch (IOException e) {
