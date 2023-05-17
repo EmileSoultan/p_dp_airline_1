@@ -64,8 +64,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/bookings?page=0&size=1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.findAll(pageable).getContent()
-                        .stream().map(BookingDTO::new).collect(Collectors.toList()))));
+                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.findAll(pageable))));
     }
 
 

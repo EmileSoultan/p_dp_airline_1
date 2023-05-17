@@ -25,15 +25,14 @@ public class BookingRestController implements BookingRestApi {
     private final BookingMapper bookingMapper;
 
     @Override
-    public ResponseEntity<List<BookingDTO>> getAll(Pageable pageable) {
+    public ResponseEntity<Page> getAll(Pageable pageable) {
         log.info("getAll: search all Bookings");
         Page<Booking> bookings = bookingService.findAll(pageable);
         if (bookings == null) {
             log.info("getAll: Bookings not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(bookings.getContent().stream().map(BookingDTO::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
+        return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
 
     @Override

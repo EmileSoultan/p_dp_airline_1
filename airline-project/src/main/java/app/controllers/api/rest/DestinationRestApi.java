@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public interface DestinationRestApi {
             @ApiResponse(code = 200, message = "Destinations found"),
             @ApiResponse(code = 404, message = "Destinations not found")
     })
-    ResponseEntity<List<DestinationDTO>> getAll(@PageableDefault(sort = {"id"}) Pageable p);
+    ResponseEntity<Page> getAll(@PageableDefault(sort = {"id"}) Pageable pageable);
 
     @ApiOperation(value = "Gets list of Destinations by cityName or countryName")
     @ApiResponse(code = 200, message = "Found the Destinations")

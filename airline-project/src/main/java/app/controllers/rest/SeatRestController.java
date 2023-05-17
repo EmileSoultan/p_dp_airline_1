@@ -30,12 +30,11 @@ public class SeatRestController implements SeatRestApi {
     private final SeatMapper seatMapper;
 
     @Override
-    public ResponseEntity<List<SeatDTO>> getAll(Pageable pageable) {
+    public ResponseEntity<Page> getAll(Pageable pageable) {
         Page<Seat> seats = seatService.findAll(pageable);
         if (!seats.isEmpty()) {
-            List<SeatDTO> seatDTOs = seats.stream().map(SeatDTO::new).collect(Collectors.toList());
-            log.info("getAll: found {} Seats", seatDTOs.size());
-            return new ResponseEntity<>(seatDTOs, HttpStatus.OK);
+            log.info("getAll: found {} Seats", seats.getSize());
+            return new ResponseEntity<>(seats, HttpStatus.OK);
         } else {
             log.info("getAll: Seats not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -7,6 +7,7 @@ import app.services.interfaces.AircraftService;
 import app.util.mappers.AircraftMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,12 @@ public class AircraftRestController implements AircraftRestApi {
     private final AircraftMapper aircraftMapper;
 
     @Override
-    public ResponseEntity<List<AircraftDTO>> getAll(Pageable pageable) {
+    public ResponseEntity<Page> getAll(Pageable pageable) {
         log.info("getAll: get all Aircrafts");
         var aircrafts = aircraftService.findAll(pageable);
         return aircrafts.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(aircrafts.getContent().stream().map(AircraftDTO::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
+                : new ResponseEntity<>(aircrafts, HttpStatus.OK);
     }
 
     @Override
