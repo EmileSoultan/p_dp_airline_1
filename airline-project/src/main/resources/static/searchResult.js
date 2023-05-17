@@ -83,10 +83,10 @@ function getIdFromURL() {
 
 getSearchResult().then(searchResult => {
     console.log(searchResult);
-    for (let i = 0; i < searchResult[0].departFlight.length; i++) {
-        document.getElementById("DepartTable").appendChild(createDepartRow(searchResult[0].departFlight[i]));
+    for (let i = 0; i < searchResult.departFlight.length; i++) {
+        document.getElementById("DepartTable").appendChild(createDepartRow(searchResult.departFlight[i]));
     }
-    for (let i = 0; i < searchResult[0].returnFlight.length; i++) {
-        document.getElementById("ReturnTable").appendChild(createReturnRow(searchResult[0].returnFlight[i]));
+    for (let i = 0; i < searchResult.returnFlight.length; i++) {
+        document.getElementById("ReturnTable").appendChild(createReturnRow(searchResult.returnFlight[i]));
     }
 });

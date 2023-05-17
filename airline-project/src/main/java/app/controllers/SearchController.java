@@ -9,14 +9,10 @@ import app.services.interfaces.SearchService;
 import app.util.LogsUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -49,15 +45,12 @@ public class SearchController implements SearchControllerApi {
     }
 
     @Override
-    public ResponseEntity<List<SearchResultDTO>> getSearchResultById(Pageable pageable, Long id) {
+    public ResponseEntity<SearchResultDTO> getSearchResultById(Long id) {
 
-        Page<SearchResultProjection> searchResult = searchService.findSearchResultByID(id, pageable);
-        if (!searchResult.isEmpty()) {
+        SearchResultProjection searchResult = searchService.findSearchResultByID(id);
+        if (searchResult != null) {
             log.info("getSearchResultById: find search result with id = {}", id);
-            return new ResponseEntity<>(searchResult
-                    .stream()
-                    .map(SearchResultDTO::new)
-                    .collect(Collectors.toList()), HttpStatus.OK);
+            return new ResponseEntity<>(new SearchResultDTO(searchResult), HttpStatus.OK);
         } else {
             log.info("getSearchResultById: not find search result with id = {}", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
