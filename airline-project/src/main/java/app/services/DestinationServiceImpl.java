@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,11 +23,11 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
-    public List<Destination> findDestinationByName(String cityName, String countryName) {
+    public Page<Destination> findDestinationByName(Pageable pageable, String cityName, String countryName) {
         if (cityName != null) {
-            return destinationRepository.findByCityNameContainingIgnoreCase(cityName);
+            return destinationRepository.findByCityNameContainingIgnoreCase(pageable, cityName);
         } else {
-            return destinationRepository.findByCountryNameContainingIgnoreCase(countryName);
+            return destinationRepository.findByCountryNameContainingIgnoreCase(pageable, countryName);
         }
     }
 

@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 
 @Api(tags = "Destination REST")
 @Tag(name = "Destination REST", description = "API для операций с пунктами назначения (прилет/вылет)")
@@ -34,12 +33,8 @@ public interface DestinationRestApi {
             @ApiResponse(code = 200, message = "Destinations found"),
             @ApiResponse(code = 404, message = "Destinations not found")
     })
-    ResponseEntity<Page> getAll(@PageableDefault(sort = {"id"}) Pageable pageable);
-
-    @ApiOperation(value = "Gets list of Destinations by cityName or countryName")
-    @ApiResponse(code = 200, message = "Found the Destinations")
-    @GetMapping("/filter")
-    ResponseEntity<List<DestinationDTO>> getAllByCityNameOrCountryName(
+    ResponseEntity<Page> getAll(
+            @PageableDefault(sort = {"id"}) Pageable pageable,
             @ApiParam(
                     name = "cityName",
                     value = "cityName",
