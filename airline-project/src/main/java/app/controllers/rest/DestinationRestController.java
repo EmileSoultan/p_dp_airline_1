@@ -25,14 +25,11 @@ public class DestinationRestController implements DestinationRestApi {
     private final DestinationMapper destinationMapper;
 
     @Override
-    public ResponseEntity<List<DestinationDTO>> getAll(Pageable p) {
-        Page<Destination> destinations = destinationService.findAll(p);
+    public ResponseEntity<Page> getAll(Pageable pageable) {
+        Page<Destination> destinations = destinationService.findAll(pageable);
         if (destinations != null) {
             log.info("getAll: get all Destinations");
-            return new ResponseEntity<>(destinations
-                    .stream()
-                    .map(DestinationDTO::new)
-                    .collect(Collectors.toList()), HttpStatus.OK);
+            return new ResponseEntity<>(destinations, HttpStatus.OK);
         } else {
             log.info("getAll: Destinations not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

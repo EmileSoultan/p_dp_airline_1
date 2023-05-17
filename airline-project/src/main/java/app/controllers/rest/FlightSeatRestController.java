@@ -27,7 +27,7 @@ public class FlightSeatRestController implements FlightSeatRestApi {
     private final FlightSeatMapper flightSeatMapper;
 
     @Override
-    public ResponseEntity<List<FlightSeatDTO>> getAllByFlightId(
+    public ResponseEntity<Page> getAllByFlightId(
             Pageable pageable,
             Long flightId,
             Boolean isSold) {
@@ -36,20 +36,13 @@ public class FlightSeatRestController implements FlightSeatRestApi {
             Page<FlightSeat> result = flightSeatService.findNotSoldById(flightId, pageable);
             return (result.isEmpty()) ?
                     ResponseEntity.notFound().build() :
-                    ResponseEntity.ok(result
-                            .stream()
-                            .map(FlightSeatDTO::new)
-                            .collect(Collectors.toList()));
+                    ResponseEntity.ok(result);
         }
         log.info("getAllByFlightId: get FlightSeats by flightId. flightId={}", flightId);
         Page<FlightSeat> result = flightSeatService.findByFlightId(flightId, pageable);
         return (result.isEmpty()) ?
                 ResponseEntity.notFound().build() :
-                ResponseEntity.ok(result
-                        .stream()
-                        .map(FlightSeatDTO::new)
-                        .collect(Collectors.toList())
-                );
+                ResponseEntity.ok(result);
     }
 
     @Override
