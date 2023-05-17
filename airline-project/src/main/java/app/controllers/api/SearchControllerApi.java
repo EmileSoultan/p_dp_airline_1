@@ -8,8 +8,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Api(tags = "Search")
 @Tag(name = "Search", description = "API поиска рейсов по заданными параметрам")
@@ -50,9 +47,8 @@ public interface SearchControllerApi {
             @ApiResponse(code = 200, message = "search result found"),
             @ApiResponse(code = 404, message = "search result not found")
     })
-    ResponseEntity<List<SearchResultDTO>> getSearchResultById(
+    ResponseEntity<SearchResultDTO> getSearchResultById(
 
-            @PageableDefault() Pageable pageable,
             @ApiParam(
                     name = "id",
                     value = "SearchResult.id"
