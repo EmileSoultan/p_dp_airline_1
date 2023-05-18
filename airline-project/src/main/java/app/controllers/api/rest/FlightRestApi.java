@@ -146,7 +146,7 @@ public interface FlightRestApi {
     ResponseEntity<HttpStatus> delete(
             @ApiParam(
                     name = "id",
-                    value = "Booking.id"
+                    value = "Flight.id"
             )
             @PathVariable("id") Long id);
 }
