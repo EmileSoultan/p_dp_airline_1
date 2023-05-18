@@ -8,7 +8,6 @@ import app.services.interfaces.AccountService;
 import app.services.interfaces.RoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,12 +28,15 @@ public class AccountRestController implements AccountRestApi {
     private final RoleService roleService;
 
     @Override
-    public ResponseEntity<Page> getAll(Pageable pageable) {
+    public ResponseEntity<List<AccountDTO>> getAll(Pageable pageable) {
         log.info("getAll: get all Accounts");
         var users = accountService.getAllAccounts(pageable);
         return users.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(users, HttpStatus.OK);
+                : new ResponseEntity<>(
+                users.stream()
+                        .map(AccountDTO::new)
+                        .collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @Override

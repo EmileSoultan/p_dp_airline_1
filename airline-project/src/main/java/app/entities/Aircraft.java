@@ -43,7 +43,7 @@ public class Aircraft {
     @Column(name = "flight_range")
     private int flightRange;
 
-    @OneToMany(mappedBy = "aircraft", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "aircraft", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Seat> seatSet = new HashSet<>();
 

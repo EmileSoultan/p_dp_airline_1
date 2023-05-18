@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,7 @@ public interface SeatRestApi {
             @ApiResponse(code = 200, message = "Seats found"),
             @ApiResponse(code = 404, message = "Seats not found")
     })
-    ResponseEntity<Page> getAll(@PageableDefault() Pageable pageable);
+    ResponseEntity<List<SeatDTO>> getAll(@PageableDefault() Pageable pageable);
 
     @GetMapping("/aircraft/{aircraftId}")
     @ApiOperation(value = "Get Seats by \"aircraftId\"")
