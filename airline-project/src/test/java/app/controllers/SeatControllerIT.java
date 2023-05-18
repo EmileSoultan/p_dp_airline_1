@@ -24,7 +24,6 @@ public class SeatControllerIT extends IntegrationTestBase {
     @Autowired
     private CategoryService categoryService;
 
-
     @Test
     void shouldSaveSeat() throws Exception {
         SeatDTO seatDTO = new SeatDTO();

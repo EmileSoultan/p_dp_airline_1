@@ -57,8 +57,8 @@ public class TicketRestController implements TicketRestApi {
     public ResponseEntity<?> update(Long id, TicketDTO ticketDTO) {
         log.info("update: Ticket with id = {}", id);
         ticketDTO.setId(id);
-        return new ResponseEntity<>(ticketService.updateTicket(id, ticketMapper.convertToTicketEntity(ticketDTO)),
-                HttpStatus.OK);
+        Ticket ticket = ticketService.updateTicket(id, ticketMapper.convertToTicketEntity(ticketDTO));
+        return new ResponseEntity<>(new TicketDTO(ticket),HttpStatus.OK);
     }
 
     @Override

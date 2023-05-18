@@ -50,7 +50,6 @@ public class TicketDTO {
     @Size(min = 2, max = 5, message = "Seat number must be between 2 and 5 characters")
     private String seatNumber;
 
-
     public TicketDTO(Ticket ticket) {
         this.id = ticket.getId();
         this.ticketNumber = ticket.getTicketNumber();

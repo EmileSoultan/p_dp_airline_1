@@ -1,6 +1,5 @@
 package app.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
 
 @Entity
 @Table(name = "seats")
@@ -40,7 +38,5 @@ public class Seat {
     @NotNull(message = "Field aircraft cannot be null")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aircraft_id")
-    @JsonBackReference
     private Aircraft aircraft;
-
 }
