@@ -6,8 +6,10 @@ import app.entities.Seat;
 import app.enums.CategoryType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 import java.util.Set;
@@ -35,5 +37,9 @@ public interface FlightSeatRepository extends CrudRepository<FlightSeat, Long> {
 
     @Query(value = "SELECT fs from FlightSeat fs WHERE fs.flight.id = ?1 AND fs.seat.category.categoryType = ?2 ORDER BY fs.fare")
     FlightSeat findFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type);
+
+    @Modifying
+    @Query(value = "UPDATE FlightSeat fs SET fs.isSold = false WHERE fs.id in :flightSeatId")
+    void editIsSoldToFalseByFlightSeatId(@Param("flightSeatId") long[] flightSeatId);
 
 }

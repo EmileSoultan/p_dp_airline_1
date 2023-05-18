@@ -67,4 +67,14 @@ public class TicketServiceImpl implements TicketService {
         return updatedTicket;
     }
 
+    @Override
+    public long [] findArrayOfFlightSeatIdByPassengerId(long passengerId) {
+        return ticketRepository.findArrayOfFlightSeatIdByPassengerId(passengerId);
+    }
+    @Override
+    @Transactional
+    public void deleteTicketByPassengerId(long passengerId) {
+        ticketRepository.deleteTicketByPassengerId(passengerId);
+    }
+
 }
