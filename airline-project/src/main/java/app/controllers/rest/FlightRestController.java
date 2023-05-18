@@ -9,7 +9,6 @@ import app.services.interfaces.FlightService;
 import app.util.mappers.FlightMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +27,9 @@ public class FlightRestController implements FlightRestApi {
     private final FlightMapper flightMapper;
 
     @Override
-    public ResponseEntity<Page> getAll(Pageable pageable) {
-        Page<Flight> allFlights = flightService.getAllFlights(pageable);
+    public ResponseEntity<List<FlightDTO>> getAll() {
+        List<FlightDTO> allFlights = flightService.getAllFlights()
+                .stream().map(flightMapper::convertToFlightDTOEntity).collect(Collectors.toList());
         log.info("getAll: get all Flights");
         return allFlights.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)

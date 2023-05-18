@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +33,7 @@ public interface AccountRestApi {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Accounts found"),
             @ApiResponse(code = 204, message = "Accounts not found")})
-    ResponseEntity<Page> getAll(@PageableDefault(sort = {"id"}) Pageable pageable);
+    ResponseEntity<List<AccountDTO>> getAll(@PageableDefault(sort = {"id"}) Pageable pageable);
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Get Account by \"id\"")
