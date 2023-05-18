@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -197,6 +196,12 @@ public class FlightSeatServiceImpl implements FlightSeatService {
 
     public Page<FlightSeat> findNotSoldById(Long id, Pageable pageable) {
         return flightSeatRepository.findAllFlightsSeatByFlightIdAndIsSoldFalse(id, pageable);
+    }
+
+    @Override
+    @Transactional
+    public void editIsSoldToFalseByFlightSeatId(long[] flightSeatId) {
+        flightSeatRepository.editIsSoldToFalseByFlightSeatId(flightSeatId);
     }
 
     public int generateFareForFlightseat(Seat seat) {

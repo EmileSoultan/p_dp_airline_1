@@ -60,4 +60,10 @@ public class BookingServiceImpl implements BookingService {
     public Booking findByBookingNumber(String number) {
         return bookingRepository.findByBookingNumber(number).orElse(null);
     }
+
+    @Override
+    @Transactional
+    public void deleteBookingByPassengerId(long passengerId) {
+        bookingRepository.deleteBookingByPassengerId(passengerId);
+    }
 }

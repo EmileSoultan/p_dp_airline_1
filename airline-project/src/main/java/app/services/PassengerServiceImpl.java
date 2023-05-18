@@ -3,11 +3,13 @@ package app.services;
 import app.entities.account.Passenger;
 import app.repositories.PassengerRepository;
 import app.repositories.RoleRepository;
+import app.services.interfaces.BookingService;
+import app.services.interfaces.FlightSeatService;
 import app.services.interfaces.PassengerService;
-import lombok.RequiredArgsConstructor;
+import app.services.interfaces.TicketService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,16 +20,28 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PassengerServiceImpl implements PassengerService {
-    private final static int maxVolumePartsOfName = 3;
 
     private final PassengerRepository passengerRepository;
-
     private final RoleRepository roleRepository;
-
     private final PasswordEncoder encoder;
+    private final BookingService bookingService;
+    private final TicketService ticketService;
+    private final FlightSeatService flightSeatService;
+
+    // FIXME Отрефакторить
+    public PassengerServiceImpl(PassengerRepository passengerRepository,
+                                RoleRepository roleRepository,
+                                PasswordEncoder encoder,
+                                @Lazy BookingService bookingService, @Lazy TicketService ticketService, @Lazy FlightSeatService flightSeatService) {
+        this.passengerRepository = passengerRepository;
+        this.roleRepository = roleRepository;
+        this.encoder = encoder;
+        this.bookingService = bookingService;
+        this.ticketService = ticketService;
+        this.flightSeatService = flightSeatService;
+    }
 
     @Override
     @Transactional
@@ -85,6 +99,9 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     @Transactional
     public void deleteById(Long id) {
+        flightSeatService.editIsSoldToFalseByFlightSeatId(ticketService.findArrayOfFlightSeatIdByPassengerId(id));
+        bookingService.deleteBookingByPassengerId(id);
+        ticketService.deleteTicketByPassengerId(id);
         passengerRepository.deleteById(id);
     }
 
