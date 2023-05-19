@@ -22,7 +22,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Deprecated
-@ApiIgnore
+//@ApiIgnore
 @Api(tags = "Ticket REST")
 @Tag(name = "Ticket REST", description = "API для операций с билетами")
 @RequestMapping("/api/tickets")

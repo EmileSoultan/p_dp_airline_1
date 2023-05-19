@@ -35,7 +35,7 @@ public class SearchController implements SearchControllerApi {
             SearchResult searchResult = searchService.saveSearch(search);
             if (searchResult.getDepartFlight().isEmpty()) {
                 log.info("saveSearch: Destinations not found");
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             log.info("saveSearch: new search result saved with id= {}", searchResult.getId());
             SearchResultDTO result = new SearchResultDTO(searchResult);

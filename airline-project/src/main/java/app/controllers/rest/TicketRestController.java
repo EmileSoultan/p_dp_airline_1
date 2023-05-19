@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Deprecated
-@ApiIgnore
+//@ApiIgnore
 @Slf4j
 @RestController
 @RequiredArgsConstructor
