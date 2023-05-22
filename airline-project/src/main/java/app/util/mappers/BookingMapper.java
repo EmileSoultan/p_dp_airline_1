@@ -26,4 +26,16 @@ public class BookingMapper {
         booking.setCategory(categoryService.findByCategoryType(bookingDTO.getCategoryType()));
         return booking;
     }
+
+    public BookingDTO convertToBookingDTOEntity(Booking booking) {
+        BookingDTO bookingDTO = new BookingDTO();
+        bookingDTO.setId(booking.getId());
+        bookingDTO.setBookingNumber(booking.getBookingNumber());
+        bookingDTO.setBookingData(booking.getBookingData());
+        bookingDTO.setPassengerId((passengerService.findById(booking.getPassenger().getId()).get()).getId());
+        bookingDTO.setFlightId(flightService.getById(booking.getFlight().getId()).getId());
+        bookingDTO.setCategoryType(categoryService.findByCategoryType(booking.getCategory().getCategoryType()).getCategoryType());
+
+        return bookingDTO;
+    }
 }

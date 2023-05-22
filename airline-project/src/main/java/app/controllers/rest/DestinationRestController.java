@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -25,23 +23,21 @@ public class DestinationRestController implements DestinationRestApi {
     private final DestinationMapper destinationMapper;
 
     @Override
-    public ResponseEntity<List<DestinationDTO>> getAll(Pageable pageable, String cityName, String countryName) {
-        Page<Destination> destinations;
+    public ResponseEntity<Page<DestinationDTO>> getAll(Pageable pageable, String cityName, String countryName) {
+        Page<Destination> destination = null;
         if (cityName == null && countryName == null) {
-            destinations = destinationService.findAll(pageable);
+            destination = destinationService.findAll(pageable);
             log.info("getAll: get all Destinations");
         } else {
-            log.info("getAll: get Destinations by cityName or countryName.countryName={} / cityName={}", countryName, cityName);
-            destinations = destinationService.findDestinationByName(pageable, cityName, countryName);
+            log.info("getAll: get Destinations by cityName or countryName. countryName=(3 / cityName=(', countryName, cityName");
+            destination = destinationService.findDestinationByName(pageable, cityName, countryName);
         }
-        if (destinations != null) {
-            return new ResponseEntity<>(destinations
-                .stream()
-                .map(DestinationDTO::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return destination != null
+                ? new ResponseEntity<>(destination.map(entity -> {
+                    DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
+                    return dto;
+                    }), HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Override

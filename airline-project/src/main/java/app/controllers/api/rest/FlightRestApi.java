@@ -1,8 +1,8 @@
 package app.controllers.api.rest;
 
 import app.dto.FlightDTO;
+import app.dto.FlightSeatDTO;
 import app.entities.Flight;
-import app.entities.FlightSeat;
 import app.enums.FlightStatus;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,7 +10,9 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Set;
 
 @Api(tags = "Flight REST")
 @Tag(name = "Flight REST", description = "API для операций с рейсами")
@@ -36,7 +37,7 @@ public interface FlightRestApi {
             @ApiResponse(code = 200, message = "Flights found"),
             @ApiResponse(code = 404, message = "Flights not found")
     })
-    ResponseEntity<List<FlightDTO>> getAll();
+    ResponseEntity<Page<FlightDTO>> getAll(@PageableDefault(sort = {"id"}) Pageable pageable);
 
     @GetMapping("/filter")
     @ApiOperation(value = "Get list of Flight by dates and destinations given as params")
@@ -97,7 +98,8 @@ public interface FlightRestApi {
             @ApiResponse(code = 200, message = "free seats found"),
             @ApiResponse(code = 204, message = "no data found")
     })
-    ResponseEntity<Set<FlightSeat>> getFreeSeats(
+    ResponseEntity<Page<FlightSeatDTO>> getFreeSeats(
+            @PageableDefault(sort = {"id"}) Pageable pageable,
             @ApiParam(
                     name = "id",
                     value = "Flight.id"

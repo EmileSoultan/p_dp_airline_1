@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Api(tags = "Aircraft REST")
 @Tag(name = "Aircraft REST", description = "API для операций с самолётом")
@@ -32,7 +32,7 @@ public interface AircraftRestApi {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Aircrafts found"),
             @ApiResponse(code = 204, message = "Aircrafts not found")})
-    ResponseEntity<List<AircraftDTO>> getAll(Pageable pageable);
+    ResponseEntity<Page<AircraftDTO>> getAll(Pageable pageable);
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Get Aircraft by it's \"id\"")

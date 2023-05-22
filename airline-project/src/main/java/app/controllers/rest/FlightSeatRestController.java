@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,30 +26,26 @@ public class FlightSeatRestController implements FlightSeatRestApi {
     private final FlightSeatMapper flightSeatMapper;
 
     @Override
-    public ResponseEntity<List<FlightSeatDTO>> getAllByFlightId(
+    public ResponseEntity<Page<FlightSeatDTO>> getAllByFlightId(
             Pageable pageable,
             Long flightId,
             Boolean isSold) {
+        Page<FlightSeat> result = null;
         if (isSold != null && !isSold) {
             log.info("getAllByFlightId: get not sold FlightSeats by id={}", flightId);
-            Page<FlightSeat> result = flightSeatService.findNotSoldById(flightId, pageable);
+            result = flightSeatService.findNotSoldById(flightId, pageable);
+        } else {
+            log.info("getAllByFlightId: get FlightSeats by flightId. flightId={}", flightId);
+            result = flightSeatService.findByFlightId(flightId, pageable);
+        }
             return (result.isEmpty()) ?
                     ResponseEntity.notFound().build() :
-                    ResponseEntity.ok(result
-                            .stream()
-                            .map(FlightSeatDTO::new)
-                            .collect(Collectors.toList()));
+                    ResponseEntity.ok(result.map(entity -> {
+                        FlightSeatDTO dto = flightSeatMapper.convertToFlightSeatDTOEntity(entity);
+                        return dto;
+                    }));
         }
-        log.info("getAllByFlightId: get FlightSeats by flightId. flightId={}", flightId);
-        Page<FlightSeat> result = flightSeatService.findByFlightId(flightId, pageable);
-        return (result.isEmpty()) ?
-                ResponseEntity.notFound().build() :
-                ResponseEntity.ok(result
-                        .stream()
-                        .map(FlightSeatDTO::new)
-                        .collect(Collectors.toList())
-                );
-    }
+
 
     @Override
     public ResponseEntity<FlightSeatDTO> get(Long id) {

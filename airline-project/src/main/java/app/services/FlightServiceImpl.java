@@ -20,7 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,35 +48,8 @@ public class FlightServiceImpl implements FlightService {
     @Override
     @Transactional(readOnly = true)
     @Loggable
-    public Set<FlightSeat> getFreeSeats(Long id) {
-        var flight = getById(id);
-        if (flight == null) {
-            return null;
-        }
-        Set<FlightSeat> flightSeatSet = flightSeatRepository.findFlightSeatByFlight(flight);
-
-        if (flightSeatSet != null) {
-            flightSeatSet = flightSeatSet.stream()
-                    .filter(flightSeat -> !flightSeat.getIsRegistered())
-                    .filter(flightSeat -> !flightSeat.getIsSold())
-                    .collect(Collectors.toSet());
-        }
-
-        //TODO раскомментировать после добавление сущностей Seat и Aircraft
-        //TODO по другому сделал, эта логика тоже нужна, но по моему мнению не здесь
-
-        //var seats = flight.getAircraft().getSeatList()
-        //        .stream().filter(seat -> !seat.getIsSold()).collect(Collectors.toList());
-        //Map<String, Integer> freeSeats = new HashMap<>();
-        //freeSeats.put("всего свободных", seats.size());
-        //freeSeats.put("эконом", (int) seats.stream()
-        //        .filter(seat -> seat.getCategory().getCategoryType() == CategoryType.ECONOMY).count());
-        //freeSeats.put("бизнес", (int) seats.stream()
-        //        .filter(seat -> seat.getCategory().getCategoryType() == CategoryType.BUSINESS).count());
-        //return freeSeats;
-        //return Map.of("NO DATA", 1);
-
-        return flightSeatSet;
+    public Page<FlightSeat> getFreeSeats(Pageable pageable, Long id) {
+        return flightSeatRepository.findFlightSeatByFlightIdAndIsSoldFalseAndIsRegisteredFalse(id, pageable);
     }
 
     @Override
