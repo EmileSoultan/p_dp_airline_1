@@ -2,20 +2,21 @@ package app.controllers.rest;
 
 import app.controllers.api.rest.FlightRestApi;
 import app.dto.FlightDTO;
+import app.dto.FlightSeatDTO;
 import app.entities.Flight;
-import app.entities.FlightSeat;
 import app.enums.FlightStatus;
 import app.services.interfaces.FlightService;
 import app.util.mappers.FlightMapper;
+import app.util.mappers.FlightSeatMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -26,10 +27,16 @@ public class FlightRestController implements FlightRestApi {
     private final FlightService flightService;
     private final FlightMapper flightMapper;
 
+    private final FlightSeatMapper flightSeatMapper;
+
+
     @Override
-    public ResponseEntity<List<FlightDTO>> getAll() {
-        List<FlightDTO> allFlights = flightService.getAllFlights()
-                .stream().map(flightMapper::convertToFlightDTOEntity).collect(Collectors.toList());
+    public ResponseEntity<Page<FlightDTO>> getAll(Pageable pageable) {
+        Page<FlightDTO> allFlights = flightService.getAllFlights(pageable).map(entity -> {
+            FlightDTO dto = flightMapper.convertToFlightDTOEntity(entity);
+            return dto;
+        });
+
         log.info("getAll: get all Flights");
         return allFlights.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
@@ -69,9 +76,12 @@ public class FlightRestController implements FlightRestApi {
     }
 
     @Override
-    public ResponseEntity<Set<FlightSeat>> getFreeSeats(Long id) {
+    public ResponseEntity<Page<FlightSeatDTO>> getFreeSeats(Pageable pageable, Long id) {
         log.info("getFreeSeats: get free seats on Flight with id = {}", id);
-        Set<FlightSeat> seats = flightService.getFreeSeats(id);
+        Page<FlightSeatDTO> seats = flightService.getFreeSeats(pageable, id).map(entity -> {
+            FlightSeatDTO dto = flightSeatMapper.convertToFlightSeatDTOEntity(entity);
+            return dto;
+        });
         return ResponseEntity.ok(seats);
     }
 

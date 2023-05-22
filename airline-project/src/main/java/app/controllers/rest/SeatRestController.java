@@ -18,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -30,12 +29,14 @@ public class SeatRestController implements SeatRestApi {
     private final SeatMapper seatMapper;
 
     @Override
-    public ResponseEntity<List<SeatDTO>> getAll(Pageable pageable) {
-        Page<Seat> seats = seatService.findAll(pageable);
+    public ResponseEntity<Page<SeatDTO>> getAll(Pageable pageable) {
+        Page<SeatDTO> seats = seatService.findAll(pageable).map(entity -> {
+            SeatDTO dto = seatMapper.convertToSeatDTOEntity(entity);
+            return dto;
+        });
         if (!seats.isEmpty()) {
-            List<SeatDTO> seatDTOs = seats.stream().map(SeatDTO::new).collect(Collectors.toList());
-            log.info("getAll: found {} Seats", seatDTOs.size());
-            return new ResponseEntity<>(seatDTOs, HttpStatus.OK);
+            log.info("getAll: found {} Seats", seats.getSize());
+            return new ResponseEntity<>(seats, HttpStatus.OK);
         } else {
             log.info("getAll: Seats not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -43,12 +44,14 @@ public class SeatRestController implements SeatRestApi {
     }
 
     @Override
-    public ResponseEntity<List<SeatDTO>> getAllByAircraftId(Pageable pageable, Long aircraftId) {
-        Page<Seat> seats = seatService.findByAircraftId(aircraftId, pageable);
+    public ResponseEntity<Page<SeatDTO>> getAllByAircraftId(Pageable pageable, Long aircraftId) {
+        Page<SeatDTO> seats = seatService.findByAircraftId(aircraftId, pageable).map(entity -> {
+            SeatDTO dto = seatMapper.convertToSeatDTOEntity(entity);
+            return dto;
+        });
         if (!seats.isEmpty()) {
-            List<SeatDTO> seatDTOs = seats.stream().map(SeatDTO::new).collect(Collectors.toList());
-            log.info("getAllByAircraftId: found {} Seats with aircraftId = {}", seatDTOs.size(), aircraftId);
-            return new ResponseEntity<>(seatDTOs, HttpStatus.OK);
+            log.info("getAllByAircraftId: found {} Seats with aircraftId = {}", seats.getSize(), aircraftId);
+            return new ResponseEntity<>(seats, HttpStatus.OK);
         } else {
             log.info("getAllByAircraftId: Seats not found with aircraftId = {}", aircraftId);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

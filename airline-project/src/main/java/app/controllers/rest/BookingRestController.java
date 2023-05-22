@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -25,15 +23,17 @@ public class BookingRestController implements BookingRestApi {
     private final BookingMapper bookingMapper;
 
     @Override
-    public ResponseEntity<List<BookingDTO>> getAll(Pageable pageable) {
+    public ResponseEntity<Page<BookingDTO>> getAll(Pageable pageable) {
         log.info("getAll: search all Bookings");
-        Page<Booking> bookings = bookingService.findAll(pageable);
+        Page<BookingDTO> bookings = bookingService.findAll(pageable).map(entity -> {
+            BookingDTO dto = bookingMapper.convertToBookingDTOEntity(entity);
+            return dto;
+        });
         if (bookings == null) {
             log.info("getAll: Bookings not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(bookings.getContent().stream().map(BookingDTO::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
+        return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
 
     @Override
