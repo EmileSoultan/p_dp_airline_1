@@ -71,8 +71,4 @@ public interface DestinationRestApi {
             )
             @RequestBody DestinationDTO destinationDTO);
 
-    @ApiOperation(value = "Delete Destination by \"id\"")
-    @ApiResponse(code = 200, message = "Destination has been removed")
-    @DeleteMapping("/{id}")
-    ResponseEntity<String> delete(@PathVariable @ApiParam("id") Long id);
 }

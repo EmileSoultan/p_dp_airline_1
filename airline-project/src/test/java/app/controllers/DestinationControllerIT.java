@@ -89,11 +89,4 @@ class DestinationControllerIT extends IntegrationTestBase {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void shouldDeleteDestinationById() throws Exception {
-        long id = 2;
-        mockMvc.perform(delete("http://localhost:8080/api/destinations/{id}", id))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
 }

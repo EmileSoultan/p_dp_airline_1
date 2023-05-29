@@ -45,12 +45,6 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
-    @Transactional
-    public void deleteDestinationById(Long id) {
-        destinationRepository.deleteById(id);
-    }
-
-    @Override
     public Destination getDestinationById(Long id) {
         return destinationRepository.findById(id).orElse(null);
     }
