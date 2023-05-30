@@ -1,5 +1,4 @@
 package app.dto.account;
-import app.dto.account.PassengerDTO;
 import app.entities.EntityTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import net.minidev.json.JSONObject;
@@ -31,7 +30,6 @@ public class PassengerTest extends EntityTest {
 
     private JSONObject initJSONObject() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("@type", "passenger");
 
         jsonObject.put("id", 1004L);
         jsonObject.put("email", "passenger@mail.ru");
