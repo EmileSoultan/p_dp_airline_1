@@ -17,8 +17,6 @@ public interface DestinationService {
 
     void updateDestination(Long id, Destination destination);
 
-    void deleteDestinationById(Long id);
-
     Destination getDestinationById(Long id);
 
     Destination findDestinationByAirportCode(Airport airportCode);

@@ -32,7 +32,7 @@ public class DestinationRestController implements DestinationRestApi {
             log.info("getAll: get Destinations by cityName or countryName. countryName=(3 / cityName=(', countryName, cityName");
             destination = destinationService.findDestinationByName(pageable, cityName, countryName);
         }
-        return destination != null
+        return (!destination.isEmpty())
                 ? new ResponseEntity<>(destination.map(entity -> {
                     DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
                     return dto;
@@ -54,10 +54,4 @@ public class DestinationRestController implements DestinationRestApi {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<String> delete(Long id) {
-        log.info("delete: delete Destination with id = {}", id);
-        destinationService.deleteDestinationById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }
