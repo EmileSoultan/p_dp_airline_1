@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -170,11 +171,12 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
     @Test
     @DisplayName("Post exist passenger")
     void shouldAddExistPassenger() throws Exception {
-        Passenger passenger = passengerService.findById(4L).get();
+        PassengerDTO passengerDTO = new PassengerDTO();
+        passengerDTO.setId(4L);
 
         mockMvc.perform(
                         post("http://localhost:8080/api/passengers")
-                                .content(objectMapper.writeValueAsString(passenger))
+                                .content(objectMapper.writeValueAsString(passengerDTO))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
                 )

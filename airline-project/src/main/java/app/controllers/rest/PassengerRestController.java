@@ -4,6 +4,7 @@ import app.controllers.api.rest.PassengerRestApi;
 import app.dto.account.PassengerDTO;
 import app.entities.account.Passenger;
 import app.services.interfaces.PassengerService;
+import app.util.mappers.PassengerMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,8 @@ import java.util.stream.Collectors;
 public class PassengerRestController implements PassengerRestApi {
 
     private final PassengerService passengerService;
+    private final PassengerMapper passengerMapper;
+
 
     @Override
     public ResponseEntity<Page<PassengerDTO>> getAll(Integer page, Integer size) {
@@ -107,7 +110,7 @@ public class PassengerRestController implements PassengerRestApi {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         log.info("create: new passenger added");
-        return new ResponseEntity<>(new PassengerDTO(passengerService.save(passengerDTO.convertToEntity())),
+        return new ResponseEntity<>(new PassengerDTO(passengerService.save(passengerMapper.convertToPassengerEntity(passengerDTO))),
                 HttpStatus.CREATED);
     }
 
@@ -115,7 +118,7 @@ public class PassengerRestController implements PassengerRestApi {
     public ResponseEntity<PassengerDTO> update(Long id, PassengerDTO passengerDTO) {
         passengerDTO.setId(id);
         log.info("update: passenger={}", passengerDTO);
-        return new ResponseEntity<>(new PassengerDTO(passengerService.update(passengerDTO.convertToEntity())),
+        return new ResponseEntity<>(new PassengerDTO(passengerService.update(passengerMapper.convertToPassengerEntity(passengerDTO))),
                 HttpStatus.OK);
     }
 
