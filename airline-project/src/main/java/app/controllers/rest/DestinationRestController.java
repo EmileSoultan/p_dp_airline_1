@@ -23,14 +23,14 @@ public class DestinationRestController implements DestinationRestApi {
     private final DestinationMapper destinationMapper;
 
     @Override
-    public ResponseEntity<Page<DestinationDTO>> getAll(Pageable pageable, String cityName, String countryName) {
+    public ResponseEntity<Page<DestinationDTO>> getAll(Pageable pageable, String cityName, String countryName, String timezone) {
         Page<Destination> destination = null;
-        if (cityName == null && countryName == null) {
+        if (cityName == null && countryName == null && timezone == null) {
             destination = destinationService.findAll(pageable);
             log.info("getAll: get all Destinations");
         } else {
-            log.info("getAll: get Destinations by cityName or countryName. countryName=(3 / cityName=(', countryName, cityName");
-            destination = destinationService.findDestinationByName(pageable, cityName, countryName);
+            log.info("getAll: get Destinations by cityName or countryName or timezone. countryName = {}. cityName= {}. timezone = {}", countryName, cityName, timezone);
+            destination = destinationService.findDestinationByNameAndTimezone(pageable, cityName, countryName, timezone);
         }
         return (!destination.isEmpty())
                 ? new ResponseEntity<>(destination.map(entity -> {
@@ -53,5 +53,4 @@ public class DestinationRestController implements DestinationRestApi {
         destinationService.updateDestination(id, destinationMapper.convertToDestinationEntity(destinationDTO));
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }
