@@ -11,7 +11,7 @@ public interface DestinationService {
 
     Page<Destination> findAll(Pageable pageable);
 
-    Page<Destination> findDestinationByName(Pageable pageable, String cityName, String countryName);
+    Page<Destination> findDestinationByNameAndTimezone(Pageable pageable, String cityName, String countryName, String timezone);
 
     void saveDestination(Destination destination);
 
