@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -56,15 +57,17 @@ public class FlightSeatRestController implements FlightSeatRestApi {
     }
 
     @Override
-    public ResponseEntity<FlightSeatDTO> getCheapestByFlightIdAndSeatCategory(Long flightID, CategoryType category) {
+    public ResponseEntity<List<FlightSeatDTO>> getCheapestByFlightIdAndSeatCategory(Long flightID, CategoryType category) {
         log.info("getCheapestByFlightIdAndSeatCategory: get FlightSeats by flight ID = {} and seat category = {}", flightID, category);
-        FlightSeat flightSeat = flightSeatService.getCheapestFlightSeatsByFlightIdAndSeatCategory(flightID, category);
-        if (flightSeat == null) {
+        List<FlightSeat> flightSeats = flightSeatService.getCheapestFlightSeatsByFlightIdAndSeatCategory(flightID, category);
+        List<FlightSeatDTO> flightSeatDTOS = flightSeats.stream().map(FlightSeatDTO::new).collect(Collectors.toList());
+        if (flightSeats.isEmpty()) {
             log.error("getCheapestByFlightIdAndSeatCategory: FlightSeats with flightID = {} or seat category = {} not found", flightID, category);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(new FlightSeatDTO(flightSeat), HttpStatus.OK);
+        return new ResponseEntity<>(flightSeatDTOS, HttpStatus.OK);
     }
+
 
     @Override
     public ResponseEntity<Set<FlightSeatDTO>> generate(Long flightId) {
