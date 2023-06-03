@@ -4,7 +4,6 @@ import app.entities.account.Passenger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface PassengerService {
@@ -12,21 +11,15 @@ public interface PassengerService {
 
     Passenger update(Passenger passenger);
 
+    Page<Passenger> filterPassengerByKeyword(Pageable pageable, String firstName, String lastName, String email, String serialNumberPassport);
+
     Optional<Passenger> findById(Long id);
 
-    Optional<Passenger> findByPassportSerialNumber(String passportSerialNumber);
-
-    Passenger findByEmail(String email);
-
-    List<Passenger> findByLastName(String lastName);
-
-    List<Passenger> findByFistName(String firstName);
-
-    List<Passenger> findByMiddleName(String middleName);
-
-    List<Passenger> findByAnyName(String name);
 
     void deleteById(Long id);
 
-    Page <Passenger> findAll (int page, int size);
+    Page<Passenger> findAll (Pageable pageable);
+
+    Page<Passenger> findAll(int page, int size);
+
 }

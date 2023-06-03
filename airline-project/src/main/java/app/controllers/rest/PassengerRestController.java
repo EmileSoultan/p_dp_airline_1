@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,6 @@ public class PassengerRestController implements PassengerRestApi {
 
     private final PassengerService passengerService;
     private final PassengerMapper passengerMapper;
-
 
     @Override
     public ResponseEntity<Page<PassengerDTO>> getAll(Integer page, Integer size) {
@@ -53,54 +53,26 @@ public class PassengerRestController implements PassengerRestApi {
     }
 
     @Override
-    public ResponseEntity<PassengerDTO> getByEmail(String email) {
-        log.info("getByEmail: get passenger by email = {}", email);
-        Passenger passenger = passengerService.findByEmail(email);
-        if (passenger == null) {
+    public ResponseEntity<Page<PassengerDTO>> filterPassengerByKeyword(Pageable pageable, String firstName, String lastName, String email, String serialNumberPassport) {
+        Page<Passenger> passengers;
+        if (firstName == null && lastName == null && email == null && serialNumberPassport == null) {
+            passengers = passengerService.findAll(pageable);
+            log.info("getAll: get all Passenger");
+            log.info(passengers.toString());
+        } else {
+            log.info("filter: filter Passenger by firstname or lastname or email or serialNumberPassport");
+            passengers = passengerService.filterPassengerByKeyword(pageable, firstName, lastName, email, serialNumberPassport);
+            log.info(passengers.toString());
+        }
+        log.info("passenger пустой: " + passengers.isEmpty());
+        if (passengers.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(new PassengerDTO(passenger), HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<List<PassengerDTO>> getByFirstName(String passengerFirstName) {
-        log.info("getByFullName: get passenger by firstname = {}", passengerFirstName);
-        List<Passenger> passengerList = passengerService.findByFistName(passengerFirstName);
-        return passengerList.isEmpty()
-                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(passengerList.stream().map(PassengerDTO::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<List<PassengerDTO>> getByLastName(String passengerLastName) {
-        log.info("getByLastName: get passengers by lastname = {}", passengerLastName);
-        List<Passenger> passengerList = passengerService.findByLastName(passengerLastName);
-        return passengerList.isEmpty()
-                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(passengerList.stream().map(PassengerDTO::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<List<PassengerDTO>> getByAnyName(String passengerAnyName) {
-        log.info("getByAnyName: get passenger by anyName = {}", passengerAnyName);
-        List<Passenger> passengerList = passengerService.findByAnyName(passengerAnyName);
-        return passengerList.isEmpty()
-                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(passengerList.stream().map(PassengerDTO::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<PassengerDTO> getByPassportSerialNumber(String serialNumber) {
-        log.info("getByPassportSerialNumber: get passenger by PassportSerialNumber. serialNumber={}", serialNumber);
-        Optional<Passenger> passenger = passengerService.findByPassportSerialNumber(serialNumber);
-        if (passenger.isEmpty()) {
-            log.error("getByPassportSerialNumber: passenger with this serial number doesn't exist");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(new PassengerDTO(passenger.get()), HttpStatus.OK);
+        return new ResponseEntity<>(passengers.map(entity -> {
+            PassengerDTO dto = passengerMapper.convertToPassengerDTO(entity);
+            log.info(String.valueOf(dto));
+            return dto;
+        }), HttpStatus.OK);
     }
 
     @Override
