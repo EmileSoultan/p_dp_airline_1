@@ -29,11 +29,18 @@ public class FlightSeatRestController implements FlightSeatRestApi {
     public ResponseEntity<Page<FlightSeatDTO>> getAllByFlightId(
             Pageable pageable,
             Long flightId,
-            Boolean isSold) {
+            Boolean isSold,
+            Boolean isRegistered) {
         Page<FlightSeat> result = null;
-        if (isSold != null && !isSold) {
+        if (isSold != null && !isSold && isRegistered != null && !isRegistered) {
+            log.info("getAllByFlightId: get not sold and not registered FlightSeats by id={}", flightId);
+            result = flightSeatService.getFreeSeats(pageable, flightId);
+        } else if (isSold != null && !isSold) {
             log.info("getAllByFlightId: get not sold FlightSeats by id={}", flightId);
             result = flightSeatService.findNotSoldById(flightId, pageable);
+        } else if (isRegistered != null && !isRegistered) {
+            log.info("getAllByFlightId: get not registered FlightSeat by id={}", flightId);
+            result = flightSeatService.findNotRegisteredById(flightId, pageable);
         } else {
             log.info("getAllByFlightId: get FlightSeats by flightId. flightId={}", flightId);
             result = flightSeatService.findByFlightId(flightId, pageable);
@@ -64,6 +71,16 @@ public class FlightSeatRestController implements FlightSeatRestApi {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(new FlightSeatDTO(flightSeat), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Page<FlightSeatDTO>> getFreeSeats(Pageable pageable, Long id) {
+        log.info("getFreeSeats: get free seats on Flight with id = {}", id);
+        Page<FlightSeatDTO> seats = flightSeatService.getFreeSeats(pageable, id).map(entity -> {
+            FlightSeatDTO seatDTO = flightSeatMapper.convertToFlightSeatDTOEntity(entity);
+            return seatDTO;
+        });
+        return ResponseEntity.ok(seats);
     }
 
     @Override

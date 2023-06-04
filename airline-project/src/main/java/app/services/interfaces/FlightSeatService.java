@@ -18,6 +18,7 @@ public interface FlightSeatService {
     FlightSeat findById(Long id);
 
     Set<FlightSeat> findByFlightId(Long flightId);
+    Page<FlightSeat> getFreeSeats(Pageable pageable, Long id);
     Page<FlightSeat> findByFlightId(Long flightId, Pageable pageable);
     Set<FlightSeat> findByFlightNumber(String flightNumber);
 
@@ -37,6 +38,7 @@ public interface FlightSeatService {
     FlightSeat getCheapestFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type);
 
     Page<FlightSeat> findNotSoldById(Long id, Pageable pageable);
+    Page<FlightSeat> findNotRegisteredById(Long id, Pageable pageable);
 
     void editIsSoldToFalseByFlightSeatId(long[] flightSeatId);
 }
