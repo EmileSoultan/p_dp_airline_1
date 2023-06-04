@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
 
 @Api(tags = "FlightSeat REST")
@@ -76,7 +77,7 @@ public interface FlightSeatRestApi {
             @ApiResponse(code = 404, message = "Provided Flight not found")
     })
     @GetMapping("/cheapest")
-    ResponseEntity<FlightSeatDTO> getCheapestByFlightIdAndSeatCategory(
+    ResponseEntity<List<FlightSeatDTO>> getCheapestByFlightIdAndSeatCategory(
             @RequestParam(name = "flightID") Long flightID,
             @RequestParam(name = "category") CategoryType category
     );

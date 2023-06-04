@@ -2,6 +2,7 @@ package app.controllers;
 
 import app.dto.FlightSeatDTO;
 import app.entities.FlightSeat;
+import app.enums.CategoryType;
 import app.services.interfaces.FlightSeatService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +109,20 @@ class FlightSeatControllerIT extends IntegrationTestBase {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+    @Test
+    void checkGetCheapestByFlightIdAndSeatCategory() throws Exception {
+        CategoryType category = CategoryType.FIRST;
+        Long flightID = 1L;
+        List<FlightSeat> flightSeats = flightSeatService.getCheapestFlightSeatsByFlightIdAndSeatCategory(flightID, category);
+        List<FlightSeatDTO> flightSeatDTOS = flightSeats.stream().map(FlightSeatDTO::new).collect(Collectors.toList());
+
+        mockMvc.perform(get("http://localhost:8080/api/flight-seats/cheapest")
+                        .param("category", category.toString())
+                        .param("flightID", flightID.toString()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(flightSeatDTOS)));
     }
 
 }
