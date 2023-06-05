@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Api(tags = "FlightSeat REST")
@@ -50,15 +51,14 @@ public interface FlightSeatRestApi {
             @ApiResponse(code = 200, message = "flight seats found"),
             @ApiResponse(code = 404, message = "Not found")
     })
-    @GetMapping("/all-flight-seats/{flightId}")
-    ResponseEntity<Page<FlightSeatDTO>> getAllByFlightId(
+    @GetMapping("/all-flight-seats")
+    ResponseEntity<Page<FlightSeatDTO>> getAll(
             @PageableDefault(sort = {"id"}) Pageable pageable,
             @ApiParam(
                     name = "flightId",
-                    value = "Flight.id",
-                    required = true
+                    value = "Flight.id"
             )
-            @PathVariable Long flightId,
+            @RequestParam(required = false) Optional<Long> flightId,
             @ApiParam(
                     name = "isSold",
                     value = "FlightSeat.isSold"

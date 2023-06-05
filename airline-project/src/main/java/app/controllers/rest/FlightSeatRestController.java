@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,32 +28,32 @@ public class FlightSeatRestController implements FlightSeatRestApi {
     private final FlightSeatMapper flightSeatMapper;
 
     @Override
-    public ResponseEntity<Page<FlightSeatDTO>> getAllByFlightId(
+    public ResponseEntity<Page<FlightSeatDTO>> getAll(
             Pageable pageable,
-            Long flightId,
+            Optional<Long> flightId,
             Boolean isSold,
             Boolean isRegistered) {
         Page<FlightSeat> result = null;
         if (isSold != null && !isSold && isRegistered != null && !isRegistered) {
-            log.info("getAllByFlightId: get not sold and not registered FlightSeats by id={}", flightId);
-            result = flightSeatService.getFreeSeats(pageable, flightId);
+            log.info("getAll: get not sold and not registered FlightSeats by id={}", flightId);
+            result = flightSeatService.getFreeSeats(pageable, flightId.orElse(null));
         } else if (isSold != null && !isSold) {
-            log.info("getAllByFlightId: get not sold FlightSeats by id={}", flightId);
-            result = flightSeatService.findNotSoldById(flightId, pageable);
+            log.info("getAll: get not sold FlightSeats by id={}", flightId);
+            result = flightSeatService.findNotSoldById(flightId.orElse(null), pageable);
         } else if (isRegistered != null && !isRegistered) {
-            log.info("getAllByFlightId: get not registered FlightSeat by id={}", flightId);
-            result = flightSeatService.findNotRegisteredById(flightId, pageable);
+            log.info("getAll: get not registered FlightSeat by id={}", flightId);
+            result = flightSeatService.findNotRegisteredById(flightId.orElse(null), pageable);
         } else {
-            log.info("getAllByFlightId: get FlightSeats by flightId. flightId={}", flightId);
-            result = flightSeatService.findByFlightId(flightId, pageable);
+            log.info("getAll: get FlightSeats by flightId. flightId={}", flightId);
+            result = flightSeatService.findByFlightId(flightId.orElse(null), pageable);
         }
-            return (result.isEmpty()) ?
-                    ResponseEntity.notFound().build() :
-                    ResponseEntity.ok(result.map(entity -> {
-                        FlightSeatDTO dto = flightSeatMapper.convertToFlightSeatDTOEntity(entity);
-                        return dto;
-                    }));
-        }
+        return (result.isEmpty()) ?
+                ResponseEntity.notFound().build() :
+                ResponseEntity.ok(result.map(entity -> {
+                    FlightSeatDTO dto = flightSeatMapper.convertToFlightSeatDTOEntity(entity);
+                    return dto;
+                }));
+    }
 
 
     @Override

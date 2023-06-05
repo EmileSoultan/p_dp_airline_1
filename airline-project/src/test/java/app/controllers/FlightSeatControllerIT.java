@@ -31,11 +31,12 @@ class FlightSeatControllerIT extends IntegrationTestBase {
     private FlightSeatService flightSeatService;
 
     @Test
-    void shouldGetFlightSeatsByFlightId() throws Exception {
+    void shouldGetFlightSeats() throws Exception {
         String flightId = "1";
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
 
-        mockMvc.perform(get("http://localhost:8080/api/flight-seats/all-flight-seats/{flightId}", flightId))
+        mockMvc.perform(get("http://localhost:8080/api/flight-seats/all-flight-seats")
+                        .param("flightId", flightId))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper
@@ -47,7 +48,8 @@ class FlightSeatControllerIT extends IntegrationTestBase {
         String flightId = "1";
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
 
-        mockMvc.perform(get("http://localhost:8080/api/flight-seats/all-flight-seats/{flightId}", flightId)
+        mockMvc.perform(get("http://localhost:8080/api/flight-seats/all-flight-seats")
+                        .param("flightId", flightId)
                         .param("isSold", "false")
                         .param("isRegistered", "false"))
                 .andDo(print())
@@ -61,7 +63,9 @@ class FlightSeatControllerIT extends IntegrationTestBase {
         String flightId = "1";
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
 
-        mockMvc.perform(get("http://localhost:8080/api/flight-seats/all-flight-seats/{flightId}", flightId).param("isSold", "false"))
+        mockMvc.perform(get("http://localhost:8080/api/flight-seats/all-flight-seats")
+                        .param("flightId", flightId)
+                        .param("isSold", "false"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper
