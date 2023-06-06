@@ -14,9 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -26,35 +25,32 @@ public class FlightRestController implements FlightRestApi {
 
     private final FlightService flightService;
     private final FlightMapper flightMapper;
-
     private final FlightSeatMapper flightSeatMapper;
 
-
     @Override
-    public ResponseEntity<Page<FlightDTO>> getAll(Pageable pageable) {
-        Page<FlightDTO> allFlights = flightService.getAllFlights(pageable).map(entity -> {
-            FlightDTO dto = flightMapper.convertToFlightDTOEntity(entity);
-            return dto;
-        });
+    public ResponseEntity<Page<FlightDTO>> getAll(
+            @RequestParam(required = false) String from,
+            @RequestParam(required = false) String to,
+            @RequestParam(required = false) String start,
+            @RequestParam(required = false) String finish,
+            Pageable pageable) {
+        if (from == null && to == null && start == null && finish == null) {
+            Page<FlightDTO> allFlights = flightService.getAllFlights(pageable)
+                    .map(flightMapper::convertToFlightDTOEntity);
 
-        log.info("getAll: get all Flights");
-        return allFlights.isEmpty()
-                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(allFlights, HttpStatus.OK);
-    }
+            log.info("getAll: get all Flights");
+            return allFlights.isEmpty()
+                    ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                    : new ResponseEntity<>(allFlights, HttpStatus.OK);
+        } else {
+            Page<FlightDTO> flightsPage = flightService.getFlightByDestinationsAndDates(from, to, start, finish, pageable)
+                    .map(flightMapper::convertToFlightDTOEntity);
 
-    @Override
-    public ResponseEntity<List<FlightDTO>> getAllByFromAndToAndDates(String from,
-                                                                     String to,
-                                                                     String start,
-                                                                     String finish,
-                                                                     Pageable pageable) {
-        log.info("getAllByFromAndToAndDates: get Flights with params");
-        var flightsList = flightService.getFlightByDestinationsAndDates(from, to, start, finish, pageable);
-        return flightsList.isEmpty()
-                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(flightsList.stream().map(FlightDTO::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
+            log.info("getAllByFromAndToAndDates: get Flights with params");
+            return flightsPage.isEmpty()
+                    ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                    : new ResponseEntity<>(flightsPage, HttpStatus.OK);
+        }
     }
 
     @Override

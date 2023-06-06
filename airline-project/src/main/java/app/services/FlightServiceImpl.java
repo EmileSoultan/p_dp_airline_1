@@ -12,6 +12,7 @@ import app.services.interfaces.FlightService;
 import app.util.aop.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,15 +64,19 @@ public class FlightServiceImpl implements FlightService {
     @Override
     @Transactional(readOnly = true)
     @Loggable
-    public List<Flight> getFlightByDestinationsAndDates(String from, String to,
+    public Page<Flight> getFlightByDestinationsAndDates(String from, String to,
                                                         String start, String finish,
                                                         Pageable pageable) {
-        return getAllFlights(pageable).stream()
+        List<Flight> filteredFlights = getAllFlights(pageable).stream()
                 .filter(flight -> from == null || flight.getFrom().getCityName().equals(from))
                 .filter(flight -> to == null || flight.getTo().getCityName().equals(to))
                 .filter(flight -> start == null || flight.getDepartureDateTime().isEqual(LocalDateTime.parse(start)))
                 .filter(flight -> finish == null || flight.getArrivalDateTime().isEqual(LocalDateTime.parse(finish)))
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        int total = filteredFlights.size();
+
+        return new PageImpl<>(filteredFlights, pageable, total);
     }
 
     @Override
