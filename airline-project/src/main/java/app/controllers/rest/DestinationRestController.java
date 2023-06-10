@@ -34,9 +34,9 @@ public class DestinationRestController implements DestinationRestApi {
         }
         return (!destination.isEmpty())
                 ? new ResponseEntity<>(destination.map(entity -> {
-                    DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
-                    return dto;
-                    }), HttpStatus.OK)
+            DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
+            return dto;
+        }), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
