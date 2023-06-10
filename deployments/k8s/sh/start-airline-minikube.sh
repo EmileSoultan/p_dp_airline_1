@@ -4,7 +4,7 @@ minikube start
 kubectl --namespace default scale deployment airline-project-deployment --replicas 0
 kubectl --namespace default scale deployment airline-payments-deployment --replicas 0
 # приостанавливаем выполнение скрипта на 10 секунд, чтобы пода успела удалиться
-sleep 10
+sleep 15
 # удаляем закешированный в миникубе образ приложения (airline-project)
 # если на этом шаге в логах видите ошибку, попробуйте увеличить время на предыдущем шаге
 minikube image rm airline-project
