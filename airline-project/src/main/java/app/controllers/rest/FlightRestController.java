@@ -2,7 +2,6 @@ package app.controllers.rest;
 
 import app.controllers.api.rest.FlightRestApi;
 import app.dto.FlightDTO;
-import app.dto.FlightSeatDTO;
 import app.entities.Flight;
 import app.enums.FlightStatus;
 import app.services.interfaces.FlightService;
@@ -73,16 +72,6 @@ public class FlightRestController implements FlightRestApi {
         return flight != null
                 ? new ResponseEntity<>(new FlightDTO(flight), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @Override
-    public ResponseEntity<Page<FlightSeatDTO>> getFreeSeats(Pageable pageable, Long id) {
-        log.info("getFreeSeats: get free seats on Flight with id = {}", id);
-        Page<FlightSeatDTO> seats = flightService.getFreeSeats(pageable, id).map(entity -> {
-            FlightSeatDTO dto = flightSeatMapper.convertToFlightSeatDTOEntity(entity);
-            return dto;
-        });
-        return ResponseEntity.ok(seats);
     }
 
     @Override
