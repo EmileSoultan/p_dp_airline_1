@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- #219 Рефакторинг FlightSeat API: добавлены фильтры для поиска всех FlightSeat, добавлен эндпоинт для получения всех непроданных FlightSeat
 - #224 Тесты для обработки исключений
 - #209 Тесты FlightSeatRestController и SeatRestController
 - #208 Объединение фильтров для поиска всех Passenger
