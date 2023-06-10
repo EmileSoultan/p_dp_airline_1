@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- #181 Удаленный дебаг airline_project
 - #187 Readiness и Liveness пробы для airline-payment
 - #221 Фильтры для получения всех Flight
 - #219 Рефакторинг FlightSeat API: добавлены фильтры для поиска всех FlightSeat, добавлен эндпоинт для получения всех непроданных FlightSeat
