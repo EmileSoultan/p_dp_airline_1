@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- #224 Тесты для обработки исключений
 - #209 Тесты FlightSeatRestController и SeatRestController
 - #208 Объединение фильтров для поиска всех Passenger
 
