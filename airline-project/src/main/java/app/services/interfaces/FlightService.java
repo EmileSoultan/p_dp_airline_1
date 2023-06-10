@@ -2,7 +2,6 @@ package app.services.interfaces;
 
 import app.entities.Destination;
 import app.entities.Flight;
-import app.entities.FlightSeat;
 import app.enums.Airport;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 public interface FlightService {
 
@@ -18,11 +16,9 @@ public interface FlightService {
 
     Page<Flight> getAllFlights(Pageable pageable);
 
-    Set<FlightSeat> getFreeSeats(Long id);
-
     Flight getFlightByCode(String code);
 
-    List<Flight> getFlightByDestinationsAndDates(String from, String to, String start, String finish, Pageable pageable);
+    Page<Flight> getFlightByDestinationsAndDates(String from, String to, String start, String finish, Pageable pageable);
 
     List<Flight> getFlightsByDestinationsAndDepartureDate(Destination fromId, Destination toId, LocalDate departureDate);
 

@@ -6,19 +6,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
-import java.util.List;
 
 public interface DestinationService {
 
     Page<Destination> findAll(Pageable pageable);
 
-    List<Destination> findDestinationByName(String cityName, String countryName);
+    Page<Destination> findDestinationByNameAndTimezone(Pageable pageable, String cityName, String countryName, String timezone);
 
     void saveDestination(Destination destination);
 
     void updateDestination(Long id, Destination destination);
-
-    void deleteDestinationById(Long id);
 
     Destination getDestinationById(Long id);
 

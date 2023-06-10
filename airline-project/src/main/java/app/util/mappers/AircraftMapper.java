@@ -19,4 +19,15 @@ public class AircraftMapper {
 
         return aircraft;
     }
+
+    public AircraftDTO convertToAircarftDTOEntity(Aircraft aircraft){
+        AircraftDTO aircraftDTO = new AircraftDTO();
+        aircraftDTO.setId(aircraft.getId());
+        aircraftDTO.setAircraftNumber(aircraft.getAircraftNumber());
+        aircraftDTO.setModel(aircraft.getModel());
+        aircraftDTO.setModelYear(aircraft.getModelYear());
+        aircraftDTO.setFlightRange(aircraft.getFlightRange());
+
+        return aircraftDTO;
+    }
 }

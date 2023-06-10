@@ -22,4 +22,15 @@ public class SeatMapper {
         seat.setAircraft(aircraftService.findById(seatDTO.getAircraftId()));
         return seat;
     }
+
+    public SeatDTO convertToSeatDTOEntity(Seat seat) {
+        SeatDTO seatDTO = new SeatDTO();
+        seatDTO.setId(seat.getId());
+        seatDTO.setSeatNumber(seat.getSeatNumber());
+        seatDTO.setIsNearEmergencyExit(seat.getIsNearEmergencyExit());
+        seatDTO.setIsLockedBack(seat.getIsLockedBack());
+        seatDTO.setCategory(seat.getCategory());
+        seatDTO.setAircraftId(aircraftService.findById(seat.getAircraft().getId()).getId());
+        return seatDTO;
+    }
 }

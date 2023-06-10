@@ -15,7 +15,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql({"/sqlQuery/create-passengerAircraftDestinationFlightsCategoryBooking-before.sql"})
 @Transactional
 class BookingRestControllerIT extends IntegrationTestBase {
+
     @Autowired
     private BookingService bookingService;
     @Autowired
@@ -37,14 +37,13 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @Autowired
     private FlightService flightService;
 
-
     @Test
     @DisplayName("Save Booking")
     void shouldSaveBooking() throws Exception {
         BookingDTO booking = new BookingDTO();
         booking.setBookingNumber("BK-111111");
         booking.setBookingData(LocalDateTime.now());
-        booking.setPassenger(passengerService.findById(1001L).get());
+        booking.setPassengerId(passengerService.findById(1001L).get().getId());
         booking.setFlightId(flightService.getById(4001L).getId());
         booking.setCategoryType(CategoryType.ECONOMY);
 
@@ -60,12 +59,11 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @Test
     @DisplayName("Get All Bookings")
     void shouldGetAllBookings() throws Exception {
-        Pageable pageable = PageRequest.of(0,1);
+        Pageable pageable = PageRequest.of(0, 1);
         mockMvc.perform(get("http://localhost:8080/api/bookings?page=0&size=1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.findAll(pageable).getContent()
-                        .stream().map(BookingDTO::new).collect(Collectors.toList()))));
+                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.findAll(pageable).map(BookingDTO::new))));
     }
 
 
@@ -100,7 +98,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         BookingDTO booking = new BookingDTO(bookingService.findById(id));
         booking.setBookingNumber("BK-222222");
         booking.setBookingData(LocalDateTime.now());
-        booking.setPassenger(passengerService.findById(1002L).get());
+        booking.setPassengerId(passengerService.findById(1002L).get().getId());
         booking.setFlightId(4002L);
         booking.setCategoryType(CategoryType.BUSINESS);
 

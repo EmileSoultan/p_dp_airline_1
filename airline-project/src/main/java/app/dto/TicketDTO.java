@@ -12,12 +12,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-
+@Deprecated
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 public class TicketDTO {
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
     @NotBlank(message = "Field should not be empty")
@@ -48,7 +49,6 @@ public class TicketDTO {
     @NotBlank(message = "Field seat number cannot be null")
     @Size(min = 2, max = 5, message = "Seat number must be between 2 and 5 characters")
     private String seatNumber;
-
 
     public TicketDTO(Ticket ticket) {
         this.id = ticket.getId();

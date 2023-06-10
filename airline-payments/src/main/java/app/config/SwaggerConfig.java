@@ -9,25 +9,28 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.util.HashSet;
+import java.util.List;
+
 @Configuration
 public class SwaggerConfig {
-    public static final String BASE_PACKAGE = "app.controllers";
 
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("ALL")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage(BASE_PACKAGE))
+                .apis(RequestHandlerSelectors.basePackage("app.controllers"))
                 .paths(PathSelectors.any())
                 .build()
+                .protocols(new HashSet<>(List.of("http")))
                 .apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("S7 Airlines API (Payment)")
-                .description("Визуальный интерфейс для работы с REST API авиакомпании S7 Airlines (Payment)")
+                .version("1.0.3")
+                .description("UI для работы с API проекта S7 Airlines. (Payment)")
                 .build();
     }
 }

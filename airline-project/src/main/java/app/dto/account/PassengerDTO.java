@@ -3,25 +3,26 @@ package app.dto.account;
 
 import app.entities.Passport;
 import app.entities.account.Passenger;
+import app.entities.account.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @JsonTypeName(value = "passenger")
-public class PassengerDTO extends AccountDTO {
+public class PassengerDTO {
+
 
     @NotBlank(message = "Field should not be empty")
     @Size(min = 2, max = 128, message = "Size first_name cannot be less than 2 and more than 128 characters")
@@ -42,30 +43,40 @@ public class PassengerDTO extends AccountDTO {
 
     private Passport passport;
 
-    public PassengerDTO(Passenger account) {
-        super(account);
-        this.firstName = account.getFirstName();
-        this.lastName = account.getLastName();
-        this.birthDate = account.getBirthDate();
-        this.phoneNumber = account.getPhoneNumber();
-        this.passport = account.getPassport();
-    }
 
-    @Override
-    public Passenger convertToEntity() {
-        Passenger passenger = new Passenger();
-        passenger.setId(getId());
-        passenger.setEmail(getEmail());
-        passenger.setPassword(getPassword());
-        passenger.setSecurityQuestion(getSecurityQuestion());
-        passenger.setAnswerQuestion(getAnswerQuestion());
-        passenger.setRoles(getRoles());
 
-        passenger.setFirstName(firstName);
-        passenger.setLastName(lastName);
-        passenger.setBirthDate(birthDate);
-        passenger.setPhoneNumber(phoneNumber);
-        passenger.setPassport(passport);
-        return passenger;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long id;
+
+    @Email
+    @NotBlank(message = "The field cannot be empty")
+    private String email;
+
+    @NotBlank(message = "The field cannot be empty")
+    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,}", message = "min 8 characters, 1 uppercase latter" +
+            "1 lowercase latter, at least 1 number, 1 special character")
+    private String password;
+
+    @NotBlank(message = "The field cannot be empty")
+    private String securityQuestion;
+
+    @NotBlank(message = "The field cannot be empty")
+    private String answerQuestion;
+
+    private Set<Role> roles;
+
+
+    public PassengerDTO(Passenger passenger) {
+        this.id = passenger.getId();
+        this.firstName = passenger.getFirstName();
+        this.lastName = passenger.getLastName();
+        this.birthDate = passenger.getBirthDate();
+        this.phoneNumber = passenger.getPhoneNumber();
+        this.passport = passenger.getPassport();
+        this.email = passenger.getEmail();
+        this.answerQuestion = passenger.getAnswerQuestion();
+        this.securityQuestion = passenger.getSecurityQuestion();
+        this.password = passenger.getPassword();
+        this.roles = passenger.getRoles();
     }
 }

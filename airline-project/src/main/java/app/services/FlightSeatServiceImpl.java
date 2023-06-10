@@ -14,8 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class FlightSeatServiceImpl implements FlightSeatService {
+
     private final FlightSeatRepository flightSeatRepository;
     private final FlightRepository flightRepository;
     private final SeatRepository seatRepository;
@@ -35,6 +36,13 @@ public class FlightSeatServiceImpl implements FlightSeatService {
         Set<FlightSeat> flightSeatSet = new HashSet<>();
         flightSeatRepository.findAll().forEach(flightSeatSet::add);
         return flightSeatSet;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Loggable
+    public Page<FlightSeat> getFreeSeats(Pageable pageable, Long id) {
+        return flightSeatRepository.findFlightSeatByFlightIdAndIsSoldFalseAndIsRegisteredFalse(id, pageable);
     }
 
     @Override
@@ -189,21 +197,25 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     }
 
     @Override
-    public List<FlightSeat> findFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type) {
-        return flightSeatRepository.findFlightSeatsByFlightIdAndSeatCategory(id, type);
+    @Loggable
+    public Page<FlightSeat> findNotRegisteredById(Long id, Pageable pageable) {
+        return flightSeatRepository.findAllFlightsSeatByFlightIdAndIsRegisteredFalse(id, pageable);
     }
 
     @Override
-    public List<FlightSeat> findSingleFlightSeatByFlightIdAndSeatCategory(Long id, CategoryType type) {
-        return flightSeatRepository.findFlightSeatsByFlightIdAndSeatCategory(id, type)
-                .stream()
-                .limit(1)
-                .collect(Collectors.toList());
+    public List<FlightSeat> getCheapestFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type) {
+        return flightSeatRepository.findFlightSeatsByFlightIdAndSeatCategory(id, type);
     }
 
 
     public Page<FlightSeat> findNotSoldById(Long id, Pageable pageable) {
         return flightSeatRepository.findAllFlightsSeatByFlightIdAndIsSoldFalse(id, pageable);
+    }
+
+    @Override
+    @Transactional
+    public void editIsSoldToFalseByFlightSeatId(long[] flightSeatId) {
+        flightSeatRepository.editIsSoldToFalseByFlightSeatId(flightSeatId);
     }
 
     public int generateFareForFlightseat(Seat seat) {

@@ -14,8 +14,6 @@ import app.util.LogsUtils;
 import app.util.aop.Loggable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -186,9 +184,9 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     @Loggable
-    public Page<SearchResultProjection> findSearchResultByID(Long id, Pageable pageable) {
+    public SearchResultProjection findSearchResultByID(Long id) {
         log.debug("findSearchResultByID: incoming data, searchResult \"id\" = {}", id);
-        Page<SearchResultProjection> searchResult = searchResultRepository.findAllProjectedBy(id, pageable);
+        SearchResultProjection searchResult = searchResultRepository.findAllProjectedBy(id);
         log.debug("findSearchResultByID: output data, searchResult = {}", LogsUtils.objectToJson(searchResult));
         return searchResult;
     }

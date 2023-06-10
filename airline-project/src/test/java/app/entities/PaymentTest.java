@@ -69,7 +69,6 @@ public class PaymentTest extends EntityTest {
         Assertions.assertFalse(isSetWithViolationIsEmpty(validator, testPayment));
     }
 
-
     @Test
     public void emptyBookingIdListShouldNotValidate() {
         Payment testPayment;
