@@ -3,17 +3,14 @@ package app.controllers.api;
 import app.config.security.jwt.domain.JwtRequest;
 import app.config.security.jwt.domain.JwtResponse;
 import app.config.security.jwt.domain.RefreshJwtRequest;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.security.auth.message.AuthException;
 import javax.servlet.http.HttpServletRequest;
@@ -62,6 +59,7 @@ public interface JwtControllerApi {
             )
             @RequestBody RefreshJwtRequest request) throws AuthException;
 
+    @ApiIgnore
     @GetMapping("/login")
     @ApiOperation(value = "Get login page")
     @ApiResponses(value = {
