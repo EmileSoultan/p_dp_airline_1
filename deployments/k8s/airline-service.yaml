@@ -6,7 +6,12 @@ spec:
   selector:
     app: airline-project
   ports:
-    - protocol: "TCP"
+    - name: http
+      protocol: TCP
       port: 8080
       targetPort: 8080
+    - name: debug
+      protocol: TCP
+      port: 5005
+      targetPort: 5005
   type: NodePort
