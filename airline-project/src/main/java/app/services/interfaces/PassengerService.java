@@ -11,15 +11,13 @@ public interface PassengerService {
 
     Passenger update(Passenger passenger);
 
-    Page<Passenger> filterPassengerByKeyword(Pageable pageable, String firstName, String lastName, String email, String serialNumberPassport);
+    Page<Passenger> findAllByKeyword(Pageable pageable, String firstName, String lastName, String email, String serialNumberPassport);
 
     Optional<Passenger> findById(Long id);
-
 
     void deleteById(Long id);
 
     Page<Passenger> findAll (Pageable pageable);
 
     Page<Passenger> findAll(int page, int size);
-
 }

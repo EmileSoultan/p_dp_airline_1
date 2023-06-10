@@ -66,7 +66,7 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public Page<Passenger> filterPassengerByKeyword(Pageable pageable, String firstName, String lastName, String email, String serialNumberPassport) {
+    public Page<Passenger> findAllByKeyword(Pageable pageable, String firstName, String lastName, String email, String serialNumberPassport) {
         if(firstName != null) {
             return passengerRepository.findAllByFirstName(pageable, firstName);
         }

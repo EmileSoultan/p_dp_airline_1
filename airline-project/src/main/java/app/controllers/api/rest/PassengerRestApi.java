@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Api(tags = "Passenger REST")
 @Tag(name = "Passenger REST", description = "API для операций с пассажирами")
@@ -40,6 +39,20 @@ public interface PassengerRestApi {
             @RequestParam(value = "size", defaultValue = "10") Integer size
     );
 
+    @ApiOperation(value = "Get list of all Passengers filtered")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Passenger found"),
+            @ApiResponse(code = 400, message = "Passenger not found")
+    })
+    @GetMapping("/filter")
+    ResponseEntity<Page<PassengerDTO>> getAllFiltered(
+            @PageableDefault(sort = {"id"}) Pageable pageable,
+            @RequestParam(value = "firstName", required = false) String firstName,
+            @RequestParam(value = "lastName", required = false) String lastName,
+            @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "serialNumberPassport", required = false) String serialNumberPassport
+    );
+
     @ApiOperation(value = "Get Passenger by \"id\"")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Passenger found"),
@@ -53,20 +66,6 @@ public interface PassengerRestApi {
                     required = true
             )
             @PathVariable Long id);
-
-    @ApiOperation(value = "Filter Passenger by keyword")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Passenger found"),
-            @ApiResponse(code = 400, message = "Passenger not found")
-    })
-    @GetMapping("/filter")
-    ResponseEntity<Page<PassengerDTO>> filterPassengerByKeyword(
-            @PageableDefault(sort = {"id"}) Pageable pageable,
-            @RequestParam(value = "firstName", required = false) String firstName,
-            @RequestParam(value = "lastName", required = false) String lastName,
-            @RequestParam(value = "email", required = false) String email,
-            @RequestParam(value = "serialNumberPassport", required = false) String serialNumberPassport
-    );
 
     @ApiOperation(value = "Create new Passenger", notes = "Create method requires in model field \"@type\": \"Passenger\"")
     @ApiResponses(value = {

@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -151,7 +149,7 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
                 .param("firstName", firstName))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.filterPassengerByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
+                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.findAllByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
     }
 
     @Test
@@ -166,7 +164,7 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
                         .param("lastName", lastName))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.filterPassengerByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
+                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.findAllByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
     }
 
     @Test
@@ -181,7 +179,7 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
                         .param("email", email))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.filterPassengerByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
+                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.findAllByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
     }
 
     @Test
@@ -196,7 +194,7 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
                         .param("passportSerialNumber", passportSerialNumber))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.filterPassengerByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
+                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.findAllByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
     }
 
     @Test
@@ -211,7 +209,7 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
                         .param("firstName", firstName))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.filterPassengerByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
+                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.findAllByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
     }
 
     @Test
@@ -226,7 +224,7 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
                         .param("lastName", lastName))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.filterPassengerByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
+                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.findAllByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
     }
 
     @Test
@@ -241,7 +239,7 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
                         .param("email", email))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.filterPassengerByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
+                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.findAllByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
     }
     @Test
     @DisplayName("Filter passenger by passportSerialNumber no parameter")
@@ -255,7 +253,7 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
                         .param("passportSerialNumber", passportSerialNumber))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.filterPassengerByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
+                .andExpect(content().json(objectMapper.writeValueAsString(passengerService.findAllByKeyword(pageable, firstName, lastName, email, passportSerialNumber))));
     }
 
     @Test
@@ -291,9 +289,9 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
     @Test
     @DisplayName("Filter passenger by FirstName not found in database")
     void shouldShowPassengerByPassportSerialNumberNotFoundInDatabase() throws Exception {
-        String passportSerialNumber = "7777 777777";
+        String serialNumberPassport = "7777 777777";
         mockMvc.perform(get("http://localhost:8080/api/passengers/filter")
-                        .param("passportSerialNumber", passportSerialNumber))
+                        .param("serialNumberPassport", serialNumberPassport))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }

@@ -40,20 +40,7 @@ public class PassengerRestController implements PassengerRestApi {
     }
 
     @Override
-    public ResponseEntity<PassengerDTO> getById(Long id) {
-        log.info("getById: get passenger by ID = {}", id);
-        Optional<Passenger> passenger = passengerService.findById(id);
-
-        if (passenger.isEmpty()) {
-            log.error("getById: passenger with this id={} doesnt exist", id);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        }
-        return new ResponseEntity<>(new PassengerDTO(passenger.get()), HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<Page<PassengerDTO>> filterPassengerByKeyword(Pageable pageable, String firstName, String lastName, String email, String serialNumberPassport) {
+    public ResponseEntity<Page<PassengerDTO>> getAllFiltered(Pageable pageable, String firstName, String lastName, String email, String serialNumberPassport) {
         Page<Passenger> passengers;
         if (firstName == null && lastName == null && email == null && serialNumberPassport == null) {
             passengers = passengerService.findAll(pageable);
@@ -61,7 +48,7 @@ public class PassengerRestController implements PassengerRestApi {
             log.info(passengers.toString());
         } else {
             log.info("filter: filter Passenger by firstname or lastname or email or serialNumberPassport");
-            passengers = passengerService.filterPassengerByKeyword(pageable, firstName, lastName, email, serialNumberPassport);
+            passengers = passengerService.findAllByKeyword(pageable, firstName, lastName, email, serialNumberPassport);
             log.info(passengers.toString());
         }
         log.info("passenger пустой: " + passengers.isEmpty());
@@ -73,6 +60,19 @@ public class PassengerRestController implements PassengerRestApi {
             log.info(String.valueOf(dto));
             return dto;
         }), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<PassengerDTO> getById(Long id) {
+        log.info("getById: get passenger by ID = {}", id);
+        Optional<Passenger> passenger = passengerService.findById(id);
+
+        if (passenger.isEmpty()) {
+            log.error("getById: passenger with this id={} doesnt exist", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<>(new PassengerDTO(passenger.get()), HttpStatus.OK);
     }
 
     @Override
