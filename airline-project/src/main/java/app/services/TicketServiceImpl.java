@@ -1,6 +1,7 @@
 package app.services;
 
 import app.entities.Ticket;
+import app.entities.account.Passenger;
 import app.repositories.*;
 import app.services.interfaces.TicketService;
 import lombok.RequiredArgsConstructor;

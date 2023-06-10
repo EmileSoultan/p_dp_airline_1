@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Api(tags = "FlightSeat REST")
@@ -50,20 +51,24 @@ public interface FlightSeatRestApi {
             @ApiResponse(code = 200, message = "flight seats found"),
             @ApiResponse(code = 404, message = "Not found")
     })
-    @GetMapping("/all-flight-seats/{flightId}")
-    ResponseEntity<Page<FlightSeatDTO>> getAllByFlightId(
+    @GetMapping("/all-flight-seats")
+    ResponseEntity<Page<FlightSeatDTO>> getAll(
             @PageableDefault(sort = {"id"}) Pageable pageable,
             @ApiParam(
                     name = "flightId",
-                    value = "Flight.id",
-                    required = true
+                    value = "Flight.id"
             )
-            @PathVariable Long flightId,
+            @RequestParam(required = false) Optional<Long> flightId,
             @ApiParam(
                     name = "isSold",
                     value = "FlightSeat.isSold"
             )
-            @RequestParam(required = false) Boolean isSold);
+            @RequestParam(required = false) Boolean isSold,
+            @ApiParam(
+                    name = "isRegistered",
+                    value = "FlightSeat.isRegistered"
+            )
+            @RequestParam(required = false) Boolean isRegistered);
 
     @ApiOperation(value = "Get cheapest FlightSeat by flightId and seat category")
     @ApiResponses(value = {
@@ -76,6 +81,20 @@ public interface FlightSeatRestApi {
             @RequestParam(name = "flightID") Long flightID,
             @RequestParam(name = "category") CategoryType category
     );
+
+    @GetMapping("/seats/{id}")
+    @ApiOperation(value = "Get free seats on Flight by it's \"id\"")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "free seats found"),
+            @ApiResponse(code = 204, message = "no data found")
+    })
+    ResponseEntity<Page<FlightSeatDTO>> getFreeSeats(
+            @PageableDefault(sort = {"id"}) Pageable pageable,
+            @ApiParam(
+                    name = "id",
+                    value = "Flight.id"
+            )
+            @PathVariable Long id);
 
     @ApiOperation(value = "Generate FlightSeats for provided Flight based on Aircraft's Seats")
     @ApiResponses(value = {
