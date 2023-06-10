@@ -4,14 +4,15 @@ import app.dto.FlightSeatDTO;
 import app.entities.FlightSeat;
 import app.enums.CategoryType;
 import app.services.interfaces.FlightSeatService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,45 +31,70 @@ class FlightSeatControllerIT extends IntegrationTestBase {
     private FlightSeatService flightSeatService;
 
     @Test
-    void shouldGetFlightSeatsByFlightId() throws Exception {
-        String flightNumber = "1";
-        String expected = objectMapper.writeValueAsString(flightSeatService.findByFlightId((Long.parseLong(flightNumber)), PageRequest.of(0, 835, Sort.by("seatId")))
-                .stream()
-                .map(FlightSeatDTO::new)
-                .collect(Collectors.toList()));
+    void shouldGetFlightSeats() throws Exception {
+        String flightId = "1";
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
 
-        String actual = mockMvc.perform(
-                        get("http://localhost:8080/api/flight-seats/all-flight-seats/{flightNumber}", flightNumber))
+        mockMvc.perform(get("http://localhost:8080/api/flight-seats/all-flight-seats")
+                        .param("flightId", flightId))
                 .andDo(print())
-                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper
+                       .writeValueAsString(flightSeatService.findByFlightId((Long.parseLong(flightId)), pageable).map(FlightSeatDTO::new))));
+    }
 
-        Assertions.assertEquals(expected, actual);
+    @Test
+    void shouldGetFreeSeats() throws Exception {
+        String flightId = "1";
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
+
+        mockMvc.perform(get("http://localhost:8080/api/flight-seats/all-flight-seats")
+                        .param("flightId", flightId)
+                        .param("isSold", "false")
+                        .param("isRegistered", "false"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper
+                        .writeValueAsString(flightSeatService.getFreeSeats(pageable, Long.parseLong(flightId)).map(FlightSeatDTO::new))));
     }
 
     @Test
     void shouldGetNonSoldFlightSeatsByFlightId() throws Exception {
-        String flightNumber = "1";
-        String expected = objectMapper.writeValueAsString(flightSeatService.findNotSoldById((Long.parseLong(flightNumber)), PageRequest.of(0, 835, Sort.by("seatId")))
-                .stream()
-                .map(FlightSeatDTO::new)
-                .collect(Collectors.toList()));
+        String flightId = "1";
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
 
-        String actual = mockMvc.perform(
-                        get("http://localhost:8080/api/flight-seats/all-flight-seats/{flightNumber}", flightNumber).param("isSold", "false"))
+        mockMvc.perform(get("http://localhost:8080/api/flight-seats/all-flight-seats")
+                        .param("flightId", flightId)
+                        .param("isSold", "false"))
                 .andDo(print())
-                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper
+                        .writeValueAsString(flightSeatService.findNotSoldById((Long.parseLong(flightId)), pageable).map(FlightSeatDTO::new))));
+    }
 
-        Assertions.assertEquals(expected, actual);
+    @Test
+    void shouldReturnExistingFlightSeatsByFlightId() throws Exception {
+        String flightId = "1";
+        Set<FlightSeat> flightSeatSet = flightSeatService.addFlightSeatsByFlightNumber(flightId);
+        mockMvc.perform(
+                        post("http://localhost:8080/api/flight-seats/all-flight-seats/{flightId}", flightId)
+                                .content(objectMapper.writeValueAsString(flightSeatSet))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
     void shouldAddFlightSeatsByFlightId() throws Exception {
         String flightId = "1";
-        Set<FlightSeat> flightSeatSet = flightSeatService.addFlightSeatsByFlightNumber(flightId);
-
+        Set<FlightSeat> flightSeatSet = flightSeatService.findByFlightId(1L);
+        List<Long> idList = flightSeatSet.stream().map(FlightSeat::getId).collect(Collectors.toList());
+        for (Long id : idList) {
+            flightSeatService.deleteById(id);
+        }
         mockMvc.perform(
                         post("http://localhost:8080/api/flight-seats/all-flight-seats/{flightId}", flightId)
-                                .content(objectMapper.writeValueAsString(flightSeatSet))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -88,40 +114,19 @@ class FlightSeatControllerIT extends IntegrationTestBase {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
-
     @Test
-    void shouldGetCheapestFlightSeatByFlightAndSeatCategory() throws Exception {
-        String flightId = "1";
-        String category = "BUSINESS";
+    void checkGetCheapestByFlightIdAndSeatCategory() throws Exception {
+        CategoryType category = CategoryType.FIRST;
+        Long flightID = 1L;
+        List<FlightSeat> flightSeats = flightSeatService.getCheapestFlightSeatsByFlightIdAndSeatCategory(flightID, category);
+        List<FlightSeatDTO> flightSeatDTOS = flightSeats.stream().map(FlightSeatDTO::new).collect(Collectors.toList());
 
         mockMvc.perform(get("http://localhost:8080/api/flight-seats/cheapest")
-                        .param("flightID", flightId)
-                        .param("category", category))
+                        .param("category", category.toString())
+                        .param("flightID", flightID.toString()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(
-                        flightSeatService.findFlightSeatsByFlightIdAndSeatCategory(1L, CategoryType.BUSINESS)
-                                .stream()
-                                .map(FlightSeatDTO::new)
-                                .collect(Collectors.toSet())
-                )));
+                .andExpect(content().json(objectMapper.writeValueAsString(flightSeatDTOS)));
     }
 
-    @Test
-    void shouldGetSingleCheapestFlightSeatByFlightAndSeatCategory() throws Exception {
-        String flightId = "1";
-        String category = "FIRST";
-
-        mockMvc.perform(get("http://localhost:8080/api/flight-seats/cheapest_one")
-                        .param("flightID", flightId)
-                        .param("category", category))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(
-                        flightSeatService.findSingleFlightSeatByFlightIdAndSeatCategory(1L, CategoryType.FIRST)
-                                .stream()
-                                .map(FlightSeatDTO::new)
-                                .collect(Collectors.toSet())
-                )));
-    }
 }

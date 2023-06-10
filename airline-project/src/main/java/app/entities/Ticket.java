@@ -9,8 +9,19 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
+@Deprecated
 @Entity
 @Data
 @NoArgsConstructor
@@ -19,6 +30,7 @@ import javax.persistence.*;
 @EqualsAndHashCode(of = {"ticketNumber"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Ticket {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_tickets")
     @SequenceGenerator(name = "seq_tickets", initialValue = 1000, allocationSize = 1)

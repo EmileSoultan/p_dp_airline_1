@@ -7,7 +7,6 @@ import app.services.interfaces.CategoryService;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.PassengerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     @Override
     public Booking save(Booking booking) {
-        booking.setPassenger(passengerService.findByEmail(booking.getPassenger().getEmail()));
+        booking.setPassenger((passengerService.findById(booking.getPassenger().getId())).get());
         booking.setFlight(flightService.getFlightByCode(booking.getFlight().getCode()));
         booking.setCategory(categoryService.findByCategoryType(booking.getCategory().getCategoryType()));
 
@@ -60,5 +59,11 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Booking findByBookingNumber(String number) {
         return bookingRepository.findByBookingNumber(number).orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public void deleteBookingByPassengerId(long passengerId) {
+        bookingRepository.deleteBookingByPassengerId(passengerId);
     }
 }

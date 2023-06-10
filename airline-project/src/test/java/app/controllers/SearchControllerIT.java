@@ -63,7 +63,7 @@ class SearchControllerIT extends IntegrationTestBase {
         mockMvc.perform(post("http://localhost:8080/api/search")
                         .content(objectMapper.writeValueAsString(search))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNoContent());
     }
 
 

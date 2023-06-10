@@ -2,7 +2,6 @@ package app.services;
 
 import app.entities.Destination;
 import app.entities.Flight;
-import app.entities.FlightSeat;
 import app.repositories.AircraftRepository;
 import app.repositories.DestinationRepository;
 import app.enums.Airport;
@@ -12,6 +11,7 @@ import app.services.interfaces.FlightService;
 import app.util.aop.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,40 +49,6 @@ public class FlightServiceImpl implements FlightService {
     @Override
     @Transactional(readOnly = true)
     @Loggable
-    public Set<FlightSeat> getFreeSeats(Long id) {
-        var flight = getById(id);
-        if (flight == null) {
-            return null;
-        }
-        Set<FlightSeat> flightSeatSet = flightSeatRepository.findFlightSeatByFlight(flight);
-
-        if (flightSeatSet != null) {
-            flightSeatSet = flightSeatSet.stream()
-                    .filter(flightSeat -> !flightSeat.getIsRegistered())
-                    .filter(flightSeat -> !flightSeat.getIsSold())
-                    .collect(Collectors.toSet());
-        }
-
-        //TODO раскомментировать после добавление сущностей Seat и Aircraft
-        //TODO по другому сделал, эта логика тоже нужна, но по моему мнению не здесь
-
-        //var seats = flight.getAircraft().getSeatList()
-        //        .stream().filter(seat -> !seat.getIsSold()).collect(Collectors.toList());
-        //Map<String, Integer> freeSeats = new HashMap<>();
-        //freeSeats.put("всего свободных", seats.size());
-        //freeSeats.put("эконом", (int) seats.stream()
-        //        .filter(seat -> seat.getCategory().getCategoryType() == CategoryType.ECONOMY).count());
-        //freeSeats.put("бизнес", (int) seats.stream()
-        //        .filter(seat -> seat.getCategory().getCategoryType() == CategoryType.BUSINESS).count());
-        //return freeSeats;
-        //return Map.of("NO DATA", 1);
-
-        return flightSeatSet;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    @Loggable
     public Flight getFlightByCode(String code) {
         return flightRepository.getByCode(code);
     }
@@ -90,15 +56,19 @@ public class FlightServiceImpl implements FlightService {
     @Override
     @Transactional(readOnly = true)
     @Loggable
-    public List<Flight> getFlightByDestinationsAndDates(String from, String to,
+    public Page<Flight> getFlightByDestinationsAndDates(String from, String to,
                                                         String start, String finish,
                                                         Pageable pageable) {
-        return getAllFlights(pageable).stream()
+        List<Flight> filteredFlights = getAllFlights(pageable).stream()
                 .filter(flight -> from == null || flight.getFrom().getCityName().equals(from))
                 .filter(flight -> to == null || flight.getTo().getCityName().equals(to))
                 .filter(flight -> start == null || flight.getDepartureDateTime().isEqual(LocalDateTime.parse(start)))
                 .filter(flight -> finish == null || flight.getArrivalDateTime().isEqual(LocalDateTime.parse(finish)))
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        int total = filteredFlights.size();
+
+        return new PageImpl<>(filteredFlights, pageable, total);
     }
 
     @Override

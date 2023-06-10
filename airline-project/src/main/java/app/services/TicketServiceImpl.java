@@ -1,6 +1,7 @@
 package app.services;
 
 import app.entities.Ticket;
+import app.entities.account.Passenger;
 import app.repositories.*;
 import app.services.interfaces.TicketService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Deprecated
 @Service
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
@@ -64,6 +66,16 @@ public class TicketServiceImpl implements TicketService {
             updatedTicket.setFlightSeat(ticketRepository.findTicketById(id).getFlightSeat());
         }
         return updatedTicket;
+    }
+
+    @Override
+    public long [] findArrayOfFlightSeatIdByPassengerId(long passengerId) {
+        return ticketRepository.findArrayOfFlightSeatIdByPassengerId(passengerId);
+    }
+    @Override
+    @Transactional
+    public void deleteTicketByPassengerId(long passengerId) {
+        ticketRepository.deleteTicketByPassengerId(passengerId);
     }
 
 }

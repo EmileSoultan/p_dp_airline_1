@@ -24,4 +24,16 @@ public class FlightSeatMapper {
         flightSeat.setSeat(seatService.findById(dto.getSeatId()));
         return flightSeat;
     }
+
+    public FlightSeatDTO convertToFlightSeatDTOEntity(FlightSeat flightSeat) {
+        FlightSeatDTO flightSeatDTO = new FlightSeatDTO();
+        flightSeatDTO.setId(flightSeat.getId());
+        flightSeatDTO.setFare(flightSeat.getFare());
+        flightSeatDTO.setIsRegistered(flightSeat.getIsRegistered());
+        flightSeatDTO.setIsSold(flightSeat.getIsSold());
+        flightSeatDTO.setIsBooking(flightSeat.getIsBooking());
+        flightSeatDTO.setFlightId(flightService.getById(flightSeat.getFlight().getId()).getId());
+        flightSeatDTO.setSeatId(seatService.findById(flightSeat.getSeat().getId()).getId());
+        return flightSeatDTO;
+    }
 }

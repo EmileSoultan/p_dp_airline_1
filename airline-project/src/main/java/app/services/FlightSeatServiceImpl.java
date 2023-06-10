@@ -6,14 +6,16 @@ import app.entities.Seat;
 import app.enums.CategoryType;
 import app.repositories.FlightRepository;
 import app.repositories.FlightSeatRepository;
+import app.repositories.SeatRepository;
 import app.services.interfaces.FlightSeatService;
+import app.services.interfaces.FlightService;
 import app.util.aop.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,8 +24,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class FlightSeatServiceImpl implements FlightSeatService {
+
     private final FlightSeatRepository flightSeatRepository;
     private final FlightRepository flightRepository;
+    private final SeatRepository seatRepository;
+    private final FlightService flightService;
 
     @Override
     @Loggable
@@ -31,6 +36,13 @@ public class FlightSeatServiceImpl implements FlightSeatService {
         Set<FlightSeat> flightSeatSet = new HashSet<>();
         flightSeatRepository.findAll().forEach(flightSeatSet::add);
         return flightSeatSet;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Loggable
+    public Page<FlightSeat> getFreeSeats(Pageable pageable, Long id) {
+        return flightSeatRepository.findFlightSeatByFlightIdAndIsSoldFalseAndIsRegisteredFalse(id, pageable);
     }
 
     @Override
@@ -67,30 +79,23 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     @Override
     @Loggable
     public Set<FlightSeat> addFlightSeatsByFlightId(Long flightId) {
-        Set<FlightSeat> seatsForAdd = new HashSet<>();
-        Set<FlightSeat> allFlightSeats = findAll();
-        Flight flight = flightRepository.getById(flightId);
-        if (flight != null) {
-            Set<Seat> seatsAircraft = flight.getAircraft().getSeatSet();
-
-            for (Seat s : seatsAircraft) {
-                FlightSeat flightSeat = new FlightSeat();
-                flightSeat.setSeat(s);
-                flightSeat.setFlight(flight);
-                if (allFlightSeats.contains(flightSeat)) {
-                    continue;
-                }
-                flightSeat.setFare(0);
-                flightSeat.setIsSold(false);
-                flightSeat.setIsRegistered(false);
-                seatsForAdd.add(flightSeat);
-            }
-
-            for (FlightSeat f : seatsForAdd) {
-                f = flightSeatRepository.save(f);
-            }
+        Set<FlightSeat> newFlightSeats = new HashSet<>();
+        Flight flight = flightService.getById(flightId);
+        Set<Seat> seats = seatRepository.findByAircraftId(flight.getAircraft().getId());
+        for (Seat s : seats) {
+            FlightSeat flightSeat = new FlightSeat();
+            flightSeat.setSeat(s);
+            flightSeat.setFlight(flight);
+            flightSeat.setIsBooking(false);
+            flightSeat.setIsSold(false);
+            flightSeat.setIsRegistered(false);
+            flightSeat.setFare(generateFareForFlightseat(s));
+            newFlightSeats.add(flightSeat);
         }
-        return seatsForAdd;
+        for (FlightSeat f : newFlightSeats) {
+            saveFlightSeat(f);
+        }
+        return newFlightSeats;
     }
 
     @Override
@@ -192,20 +197,47 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     }
 
     @Override
-    public List<FlightSeat> findFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type) {
-        return flightSeatRepository.findFlightSeatsByFlightIdAndSeatCategory(id, type);
+    @Loggable
+    public Page<FlightSeat> findNotRegisteredById(Long id, Pageable pageable) {
+        return flightSeatRepository.findAllFlightsSeatByFlightIdAndIsRegisteredFalse(id, pageable);
     }
 
     @Override
-    public List<FlightSeat> findSingleFlightSeatByFlightIdAndSeatCategory(Long id, CategoryType type) {
-        return flightSeatRepository.findFlightSeatsByFlightIdAndSeatCategory(id, type)
-                .stream()
-                .limit(1)
-                .collect(Collectors.toList());
+    public List<FlightSeat> getCheapestFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type) {
+        return flightSeatRepository.findFlightSeatsByFlightIdAndSeatCategory(id, type);
     }
 
 
     public Page<FlightSeat> findNotSoldById(Long id, Pageable pageable) {
         return flightSeatRepository.findAllFlightsSeatByFlightIdAndIsSoldFalse(id, pageable);
+    }
+
+    @Override
+    @Transactional
+    public void editIsSoldToFalseByFlightSeatId(long[] flightSeatId) {
+        flightSeatRepository.editIsSoldToFalseByFlightSeatId(flightSeatId);
+    }
+
+    public int generateFareForFlightseat(Seat seat) {
+        int baseFare = 5000;
+        float emergencyExitRatio;
+        float categoryRatio;
+        float lockedBackRatio;
+        if (seat.getIsNearEmergencyExit()) {
+            emergencyExitRatio = 1.3f;
+        } else emergencyExitRatio = 1f;
+        if (seat.getIsLockedBack()) {
+            lockedBackRatio = 0.8f;
+        } else lockedBackRatio = 1f;
+        switch (seat.getCategory().getCategoryType()) {
+            case PREMIUM_ECONOMY : categoryRatio = 1.2f;
+                break;
+            case BUSINESS : categoryRatio = 2f;
+                break;
+            case FIRST : categoryRatio = 2.5f;
+                break;
+            default : categoryRatio = 1f;
+        }
+        return Math.round(baseFare * emergencyExitRatio * categoryRatio * lockedBackRatio);
     }
 }

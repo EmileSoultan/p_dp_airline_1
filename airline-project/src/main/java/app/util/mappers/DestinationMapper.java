@@ -19,4 +19,17 @@ public class DestinationMapper {
 
         return destination;
     }
+
+    public DestinationDTO convertToDestinationDTOEntity(Destination destination) {
+        DestinationDTO destinationDTO = new DestinationDTO();
+
+        destinationDTO.setId(destination.getId());
+        destinationDTO.setCountryName(destination.getCountryName());
+        destinationDTO.setAirportName(destination.getAirportName());
+        destinationDTO.setAirportCode(destination.getAirportCode());
+        destinationDTO.setTimezone(destination.getTimezone());
+        destinationDTO.setCityName(destination.getCityName());
+
+        return destinationDTO;
+    }
 }

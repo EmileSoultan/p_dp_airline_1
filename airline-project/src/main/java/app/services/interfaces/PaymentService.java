@@ -1,14 +1,20 @@
 package app.services.interfaces;
 
+import app.dto.PaymentRequest;
+import app.dto.PaymentResponse;
 import app.entities.Payment;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+
 import java.util.List;
 
 public interface PaymentService {
 
-    Payment savePayment(Payment payment);
+    ResponseEntity<PaymentResponse> createPayment(PaymentRequest payment);
 
     List<Payment> findAllPayments();
 
     Payment findPaymentById(long id);
 
+    Page<Payment> pagePagination(int page, int count);
 }
