@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Бронирование сидений на рейс, формируется перед оплатой.
+ */
 @Entity
 @Table(name="booking")
 @Data

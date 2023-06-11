@@ -16,6 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+/**
+ * Сиденье на рейс. Создается на основе физического сиденья на самолете.
+ */
 @Entity
 @Table(name = "flight_seats")
 @Data

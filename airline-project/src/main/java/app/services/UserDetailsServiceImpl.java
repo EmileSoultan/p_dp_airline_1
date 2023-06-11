@@ -1,7 +1,7 @@
 package app.services;
 
 import app.repositories.AccountRepository;
-import app.entities.account.AccountDetailsImpl;
+import app.config.security.AccountDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

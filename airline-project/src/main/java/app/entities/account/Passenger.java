@@ -13,6 +13,9 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import java.time.LocalDate;
 
+/**
+ * Данные пассажира, необходимые для покупки билетов.
+ */
 @Entity
 @Table(name = "passengers")
 @Data

@@ -19,6 +19,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/**
+ * Найденные рейсы.
+ */
 @Entity
 @Table(name = "search_results")
 @Data
