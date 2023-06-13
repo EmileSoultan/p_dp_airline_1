@@ -17,6 +17,9 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+/**
+ * Точка назначения.
+ */
 @Entity
 @Data
 @NoArgsConstructor

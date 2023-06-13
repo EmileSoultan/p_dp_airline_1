@@ -1,7 +1,6 @@
 package app.controllers.api.rest;
 
 import app.dto.FlightDTO;
-import app.dto.FlightSeatDTO;
 import app.entities.Flight;
 import app.enums.FlightStatus;
 import io.swagger.annotations.Api;
@@ -81,20 +80,6 @@ public interface FlightRestApi {
                     example = "2022-12-10T15:57:49"
             )
             @RequestParam(name = "date_finish") String finish);
-
-    @GetMapping("/seats/{id}")
-    @ApiOperation(value = "Get free seats on Flight by it's \"id\"")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "free seats found"),
-            @ApiResponse(code = 204, message = "no data found")
-    })
-    ResponseEntity<Page<FlightSeatDTO>> getFreeSeats(
-            @PageableDefault(sort = {"id"}) Pageable pageable,
-            @ApiParam(
-                    name = "id",
-                    value = "Flight.id"
-            )
-            @PathVariable Long id);
 
     @GetMapping("/status")
     @ApiOperation(value = "Get all flight statuses")

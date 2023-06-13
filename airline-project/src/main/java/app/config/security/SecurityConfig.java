@@ -1,4 +1,4 @@
-package app.config;
+package app.config.security;
 
 import app.config.security.jwt.filter.JwtFilter;
 import app.util.LoginSuccessHandler;

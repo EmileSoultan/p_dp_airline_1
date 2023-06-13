@@ -148,10 +148,10 @@ class FlightRestControllerIT extends IntegrationTestBase {
         String dateStart = "2022-11-23T04:30:00";
         String dateFinish = "2022-11-23T07:30:00";
         mockMvc.perform(get("http://localhost:8080/api/flights/all")
-                        .param("dateStart", dateStart)
-                        .param("dateFinish", dateFinish)
                         .param("cityFrom", cityFrom)
-                        .param("cityTo", cityTo))
+                        .param("cityTo", cityTo)
+                        .param("dateStart", dateStart)
+                        .param("dateFinish", dateFinish))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(flightService

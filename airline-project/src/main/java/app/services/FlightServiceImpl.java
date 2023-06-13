@@ -2,7 +2,6 @@ package app.services;
 
 import app.entities.Destination;
 import app.entities.Flight;
-import app.entities.FlightSeat;
 import app.repositories.AircraftRepository;
 import app.repositories.DestinationRepository;
 import app.enums.Airport;
@@ -42,13 +41,6 @@ public class FlightServiceImpl implements FlightService {
     @Loggable
     public Page<Flight> getAllFlights(Pageable pageable) {
         return flightRepository.findAll(pageable);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    @Loggable
-    public Page<FlightSeat> getFreeSeats(Pageable pageable, Long id) {
-        return flightSeatRepository.findFlightSeatByFlightIdAndIsSoldFalseAndIsRegisteredFalse(id, pageable);
     }
 
     @Override

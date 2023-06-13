@@ -16,13 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@Deprecated
-//@ApiIgnore
 @Api(tags = "Ticket REST")
 @Tag(name = "Ticket REST", description = "API для операций с билетами")
 @RequestMapping("/api/tickets")
