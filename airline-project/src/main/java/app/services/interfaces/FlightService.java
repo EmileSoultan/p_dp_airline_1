@@ -21,7 +21,7 @@ public interface FlightService {
 
     Flight getFlightByCode(String code);
 
-    Page<Flight> getFlightByDestinationsAndDates(String from, String to, String start, String finish, Pageable pageable);
+    Page<Flight> getAllFlightsByDestinationsAndDates(String cityFrom, String cityTo, String dateStart, String dateFinish, Pageable pageable);
 
     List<Flight> getFlightsByDestinationsAndDepartureDate(Destination fromId, Destination toId, LocalDate departureDate);
 
