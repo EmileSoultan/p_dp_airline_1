@@ -1,7 +1,6 @@
 package app.controllers.api.rest;
 
 import app.dto.FlightDTO;
-import app.dto.FlightSeatDTO;
 import app.entities.Flight;
 import app.enums.FlightStatus;
 import io.swagger.annotations.Api;
@@ -24,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
 @Api(tags = "Flight REST")
 @Tag(name = "Flight REST", description = "API для операций с рейсами")
 @RequestMapping("/api/flights")
@@ -37,24 +34,15 @@ public interface FlightRestApi {
             @ApiResponse(code = 200, message = "Flights found"),
             @ApiResponse(code = 404, message = "Flights not found")
     })
-    ResponseEntity<Page<FlightDTO>> getAll(@PageableDefault(sort = {"id"}) Pageable pageable);
-
-    @GetMapping("/filter")
-    @ApiOperation(value = "Get list of Flight by dates and destinations given as params")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Flights found"),
-            @ApiResponse(code = 204, message = "No Flights found")
-    })
-    ResponseEntity<List<FlightDTO>> getAllByFromAndToAndDates(
-            @ApiParam(name = "from", value = "Departure cityName", example = "Москва")
-            @RequestParam(name = "from", required = false) String from,
-            @ApiParam(name = "to", value = "Arrival cityName", example = "Омск")
-            @RequestParam(name = "to", required = false) String to,
-            @ApiParam(value = "Departure Data-Time", example = "2022-12-10T15:56:49")
-            @RequestParam(name = "date_start", required = false) String start,
-            @ApiParam(value = "Arrival Data-Time", example = "2022-12-10T15:57:49")
-            @RequestParam(name = "date_finish", required = false) String finish,
-            Pageable pageable);
+    ResponseEntity<Page<FlightDTO>> getAll(@ApiParam(name = "from", value = "Departure cityName", example = "Москва")
+                                           @RequestParam(name = "from", required = false) String from,
+                                           @ApiParam(name = "to", value = "Arrival cityName", example = "Омск")
+                                           @RequestParam(name = "to", required = false) String to,
+                                           @ApiParam(value = "Departure Data-Time", example = "2022-12-10T15:56:49")
+                                           @RequestParam(name = "date_start", required = false) String start,
+                                           @ApiParam(value = "Arrival Data-Time", example = "2022-12-10T15:57:49")
+                                           @RequestParam(name = "date_finish", required = false) String finish,
+                                           @PageableDefault(sort = {"id"}) Pageable pageable);
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Get Flight by \"id\"")
@@ -91,20 +79,6 @@ public interface FlightRestApi {
                     example = "2022-12-10T15:57:49"
             )
             @RequestParam(name = "date_finish") String finish);
-
-    @GetMapping("/seats/{id}")
-    @ApiOperation(value = "Get free seats on Flight by it's \"id\"")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "free seats found"),
-            @ApiResponse(code = 204, message = "no data found")
-    })
-    ResponseEntity<Page<FlightSeatDTO>> getFreeSeats(
-            @PageableDefault(sort = {"id"}) Pageable pageable,
-            @ApiParam(
-                    name = "id",
-                    value = "Flight.id"
-            )
-            @PathVariable Long id);
 
     @GetMapping("/status")
     @ApiOperation(value = "Get all flight statuses")

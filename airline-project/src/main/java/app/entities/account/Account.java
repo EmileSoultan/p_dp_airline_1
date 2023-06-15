@@ -22,6 +22,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.Set;
 
+/**
+ * Аккаунт пользователя на сайте без данных пассажира.
+ */
 @Entity
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)

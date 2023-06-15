@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Оплата забронированных сидений.
+ */
 @Entity
 @Table(name = "payments")
 @Data

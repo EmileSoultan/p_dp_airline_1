@@ -8,7 +8,6 @@ import app.services.interfaces.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Deprecated
 @Component
 @RequiredArgsConstructor
 public class TicketMapper {

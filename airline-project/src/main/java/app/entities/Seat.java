@@ -9,6 +9,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Физическое сиденье на самолете.
+ */
 @Entity
 @Table(name = "seats")
 @Data
