@@ -5,6 +5,7 @@ import app.repositories.*;
 import app.services.interfaces.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +20,8 @@ public class TicketServiceImpl implements TicketService {
     private final FlightSeatRepository flightSeatRepository;
 
     @Override
-    public Page<Ticket> findAll(Pageable pageable) {
-        return ticketRepository.findAll(pageable);
+    public Page<Ticket> findAll(int page, int size) {
+        return ticketRepository.findAll(PageRequest.of(page, size));
     }
 
     @Override

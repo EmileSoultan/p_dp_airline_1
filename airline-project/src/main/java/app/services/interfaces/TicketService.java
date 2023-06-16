@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface TicketService {
 
-    Page<Ticket> findAll(Pageable pageable);
+    Page<Ticket> findAll(int page, int size);
 
     Ticket findTicketByTicketNumber(String bookingNumber);
 
