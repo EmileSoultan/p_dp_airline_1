@@ -77,7 +77,7 @@ notification:
     seconds: 86400
 
 logging:
-  config: classpath:log4j2-${spring.profiles.active}.yaml
+  config: classpath:log4j2-dev.yaml
 
 app:
   feign:

@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- #225 Отключние секьюрити для профиля noSecurity и обновление гайда по Postman
 - #181 Удаленный дебаг airline_project
 - #187 Readiness и Liveness пробы для airline-payment
 - #221 Фильтры для получения всех Flight
@@ -9,7 +10,6 @@
 - #224 Тесты для обработки исключений
 - #209 Тесты FlightSeatRestController и SeatRestController
 - #208 Объединение фильтров для поиска всех Passenger
-- #225 Отключние секьюрити для профиля noSecurity и обновление гайда по Postman
 
 ## [1.0.3.hf2] - 14.06.2023
 - #238 - фикс странички логина. Можно снова заходить по /login, а не /login.html
