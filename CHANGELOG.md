@@ -2,7 +2,8 @@
 
 ## [Unreleased]
 
-- 
+- #195 - В configMap настроено обращение к airline-payments при деплое в кубере
+- #159 - В deployments kubernetes'а добавлена configMap, хранящая application.yml от airline-project'а при деплое в кубере.
 
 ## [1.0.3.hf2] - 14.06.2023
 - #238 - фикс странички логина. Можно снова заходить по /login, а не /login.html
