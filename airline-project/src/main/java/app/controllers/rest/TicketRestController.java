@@ -46,8 +46,9 @@ public class TicketRestController implements TicketRestApi {
     @Override
     public ResponseEntity<TicketDTO> create(TicketDTO ticketDTO) {
         log.info("create: new Ticket = {}", ticketDTO);
-        ticketService.saveTicket(ticketMapper.convertToTicketEntity(ticketDTO));
-        return new ResponseEntity<>(ticketDTO, HttpStatus.CREATED);
+        Ticket ticket = ticketMapper.convertToTicketEntity(ticketDTO);
+        ticketService.saveTicket(ticket);
+        return new ResponseEntity<>(new TicketDTO(ticket), HttpStatus.CREATED);
     }
 
     @Override
