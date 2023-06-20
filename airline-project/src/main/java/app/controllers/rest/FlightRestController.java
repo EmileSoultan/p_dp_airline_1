@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -27,29 +28,20 @@ public class FlightRestController implements FlightRestApi {
     private final FlightSeatMapper flightSeatMapper;
 
     @Override
-    public ResponseEntity<Page<FlightDTO>> getAll(
-            @RequestParam(required = false) String from,
-            @RequestParam(required = false) String to,
-            @RequestParam(required = false) String start,
-            @RequestParam(required = false) String finish,
+    public ResponseEntity<Page<FlightDTO>> getAllFlightsByDestinationsAndDates(
+            @RequestParam(required = false) String cityFrom,
+            @RequestParam(required = false) String cityTo,
+            @RequestParam(required = false) String dateStart,
+            @RequestParam(required = false) String dateFinish,
             Pageable pageable) {
-        if (from == null && to == null && start == null && finish == null) {
-            Page<FlightDTO> allFlights = flightService.getAllFlights(pageable)
-                    .map(flightMapper::convertToFlightDTOEntity);
 
-            log.info("getAll: get all Flights");
-            return allFlights.isEmpty()
-                    ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                    : new ResponseEntity<>(allFlights, HttpStatus.OK);
-        } else {
-            Page<FlightDTO> flightsPage = flightService.getFlightByDestinationsAndDates(from, to, start, finish, pageable)
+            Page<FlightDTO> flightsByParams = flightService
+                    .getAllFlightsByDestinationsAndDates(cityFrom, cityTo, dateStart, dateFinish, pageable)
                     .map(flightMapper::convertToFlightDTOEntity);
-
-            log.info("getAllByFromAndToAndDates: get Flights with params");
-            return flightsPage.isEmpty()
+            log.info("getAllFlightsByDestinationsAndDates: get all Flights or Flights by params");
+            return flightsByParams.isEmpty()
                     ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                    : new ResponseEntity<>(flightsPage, HttpStatus.OK);
-        }
+                    : new ResponseEntity<>(flightsByParams, HttpStatus.OK);
     }
 
     @Override

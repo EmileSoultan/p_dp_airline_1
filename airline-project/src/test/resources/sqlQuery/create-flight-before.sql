@@ -15,17 +15,22 @@ INSERT INTO destination (id, airport_code, airport_name, city_name, country_name
 VALUES (4, 'OMS', 'Омск', 'Омск', 'Россия', 'GMT +6');
 
 INSERT INTO flights (id, code, arrival_date, departure_date, flight_status, aircraft_id, from_id, to_id)
-VALUES (1, 'MSKOMSK', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ON_TIME',
+VALUES (1, 'VOGOMS', '2022-11-23 07:30:00', '2022-11-23 04:30:00', 'ON_TIME',
         (SELECT aircrafts.id FROM aircrafts WHERE aircrafts.id = 1),
-        (SELECT destination.id FROM destination WHERE city_name = 'Москва'),
+        (SELECT destination.id FROM destination WHERE city_name = 'Волгоград'),
         (SELECT destination.id FROM destination WHERE city_name = 'Омск'));
 INSERT INTO flights (id, code, arrival_date, departure_date, flight_status, aircraft_id, from_id, to_id)
-VALUES (2, 'MSKVLG', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'DELAYED',
+VALUES (2, 'VKOVOG', '2023-10-23 10:50:00', '2023-10-23 08:15:00', 'DELAYED',
         (SELECT aircrafts.id FROM aircrafts WHERE aircrafts.id = 1),
         (SELECT destination.id FROM destination WHERE city_name = 'Москва'),
         (SELECT destination.id FROM destination WHERE city_name = 'Волгоград'));
 INSERT INTO flights (id, code, arrival_date, departure_date, flight_status, aircraft_id, from_id, to_id)
-VALUES (10500, 'TEST', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ON_TIME',
+VALUES (3, 'MQFVKO', '2023-02-14 09:11:00', '2023-02-14 04:20:00', 'ON_TIME',
         (SELECT aircrafts.id FROM aircrafts WHERE aircrafts.id = 2),
-        (SELECT destination.id FROM destination WHERE city_name = 'Москва'),
-        (SELECT destination.id FROM destination WHERE city_name = 'Волгоград'));
+        (SELECT destination.id FROM destination WHERE city_name = 'Магнитогорск'),
+        (SELECT destination.id FROM destination WHERE city_name = 'Москва'));
+INSERT INTO flights (id, code, arrival_date, departure_date, flight_status, aircraft_id, from_id, to_id)
+VALUES (4, 'OMSMQF','2023-04-01 23:50:00', '2023-04-01 20:30:00', 'ON_TIME',
+        (SELECT aircrafts.id FROM aircrafts WHERE aircrafts.id = 3),
+        (SELECT destination.id FROM destination WHERE city_name = 'Омск'),
+        (SELECT destination.id FROM destination WHERE city_name = 'Магнитогорск'));
