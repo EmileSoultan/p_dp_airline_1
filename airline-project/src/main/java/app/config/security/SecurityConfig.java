@@ -13,7 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -45,18 +45,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/403").permitAll()
                 .anyRequest().permitAll()
                 .and()
-                .exceptionHandling()
+                .exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint())
                 .and()
                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
-                .successHandler(successHandler)
-                .loginProcessingUrl("/login")
-                .permitAll()
-                .and()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
-                .and()
+                    .loginPage("/login")
+                    .loginProcessingUrl("/login")
+                    .successHandler(successHandler)
+                    .permitAll()
+                    .and()
                 .logout()
-                .logoutSuccessUrl("/");
+                    .logoutSuccessUrl("/")
+                    .permitAll();
     }
 
 
@@ -68,10 +68,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder getEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AccessDeniedHandler accessDeniedHandler(){
-        return new CustomAccessDenied();
     }
 }

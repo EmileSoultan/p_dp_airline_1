@@ -31,4 +31,8 @@ public interface ViewControllerApi {
     @ApiOperation(value = "Get view \"passenger\"")
     @GetMapping("/passenger")
     ModelAndView passengerPage();
+
+    @ApiOperation(value = "Get view \"login\"")
+    @GetMapping("/login")
+    ModelAndView loginPage();
 }
