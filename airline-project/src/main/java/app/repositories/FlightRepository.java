@@ -3,6 +3,8 @@ package app.repositories;
 import app.entities.Destination;
 import app.entities.Flight;
 import app.enums.Airport;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -25,14 +27,29 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
             "WHERE flight.code = ?1")
     Flight findByCodeWithLinkedEntities(String code);
 
+    @Query("SELECT f FROM Flight f " +
+            "WHERE (:cityFrom IS NULL OR f.from.cityName = :cityFrom) " +
+            "AND (:cityTo IS NULL OR f.to.cityName = :cityTo) " +
+            "AND (:dateStart IS NULL OR concat(substring(cast(f.departureDateTime as string), 1, 10), 'T'," +
+                                              "substring(cast(f.departureDateTime as string), 12)) = :dateStart) " +
+            "AND (:dateFinish IS NULL OR concat(substring(cast(f.arrivalDateTime as string), 1, 10), 'T', " +
+                                               "substring(cast(f.arrivalDateTime as string), 12))  = :dateFinish) " +
+            "ORDER BY f.id")
+    Page<Flight> getAllFlightsByDestinationsAndDates(String cityFrom,
+                                                     String cityTo,
+                                                     String dateStart,
+                                                     String dateFinish,
+                                                     Pageable pageable);
+
     default List<Flight> getByFromAndToAndDepartureDate(Destination from, Destination to, LocalDate departureDate) {
         return findByFromAndToAndDepartureDateTimeBetween(from, to,
                 departureDate.atStartOfDay(), departureDate.plusDays(1).atStartOfDay());
     }
+
     List<Flight> findByFromAndToAndDepartureDateTimeBetween(Destination from, Destination to,
                                                             LocalDateTime fromDate, LocalDateTime toDate);
 
-    List <Flight> findByAircraft_Id(Long id);
+    List<Flight> findByAircraft_Id(Long id);
 
     @Query(value = "select f\n" +
             "from Flight f\n" +
@@ -66,6 +83,7 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
             "where f.code = ?1\n" +
             "and cast(f.departureDateTime as date) = ?2\n" +
             "and cast(date_trunc('second',f.departureDateTime) as time) = ?3")
-    Optional<Flight> getFlightByCodeAndDepartureDateAndTime (String flightCode, Date departureDate, Time departureTime);
+    Optional<Flight> getFlightByCodeAndDepartureDateAndTime(String flightCode, Date departureDate, Time departureTime);
+
     void deleteById(Long id);
 }
