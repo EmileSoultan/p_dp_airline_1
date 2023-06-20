@@ -20,6 +20,9 @@ import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Самолет.
+ */
 @Entity
 @Table(name = "aircrafts")
 @Data

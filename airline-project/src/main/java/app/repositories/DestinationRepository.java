@@ -19,6 +19,8 @@ public interface DestinationRepository extends JpaRepository<Destination, Long> 
 
     Page<Destination> findByCountryNameContainingIgnoreCase(Pageable pageable, String name);
 
+    Page<Destination> findByTimezoneContainingIgnoreCase(Pageable pageable, String timezone);
+
     Destination getDestinationByAirportCode(Airport airportCode);
 
     Optional<Destination> findDestinationByAirportCode(Airport airportCode);

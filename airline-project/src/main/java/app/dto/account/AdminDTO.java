@@ -5,6 +5,7 @@ import app.entities.account.Admin;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.NoArgsConstructor;
 
+@Deprecated
 @JsonTypeName(value = "admin")
 @NoArgsConstructor
 public class AdminDTO extends AccountDTO {

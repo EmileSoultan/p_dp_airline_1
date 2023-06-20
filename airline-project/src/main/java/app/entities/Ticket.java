@@ -21,7 +21,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-@Deprecated
+/**
+ * Билет. Формируется после оплаты бронирования.
+ */
 @Entity
 @Data
 @NoArgsConstructor

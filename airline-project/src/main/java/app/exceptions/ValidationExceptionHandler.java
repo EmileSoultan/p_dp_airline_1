@@ -2,6 +2,7 @@ package app.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,16 @@ import java.util.List;
 
 @ControllerAdvice
 public class ValidationExceptionHandler {
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ResponseExceptionDTO> handleRuntimeException(RuntimeException exception) {
+        ResponseExceptionDTO runtimeExceptionDTO = new ResponseExceptionDTO(exception.getMessage(), LocalDateTime.now());
+        if (exception instanceof HttpMessageNotReadableException) {
+            return new ResponseEntity<>(runtimeExceptionDTO, HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(runtimeExceptionDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @ExceptionHandler(BindException.class)
     public ResponseEntity<List<ResponseExceptionDTO>> handleException(BindException exception) {

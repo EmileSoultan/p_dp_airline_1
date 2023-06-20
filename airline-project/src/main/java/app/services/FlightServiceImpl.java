@@ -2,7 +2,6 @@ package app.services;
 
 import app.entities.Destination;
 import app.entities.Flight;
-import app.entities.FlightSeat;
 import app.repositories.AircraftRepository;
 import app.repositories.DestinationRepository;
 import app.enums.Airport;
@@ -20,7 +19,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -48,13 +46,6 @@ public class FlightServiceImpl implements FlightService {
     @Override
     @Transactional(readOnly = true)
     @Loggable
-    public Page<FlightSeat> getFreeSeats(Pageable pageable, Long id) {
-        return flightSeatRepository.findFlightSeatByFlightIdAndIsSoldFalseAndIsRegisteredFalse(id, pageable);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    @Loggable
     public Flight getFlightByCode(String code) {
         return flightRepository.getByCode(code);
     }
@@ -62,15 +53,10 @@ public class FlightServiceImpl implements FlightService {
     @Override
     @Transactional(readOnly = true)
     @Loggable
-    public List<Flight> getFlightByDestinationsAndDates(String from, String to,
-                                                        String start, String finish,
+    public Page<Flight> getAllFlightsByDestinationsAndDates(String cityFrom, String cityTo,
+                                                        String dateStart, String dateFinish,
                                                         Pageable pageable) {
-        return getAllFlights(pageable).stream()
-                .filter(flight -> from == null || flight.getFrom().getCityName().equals(from))
-                .filter(flight -> to == null || flight.getTo().getCityName().equals(to))
-                .filter(flight -> start == null || flight.getDepartureDateTime().isEqual(LocalDateTime.parse(start)))
-                .filter(flight -> finish == null || flight.getArrivalDateTime().isEqual(LocalDateTime.parse(finish)))
-                .collect(Collectors.toList());
+        return flightRepository.getAllFlightsByDestinationsAndDates(cityFrom, cityTo, dateStart, dateFinish, pageable);
     }
 
     @Override

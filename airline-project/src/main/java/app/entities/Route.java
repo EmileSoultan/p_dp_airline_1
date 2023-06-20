@@ -51,7 +51,4 @@ public class Route {
     @Column(name = "number_of_passengers")
     private Integer numberOfPassengers;
 
-//    @ManyToOne
-//    @JoinColumn(name = "category_id", referencedColumnName = "id")
-//    private Category category;
 }

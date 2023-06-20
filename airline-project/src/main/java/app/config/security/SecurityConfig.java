@@ -1,4 +1,4 @@
-package app.config;
+package app.config.security;
 
 import app.config.security.jwt.filter.JwtFilter;
 import app.util.LoginSuccessHandler;
@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -41,17 +42,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/search/**").permitAll()
                 .antMatchers("/api/**").hasRole("ADMIN")
                 .antMatchers("/email/**").permitAll()
+                .antMatchers("/403").permitAll()
                 .anyRequest().permitAll()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint())
                 .and()
                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
-                .successHandler(successHandler)
-                .loginProcessingUrl("/login")
-                .permitAll()
-                .and()
+                    .loginPage("/login")
+                    .loginProcessingUrl("/login")
+                    .successHandler(successHandler)
+                    .permitAll()
+                    .and()
                 .logout()
-                .logoutSuccessUrl("/");
+                    .logoutSuccessUrl("/")
+                    .permitAll();
     }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

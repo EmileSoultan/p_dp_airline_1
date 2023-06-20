@@ -7,6 +7,7 @@ import app.enums.CategoryType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Set;
 
 public interface FlightSeatService {
@@ -18,6 +19,7 @@ public interface FlightSeatService {
     FlightSeat findById(Long id);
 
     Set<FlightSeat> findByFlightId(Long flightId);
+    Page<FlightSeat> getFreeSeats(Pageable pageable, Long id);
     Page<FlightSeat> findByFlightId(Long flightId, Pageable pageable);
     Set<FlightSeat> findByFlightNumber(String flightNumber);
 
@@ -34,9 +36,10 @@ public interface FlightSeatService {
 
     Set<FlightSeat> findNotSoldById(Long id);
 
-    FlightSeat getCheapestFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type);
+    List<FlightSeat> getCheapestFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type);
 
     Page<FlightSeat> findNotSoldById(Long id, Pageable pageable);
+    Page<FlightSeat> findNotRegisteredById(Long id, Pageable pageable);
 
     void editIsSoldToFalseByFlightSeatId(long[] flightSeatId);
 }

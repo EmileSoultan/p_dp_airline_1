@@ -11,13 +11,11 @@ public interface DestinationService {
 
     Page<Destination> findAll(Pageable pageable);
 
-    Page<Destination> findDestinationByName(Pageable pageable, String cityName, String countryName);
+    Page<Destination> findDestinationByNameAndTimezone(Pageable pageable, String cityName, String countryName, String timezone);
 
     void saveDestination(Destination destination);
 
     void updateDestination(Long id, Destination destination);
-
-    void deleteDestinationById(Long id);
 
     Destination getDestinationById(Long id);
 

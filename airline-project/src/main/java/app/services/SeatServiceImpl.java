@@ -88,7 +88,7 @@ public class SeatServiceImpl implements SeatService {
 
     @Override
     @Transactional
-    public List<SeatDTO> saveManySeats(long aircraftId) {
+    public List<SeatDTO> generate(long aircraftId) {
         Category economyCategory = categoryService.findByCategoryType(CategoryType.ECONOMY);
         Category businessCategory = categoryService.findByCategoryType(CategoryType.BUSINESS);
 
@@ -99,6 +99,9 @@ public class SeatServiceImpl implements SeatService {
         AircraftSeats[] aircraftSeats = numbersOfSeats.getAircraftSeats(); //получаем места в конкретном самолете
 
         List<SeatDTO> savedSeatsDTO = new ArrayList<>(numbersOfSeats.getTotalNumberOfSeats());
+        if (findByAircraftId(aircraftId, Pageable.unpaged()).getTotalElements() > 0) {
+            return savedSeatsDTO;
+        }
         List<SeatDTO> seatsDTO = Stream.generate(SeatDTO::new)
                 .limit(numbersOfSeats.getTotalNumberOfSeats()).collect(Collectors.toList());
         int enumSeatsCounter = 0;

@@ -36,4 +36,9 @@ public class ViewController implements ViewControllerApi {
     public ModelAndView passengerPage() {
         return new ModelAndView("passenger");
     }
+
+    @Override
+    public ModelAndView loginPage() {
+        return new ModelAndView("login");
+    }
 }

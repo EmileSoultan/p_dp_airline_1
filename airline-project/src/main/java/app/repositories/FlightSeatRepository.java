@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ public interface FlightSeatRepository extends CrudRepository<FlightSeat, Long> {
 
     Set<FlightSeat> findFlightSeatsByFlightId(Long flightId);
     Page<FlightSeat> findFlightSeatsByFlightId(Long flightId, Pageable pageable);
-
+    Page<FlightSeat> findAllFlightsSeatByFlightIdAndIsRegisteredFalse(Long flightId, Pageable pageable);
     Set<FlightSeat> findAllFlightsSeatByFlightIdAndIsSoldFalse(Long flightId);
     Page<FlightSeat> findAllFlightsSeatByFlightIdAndIsSoldFalse(Long flightId, Pageable pageable);
     Page<FlightSeat> findFlightSeatByFlightIdAndIsSoldFalseAndIsRegisteredFalse(Long flightId, Pageable pageable);
@@ -36,8 +37,10 @@ public interface FlightSeatRepository extends CrudRepository<FlightSeat, Long> {
 
     Set<FlightSeat> findFlightSeatsBySeat(Seat seat);
 
-    @Query(value = "SELECT fs from FlightSeat fs WHERE fs.flight.id = ?1 AND fs.seat.category.categoryType = ?2 ORDER BY fs.fare")
-    FlightSeat findFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type);
+    @Query(value = "select fs from FlightSeat fs where fs.flight.id = ?1 AND fs.seat.category.categoryType = ?2 " +
+        "and fs.fare = (select min(fss.fare) from FlightSeat fss where fss.flight.id = ?1 and fss.seat.category.categoryType =?2)")
+    List<FlightSeat> findFlightSeatsByFlightIdAndSeatCategory(Long id, CategoryType type);
+
 
     @Modifying
     @Query(value = "UPDATE FlightSeat fs SET fs.isSold = false WHERE fs.id in :flightSeatId")

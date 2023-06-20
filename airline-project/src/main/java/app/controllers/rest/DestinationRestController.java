@@ -23,20 +23,20 @@ public class DestinationRestController implements DestinationRestApi {
     private final DestinationMapper destinationMapper;
 
     @Override
-    public ResponseEntity<Page<DestinationDTO>> getAll(Pageable pageable, String cityName, String countryName) {
+    public ResponseEntity<Page<DestinationDTO>> getAll(Pageable pageable, String cityName, String countryName, String timezone) {
         Page<Destination> destination = null;
-        if (cityName == null && countryName == null) {
+        if (cityName == null && countryName == null && timezone == null) {
             destination = destinationService.findAll(pageable);
             log.info("getAll: get all Destinations");
         } else {
-            log.info("getAll: get Destinations by cityName or countryName. countryName=(3 / cityName=(', countryName, cityName");
-            destination = destinationService.findDestinationByName(pageable, cityName, countryName);
+            log.info("getAll: get Destinations by cityName or countryName or timezone. countryName = {}. cityName= {}. timezone = {}", countryName, cityName, timezone);
+            destination = destinationService.findDestinationByNameAndTimezone(pageable, cityName, countryName, timezone);
         }
-        return destination != null
+        return (!destination.isEmpty())
                 ? new ResponseEntity<>(destination.map(entity -> {
-                    DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
-                    return dto;
-                    }), HttpStatus.OK)
+            DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
+            return dto;
+        }), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -51,13 +51,6 @@ public class DestinationRestController implements DestinationRestApi {
     public ResponseEntity<Destination> update(Long id, DestinationDTO destinationDTO) {
         log.info("update: update Destination with id={}", id);
         destinationService.updateDestination(id, destinationMapper.convertToDestinationEntity(destinationDTO));
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<String> delete(Long id) {
-        log.info("delete: delete Destination with id = {}", id);
-        destinationService.deleteDestinationById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

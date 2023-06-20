@@ -17,6 +17,9 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+/**
+ * Класс сиденья на рейс.
+ */
 @Entity
 @Table(name = "category")
 @Data
