@@ -3,7 +3,11 @@ package app.controllers.rest;
 
 import app.controllers.api.rest.TicketRestApi;
 import app.dto.TicketDTO;
+import app.entities.Flight;
 import app.entities.Ticket;
+import app.entities.account.Passenger;
+import app.services.interfaces.FlightService;
+import app.services.interfaces.PassengerService;
 import app.services.interfaces.TicketService;
 import app.util.mappers.TicketMapper;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +28,8 @@ public class TicketRestController implements TicketRestApi {
 
     private final TicketService ticketService;
     private final TicketMapper ticketMapper;
+    private final FlightService flightService;
+    private final PassengerService passengerService;
 
     @Override
     public ResponseEntity<List<TicketDTO>> getAll(Pageable pageable) {
@@ -46,7 +53,17 @@ public class TicketRestController implements TicketRestApi {
     @Override
     public ResponseEntity<TicketDTO> create(TicketDTO ticketDTO) {
         log.info("create: new Ticket = {}", ticketDTO);
-        ticketService.saveTicket(ticketMapper.convertToTicketEntity(ticketDTO));
+        if (!ticketService.isTicketNumberUnique(ticketDTO.getTicketNumber())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket number must be unique");
+        }
+        passengerService.findById(ticketDTO.getPassengerId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid passengerId"));
+        Flight flight = flightService.getById(ticketDTO.getFlightId());
+        if (flight == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid flightId");
+        }
+        Ticket savedTicket = ticketService.saveTicket(ticketMapper.convertToTicketEntity(ticketDTO));
+        ticketDTO.setId(savedTicket.getId());
         return new ResponseEntity<>(ticketDTO, HttpStatus.CREATED);
     }
 
@@ -55,7 +72,7 @@ public class TicketRestController implements TicketRestApi {
         log.info("update: Ticket with id = {}", id);
         ticketDTO.setId(id);
         Ticket ticket = ticketService.updateTicket(id, ticketMapper.convertToTicketEntity(ticketDTO));
-        return new ResponseEntity<>(new TicketDTO(ticket),HttpStatus.OK);
+        return new ResponseEntity<>(new TicketDTO(ticket), HttpStatus.OK);
     }
 
     @Override

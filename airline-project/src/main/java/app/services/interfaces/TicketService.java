@@ -20,4 +20,6 @@ public interface TicketService {
     long [] findArrayOfFlightSeatIdByPassengerId(long passengerId);
 
     void deleteTicketByPassengerId(long passengerId);
+
+    boolean isTicketNumberUnique(String ticketNumber);
 }
