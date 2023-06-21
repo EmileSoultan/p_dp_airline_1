@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-- #242 Фикс ticket API. В тело ответа добавлен id.
+- #242 Фикс ticket API. В тело ответа добавлен id. Добавлена проверка id на null в TicketRestControllerIT
 
 ## [1.0.3.hf2] - 14.06.2023
 - #238 - фикс странички логина. Можно снова заходить по /login, а не /login.html
