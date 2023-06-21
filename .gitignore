@@ -1,6 +1,7 @@
 /airline-project/target/
 /airline-payments/target/
 !.mvn/wrapper/maven-wrapper.jar
+/common/target
 
 ### STS ###
 .apt_generated
@@ -26,3 +27,5 @@
 /.nb-gradle/
 
 /logs/
+/common/target/
+/common/target/

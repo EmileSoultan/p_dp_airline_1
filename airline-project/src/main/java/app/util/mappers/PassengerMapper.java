@@ -38,7 +38,7 @@ public class PassengerMapper {
         passenger.setSecurityQuestion(pasengerDTO.getSecurityQuestion());
         passenger.setAnswerQuestion(pasengerDTO.getAnswerQuestion());
         passenger.setRoles(pasengerDTO.getRoles());
-        passenger.setPassword(pasengerDTO.getPassword());
+        passenger.setPassport(pasengerDTO.getPassport());
 
         return passenger;
     }
