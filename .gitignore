@@ -26,7 +26,3 @@
 /.nb-gradle/
 
 /logs/
-/common/target/classes/app/enums/Currency.class
-/common/target/classes/app/dto/PaymentRequest.class
-/common/target/classes/app/dto/PaymentResponse.class
-/common/target/classes/app/enums/State.class

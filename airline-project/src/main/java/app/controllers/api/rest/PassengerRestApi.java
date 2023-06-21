@@ -76,7 +76,8 @@ public interface PassengerRestApi {
     ResponseEntity<PassengerDTO> create(
             @ApiParam(
                     name = "Passenger",
-                    value = "Passenger model"
+                    value = "Passenger model",
+                    required = true
             )
             @RequestBody @Valid PassengerDTO passengerDTO);
 

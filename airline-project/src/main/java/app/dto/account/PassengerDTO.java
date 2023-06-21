@@ -55,6 +55,7 @@ public class PassengerDTO {
     @NotBlank(message = "The field cannot be empty")
     @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,}", message = "min 8 characters, 1 uppercase latter" +
             "1 lowercase latter, at least 1 number, 1 special character")
+
     private String password;
 
     @NotBlank(message = "The field cannot be empty")

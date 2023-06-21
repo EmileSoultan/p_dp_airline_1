@@ -1,4 +1,5 @@
 delete from tickets;
+delete from timezones;
 delete from booking;
 delete from route;
 delete from flight_seats;
