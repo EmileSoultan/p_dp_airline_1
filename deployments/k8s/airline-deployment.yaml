@@ -33,6 +33,14 @@ spec:
             - name: remotedebugging
               containerPort: 5005
               protocol: TCP
+          volumeMounts:
+            - name: application-config
+              mountPath: /config/application.yml
+              subPath: application.yml
+      volumes:
+        - name: application-config
+          configMap:
+            name: airline-config-map
   selector:
     matchLabels:
        app: airline-project

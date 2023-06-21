@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- #195 - В configMap настроено обращение к airline-payments при деплое в кубере
+- #159 - В deployments kubernetes'а добавлена configMap, хранящая application.yml от airline-project'а при деплое в кубере.
 - #221 - фильтры по городам и датам для метода получения всех полетов
 - #225 - Отключние секьюрити для профиля noSecurity и обновление гайда по Postman
 
