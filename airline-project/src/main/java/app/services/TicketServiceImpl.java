@@ -76,9 +76,4 @@ public class TicketServiceImpl implements TicketService {
         ticketRepository.deleteTicketByPassengerId(passengerId);
     }
 
-    @Override
-    public boolean isTicketNumberUnique(String ticketNumber) {
-        return !ticketRepository.existsByTicketNumber(ticketNumber);
-    }
-
 }
