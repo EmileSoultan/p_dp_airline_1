@@ -1,7 +1,9 @@
 package app.controllers;
 
 import app.dto.account.PassengerDTO;
+import app.entities.Passport;
 import app.entities.account.Passenger;
+import app.enums.Gender;
 import app.services.interfaces.PassengerService;
 import app.services.interfaces.RoleService;
 import org.junit.jupiter.api.DisplayName;
@@ -82,6 +84,7 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
         passengerDTO.setSecurityQuestion("securityQuestion");
         passengerDTO.setAnswerQuestion("securityQuestion");
         passengerDTO.setRoles(Set.of(roleService.getRoleByName("ROLE_PASSENGER")));
+        passengerDTO.setPassport(new Passport("Petr", Gender.MALE, "3333 123456", LocalDate.of(2006, 3, 30), "Russia"));
 
         mockMvc.perform(
                         post("http://localhost:8080/api/passengers")
