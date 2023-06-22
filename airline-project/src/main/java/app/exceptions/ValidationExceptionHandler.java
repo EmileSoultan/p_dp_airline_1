@@ -24,7 +24,7 @@ public class ValidationExceptionHandler {
         List<String> errors = new ArrayList<>();
         errors.add(ex.getMessage());
         ResponseExceptionDTO NullPointerExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
-        return new ResponseEntity<>(NullPointerExceptionDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(NullPointerExceptionDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({PSQLException.class})
