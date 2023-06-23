@@ -55,7 +55,7 @@ public interface DestinationRestApi {
     @ApiOperation(value = "Edit Destination by id")
     @ApiResponse(code = 200, message = "Destination has been updated")
     @PatchMapping("/{id}")
-    ResponseEntity<Destination> update(
+    ResponseEntity<DestinationDTO> update(
             @ApiParam(
                     name = "id",
                     value = "Destination.id"
