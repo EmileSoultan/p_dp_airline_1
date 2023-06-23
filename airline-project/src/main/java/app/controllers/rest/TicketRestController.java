@@ -8,7 +8,9 @@ import app.services.interfaces.TicketService;
 import app.util.mappers.TicketMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,13 +27,15 @@ public class TicketRestController implements TicketRestApi {
     private final TicketMapper ticketMapper;
 
     @Override
-    public ResponseEntity<List<TicketDTO>> getAll(Pageable pageable) {
+    public ResponseEntity<Page<TicketDTO>> getAll(Integer page, Integer size) {
+        Page<Ticket> ticketPage = ticketService.findAll(page, size);
+        if(ticketPage.isEmpty()){
+            log.error("getAll: Tickets not found");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         log.info("getAll: get all Tickets");
-        var tickets = ticketService.findAll(pageable);
-        return tickets.isEmpty()
-                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(tickets.getContent().stream().map(TicketDTO::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
+        List<TicketDTO> ticketDTOS = ticketPage.stream().map(TicketDTO::new).collect(Collectors.toList());
+        return new ResponseEntity<>(new PageImpl<>(ticketDTOS, PageRequest.of(page, size), ticketPage.getTotalElements()), HttpStatus.OK);
     }
 
     @Override
