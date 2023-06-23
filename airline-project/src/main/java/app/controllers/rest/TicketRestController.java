@@ -50,9 +50,9 @@ public class TicketRestController implements TicketRestApi {
     @Override
     public ResponseEntity<TicketDTO> create(TicketDTO ticketDTO) {
         log.info("create: new Ticket = {}", ticketDTO);
-        Ticket ticket = ticketMapper.convertToTicketEntity(ticketDTO);
-        ticketService.saveTicket(ticket);
-        return new ResponseEntity<>(new TicketDTO(ticket), HttpStatus.CREATED);
+        Ticket savedTicket = ticketService.saveTicket(ticketMapper.convertToTicketEntity(ticketDTO));
+        ticketDTO.setId(savedTicket.getId());
+        return new ResponseEntity<>(ticketDTO, HttpStatus.CREATED);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class TicketRestController implements TicketRestApi {
         log.info("update: Ticket with id = {}", id);
         ticketDTO.setId(id);
         Ticket ticket = ticketService.updateTicket(id, ticketMapper.convertToTicketEntity(ticketDTO));
-        return new ResponseEntity<>(new TicketDTO(ticket),HttpStatus.OK);
+        return new ResponseEntity<>(new TicketDTO(ticket), HttpStatus.OK);
     }
 
     @Override

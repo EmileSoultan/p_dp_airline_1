@@ -1,5 +1,6 @@
 package app.exceptions;
 
+import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -18,29 +19,30 @@ import java.util.List;
 @ControllerAdvice
 public class ValidationExceptionHandler {
 
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler({NullPointerException.class})
+    public ResponseEntity<ResponseExceptionDTO> handleNullPointerException(NullPointerException ex) {
+        List<String> errors = new ArrayList<>();
+        errors.add(ex.getMessage());
+        ResponseExceptionDTO NullPointerExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
+        return new ResponseEntity<>(NullPointerExceptionDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({PSQLException.class})
+    public ResponseEntity<ResponseExceptionDTO> handlePSQLException(PSQLException ex) {
+        List<String> errors = new ArrayList<>();
+        errors.add(ex.getMessage());
+        ResponseExceptionDTO PSQLExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
+        return new ResponseEntity<>(PSQLExceptionDto, HttpStatus.BAD_REQUEST);
+    }
+
+//    @ExceptionHandler({RuntimeException.class})
     public ResponseEntity<ResponseExceptionDTO> handleRuntimeException(RuntimeException exception) {
         ResponseExceptionDTO runtimeExceptionDTO = new ResponseExceptionDTO(exception.getMessage(), LocalDateTime.now());
         if (exception instanceof HttpMessageNotReadableException) {
             return new ResponseEntity<>(runtimeExceptionDTO, HttpStatus.BAD_REQUEST);
-        } else {
+        }  else {
             return new ResponseEntity<>(runtimeExceptionDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    @ExceptionHandler(BindException.class)
-    public ResponseEntity<List<ResponseExceptionDTO>> handleException(BindException exception) {
-        List<ResponseExceptionDTO> validationExceptionDto = bindFieldsExceptionsToList(exception, new ArrayList<>());
-        return new ResponseEntity<>(validationExceptionDto, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(SQLException.class)
-    public ResponseEntity<ResponseExceptionDTO> handleException(SQLException exception) {
-        ResponseExceptionDTO sqlExceptionDto = new ResponseExceptionDTO(exception.getMessage(), LocalDateTime.now());
-        if (exception.getSQLState().equals("23505")) {
-            return new ResponseEntity<>(sqlExceptionDto, HttpStatus.CONFLICT);
-        }
-        return new ResponseEntity<>(sqlExceptionDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({ConstraintViolationException.class})
@@ -51,6 +53,21 @@ public class ValidationExceptionHandler {
         }
         ResponseExceptionDTO constraintViolationExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
         return new ResponseEntity<>(constraintViolationExceptionDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({BindException.class})
+    public ResponseEntity<List<ResponseExceptionDTO>> handleException(BindException exception) {
+        List<ResponseExceptionDTO> validationExceptionDto = bindFieldsExceptionsToList(exception, new ArrayList<>());
+        return new ResponseEntity<>(validationExceptionDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({SQLException.class})
+    public ResponseEntity<ResponseExceptionDTO> handleException(SQLException exception) {
+        ResponseExceptionDTO sqlExceptionDto = new ResponseExceptionDTO(exception.getMessage(), LocalDateTime.now());
+        if (exception.getSQLState().equals("23505")) {
+            return new ResponseEntity<>(sqlExceptionDto, HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>(sqlExceptionDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private List<ResponseExceptionDTO> bindFieldsExceptionsToList(
