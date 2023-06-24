@@ -1,7 +1,9 @@
 # Changelog
 
 ## [Unreleased]
+- 
 
+## [1.0.4] - 23.06.2023
 - #241 - Исправлен баг с id ticket'а при post запросе. Теперь при неправильных id билета, рейса и пассажира возвращает 400 ошибку вместо 500
 - #195 - В configMap настроено обращение к airline-payments при деплое в кубере
 - #159 - В deployments kubernetes'а добавлена configMap, хранящая application.yml от airline-project'а при деплое в кубере.
