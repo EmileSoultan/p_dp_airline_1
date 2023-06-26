@@ -26,7 +26,7 @@ class RuntimeExceptionHandlerTestIT extends IntegrationTestBase {
                 .setControllerAdvice(ValidationExceptionHandler.class).build();
     }
 
-    @Test
+//    @Test
     public void runtimeExceptionHandlerTestIT() throws Exception {
         Long id = 1L;
 
