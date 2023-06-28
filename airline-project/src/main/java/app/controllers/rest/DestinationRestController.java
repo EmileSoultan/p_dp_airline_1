@@ -48,9 +48,15 @@ public class DestinationRestController implements DestinationRestApi {
     }
 
     @Override
-    public ResponseEntity<Destination> update(Long id, DestinationDTO destinationDTO) {
+    public ResponseEntity<DestinationDTO> update(Long id, DestinationDTO destinationDTO) {
         log.info("update: update Destination with id={}", id);
         destinationService.updateDestination(id, destinationMapper.convertToDestinationEntity(destinationDTO));
-        return new ResponseEntity<>(HttpStatus.OK);
+        Destination updatedDestination = destinationService.getDestinationById(id);
+        if (updatedDestination != null) {
+            DestinationDTO updatedDTO = destinationMapper.convertToDestinationDTOEntity(updatedDestination);
+            return new ResponseEntity<>(updatedDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

@@ -5,6 +5,7 @@ import app.util.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,12 +14,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Profile("!noSecurity")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final LoginSuccessHandler successHandler;
@@ -45,18 +47,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/403").permitAll()
                 .anyRequest().permitAll()
                 .and()
-                .exceptionHandling()
+                .exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint())
                 .and()
                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
-                .successHandler(successHandler)
-                .loginProcessingUrl("/login")
-                .permitAll()
-                .and()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
-                .and()
+                    .loginPage("/login")
+                    .loginProcessingUrl("/login")
+                    .successHandler(successHandler)
+                    .permitAll()
+                    .and()
                 .logout()
-                .logoutSuccessUrl("/");
+                    .logoutSuccessUrl("/")
+                    .permitAll();
     }
 
 
@@ -68,10 +70,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder getEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AccessDeniedHandler accessDeniedHandler(){
-        return new CustomAccessDenied();
     }
 }

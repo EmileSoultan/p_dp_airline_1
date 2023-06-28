@@ -1,12 +1,14 @@
 package app.controllers;
+
 import app.dto.TicketDTO;
 import app.entities.Ticket;
-import app.services.interfaces.PassengerService;
 import app.services.interfaces.TicketService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -21,24 +23,24 @@ class TicketRestControllerIT extends IntegrationTestBase {
 
     @Autowired
     private TicketService ticketService;
-    @Autowired
-    private PassengerService passengerService;
 
     @Test
     void createTicket_test() throws Exception {
         Ticket newTicket = ticketService.findTicketByTicketNumber("ZX-3333");
         newTicket.setTicketNumber("SJ-9346");
+        newTicket.setId(null);
         TicketDTO ticketDTO = new TicketDTO(newTicket);
         mockMvc.perform(post("http://localhost:8080/api/tickets")
                         .content(objectMapper.writeValueAsString(ticketDTO))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
                 .andExpect(status().isCreated());
     }
 
     @Test
-    // fixme тест написан неправильно
+        // fixme тест написан неправильно
     void showTicketByBookingNumber_test() throws Exception {
         mockMvc.perform(get("http://localhost:8080/api/tickets/")
                         .param("ticketNumber", "SD-2222"))
@@ -46,18 +48,18 @@ class TicketRestControllerIT extends IntegrationTestBase {
                 .andExpect(status().isOk());
     }
 
-        @Test
-        void updateTicket_test() throws Exception {
-             TicketDTO ticketDTO = new TicketDTO(ticketService.findTicketByTicketNumber("ZX-3333"));
-             mockMvc.perform(patch("http://localhost:8080/api/tickets/{id}", ticketDTO.getId())
-                    .content(
-                            objectMapper.writeValueAsString(ticketDTO)
-                    )
-                    .contentType(MediaType.APPLICATION_JSON))
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().json(objectMapper.writeValueAsString(ticketDTO)));
-}
+    @Test
+    void updateTicket_test() throws Exception {
+        TicketDTO ticketDTO = new TicketDTO(ticketService.findTicketByTicketNumber("ZX-3333"));
+        mockMvc.perform(patch("http://localhost:8080/api/tickets/{id}", ticketDTO.getId())
+                        .content(
+                                objectMapper.writeValueAsString(ticketDTO)
+                        )
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(ticketDTO)));
+    }
 
     @Test
     void deleteTicket_test() throws Exception {
@@ -66,4 +68,5 @@ class TicketRestControllerIT extends IntegrationTestBase {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
 }
