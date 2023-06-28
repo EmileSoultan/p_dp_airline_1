@@ -127,10 +127,7 @@ public class SeatServiceImpl implements SeatService {
     }
 
     private List<SeatDTO> getSavedSeatsDTO(long aircraftId) {
-        List<SeatDTO> savedSeatsDTO = new ArrayList<>(getNumbersOfSeatsByAircraft(aircraftId).getTotalNumberOfSeats()); //создаем коллекцию свободных? мест от обшего количества мест
-        if (findByAircraftId(aircraftId, Pageable.unpaged()).getTotalElements() > 0) {
-            return savedSeatsDTO;
-        }
+        List<SeatDTO> savedSeatsDTO = new ArrayList<>(getNumbersOfSeatsByAircraft(aircraftId).getTotalNumberOfSeats());
         return savedSeatsDTO;
     }
 
