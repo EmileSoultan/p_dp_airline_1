@@ -90,13 +90,13 @@ public class SeatServiceImpl implements SeatService {
     public List<SeatDTO> generate(long aircraftId) {
         Category economyCategory = categoryService.findByCategoryType(CategoryType.ECONOMY);
         Category businessCategory = categoryService.findByCategoryType(CategoryType.BUSINESS);
-        List<SeatDTO> seatsDTO = Stream.generate(SeatDTO::new)
-                .limit(getNumbersOfSeatsByAircraft(aircraftId).getTotalNumberOfSeats())
-                .collect(Collectors.toList());
 
+        List<SeatDTO> savedSeatsDTO = new ArrayList<>(getNumbersOfSeatsByAircraft(aircraftId).getTotalNumberOfSeats());
+        if (findByAircraftId(aircraftId, Pageable.unpaged()).getTotalElements() > 0) {
+            return savedSeatsDTO;
+        }
         int enumSeatsCounter = 0;
-
-        for (SeatDTO seatDTO : seatsDTO) {
+        for (SeatDTO seatDTO : getSeatsDTO(aircraftId)) {
             seatDTO.setSeatNumber(getAircraftSeats(aircraftId)[enumSeatsCounter].getNumber());
             seatDTO.setAircraftId(aircraftId);
             if (enumSeatsCounter < getNumbersOfSeatsByAircraft(aircraftId).getNumberOfBusinessClassSeats()) { //Назначаем категории
@@ -109,28 +109,23 @@ public class SeatServiceImpl implements SeatService {
             enumSeatsCounter += 1;
 
             Seat savedSeat = save(seatMapper.convertToSeatEntity(seatDTO));
-
-            getSavedSeatsDTO(aircraftId).add(new SeatDTO(savedSeat));
+            savedSeatsDTO.add(new SeatDTO(savedSeat));
         }
-
-        return seatsDTO;
+        return savedSeatsDTO;
     }
-
     private SeatsNumbersByAircraft getNumbersOfSeatsByAircraft(long aircraftId) {
         Aircraft aircraft = aircraftService.findById(aircraftId); //создается объект САМОЛЕТ
         return SeatsNumbersByAircraft.valueOf(aircraft.getModel() //количество мест в самолете
                 .toUpperCase().replace(" ", "_"));
     }
-
     private AircraftSeats[] getAircraftSeats(long aircraftId) {
         return getNumbersOfSeatsByAircraft(aircraftId).getAircraftSeats();
     }
-
-    private List<SeatDTO> getSavedSeatsDTO(long aircraftId) {
-        List<SeatDTO> savedSeatsDTO = new ArrayList<>(getNumbersOfSeatsByAircraft(aircraftId).getTotalNumberOfSeats());
-        return savedSeatsDTO;
+    private List<SeatDTO> getSeatsDTO(long aircraftId) {
+        List<SeatDTO> seatsDTO = Stream.generate(SeatDTO::new)
+                .limit(getNumbersOfSeatsByAircraft(aircraftId).getTotalNumberOfSeats()).collect(Collectors.toList());
+        return seatsDTO;
     }
-
     @Override
     public Page<Seat> findAll(Pageable pageable) {
         return seatRepository.findAll(pageable);
