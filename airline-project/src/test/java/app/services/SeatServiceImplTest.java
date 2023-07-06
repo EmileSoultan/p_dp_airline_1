@@ -55,10 +55,6 @@ public class SeatServiceImplTest {
         aircraft.setId(AIRCRAFT_TEST_ID);
         aircraft.setModel(AIRCRAFT_TEST_MODEL);
 
-        Seat seat = new Seat();
-        seat.setCategory(economyCategory);
-        seat.setAircraft(aircraft);
-
         when(categoryService.findByCategoryType(CategoryType.ECONOMY))
                 .thenReturn(economyCategory);
         when(categoryService.findByCategoryType(CategoryType.BUSINESS))
@@ -66,11 +62,22 @@ public class SeatServiceImplTest {
         when(aircraftService.findById(AIRCRAFT_TEST_ID))
                 .thenReturn(aircraft);
         when(seatRepository.findByAircraftId(eq(AIRCRAFT_TEST_ID), any()))
-                .thenReturn(new PageImpl<Seat>(Collections.singletonList(seat)));
+                .thenReturn(new PageImpl<>(Collections.emptyList()));
         when(seatMapper.convertToSeatEntity(any()))
-                .thenReturn(seat);
+                .thenAnswer( ans -> {
+                    SeatDTO seatDTO = ans.getArgument(0);
+                    Seat seat = new Seat();
+                    seat.setCategory(seatDTO.getCategory());
+                    seat.setAircraft(aircraft);
+                    return seat;
+                });
+
         when(seatRepository.saveAndFlush(any()))
-                .thenReturn(seat);
+                .thenAnswer(s -> {
+                    Seat seat = s.getArgument(0);
+                    seat.setId(1L);
+                    return seat;
+                });
 
         List<SeatDTO> seatDTOs = seatService.generate(AIRCRAFT_TEST_ID);
 
@@ -84,5 +91,4 @@ public class SeatServiceImplTest {
         assertEquals(158, seatDTOs.size());
         assertEquals(8, businessSeatsCount);
     }
-
 }
