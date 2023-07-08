@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: airline-config-map
+  name: airline-payments-config-map
 data:
   application.yml: |
     paypal:
