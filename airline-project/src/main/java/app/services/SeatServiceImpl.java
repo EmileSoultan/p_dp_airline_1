@@ -38,7 +38,7 @@ public class SeatServiceImpl implements SeatService {
 
     @Transactional
     @Override
-    public Seat save (Seat seat) {
+    public Seat save(Seat seat) {
         if (seat.getId() != 0) {
             Seat aldSeat = findById(seat.getId());
             if (aldSeat != null && aldSeat.getAircraft() != null) {
@@ -50,7 +50,7 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public Seat findById (long id) {
+    public Seat findById(long id) {
         return seatRepository.findById(id).orElse(null);
     }
 
@@ -73,7 +73,7 @@ public class SeatServiceImpl implements SeatService {
     @Override
     @Transactional
     public void delete(Long id) throws ViolationOfForeignKeyConstraintException {
-        if(!(flightSeatRepository.findFlightSeatsBySeat(findById(id))).isEmpty()){
+        if (!(flightSeatRepository.findFlightSeatsBySeat(findById(id))).isEmpty()) {
             throw new ViolationOfForeignKeyConstraintException(
                     String.format("Seat with id = %d cannot be deleted because it is locked by the table \"flight_seat\"", id));
         }
@@ -81,7 +81,7 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public Page<Seat> findByAircraftId(Long id, Pageable pageable){
+    public Page<Seat> findByAircraftId(Long id, Pageable pageable) {
         return seatRepository.findByAircraftId(id, pageable);
     }
 
@@ -113,19 +113,23 @@ public class SeatServiceImpl implements SeatService {
         }
         return savedSeatsDTO;
     }
+
     private SeatsNumbersByAircraft getNumbersOfSeatsByAircraft(long aircraftId) {
         Aircraft aircraft = aircraftService.findById(aircraftId); //создается объект САМОЛЕТ
         return SeatsNumbersByAircraft.valueOf(aircraft.getModel() //количество мест в самолете
                 .toUpperCase().replace(" ", "_"));
     }
+
     private AircraftSeats[] getAircraftSeats(long aircraftId) {
         return getNumbersOfSeatsByAircraft(aircraftId).getAircraftSeats();
     }
+
     private List<SeatDTO> getSeatsDTO(long aircraftId) {
-        List<SeatDTO> seatsDTO = Stream.generate(SeatDTO::new)
-                .limit(getNumbersOfSeatsByAircraft(aircraftId).getTotalNumberOfSeats()).collect(Collectors.toList());
-        return seatsDTO;
+        return Stream.generate(SeatDTO::new)
+                .limit(getNumbersOfSeatsByAircraft(aircraftId).getTotalNumberOfSeats())
+                .collect(Collectors.toList());
     }
+
     @Override
     public Page<Seat> findAll(Pageable pageable) {
         return seatRepository.findAll(pageable);
