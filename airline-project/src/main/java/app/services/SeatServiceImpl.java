@@ -36,10 +36,9 @@ public class SeatServiceImpl implements SeatService {
     private final SeatMapper seatMapper;
     private final FlightSeatRepository flightSeatRepository;
 
-
     @Transactional
     @Override
-    public Seat save (Seat seat) {
+    public Seat save(Seat seat) {
         if (seat.getId() != 0) {
             Seat aldSeat = findById(seat.getId());
             if (aldSeat != null && aldSeat.getAircraft() != null) {
@@ -51,7 +50,7 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public Seat findById (long id) {
+    public Seat findById(long id) {
         return seatRepository.findById(id).orElse(null);
     }
 
@@ -74,7 +73,7 @@ public class SeatServiceImpl implements SeatService {
     @Override
     @Transactional
     public void delete(Long id) throws ViolationOfForeignKeyConstraintException {
-        if(!(flightSeatRepository.findFlightSeatsBySeat(findById(id))).isEmpty()){
+        if (!(flightSeatRepository.findFlightSeatsBySeat(findById(id))).isEmpty()) {
             throw new ViolationOfForeignKeyConstraintException(
                     String.format("Seat with id = %d cannot be deleted because it is locked by the table \"flight_seat\"", id));
         }
@@ -82,7 +81,7 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public Page<Seat> findByAircraftId(Long id, Pageable pageable){
+    public Page<Seat> findByAircraftId(Long id, Pageable pageable) {
         return seatRepository.findByAircraftId(id, pageable);
     }
 
@@ -92,29 +91,21 @@ public class SeatServiceImpl implements SeatService {
         Category economyCategory = categoryService.findByCategoryType(CategoryType.ECONOMY);
         Category businessCategory = categoryService.findByCategoryType(CategoryType.BUSINESS);
 
-        Aircraft aircraft = aircraftService.findById(aircraftId);
-        SeatsNumbersByAircraft numbersOfSeats = SeatsNumbersByAircraft.valueOf(aircraft.getModel()
-                .toUpperCase().replace(" ", "_")); //приводим к нужному виду и находим самолет
-
-        AircraftSeats[] aircraftSeats = numbersOfSeats.getAircraftSeats(); //получаем места в конкретном самолете
-
-        List<SeatDTO> savedSeatsDTO = new ArrayList<>(numbersOfSeats.getTotalNumberOfSeats());
+        List<SeatDTO> savedSeatsDTO = new ArrayList<>(getNumbersOfSeatsByAircraft(aircraftId).getTotalNumberOfSeats());
         if (findByAircraftId(aircraftId, Pageable.unpaged()).getTotalElements() > 0) {
             return savedSeatsDTO;
         }
-        List<SeatDTO> seatsDTO = Stream.generate(SeatDTO::new)
-                .limit(numbersOfSeats.getTotalNumberOfSeats()).collect(Collectors.toList());
         int enumSeatsCounter = 0;
-        for (SeatDTO seatDTO : seatsDTO) {
-            seatDTO.setSeatNumber(aircraftSeats[enumSeatsCounter].getNumber());
+        for (SeatDTO seatDTO : getSeatsDTO(aircraftId)) {
+            seatDTO.setSeatNumber(getAircraftSeats(aircraftId)[enumSeatsCounter].getNumber());
             seatDTO.setAircraftId(aircraftId);
-            if (enumSeatsCounter < numbersOfSeats.getNumberOfBusinessClassSeats()) { //Назначаем категории
+            if (enumSeatsCounter < getNumbersOfSeatsByAircraft(aircraftId).getNumberOfBusinessClassSeats()) { //Назначаем категории
                 seatDTO.setCategory(businessCategory);
             } else {
                 seatDTO.setCategory(economyCategory);
             }
-            seatDTO.setIsNearEmergencyExit(aircraftSeats[enumSeatsCounter].isNearEmergencyExit());
-            seatDTO.setIsLockedBack(aircraftSeats[enumSeatsCounter].isLockedBack());
+            seatDTO.setIsNearEmergencyExit(getAircraftSeats(aircraftId)[enumSeatsCounter].isNearEmergencyExit());
+            seatDTO.setIsLockedBack(getAircraftSeats(aircraftId)[enumSeatsCounter].isLockedBack());
             enumSeatsCounter += 1;
 
             Seat savedSeat = save(seatMapper.convertToSeatEntity(seatDTO));
@@ -123,9 +114,24 @@ public class SeatServiceImpl implements SeatService {
         return savedSeatsDTO;
     }
 
+    private SeatsNumbersByAircraft getNumbersOfSeatsByAircraft(long aircraftId) {
+        Aircraft aircraft = aircraftService.findById(aircraftId); //создается объект САМОЛЕТ
+        return SeatsNumbersByAircraft.valueOf(aircraft.getModel() //количество мест в самолете
+                .toUpperCase().replace(" ", "_"));
+    }
+
+    private AircraftSeats[] getAircraftSeats(long aircraftId) {
+        return getNumbersOfSeatsByAircraft(aircraftId).getAircraftSeats();
+    }
+
+    private List<SeatDTO> getSeatsDTO(long aircraftId) {
+        return Stream.generate(SeatDTO::new)
+                .limit(getNumbersOfSeatsByAircraft(aircraftId).getTotalNumberOfSeats())
+                .collect(Collectors.toList());
+    }
+
     @Override
     public Page<Seat> findAll(Pageable pageable) {
         return seatRepository.findAll(pageable);
     }
-
 }
