@@ -1,6 +1,7 @@
 package app.exceptions;
 
 import org.postgresql.util.PSQLException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -78,4 +79,13 @@ public class ValidationExceptionHandler {
         });
         return entityFieldsErrorList;
     }
+
+    @ExceptionHandler({EmptyResultDataAccessException.class})
+    public ResponseEntity<ResponseExceptionDTO> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex) {
+        List<String> errors = new ArrayList<>();
+        errors.add(ex.getMessage());
+        ResponseExceptionDTO emptyResultDataAccessException = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
+        return new ResponseEntity<>(emptyResultDataAccessException, HttpStatus.NOT_FOUND);
+    }
+
 }
