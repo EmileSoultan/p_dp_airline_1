@@ -1,6 +1,7 @@
 package app.dto;
 
 import app.entities.EntityTest;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +31,8 @@ public class FlightSeatDTOTest extends EntityTest {
         flightSeatJson.put("isSold", true);
         flightSeatJson.put("isBooking", true);
         flightSeatJson.put("flightId", 1);
-        flightSeatJson.put("seatId", 1);
+//        flightSeatJson.put("seatId", 1);
+        flightSeatJson.put("seatNumber", 1);
 
         return flightSeatJson;
     }
@@ -104,7 +106,7 @@ public class FlightSeatDTOTest extends EntityTest {
     public void nullSeatShouldNotValidate() {
         FlightSeatDTO testFlightSeat;
         JSONObject flightSeatJson = initJSONObject();
-        flightSeatJson.replace("seatId", null);
+        flightSeatJson.replace("seatNumber", null);
         try {
             testFlightSeat = mapper.readValue(flightSeatJson.toString(), FlightSeatDTO.class);
         } catch (IOException e) {
