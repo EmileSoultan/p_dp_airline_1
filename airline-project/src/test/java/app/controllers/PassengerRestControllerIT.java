@@ -17,10 +17,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -131,8 +128,9 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
         long id = 4L;
         PassengerDTO passengerDTO = new PassengerDTO(passengerService.findById(4L).get());
         passengerDTO.setFirstName("Klark");
+        passengerDTO.setPassport(null);
 
-        mockMvc.perform(put("http://localhost:8080/api/passengers/{id}", id)
+        mockMvc.perform(patch("http://localhost:8080/api/passengers/{id}", id)
                         .content(objectMapper.writeValueAsString(passengerDTO))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
