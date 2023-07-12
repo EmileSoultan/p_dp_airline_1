@@ -1,6 +1,6 @@
 package app.controllers.api.rest;
 
-import app.dto.account.AccountDTO;
+import app.dto.AccountDTO;
 import app.entities.account.Role;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

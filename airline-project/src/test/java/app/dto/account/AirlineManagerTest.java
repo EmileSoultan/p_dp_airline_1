@@ -1,6 +1,5 @@
 package app.dto.account;
 
-import app.dto.account.AirlineManagerDTO;
 import app.entities.EntityTest;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;

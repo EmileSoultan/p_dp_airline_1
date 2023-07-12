@@ -1,6 +1,6 @@
 package app.services;
 
-import app.entities.account.Passenger;
+import app.entities.Passenger;
 import app.repositories.PassengerRepository;
 import app.repositories.RoleRepository;
 import app.services.interfaces.BookingService;
@@ -23,20 +23,20 @@ import java.util.Set;
 public class PassengerServiceImpl implements PassengerService {
 
     private final PassengerRepository passengerRepository;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder encoder;
+//    private final RoleRepository roleRepository;
+//    private final PasswordEncoder encoder;
     private final BookingService bookingService;
     private final TicketService ticketService;
     private final FlightSeatService flightSeatService;
 
     // FIXME Отрефакторить
     public PassengerServiceImpl(PassengerRepository passengerRepository,
-                                RoleRepository roleRepository,
-                                PasswordEncoder encoder,
+//                                RoleRepository roleRepository,
+//                                PasswordEncoder encoder,
                                 @Lazy BookingService bookingService, @Lazy TicketService ticketService, @Lazy FlightSeatService flightSeatService) {
         this.passengerRepository = passengerRepository;
-        this.roleRepository = roleRepository;
-        this.encoder = encoder;
+//        this.roleRepository = roleRepository;
+//        this.encoder = encoder;
         this.bookingService = bookingService;
         this.ticketService = ticketService;
         this.flightSeatService = flightSeatService;
@@ -45,9 +45,9 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     @Transactional
     public Passenger save(Passenger passenger) {
-        passenger.setPassword(encoder.encode(passenger.getPassword()));
-        passenger.setAnswerQuestion(encoder.encode(passenger.getAnswerQuestion()));
-        passenger.setRoles(Set.of(roleRepository.findByName("ROLE_PASSENGER")));
+//        passenger.setPassword(encoder.encode(passenger.getPassword()));
+//        passenger.setAnswerQuestion(encoder.encode(passenger.getAnswerQuestion()));
+//        passenger.setRoles(Set.of(roleRepository.findByName("ROLE_PASSENGER")));
         return passengerRepository.save(passenger);
     }
 
@@ -59,9 +59,18 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     @Transactional
-    public Passenger update(Passenger passenger) {
-        passenger.setPassword(encoder.encode(passenger.getPassword()));
-        passenger.setAnswerQuestion(encoder.encode(passenger.getAnswerQuestion()));
+    public Passenger update(Long id, Passenger passenger) {
+        Passenger editPassenger = new Passenger();
+        editPassenger.setFirstName(passenger.getFirstName());
+        editPassenger.setLastName(passenger.getLastName());
+        editPassenger.setBirthDate(passenger.getBirthDate());
+        editPassenger.setPhoneNumber(passenger.getPhoneNumber());
+        editPassenger.setEmail(passenger.getEmail());
+        editPassenger.setPassport(passenger.getPassport());
+
+//        passenger.setPassword(encoder.encode(passenger.getPassword()));
+//        passenger.setAnswerQuestion(encoder.encode(passenger.getAnswerQuestion()));
+
         return passengerRepository.save(passenger);
     }
 

@@ -1,8 +1,6 @@
 package app.controllers;
 
-import app.dto.account.AccountDTO;
-import app.dto.account.AirlineManagerDTO;
-import app.entities.account.AirlineManager;
+import app.dto.AccountDTO;
 import app.services.interfaces.AccountService;
 import app.services.interfaces.RoleService;
 import org.junit.jupiter.api.Test;

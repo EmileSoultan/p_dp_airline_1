@@ -1,11 +1,8 @@
-package app.dto.account;
+package app.dto;
 
 import app.entities.account.Account;
 import app.entities.account.Role;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,31 +10,44 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.mail.MethodNotSupportedException;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.persistence.Column;
+import javax.validation.constraints.*;
+import java.time.LocalDate;
 import java.util.Set;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = AdminDTO.class, name = "admin"),
-        @JsonSubTypes.Type(value = AirlineManagerDTO.class, name = "manager"),
-        @JsonSubTypes.Type(value = PassengerDTO.class, name = "passenger")}
-)
+//@JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @ToString(exclude = {"roles"})
+@JsonTypeName(value = "account")
 public class AccountDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
+    @NotBlank(message = "Field should not be empty")
+    @Size(min = 2, max = 128, message = "Size first_name cannot be less than 2 and more than 128 characters")
+    private String firstName;
+
+    @NotBlank(message = "Field should not be empty")
+    @Size(min = 2, max = 128, message = "Size last_name cannot be less than 2 and more than 128 characters")
+    private String lastName;
+
+    @NotNull(message = "Field should not be empty")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Past(message = "Date of birth can not be a future time")
+    private LocalDate birthDate;
+
     @Email
     @NotBlank(message = "The field cannot be empty")
     private String email;
+
+    @NotBlank(message = "Field should not be empty")
+    @Size(min = 6, max = 64, message = "Size phone cannot be less than 6 and more than 64 characters")
+    private String phoneNumber;
 
     @NotBlank(message = "The field cannot be empty")
     @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,}", message = "min 8 characters, 1 uppercase latter" +
@@ -60,9 +70,4 @@ public class AccountDTO {
         this.answerQuestion = account.getAnswerQuestion();
         this.roles = account.getRoles();
     }
-
-    public Account convertToEntity() throws MethodNotSupportedException {
-        throw new MethodNotSupportedException("Account Entity is abstract");
-    }
-
 }

@@ -1,8 +1,8 @@
 package app.controllers;
 
-import app.dto.account.PassengerDTO;
+import app.dto.PassengerDTO;
 import app.entities.Passport;
-import app.entities.account.Passenger;
+import app.entities.Passenger;
 import app.enums.Gender;
 import app.services.interfaces.PassengerService;
 import app.services.interfaces.RoleService;

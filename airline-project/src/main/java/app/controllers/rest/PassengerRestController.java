@@ -1,8 +1,8 @@
 package app.controllers.rest;
 
 import app.controllers.api.rest.PassengerRestApi;
-import app.dto.account.PassengerDTO;
-import app.entities.account.Passenger;
+import app.dto.PassengerDTO;
+import app.entities.Passenger;
 import app.services.interfaces.PassengerService;
 import app.util.mappers.PassengerMapper;
 import lombok.RequiredArgsConstructor;
@@ -89,8 +89,9 @@ public class PassengerRestController implements PassengerRestApi {
     @Override
     public ResponseEntity<PassengerDTO> update(Long id, PassengerDTO passengerDTO) {
         passengerDTO.setId(id);
-        log.info("update: passenger={}", passengerDTO);
-        return new ResponseEntity<>(new PassengerDTO(passengerService.update(passengerMapper.convertToPassengerEntity(passengerDTO))),
+//        log.info("update: passenger={}", passengerDTO);
+        log.info("update: update Passenger with id = {}", id);
+        return new ResponseEntity<>(new PassengerDTO(passengerService.update(id, passengerMapper.convertToPassengerEntity(passengerDTO))),
                 HttpStatus.OK);
     }
 

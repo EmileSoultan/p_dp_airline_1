@@ -33,18 +33,23 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updateAccount(Long id, Account account) {
-        var editUser = accountRepository.getAccountById(id);
-        if (!account.getPassword().equals(editUser.getPassword())) {
-            editUser.setPassword(encoder.encode(account.getPassword()));
+        var editAccount = accountRepository.getAccountById(id);
+        if (!account.getPassword().equals(editAccount.getPassword())) {
+            editAccount.setPassword(encoder.encode(account.getPassword()));
         }
         if (!account.getAnswerQuestion()
                 .equals(accountRepository.findById(id).orElse(null).getAnswerQuestion())) {
-            editUser.setAnswerQuestion(encoder.encode(account.getAnswerQuestion()));
+            editAccount.setAnswerQuestion(encoder.encode(account.getAnswerQuestion()));
         }
 
-        editUser.setRoles(roleService.saveRolesToUser(account));
-        editUser.setEmail(account.getEmail());
-        accountRepository.saveAndFlush(editUser);
+        editAccount.setRoles(roleService.saveRolesToUser(account));
+        editAccount.setEmail(account.getEmail());
+        editAccount.setFirstName(account.getFirstName());
+        editAccount.setLastName(account.getLastName());
+        editAccount.setBirthDate(account.getBirthDate());
+        editAccount.setPhoneNumber(account.getPhoneNumber());
+
+        accountRepository.saveAndFlush(editAccount);
     }
 
     @Transactional(readOnly = true)

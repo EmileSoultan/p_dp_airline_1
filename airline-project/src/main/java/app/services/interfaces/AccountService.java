@@ -7,9 +7,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface AccountService {
-    void saveAccount(Account user);
+    void saveAccount(Account account);
 
-    void updateAccount(Long id, Account user);
+    void updateAccount(Long id, Account account);
 
     Page<Account> getAllAccounts(Pageable pageable);
 

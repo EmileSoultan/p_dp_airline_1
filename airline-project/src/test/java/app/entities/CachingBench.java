@@ -67,16 +67,16 @@ public class CachingBench extends IntegrationTestBase {
         //Save users
         for(int i = 1; i <= iterations; i++){
             System.out.printf("\rIteration save users: %s/%s", i, iterations);
-            Account user = new Admin();
+            Account user = new Account();
             switch (random.ints(0,2).limit(1).findFirst().getAsInt()){
                 case 0:{
-                    user = new Admin();
+                    user = new Account();
                     time_load = System.currentTimeMillis();
                     user.setRoles(Set.of(roleRepository.findByName("ROLE_ADMIN")));//stress search role id any iteration
                     TimeListFindRole.add(System.currentTimeMillis() - time_load);
                 }
                 case 1:{
-                    user = new AirlineManager();
+                    user = new Account();
                     time_load = System.currentTimeMillis();
                     user.setRoles(Set.of(roleRepository.findByName("ROLE_MANAGER")));
                     TimeListFindRole.add(System.currentTimeMillis() - time_load);

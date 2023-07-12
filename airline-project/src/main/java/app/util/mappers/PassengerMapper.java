@@ -1,8 +1,8 @@
 package app.util.mappers;
 
 
-import app.dto.account.PassengerDTO;
-import app.entities.account.Passenger;
+import app.dto.PassengerDTO;
+import app.entities.Passenger;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,28 +17,19 @@ public class PassengerMapper {
         passengerDTO.setBirthDate(passenger.getBirthDate());
         passengerDTO.setPhoneNumber(passenger.getPhoneNumber());
         passengerDTO.setEmail(passenger.getEmail());
-        passengerDTO.setPassword(passenger.getPassword());
-        passengerDTO.setSecurityQuestion(passenger.getSecurityQuestion());
-        passengerDTO.setAnswerQuestion(passenger.getAnswerQuestion());
-        passengerDTO.setRoles(passenger.getRoles());
         passengerDTO.setPassport(passenger.getPassport());
 
         return passengerDTO;
     }
 
-    public Passenger convertToPassengerEntity(PassengerDTO pasengerDTO) {
+    public Passenger convertToPassengerEntity(PassengerDTO passengerDTO) {
         Passenger passenger = new Passenger();
-        passenger.setId(pasengerDTO.getId());
-        passenger.setFirstName(pasengerDTO.getFirstName());
-        passenger.setLastName(pasengerDTO.getLastName());
-        passenger.setBirthDate(pasengerDTO.getBirthDate());
-        passenger.setPhoneNumber(pasengerDTO.getPhoneNumber());
-        passenger.setEmail(pasengerDTO.getEmail());
-        passenger.setPassword(pasengerDTO.getPassword());
-        passenger.setSecurityQuestion(pasengerDTO.getSecurityQuestion());
-        passenger.setAnswerQuestion(pasengerDTO.getAnswerQuestion());
-        passenger.setRoles(pasengerDTO.getRoles());
-        passenger.setPassport(pasengerDTO.getPassport());
+        passenger.setId(passengerDTO.getId());
+        passenger.setFirstName(passengerDTO.getFirstName());
+        passenger.setLastName(passengerDTO.getLastName());
+        passenger.setBirthDate(passengerDTO.getBirthDate());
+        passenger.setPhoneNumber(passengerDTO.getPhoneNumber());
+        passenger.setPassport(passengerDTO.getPassport());
 
         return passenger;
     }

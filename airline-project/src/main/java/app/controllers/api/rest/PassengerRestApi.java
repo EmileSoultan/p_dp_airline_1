@@ -1,6 +1,6 @@
 package app.controllers.api.rest;
 
-import app.dto.account.PassengerDTO;
+import app.dto.PassengerDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

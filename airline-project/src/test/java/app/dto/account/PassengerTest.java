@@ -1,4 +1,5 @@
 package app.dto.account;
+import app.dto.PassengerDTO;
 import app.entities.EntityTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import net.minidev.json.JSONObject;

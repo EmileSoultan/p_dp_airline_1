@@ -1,11 +1,12 @@
 package app.controllers.rest;
 
 import app.controllers.api.rest.AccountRestApi;
-import app.dto.account.AccountDTO;
+import app.dto.AccountDTO;
 import app.entities.account.Account;
 import app.entities.account.Role;
 import app.services.interfaces.AccountService;
 import app.services.interfaces.RoleService;
+import app.util.mappers.AccountMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.mail.MethodNotSupportedException;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -58,7 +58,7 @@ public class AccountRestController implements AccountRestApi {
     public ResponseEntity<AccountDTO> create(AccountDTO accountDTO)
             throws MethodNotSupportedException {
         log.info("create: create new Account with email={}", accountDTO.getEmail());
-        accountService.saveAccount(accountDTO.convertToEntity());
+        accountService.saveAccount(new AccountMapper().convertToAccount(accountDTO));
         return ResponseEntity.ok(new AccountDTO(accountService.getAccountByEmail(accountDTO.getEmail())));
     }
 
@@ -66,7 +66,7 @@ public class AccountRestController implements AccountRestApi {
     public ResponseEntity<AccountDTO> update(Long id, AccountDTO accountDTO)
             throws MethodNotSupportedException {
         log.info("update: update Account with id = {}", id);
-        accountService.updateAccount(id, accountDTO.convertToEntity());
+        accountService.updateAccount(id, new AccountMapper().convertToAccount(accountDTO));
         return new ResponseEntity<>(new AccountDTO(accountService.getAccountById(id).get()), HttpStatus.OK);
     }
 
