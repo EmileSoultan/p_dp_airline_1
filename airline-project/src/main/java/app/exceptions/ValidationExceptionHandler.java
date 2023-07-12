@@ -70,6 +70,14 @@ public class ValidationExceptionHandler {
         return new ResponseEntity<>(sqlExceptionDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler({EntityNotFoundException.class})
+    public ResponseEntity<ResponseExceptionDTO> handleEntityNotFoundException(EntityNotFoundException ex) {
+        List<String> errors = new ArrayList<>();
+        errors.add(ex.getMessage());
+        ResponseExceptionDTO EntityNotFoundExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
+        return new ResponseEntity<>(EntityNotFoundExceptionDto, HttpStatus.NOT_FOUND);
+    }
+
     private List<ResponseExceptionDTO> bindFieldsExceptionsToList(
             BindException e,
             List<ResponseExceptionDTO> entityFieldsErrorList) {

@@ -44,7 +44,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         booking.setBookingNumber("BK-111111");
         booking.setBookingData(LocalDateTime.now());
         booking.setPassengerId(passengerService.findById(1001L).get().getId());
-        booking.setFlightId(flightService.getById(4001L).getId());
+        booking.setFlightId(flightService.findById(4001L).get().getId());
         booking.setCategoryType(CategoryType.ECONOMY);
 
         mockMvc.perform(post("http://localhost:8080/api/bookings")
