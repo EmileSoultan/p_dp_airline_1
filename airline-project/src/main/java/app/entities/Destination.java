@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,6 +27,8 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "destination")
+@SQLDelete(sql = "update destination set is_deleted=true where id=?")
+@Where(clause = "is_deleted = false")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Destination {
     @Id
@@ -47,4 +51,7 @@ public class Destination {
 
     @Column(name = "country_name")
     private String countryName;
+
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 }

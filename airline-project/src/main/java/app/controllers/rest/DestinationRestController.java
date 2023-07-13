@@ -59,4 +59,11 @@ public class DestinationRestController implements DestinationRestApi {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @Override
+    public ResponseEntity<HttpStatus> delete(Long id) {
+        log.info("delete: delete Destination with id={}", id);
+        destinationService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

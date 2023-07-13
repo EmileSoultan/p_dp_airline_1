@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased]
+- #230 Мягкое удаление Destination
 - #243 Исправлен баг, в Patch Destination теперь возвращается обновленная сущность
 - #246 Настройки переменных окружения перенесены из airline-deployment в airline-configmap
 - #245 Добавлена configMap для payments.

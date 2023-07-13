@@ -4,8 +4,10 @@ import app.dto.DestinationDTO;
 import app.entities.Destination;
 import app.enums.Airport;
 import app.services.interfaces.DestinationService;
+import app.util.mappers.DestinationMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,10 +26,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class DestinationControllerIT extends IntegrationTestBase {
     @Autowired
     private DestinationService destinationService;
+    @Autowired
+    private DestinationMapper destinationMapper;
 
     @Test
     void shouldCreateDestination() throws Exception {
-        Destination destination = new Destination(4L, Airport.OMS, "Moscow", "Moscow", "+3", "Russia");
+        Destination destination = new Destination(4L, Airport.OMS, "Moscow", "Moscow", "+3", "Russia", false);
         DestinationDTO destinationDTO = new DestinationDTO(destination);
         System.out.println(objectMapper.writeValueAsString(destination));
         mockMvc.perform(post("http://localhost:8080/api/destinations")
@@ -44,13 +48,17 @@ class DestinationControllerIT extends IntegrationTestBase {
         String city = "Абакан";
         String country = "";
         String timezone = "";
+        Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone);
         mockMvc.perform(get("http://localhost:8080/api/destinations")
                         .param("cityName", city)
                         .param("countryName", country)
                         .param("timezone", timezone))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone))));
+                .andExpect(content().json(objectMapper.writeValueAsString(destination.map(entity -> {
+                    DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
+                    return dto;
+                }))));
     }
 
     @Test
@@ -59,13 +67,17 @@ class DestinationControllerIT extends IntegrationTestBase {
         String city = "";
         String country = "Россия";
         String timezone = "";
+        Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone);
         mockMvc.perform(get("http://localhost:8080/api/destinations")
                         .param("cityName", city)
                         .param("countryName", country)
                         .param("timezone", timezone))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone))));
+                .andExpect(content().json(objectMapper.writeValueAsString(destination.map(entity -> {
+                    DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
+                    return dto;
+                }))));
     }
 
     @Test
@@ -74,13 +86,17 @@ class DestinationControllerIT extends IntegrationTestBase {
         String city = "";
         String country = "Россия";
         String timezone = "";
+        Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone);
         mockMvc.perform(get("http://localhost:8080/api/destinations?page=0&size=3")
                         .param("cityName", city)
                         .param("countryName", country)
                         .param("timezone", timezone))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(destinationService.findAll(pageable))));
+                .andExpect(content().json(objectMapper.writeValueAsString(destination.map(entity -> {
+                    DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
+                    return dto;
+                }))));
     }
 
     @Test
@@ -89,13 +105,17 @@ class DestinationControllerIT extends IntegrationTestBase {
         String city = "";
         String country = "";
         String timezone = "gtm%20+5";
+        Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone);
         mockMvc.perform(get("http://localhost:8080/api/destinations")
                         .param("cityName", city)
                         .param("countryName", country)
                         .param("timezone", timezone))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone))));
+                .andExpect(content().json(objectMapper.writeValueAsString(destination.map(entity -> {
+                    DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
+                    return dto;
+                }))));
     }
 
     @Transactional
@@ -104,10 +124,18 @@ class DestinationControllerIT extends IntegrationTestBase {
         Long id = 3L;
         mockMvc.perform(patch("http://localhost:8080/api/destinations/{id}", id)
                         .content(objectMapper.writeValueAsString(new DestinationDTO
-                                (new Destination(3L, Airport.RAT, "Радужный", "Радужный", "+3", "Россия"))))
+                                (new Destination(3L, Airport.RAT, "Радужный", "Радужный", "+3", "Россия", false))))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldDeleteDestinationById() throws Exception {
+        Long id = 3L;
+        mockMvc.perform(delete("http://localhost:8080/api/destinations/{id}", id))
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 
 }

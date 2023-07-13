@@ -55,4 +55,9 @@ public class DestinationServiceImpl implements DestinationService {
     public Destination findDestinationByAirportCode(Airport airportCode) {
         return destinationRepository.findDestinationByAirportCode(airportCode).orElse(null);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        destinationRepository.deleteById(id);
+    }
 }
