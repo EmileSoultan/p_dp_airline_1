@@ -3,6 +3,7 @@
 ## [Unreleased]
 - #230 Мягкое удаление Destination
 - #247 Исправлен баг, если передать в convertToTicketEntity несуществующие flightId/flightSeatId/passengerId вылетает NPE
+- #244 Замена Put на Patch в Passenger. Новый update в PassengerServiceImpl. null поля в DTO игнорируются. Проверены апишки на Patch методы. Скорректированы зависимости, контроллер и тест.  
 - #243 Исправлен баг, в Patch Destination теперь возвращается обновленная сущность
 - #246 Настройки переменных окружения перенесены из airline-deployment в airline-configmap
 - #245 Добавлена configMap для payments.

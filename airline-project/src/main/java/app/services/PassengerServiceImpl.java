@@ -1,5 +1,6 @@
 package app.services;
 
+import app.dto.account.PassengerDTO;
 import app.entities.account.Passenger;
 import app.repositories.PassengerRepository;
 import app.repositories.RoleRepository;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Optional;
 import java.util.Set;
@@ -56,12 +58,37 @@ public class PassengerServiceImpl implements PassengerService {
         return passengerRepository.findById(id);
     }
 
-
     @Override
     @Transactional
     public Passenger update(Passenger passenger) {
         passenger.setPassword(encoder.encode(passenger.getPassword()));
         passenger.setAnswerQuestion(encoder.encode(passenger.getAnswerQuestion()));
+        return passengerRepository.save(passenger);
+
+    }
+
+    @Override
+    @Transactional
+    public Passenger update(PassengerDTO passengerDTO) {
+        var passenger = findById(passengerDTO.getId()).orElseThrow();
+
+        passenger.setFirstName(passengerDTO.getFirstName());
+        passenger.setLastName(passengerDTO.getLastName());
+        passenger.setBirthDate(passengerDTO.getBirthDate());
+        passenger.setPhoneNumber(passengerDTO.getPhoneNumber());
+        passenger.setEmail(passengerDTO.getEmail());
+        passenger.setSecurityQuestion(passengerDTO.getSecurityQuestion());
+        passenger.setPassword(encoder.encode(passengerDTO.getPassword()));
+        passenger.setAnswerQuestion(encoder.encode(passengerDTO.getAnswerQuestion()));
+
+        if (passengerDTO.getPassport() != null) {
+            passenger.setPassport(passengerDTO.getPassport());
+        }
+
+        if (passengerDTO.getRoles() != null) {
+            passenger.setRoles(passengerDTO.getRoles());
+        }
+
         return passengerRepository.save(passenger);
     }
 
