@@ -1,12 +1,12 @@
 package app.controllers.api.rest;
 
 import app.dto.DestinationDTO;
-import app.entities.Destination;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,5 +64,20 @@ public interface DestinationRestApi {
                     name = "Destination",
                     value = "Destination"
             )
+
             @RequestBody DestinationDTO destinationDTO);
+
+    @ApiOperation("Delete Destination by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Destination deleted"),
+    })
+    @DeleteMapping(value = "/{id}")
+    ResponseEntity<HttpStatus> delete(
+            @ApiParam(
+                    name = "id",
+                    value = "Destination.id",
+                    required = true
+            )
+            @PathVariable Long id);
+
 }
