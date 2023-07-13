@@ -6,7 +6,6 @@ import app.repositories.AircraftRepository;
 import app.repositories.DestinationRepository;
 import app.enums.Airport;
 import app.repositories.FlightRepository;
-import app.repositories.FlightSeatRepository;
 import app.services.interfaces.FlightService;
 import app.util.aop.Loggable;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +18,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class FlightServiceImpl implements FlightService {
     private final FlightRepository flightRepository;
-    private final FlightSeatRepository flightSeatRepository;
     private final AircraftRepository aircraftRepository;
     private final DestinationRepository destinationRepository;
 
@@ -86,11 +85,9 @@ public class FlightServiceImpl implements FlightService {
     @Loggable
     public Flight getFlightByIdAndDates(Long id, String start, String finish) {
         var flight = flightRepository.findById(id);
-        if (flight.isPresent()) {
-            if (flight.get().getDepartureDateTime().isEqual(LocalDateTime.parse(start))
-                    && flight.get().getArrivalDateTime().isEqual(LocalDateTime.parse(finish))) {
+        if (flight.isPresent() && (flight.get().getDepartureDateTime().isEqual(LocalDateTime.parse(start))
+                    && flight.get().getArrivalDateTime().isEqual(LocalDateTime.parse(finish)))) {
                 return flight.get();
-            }
         }
         return null;
     }
@@ -98,9 +95,10 @@ public class FlightServiceImpl implements FlightService {
     @Override
     @Transactional(readOnly = true)
     @Loggable
-    public Flight getById(Long id) {
-        return flightRepository.findById(id).orElse(null);
+    public Optional<Flight> findById(Long id) {
+        return flightRepository.findById(id);
     }
+
 
     @Override
     @Loggable
@@ -113,17 +111,17 @@ public class FlightServiceImpl implements FlightService {
     public Flight update(Long id, Flight updated) {
         updated.setId(id);
         if (updated.getAircraft() == null) {
-            updated.setAircraft(getById(id).getAircraft());
+            updated.setAircraft(findById(id).get().getAircraft());
         } else {
             updated.setAircraft(aircraftRepository.findByAircraftNumber(updated.getAircraft().getAircraftNumber()));
         }
         if (updated.getFrom() == null) {
-            updated.setFrom(getById(id).getFrom());
+            updated.setFrom(findById(id).get().getFrom());
         } else {
             updated.setFrom(destinationRepository.findDestinationByAirportCode(updated.getFrom().getAirportCode()).orElse(null));
         }
         if (updated.getTo() == null) {
-            updated.setTo(getById(id).getTo());
+            updated.setTo(findById(id).get().getTo());
         } else {
             updated.setTo(destinationRepository.findDestinationByAirportCode(updated.getTo().getAirportCode()).orElse(null));
         }

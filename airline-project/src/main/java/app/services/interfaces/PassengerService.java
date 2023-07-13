@@ -1,5 +1,6 @@
 package app.services.interfaces;
 
+import app.dto.account.PassengerDTO;
 import app.entities.account.Passenger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,8 @@ public interface PassengerService {
     Passenger save(Passenger passenger);
 
     Passenger update(Passenger passenger);
+
+    Passenger update(PassengerDTO passengerDTO);
 
     Page<Passenger> findAllByKeyword(Pageable pageable, String firstName, String lastName, String email, String serialNumberPassport);
 

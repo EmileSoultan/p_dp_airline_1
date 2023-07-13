@@ -4,6 +4,7 @@ package app.util.mappers;
 import app.dto.account.PassengerDTO;
 import app.entities.account.Passenger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 @Component
 public class PassengerMapper {
@@ -26,19 +27,19 @@ public class PassengerMapper {
         return passengerDTO;
     }
 
-    public Passenger convertToPassengerEntity(PassengerDTO pasengerDTO) {
+    public Passenger convertToPassengerEntity(PassengerDTO passengerDTO) {
         Passenger passenger = new Passenger();
-        passenger.setId(pasengerDTO.getId());
-        passenger.setFirstName(pasengerDTO.getFirstName());
-        passenger.setLastName(pasengerDTO.getLastName());
-        passenger.setBirthDate(pasengerDTO.getBirthDate());
-        passenger.setPhoneNumber(pasengerDTO.getPhoneNumber());
-        passenger.setEmail(pasengerDTO.getEmail());
-        passenger.setPassword(pasengerDTO.getPassword());
-        passenger.setSecurityQuestion(pasengerDTO.getSecurityQuestion());
-        passenger.setAnswerQuestion(pasengerDTO.getAnswerQuestion());
-        passenger.setRoles(pasengerDTO.getRoles());
-        passenger.setPassport(pasengerDTO.getPassport());
+        passenger.setId(passengerDTO.getId());
+        passenger.setFirstName(passengerDTO.getFirstName());
+        passenger.setLastName(passengerDTO.getLastName());
+        passenger.setBirthDate(passengerDTO.getBirthDate());
+        passenger.setPhoneNumber(passengerDTO.getPhoneNumber());
+        passenger.setEmail(passengerDTO.getEmail());
+        passenger.setPassword(passengerDTO.getPassword());
+        passenger.setSecurityQuestion(passengerDTO.getSecurityQuestion());
+        passenger.setAnswerQuestion(passengerDTO.getAnswerQuestion());
+        passenger.setRoles(passengerDTO.getRoles());
+        passenger.setPassport(passengerDTO.getPassport());
 
         return passenger;
     }

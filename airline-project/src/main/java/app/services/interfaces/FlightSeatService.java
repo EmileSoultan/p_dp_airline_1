@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface FlightSeatService {
@@ -16,7 +17,7 @@ public interface FlightSeatService {
 
     Page<FlightSeat> findAll(Pageable pageable);
 
-    FlightSeat findById(Long id);
+    Optional<FlightSeat> findById(Long id);
 
     Set<FlightSeat> findByFlightId(Long flightId);
     Page<FlightSeat> getFreeSeats(Pageable pageable, Long id);

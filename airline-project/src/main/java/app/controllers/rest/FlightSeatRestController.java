@@ -59,9 +59,9 @@ public class FlightSeatRestController implements FlightSeatRestApi {
     @Override
     public ResponseEntity<FlightSeatDTO> get(Long id) {
         log.info("get: FlightSeat by id={}", id);
-        return (flightSeatService.findById(id) == null) ?
+        return (flightSeatService.findById(id).isEmpty()) ?
                 ResponseEntity.notFound().build() :
-                ResponseEntity.ok(new FlightSeatDTO(flightSeatService.findById(id)));
+                ResponseEntity.ok(new FlightSeatDTO(flightSeatService.findById(id).get()));
     }
 
     @Override
@@ -105,7 +105,7 @@ public class FlightSeatRestController implements FlightSeatRestApi {
     @Override
     public ResponseEntity<FlightSeatDTO> update(Long id, FlightSeatDTO flightSeatDTO) {
         log.info("update: FlightSeat by id={}", id);
-        if (flightSeatService.findById(id) == null) {
+        if (flightSeatService.findById(id).isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(new FlightSeatDTO(flightSeatService.editFlightSeat(id, flightSeatMapper.convertToFlightSeatEntity(flightSeatDTO))));

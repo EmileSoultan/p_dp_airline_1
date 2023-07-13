@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface FlightService {
 
@@ -24,7 +25,7 @@ public interface FlightService {
 
     Flight getFlightByIdAndDates(Long id, String start, String finish);
 
-    Flight getById(Long id);
+    Optional<Flight> findById(Long id);
 
     Flight save(Flight flight);
 
