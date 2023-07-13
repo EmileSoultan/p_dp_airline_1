@@ -40,7 +40,7 @@ class FlightSeatControllerIT extends IntegrationTestBase {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper
-                       .writeValueAsString(flightSeatService.findByFlightId((Long.parseLong(flightId)), pageable).map(FlightSeatDTO::new))));
+                        .writeValueAsString(flightSeatService.findByFlightId((Long.parseLong(flightId)), pageable).map(FlightSeatDTO::new))));
     }
 
     @Test
@@ -104,7 +104,7 @@ class FlightSeatControllerIT extends IntegrationTestBase {
     @Test
     void shouldEditFlightSeatById() throws Exception {
         Long id = (long) 2;
-        FlightSeat flightSeat = flightSeatService.findById(id);
+        FlightSeat flightSeat = flightSeatService.findById(id).get();
         flightSeat.setFare(100);
         flightSeat.setIsSold(false);
         flightSeat.setIsRegistered(false);
@@ -114,6 +114,7 @@ class FlightSeatControllerIT extends IntegrationTestBase {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
     @Test
     void checkGetCheapestByFlightIdAndSeatCategory() throws Exception {
         CategoryType category = CategoryType.FIRST;

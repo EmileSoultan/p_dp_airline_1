@@ -20,7 +20,7 @@ public class FlightSeatMapper {
         flightSeat.setIsRegistered(dto.getIsRegistered());
         flightSeat.setIsSold(dto.getIsSold());
         flightSeat.setIsBooking(dto.getIsBooking());
-        flightSeat.setFlight(flightService.getById(dto.getFlightId()));
+        flightSeat.setFlight(flightService.findById(dto.getFlightId()).get());
         flightSeat.setSeat(seatService.findById(dto.getSeatId()));
         return flightSeat;
     }
@@ -32,7 +32,7 @@ public class FlightSeatMapper {
         flightSeatDTO.setIsRegistered(flightSeat.getIsRegistered());
         flightSeatDTO.setIsSold(flightSeat.getIsSold());
         flightSeatDTO.setIsBooking(flightSeat.getIsBooking());
-        flightSeatDTO.setFlightId(flightService.getById(flightSeat.getFlight().getId()).getId());
+        flightSeatDTO.setFlightId(flightService.findById(flightSeat.getFlight().getId()).get().getId());
         flightSeatDTO.setSeatId(seatService.findById(flightSeat.getSeat().getId()).getId());
         return flightSeatDTO;
     }
