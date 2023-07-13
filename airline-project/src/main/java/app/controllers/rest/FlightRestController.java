@@ -25,7 +25,6 @@ public class FlightRestController implements FlightRestApi {
 
     private final FlightService flightService;
     private final FlightMapper flightMapper;
-    private final FlightSeatMapper flightSeatMapper;
 
     @Override
     public ResponseEntity<Page<FlightDTO>> getAllFlightsByDestinationsAndDates(
@@ -47,9 +46,9 @@ public class FlightRestController implements FlightRestApi {
     @Override
     public ResponseEntity<FlightDTO> getById(Long id) {
         log.info("getById: get Flight by id. id = {}", id);
-        var flight = flightService.getById(id);
-        return flight != null
-                ? new ResponseEntity<>(new FlightDTO(flight), HttpStatus.OK)
+        var flight = flightService.findById(id);
+        return flight.isPresent()
+                ? new ResponseEntity<>(new FlightDTO(flight.get()), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -79,8 +78,8 @@ public class FlightRestController implements FlightRestApi {
 
     @Override
     public ResponseEntity<Flight> update(Long id, FlightDTO flightDTO) {
-        var flight = flightService.getById(id);
-        if (flight == null) {
+        var flight = flightService.findById(id);
+        if (flight.isEmpty()) {
             log.error("update: Flight with id={} doesn't exist.", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
