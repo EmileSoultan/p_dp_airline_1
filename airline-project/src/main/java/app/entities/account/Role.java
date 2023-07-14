@@ -23,18 +23,20 @@ import java.util.Set;
 public class Role implements GrantedAuthority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_role")
-    @SequenceGenerator(name = "seq_role", initialValue = 1000, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_role")
+//    @SequenceGenerator(name = "seq_role", initialValue = 1000, allocationSize = 1)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "role_id")
     private Long id;
 
-    @Column(unique = true)
+    @Column(name = "role_name")
     private String name;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "roles")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<Account> users;
+//    @JsonIgnore
+//    @ManyToMany(mappedBy = "roles")
+//    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//    private Set<Account> users;
 
     @JsonIgnore
     @Override

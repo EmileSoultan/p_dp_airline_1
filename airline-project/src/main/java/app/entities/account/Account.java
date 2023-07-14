@@ -8,18 +8,8 @@ import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -38,6 +28,7 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
 //    @SequenceGenerator(name = "seq_account", initialValue = 1000, allocationSize = 1)
     private Long id;
 
@@ -59,13 +50,20 @@ public class Account {
     @Column(name = "password")
     private String password;
 
-    @Column (name = "security_question")
+    @Column(name = "security_question")
     private String securityQuestion;
 
-    @Column (name = "answer_question")
+    @Column(name = "answer_question")
     private String answerQuestion;
 
-    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
+    //    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
 //    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @ManyToMany
+    @JoinTable(
+            name = "account_roles",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @NotNull
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private Set<Role> roles;
 }
