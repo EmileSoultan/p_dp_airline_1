@@ -7,7 +7,8 @@
 - #243 Исправлен баг, в Patch Destination теперь возвращается обновленная сущность
 - #246 Настройки переменных окружения перенесены из airline-deployment в airline-configmap
 - #245 Добавлена configMap для payments.
-- #228 рефакторинг метода generate в SeatServiceImpl + тест + в pom.xml убраны дублированные зависимости 
+- #228 рефакторинг метода generate в SeatServiceImpl + тест + в pom.xml убраны дублированные зависимости
+- #240 Рефакторинг FlightSeatDTO замена seatId на seatNumber. Поправил FlightSeatDTOTest.
 
 ## [1.0.4] - 23.06.2023
 - #241 - Исправлен баг с id ticket'а при post запросе. Теперь при неправильных id билета, рейса и пассажира возвращает 400 ошибку вместо 500

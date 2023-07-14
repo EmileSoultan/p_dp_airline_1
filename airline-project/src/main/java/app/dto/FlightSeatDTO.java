@@ -30,8 +30,8 @@ public class FlightSeatDTO {
     @NotNull(message = "flightId shouldn't be null")
     private Long flightId;
 
-    @NotNull(message = "seatId shouldn't be null")
-    private Long seatId;
+    @NotNull(message = "seatNumber shouldn't be null")
+    private Long seatNumber;
 
     public FlightSeatDTO(FlightSeat entity){
         this.id = entity.getId();
@@ -40,7 +40,7 @@ public class FlightSeatDTO {
         this.isSold = entity.getIsSold();
         this.isBooking = entity.getIsBooking();
         this.flightId = entity.getFlight().getId();
-        this.seatId = entity.getSeat().getId();
+        this.seatNumber = entity.getSeat().getId();
     }
 
 }
