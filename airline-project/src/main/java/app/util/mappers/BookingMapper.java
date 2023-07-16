@@ -17,7 +17,7 @@ public class BookingMapper {
     private final PassengerService passengerService;
 
     public Booking convertToBookingEntity(BookingDTO bookingDTO) {
-        Booking booking = new Booking();
+        var booking = new Booking();
         booking.setId(bookingDTO.getId());
         booking.setBookingNumber(bookingDTO.getBookingNumber());
         booking.setBookingData(bookingDTO.getBookingData());
@@ -28,7 +28,7 @@ public class BookingMapper {
     }
 
     public BookingDTO convertToBookingDTOEntity(Booking booking) {
-        BookingDTO bookingDTO = new BookingDTO();
+        var bookingDTO = new BookingDTO();
         bookingDTO.setId(booking.getId());
         bookingDTO.setBookingNumber(booking.getBookingNumber());
         bookingDTO.setBookingData(booking.getBookingData());

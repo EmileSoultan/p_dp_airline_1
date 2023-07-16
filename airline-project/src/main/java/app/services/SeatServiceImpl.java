@@ -88,8 +88,8 @@ public class SeatServiceImpl implements SeatService {
     @Override
     @Transactional
     public List<SeatDTO> generate(long aircraftId) {
-        Category economyCategory = categoryService.findByCategoryType(CategoryType.ECONOMY);
-        Category businessCategory = categoryService.findByCategoryType(CategoryType.BUSINESS);
+       var economyCategory = categoryService.findByCategoryType(CategoryType.ECONOMY);
+       var businessCategory = categoryService.findByCategoryType(CategoryType.BUSINESS);
 
         List<SeatDTO> savedSeatsDTO = new ArrayList<>(getNumbersOfSeatsByAircraft(aircraftId).getTotalNumberOfSeats());
         if (findByAircraftId(aircraftId, Pageable.unpaged()).getTotalElements() > 0) {

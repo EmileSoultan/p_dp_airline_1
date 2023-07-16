@@ -18,7 +18,7 @@ public class TicketMapper {
     private final FlightSeatService flightSeatService;
 
     public Ticket convertToTicketEntity(TicketDTO ticketDTO) {
-        Ticket ticket = new Ticket();
+        var ticket = new Ticket();
         ticket.setTicketNumber(ticketDTO.getTicketNumber());
         ticket.setPassenger(passengerService.findById(ticketDTO.getPassengerId())
                 .orElseThrow(() -> new EntityNotFoundException("Operation was not finished because Passenger was not found with id = "

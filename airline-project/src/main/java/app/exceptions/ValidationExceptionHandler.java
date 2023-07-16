@@ -32,8 +32,8 @@ public class ValidationExceptionHandler {
     public ResponseEntity<ResponseExceptionDTO> handlePSQLException(PSQLException ex) {
         List<String> errors = new ArrayList<>();
         errors.add(ex.getMessage());
-        var pSQLExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
-        return new ResponseEntity<>(pSQLExceptionDto, HttpStatus.BAD_REQUEST);
+        var pSqlExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
+        return new ResponseEntity<>(pSqlExceptionDto, HttpStatus.BAD_REQUEST);
     }
 
 //    @ExceptionHandler({RuntimeException.class})

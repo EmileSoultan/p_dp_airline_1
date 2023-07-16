@@ -16,7 +16,7 @@ public class FlightMapper {
 
 
     public Flight convertToFlightEntity(FlightDTO flightDTO) {
-        Flight flight = new Flight();
+        var flight = new Flight();
         flight.setId(flightDTO.getId());
         flight.setCode(flightDTO.getCode());
         flight.setFrom(destinationService.findDestinationByAirportCode(flightDTO.getAirportFrom()));
@@ -29,7 +29,7 @@ public class FlightMapper {
     }
 
     public  FlightDTO convertToFlightDTOEntity(Flight flight){
-        FlightDTO flightDTO = new FlightDTO();
+        var flightDTO = new FlightDTO();
         flightDTO.setId(flight.getId());
         flightDTO.setCode(flight.getCode());
         flightDTO.setAirportFrom(flight.getFrom().getAirportCode());

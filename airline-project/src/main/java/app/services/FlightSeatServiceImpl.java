@@ -81,7 +81,7 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     @Loggable
     public Set<FlightSeat> addFlightSeatsByFlightId(Long flightId) {
         Set<FlightSeat> newFlightSeats = new HashSet<>();
-        Flight flight = flightService.findById(flightId).get();
+        var flight = flightService.findById(flightId).get();
         Set<Seat> seats = seatRepository.findByAircraftId(flight.getAircraft().getId());
         for (Seat s : seats) {
             FlightSeat flightSeat = new FlightSeat();
@@ -105,7 +105,7 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     public Set<FlightSeat> addFlightSeatsByFlightNumber(String flightNumber) {
         Set<FlightSeat> seatsForAdd = new HashSet<>();
         Set<FlightSeat> allFlightSeats = findAll();
-        Flight flight = flightRepository.getByCode(flightNumber);
+        var flight = flightRepository.getByCode(flightNumber);
         if (flight != null) {
             Set<Seat> seatsAircraft = flight.getAircraft().getSeatSet();
 

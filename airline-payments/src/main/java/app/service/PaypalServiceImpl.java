@@ -27,28 +27,28 @@ public class PaypalServiceImpl implements PaypalService {
             String cancelUrl,
             String successUrl
             ) throws PayPalRESTException {
-        var amount = new Amount(); // заменила в этой строке
+        var amount = new Amount();
         amount.setCurrency(currency);
         total = BigDecimal.valueOf(total).setScale(2, RoundingMode.HALF_UP).doubleValue();
 
         amount.setTotal(total.toString());
 
-        var transaction = new Transaction();// заменила в этой строке
+        var transaction = new Transaction();
         transaction.setDescription(description);
         transaction.setAmount(amount);
 
         List<Transaction> transactions = new ArrayList<>();
         transactions.add(transaction);
 
-        var payer = new Payer();// заменила в этой строке
+        var payer = new Payer();
         payer.setPaymentMethod(method);
 
-        var payment = new Payment();// заменила в этой строке
+        var payment = new Payment();
         payment.setIntent(intent);
         payment.setPayer(payer);
         payment.setTransactions(transactions);
 
-        var redirectUrls = new RedirectUrls();// заменила в этой строке
+        var redirectUrls = new RedirectUrls();
         redirectUrls.setCancelUrl(cancelUrl);
         redirectUrls.setReturnUrl(successUrl);
         payment.setRedirectUrls(redirectUrls);
@@ -58,9 +58,9 @@ public class PaypalServiceImpl implements PaypalService {
 
     @Override
     public Payment executePayment(String paymentId, String payerId) throws PayPalRESTException {
-        var payment = new Payment();// замена
+        var payment = new Payment();
         payment.setId(paymentId);
-        var paymentExecute = new PaymentExecution();// замена
+        var paymentExecute = new PaymentExecution();
         paymentExecute.setPayerId(payerId);
         return payment.execute(apiContext, paymentExecute);
     }
