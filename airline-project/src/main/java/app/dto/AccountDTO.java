@@ -64,7 +64,11 @@ public class AccountDTO {
 
     public AccountDTO(Account account) {
         this.id = account.getId();
+        this.firstName = account.getFirstName();
+        this.lastName = account.getLastName();
+        this.birthDate = account.getBirthDate();
         this.email = account.getEmail();
+        this.phoneNumber = account.getPhoneNumber();
         this.password = account.getPassword();
         this.securityQuestion = account.getSecurityQuestion();
         this.answerQuestion = account.getAnswerQuestion();
