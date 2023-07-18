@@ -26,8 +26,7 @@ public class AircraftRestController implements AircraftRestApi {
     public ResponseEntity<Page<AircraftDTO>> getAll(Pageable pageable) {
         log.info("getAll: get all Aircrafts");
         Page<AircraftDTO> aircrafts = aircraftService.findAll(pageable).map(entity -> {
-            AircraftDTO dto = aircraftMapper.convertToAircarftDTOEntity(entity);
-            return dto;
+            return aircraftMapper.convertToAircarftDTOEntity(entity);
         });
         return aircrafts.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
@@ -36,7 +35,7 @@ public class AircraftRestController implements AircraftRestApi {
 
     @Override
     public ResponseEntity<AircraftDTO> getById(Long id) {
-        Aircraft aircraft = aircraftService.findById(id);
+        var aircraft = aircraftService.findById(id);
         if (aircraft == null) {
             log.error("getById: Aircraft with id={} doesn't exist.", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

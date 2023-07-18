@@ -27,7 +27,7 @@ public class AirlineManagerTest extends EntityTest {
     }
 
     private JSONObject initValidableJSONObject() {
-        JSONObject validableAirlineManagerJson = new JSONObject();
+        var validableAirlineManagerJson = new JSONObject();
 
         validableAirlineManagerJson.put("@type", "manager");
         validableAirlineManagerJson.put("id", 1002L);

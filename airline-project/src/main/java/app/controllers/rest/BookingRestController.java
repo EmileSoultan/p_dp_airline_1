@@ -26,7 +26,7 @@ public class BookingRestController implements BookingRestApi {
     public ResponseEntity<Page<BookingDTO>> getAll(Pageable pageable) {
         log.info("getAll: search all Bookings");
         Page<BookingDTO> bookings = bookingService.findAll(pageable).map(entity -> {
-            BookingDTO dto = bookingMapper.convertToBookingDTOEntity(entity);
+            var dto = bookingMapper.convertToBookingDTOEntity(entity);
             return dto;
         });
         if (bookings == null) {
@@ -39,7 +39,7 @@ public class BookingRestController implements BookingRestApi {
     @Override
     public ResponseEntity<BookingDTO> getById(Long id) {
         log.info("getById: search Booking by id = {}", id);
-        Booking booking = bookingService.findById(id);
+        var booking = bookingService.findById(id);
         if (booking == null) {
             log.info("getById: not found Booking with id = {}", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -50,7 +50,7 @@ public class BookingRestController implements BookingRestApi {
     @Override
     public ResponseEntity<BookingDTO> getByNumber(String bookingNumber) {
         log.info("getByNumber: search Booking by number = {}", bookingNumber);
-        Booking booking = bookingService.findByBookingNumber(bookingNumber);
+        var booking = bookingService.findByBookingNumber(bookingNumber);
         if (booking == null) {
             log.info("getByNumber: not found Booking with number = {}", bookingNumber);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

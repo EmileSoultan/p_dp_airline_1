@@ -45,13 +45,13 @@ public class SeatServiceImplTest {
     @Test
     public void generateSuccessfullyTest() {
 
-        Category economyCategory = new Category();
+        var economyCategory = new Category();
         economyCategory.setCategoryType(CategoryType.ECONOMY);
 
-        Category businessCategory = new Category();
+        var businessCategory = new Category();
         businessCategory.setCategoryType(CategoryType.BUSINESS);
 
-        Aircraft aircraft = new Aircraft();
+        var aircraft = new Aircraft();
         aircraft.setId(AIRCRAFT_TEST_ID);
         aircraft.setModel(AIRCRAFT_TEST_MODEL);
 
@@ -66,7 +66,7 @@ public class SeatServiceImplTest {
         when(seatMapper.convertToSeatEntity(any()))
                 .thenAnswer( ans -> {
                     SeatDTO seatDTO = ans.getArgument(0);
-                    Seat seat = new Seat();
+                    var seat = new Seat();
                     seat.setCategory(seatDTO.getCategory());
                     seat.setAircraft(aircraft);
                     return seat;

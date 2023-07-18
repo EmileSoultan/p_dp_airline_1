@@ -58,7 +58,7 @@ public class ValidationExceptionHandler {
 
     @ExceptionHandler({BindException.class})
     public ResponseEntity<List<ResponseExceptionDTO>> handleException(BindException exception) {
-        List<ResponseExceptionDTO> validationExceptionDto = bindFieldsExceptionsToList(exception, new ArrayList<>());
+        var validationExceptionDto = bindFieldsExceptionsToList(exception, new ArrayList<>());
         return new ResponseEntity<>(validationExceptionDto, HttpStatus.BAD_REQUEST);
     }
 

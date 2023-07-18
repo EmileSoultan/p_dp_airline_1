@@ -67,8 +67,8 @@ public class FlightSeatRestController implements FlightSeatRestApi {
     @Override
     public ResponseEntity<List<FlightSeatDTO>> getCheapestByFlightIdAndSeatCategory(Long flightID, CategoryType category) {
         log.info("getCheapestByFlightIdAndSeatCategory: get FlightSeats by flight ID = {} and seat category = {}", flightID, category);
-        List<FlightSeat> flightSeats = flightSeatService.getCheapestFlightSeatsByFlightIdAndSeatCategory(flightID, category);
-        List<FlightSeatDTO> flightSeatDTOS = flightSeats.stream().map(FlightSeatDTO::new).collect(Collectors.toList());
+        var flightSeats = flightSeatService.getCheapestFlightSeatsByFlightIdAndSeatCategory(flightID, category);
+        var flightSeatDTOS = flightSeats.stream().map(FlightSeatDTO::new).collect(Collectors.toList());
         if (flightSeats.isEmpty()) {
             log.error("getCheapestByFlightIdAndSeatCategory: FlightSeats with flightID = {} or seat category = {} not found", flightID, category);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -80,9 +80,8 @@ public class FlightSeatRestController implements FlightSeatRestApi {
     @Override
     public ResponseEntity<Page<FlightSeatDTO>> getFreeSeats(Pageable pageable, Long id) {
         log.info("getFreeSeats: get free seats on Flight with id = {}", id);
-        Page<FlightSeatDTO> seats = flightSeatService.getFreeSeats(pageable, id).map(entity -> {
-            FlightSeatDTO seatDTO = flightSeatMapper.convertToFlightSeatDTOEntity(entity);
-            return seatDTO;
+        var seats = flightSeatService.getFreeSeats(pageable, id).map(entity -> {
+            return flightSeatMapper.convertToFlightSeatDTOEntity(entity);
         });
         return ResponseEntity.ok(seats);
     }
@@ -90,7 +89,7 @@ public class FlightSeatRestController implements FlightSeatRestApi {
     @Override
     public ResponseEntity<Set<FlightSeatDTO>> generate(Long flightId) {
         log.info("generate: FlightSeats by flightId. flightId={}", flightId);
-        Set<FlightSeat> flightSeats = flightSeatService.findByFlightId(flightId);
+        var flightSeats = flightSeatService.findByFlightId(flightId);
         if (!flightSeats.isEmpty()) {
             return new ResponseEntity<>(flightSeats.stream().map(FlightSeatDTO::new)
                     .collect(Collectors.toSet()), HttpStatus.OK);

@@ -108,14 +108,14 @@ public class SeatServiceImpl implements SeatService {
             seatDTO.setIsLockedBack(getAircraftSeats(aircraftId)[enumSeatsCounter].isLockedBack());
             enumSeatsCounter += 1;
 
-            Seat savedSeat = save(seatMapper.convertToSeatEntity(seatDTO));
+            var savedSeat = save(seatMapper.convertToSeatEntity(seatDTO));
             savedSeatsDTO.add(new SeatDTO(savedSeat));
         }
         return savedSeatsDTO;
     }
 
     private SeatsNumbersByAircraft getNumbersOfSeatsByAircraft(long aircraftId) {
-        Aircraft aircraft = aircraftService.findById(aircraftId); //создается объект САМОЛЕТ
+        var aircraft = aircraftService.findById(aircraftId); //создается объект САМОЛЕТ
         return SeatsNumbersByAircraft.valueOf(aircraft.getModel() //количество мест в самолете
                 .toUpperCase().replace(" ", "_"));
     }

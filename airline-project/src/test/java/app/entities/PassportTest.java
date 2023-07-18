@@ -25,19 +25,19 @@ class PassportTest extends EntityTest {
 
     @BeforeEach
     public void setUp() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        var factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
 
     @Test
     public void testRightPassport() {
 
-        Passport passport1 = new Passport("Test", Gender.FEMALE, "3333 333333",
+        var passport1 = new Passport("Test", Gender.FEMALE, "3333 333333",
                 LocalDate.of(2006, 3, 30), "Russia");
         Set<ConstraintViolation<Passport>> violations1 = validator.validate(passport1);
         Assertions.assertTrue(violations1.isEmpty());
 
-        Passport passport2 = new Passport("Test1", Gender.MALE, "1233 567890",
+        var passport2 = new Passport("Test1", Gender.MALE, "1233 567890",
                 LocalDate.of(2006, 3, 30), "Russia");
         Set<ConstraintViolation<Passport>> violations2 = validator.validate(passport2);
         Assertions.assertTrue(violations2.isEmpty());
@@ -46,12 +46,12 @@ class PassportTest extends EntityTest {
     @Test
     public void testWrongPassport() {
 
-        Passport passport1 = new Passport("T", Gender.FEMALE, "333L 333333",
+        var passport1 = new Passport("T", Gender.FEMALE, "333L 333333",
                 LocalDate.of(2006, 3, 30), "Russia");
         Set<ConstraintViolation<Passport>> violations1 = validator.validate(passport1);
         Assertions.assertFalse(violations1.isEmpty());
 
-        Passport passport2 = new Passport("Test", Gender.MALE, "333L333333",
+        var passport2 = new Passport("Test", Gender.MALE, "333L333333",
                 LocalDate.of(2006, 3, 30), "Russia");
         Set<ConstraintViolation<Passport>> violations2 = validator.validate(passport2);
         Assertions.assertFalse(violations2.isEmpty());
@@ -107,7 +107,7 @@ class PassportTest extends EntityTest {
                         "}");
 
 
-        ObjectMapper mapper = new ObjectMapper();
+        var mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
 
         Passport passport = null;

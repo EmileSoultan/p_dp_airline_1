@@ -23,7 +23,7 @@ public class  AdminTest extends EntityTest {
     }
 
     private JSONObject initValidableJSONObject() {
-        JSONObject validableAdminJson = new JSONObject();
+        var validableAdminJson = new JSONObject();
 
         validableAdminJson.put("@type", "admin");
         validableAdminJson.put("id", 1002L);
@@ -39,7 +39,7 @@ public class  AdminTest extends EntityTest {
     @Test
     public void validAdminShouldValidate() {
         AdminDTO testAdmin;
-        JSONObject adminJsonObject = initValidableJSONObject();
+        var adminJsonObject = initValidableJSONObject();
 
         try {
             testAdmin = mapper.readValue(adminJsonObject.toString(), AdminDTO.class);
@@ -52,7 +52,7 @@ public class  AdminTest extends EntityTest {
     @Test
     public void blankEmailShouldNotValidate() {
         AdminDTO testAdmin;
-        JSONObject adminJsonObject = initValidableJSONObject();
+        var adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("email", "");
 
         try {
@@ -66,7 +66,7 @@ public class  AdminTest extends EntityTest {
     @Test
     public void blankPasswordShouldNotValidate() {
         AdminDTO testAdmin;
-        JSONObject adminJsonObject = initValidableJSONObject();
+        var adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("password", "");
 
         try {
@@ -80,7 +80,7 @@ public class  AdminTest extends EntityTest {
     @Test
     public void passwordUnder8CharShouldNotValidate() {
         AdminDTO testAdmin;
-        JSONObject adminJsonObject = initValidableJSONObject();
+        var adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("password", "1Admin@");
 
         try {
@@ -94,7 +94,7 @@ public class  AdminTest extends EntityTest {
     @Test
     public void passwordWithoutUpperCaseCharShouldNotValidate() {
         AdminDTO testAdmin;
-        JSONObject adminJsonObject = initValidableJSONObject();
+        var adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("password", "1admin@admin");
 
         try {
@@ -108,7 +108,7 @@ public class  AdminTest extends EntityTest {
     @Test
     public void passwordWithoutLowerCharShouldNotValidate() {
         AdminDTO testAdmin;
-        JSONObject adminJsonObject = initValidableJSONObject();
+        var adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("password", "ADMIN@ADMIN");
 
         try {
@@ -122,7 +122,7 @@ public class  AdminTest extends EntityTest {
     @Test
     public void passwordWithoutNumberShouldNotValidate() {
         AdminDTO testAdmin;
-        JSONObject adminJsonObject = initValidableJSONObject();
+        var adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("password", "@Password");
 
         try {
@@ -136,7 +136,7 @@ public class  AdminTest extends EntityTest {
     @Test
     public void passwordWithoutSpecialCharShouldNotValidate() {
         AdminDTO testAdmin;
-        JSONObject adminJsonObject = initValidableJSONObject();
+        var adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("password", "1Password");
 
         try {
@@ -150,7 +150,7 @@ public class  AdminTest extends EntityTest {
     @Test
     public void blankQuestionShouldNotValidate() {
         AdminDTO testAdmin;
-        JSONObject adminJsonObject = initValidableJSONObject();
+        var adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("securityQuestion", "");
 
         try {
@@ -164,7 +164,7 @@ public class  AdminTest extends EntityTest {
     @Test
     public void blankAnswerShouldNotValidate() {
         AdminDTO testAdmin;
-        JSONObject adminJsonObject = initValidableJSONObject();
+        var adminJsonObject = initValidableJSONObject();
         adminJsonObject.replace("answerQuestion", "");
 
         try {

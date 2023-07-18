@@ -25,14 +25,14 @@ public class SeatDTOTest extends EntityTest {
     @Test
     public void wrongSeatNumberTest() {
         SeatDTO seat;
-        ObjectMapper mapper = new ObjectMapper();
-        JSONObject jsonObject = new JSONObject();
+        var mapper = new ObjectMapper();
+        var jsonObject = new JSONObject();
         jsonObject.put("id", 1);
         jsonObject.put("seatNumber", "4");
         jsonObject.put("isNearEmergencyExit", false);
         jsonObject.put("isLockedBack", true);
 
-        JSONObject jsonCategory = new JSONObject();
+        var jsonCategory = new JSONObject();
         jsonCategory.put("id", 1);
         jsonCategory.put("categoryType", "FIRST");
         jsonObject.put("category", jsonCategory);
@@ -52,14 +52,14 @@ public class SeatDTOTest extends EntityTest {
     @Test
     public void wrongSeatIsNearEmergencyExitTest() {
         SeatDTO seat;
-        ObjectMapper mapper = new ObjectMapper();
-        JSONObject jsonObject = new JSONObject();
+        var mapper = new ObjectMapper();
+        var jsonObject = new JSONObject();
         jsonObject.put("id", 1);
         jsonObject.put("seatNumber", "4A");
         jsonObject.put("isNearEmergencyExit", null);
         jsonObject.put("isLockedBack", true);
 
-        JSONObject jsonCategory = new JSONObject();
+        var jsonCategory = new JSONObject();
         jsonCategory.put("id", 1);
         jsonCategory.put("categoryType", "FIRST");
 
@@ -78,14 +78,14 @@ public class SeatDTOTest extends EntityTest {
     @Test
     public void wrongSeatIsLockedBackTest() {
         SeatDTO seat;
-        ObjectMapper mapper = new ObjectMapper();
-        JSONObject jsonObject = new JSONObject();
+        var mapper = new ObjectMapper();
+        var jsonObject = new JSONObject();
         jsonObject.put("id", 1);
         jsonObject.put("seatNumber", "4A");
         jsonObject.put("isNearEmergencyExit", false);
         jsonObject.put("isLockedBack", null);
 
-        JSONObject jsonCategory = new JSONObject();
+        var jsonCategory = new JSONObject();
         jsonCategory.put("id", 1);
         jsonCategory.put("categoryType", "FIRST");
 

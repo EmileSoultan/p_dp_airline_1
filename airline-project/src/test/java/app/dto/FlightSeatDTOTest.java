@@ -22,7 +22,7 @@ public class FlightSeatDTOTest extends EntityTest {
     }
 
     private JSONObject initJSONObject() {
-        JSONObject flightSeatJson = new JSONObject();
+        var flightSeatJson = new JSONObject();
 
         flightSeatJson.put("id", 1L);
         flightSeatJson.put("fare", 1500);

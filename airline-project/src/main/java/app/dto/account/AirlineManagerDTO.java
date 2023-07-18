@@ -20,7 +20,7 @@ public class AirlineManagerDTO extends AccountDTO {
 
     @Override
     public AirlineManager convertToEntity() {
-        AirlineManager airlineManager = new AirlineManager();
+        var airlineManager = new AirlineManager();
         airlineManager.setId(getId());
         airlineManager.setEmail(getEmail());
         airlineManager.setPassword(getPassword());

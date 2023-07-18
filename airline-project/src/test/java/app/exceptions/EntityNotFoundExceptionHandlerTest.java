@@ -11,9 +11,9 @@ class EntityNotFoundExceptionHandlerTest {
 
     @Test
     void entityNotFoundExceptionHandlerTest() {
-        ValidationExceptionHandler validationExceptionHandler = new ValidationExceptionHandler();
-        String errorMessage = "EntityNotFound exception";
-        ResponseEntity<ResponseExceptionDTO> response = validationExceptionHandler
+        var validationExceptionHandler = new ValidationExceptionHandler();
+        var errorMessage = "EntityNotFound exception";
+        var response = validationExceptionHandler
                 .handleEntityNotFoundException(new EntityNotFoundException("EntityNotFound exception"));
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertTrue(response.getBody().getExceptionMessage().contains(errorMessage));

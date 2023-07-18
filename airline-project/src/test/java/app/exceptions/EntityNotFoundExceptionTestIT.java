@@ -22,9 +22,9 @@ class EntityNotFoundExceptionTestIT extends IntegrationTestBase {
 
     @Test
     void shouldThrowExceptionIfPassengerIdNotExistWhenCreatedTicket() throws Exception {
-        Ticket newTicket = ticketService.findTicketByTicketNumber("ZX-3333");
+        var newTicket = ticketService.findTicketByTicketNumber("ZX-3333");
         newTicket.setTicketNumber("SJ-9346");
-        TicketDTO ticketDTO = new TicketDTO(newTicket);
+        var ticketDTO = new TicketDTO(newTicket);
         ticketDTO.setPassengerId(0L);
         mockMvc.perform(post("http://localhost:8080/api/tickets")
                         .content(objectMapper.writeValueAsString(ticketDTO))
@@ -36,9 +36,9 @@ class EntityNotFoundExceptionTestIT extends IntegrationTestBase {
 
     @Test
     void shouldThrowExceptionIfFlightIdNotExistWhenCreatedTicket() throws Exception {
-        Ticket newTicket = ticketService.findTicketByTicketNumber("ZX-3333");
+        var newTicket = ticketService.findTicketByTicketNumber("ZX-3333");
         newTicket.setTicketNumber("SJ-9346");
-        TicketDTO ticketDTO = new TicketDTO(newTicket);
+        var ticketDTO = new TicketDTO(newTicket);
         ticketDTO.setFlightId(0L);
         mockMvc.perform(post("http://localhost:8080/api/tickets")
                         .content(objectMapper.writeValueAsString(ticketDTO))
@@ -50,9 +50,9 @@ class EntityNotFoundExceptionTestIT extends IntegrationTestBase {
 
     @Test
     void shouldThrowExceptionIfIFlightSeatIdNotExistWhenCreatedTicket() throws Exception {
-        Ticket newTicket = ticketService.findTicketByTicketNumber("ZX-3333");
+        var newTicket = ticketService.findTicketByTicketNumber("ZX-3333");
         newTicket.setTicketNumber("SJ-9346");
-        TicketDTO ticketDTO = new TicketDTO(newTicket);
+        var ticketDTO = new TicketDTO(newTicket);
         ticketDTO.setFlightSeatId(0L);
         mockMvc.perform(post("http://localhost:8080/api/tickets")
                         .content(objectMapper.writeValueAsString(ticketDTO))

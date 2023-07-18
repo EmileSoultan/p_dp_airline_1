@@ -61,7 +61,7 @@ class AccountControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldPostNewAccount() throws Exception {
-        AirlineManagerDTO airlineManager = new AirlineManagerDTO();
+        var airlineManager = new AirlineManagerDTO();
         airlineManager.setEmail("manager2@mail.ru");
         airlineManager.setPassword("Test123@");
         airlineManager.setSecurityQuestion("Test");
@@ -90,7 +90,7 @@ class AccountControllerIT extends IntegrationTestBase {
     @Test
     void shouldUpdateAccount() throws Exception {
         Long id = 3L;
-        AirlineManagerDTO updatableAccount = new AirlineManagerDTO((AirlineManager) accountService.getAccountById(id).get());
+        var updatableAccount = new AirlineManagerDTO((AirlineManager) accountService.getAccountById(id).get());
         updatableAccount.setEmail("test@mail.ru");
         mockMvc.perform(patch("http://localhost:8080/api/accounts/{id}", id)
                         .content(objectMapper.writeValueAsString(updatableAccount))

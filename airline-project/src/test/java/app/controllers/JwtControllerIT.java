@@ -26,7 +26,7 @@ public class JwtControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldLogin() throws Exception {
-        JwtRequest authRequest = new JwtRequest();
+        var authRequest = new JwtRequest();
         authRequest.setUsername("admin2@mail.ru");
         authRequest.setPassword("admin2");
         mockMvc.perform(post("http://localhost:8080/api/auth/login")
@@ -39,11 +39,11 @@ public class JwtControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldGetNewAccessToken() throws Exception {
-        JwtRequest authRequest = new JwtRequest();
+        var authRequest = new JwtRequest();
         authRequest.setUsername("admin2@mail.ru");
         authRequest.setPassword("admin2");
-        final JwtResponse token = authService.login(authRequest);
-        RefreshJwtRequest request = new RefreshJwtRequest();
+        final var token = authService.login(authRequest);
+        var request = new RefreshJwtRequest();
         request.setRefreshToken(token.getRefreshToken());
 
         mockMvc.perform(post("http://localhost:8080/api/auth/token")
@@ -56,11 +56,11 @@ public class JwtControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldGetNewRefreshToken() throws Exception {
-        JwtRequest authRequest = new JwtRequest();
+        var authRequest = new JwtRequest();
         authRequest.setUsername("admin2@mail.ru");
         authRequest.setPassword("admin2");
         final JwtResponse token = authService.login(authRequest);
-        RefreshJwtRequest request = new RefreshJwtRequest();
+        var request = new RefreshJwtRequest();
         request.setRefreshToken(token.getRefreshToken());
 
         mockMvc.perform(post("http://localhost:8080/api/auth/refresh")

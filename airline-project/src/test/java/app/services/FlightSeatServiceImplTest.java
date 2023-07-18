@@ -31,9 +31,9 @@ class FlightSeatServiceImplTest {
 
     @Test
     void addFlightSeatsByFlightNumber() {
-        String flightNumber = "Code:Fl-1";
+        var flightNumber = "Code:Fl-1";
 
-        Aircraft aircraft = new Aircraft();
+        var aircraft = new Aircraft();
         aircraft.setId(Long.valueOf(1));
         aircraft.setAircraftNumber("Number:A-1");
         aircraft.setModel("ModelAir");
@@ -43,7 +43,7 @@ class FlightSeatServiceImplTest {
         //Список мест самолёта с номерами от 8 до 17
         Set<Seat> seatSet = new HashSet<>();
         for (int i = 0; i < 10; i++) {
-            Seat seat = new Seat();
+            var seat = new Seat();
             seat.setSeatNumber(Integer.valueOf(i + 8).toString());
             seat.setAircraft(aircraft);
             seatSet.add(seat);
@@ -51,7 +51,7 @@ class FlightSeatServiceImplTest {
 
         aircraft.setSeatSet(seatSet);
 
-        Flight flight = new Flight();
+        var flight = new Flight();
         flight.setCode(flightNumber);
         flight.setAircraft(aircraft);
 
@@ -60,7 +60,7 @@ class FlightSeatServiceImplTest {
         //№9 и №10 - уже добавленные места нашего самолёта для этого Flight-а
         Set<FlightSeat> flightSeatSet = new HashSet<>();
         for (int i = 0; i < 10; i++) {
-            FlightSeat flightSeat = new FlightSeat();
+            var flightSeat = new FlightSeat();
             Seat seat = new Seat();
             seat.setSeatNumber(Integer.valueOf(i + 1).toString());
 
@@ -80,7 +80,7 @@ class FlightSeatServiceImplTest {
                 .when(flightSeatRepository)
                 .findAll();
 
-        Set<FlightSeat> result = flightSeatService.addFlightSeatsByFlightNumber(flightNumber);
+        var result = flightSeatService.addFlightSeatsByFlightNumber(flightNumber);
 
         Mockito.verify(flightSeatRepository, Mockito.times(8)).save(Mockito.any(FlightSeat.class));
 
