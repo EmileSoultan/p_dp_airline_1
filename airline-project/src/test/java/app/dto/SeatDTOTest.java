@@ -92,7 +92,7 @@ public class SeatDTOTest extends EntityTest {
         jsonObject.put("category", jsonCategory);
 
         jsonObject.put("aircraftId", 1);
-        String testJSON = jsonObject.toString();
+        var testJSON = jsonObject.toString();
 
         try {
             seat = mapper.readValue(testJSON, SeatDTO.class);
