@@ -17,7 +17,7 @@ public class AdminDTO extends AccountDTO {
 
     @Override
     public Admin convertToEntity() {
-        Admin admin = new Admin();
+        var admin = new Admin();
         admin.setId(getId());
         admin.setEmail(getEmail());
         admin.setPassword(getPassword());

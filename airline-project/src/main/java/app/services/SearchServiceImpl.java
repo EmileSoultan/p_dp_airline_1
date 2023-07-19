@@ -40,7 +40,7 @@ public class SearchServiceImpl implements SearchService {
         search.setFrom(destinationService.findDestinationByAirportCode(search.getFrom().getAirportCode()));
         search.setTo(destinationService.findDestinationByAirportCode(search.getTo().getAirportCode()));
         searchRepository.save(search);
-        SearchResult searchResult = searchDirectAndNonDirectFlights(search);
+        var searchResult = searchDirectAndNonDirectFlights(search);
         log.debug("saveSearch: output data, searchResult = {}", LogsUtils.objectToJson(searchResult));
         return searchResult;
     }
@@ -49,7 +49,7 @@ public class SearchServiceImpl implements SearchService {
     @Loggable
     public Search findSearchById(long id) {
         log.debug("findSearchById: incoming data, search \"id\" = {}", id);
-        Search search = searchRepository.findById(id).orElse(null);
+        var search = searchRepository.findById(id).orElse(null);
         log.debug("findSearchById: output data, search = {}", LogsUtils.objectToJson(search));
         return search;
     }
@@ -57,7 +57,7 @@ public class SearchServiceImpl implements SearchService {
     @Loggable
     private SearchResult searchDirectAndNonDirectFlights(Search search) {
         log.debug("searchDirectAndNonDirectFlights: incoming data, search = {}", LogsUtils.objectToJson(search));
-        SearchResult searchResult = new SearchResult();
+        var searchResult = new SearchResult();
         searchResult.setSearch(search);
 
         List<Flight> searchDepartFlight = new ArrayList<>();
@@ -81,7 +81,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Loggable
     private void addDirectDepartFlightsToSearchDepartFlight(Search search, List<Flight> searchFlightList) {
-        List<Flight> departFlight = findDirectDepartFlights(search);
+        var departFlight = findDirectDepartFlights(search);
         //проверка рейсов на наличие мест. если места есть, то рейс добавлется в список рейсов
         for (Flight f : departFlight) {
             if (checkFlightForNumberSeats(f, search)) {
@@ -92,7 +92,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Loggable
     private void addDirectReturnFlightsToSearchReturnFlight(Search search, List<Flight> searchFlightList) {
-        List<Flight> returnFlight = findDirectReturnFlights(search);
+        var returnFlight = findDirectReturnFlights(search);
         //проверка прямых рейсов на наличие мест. если места есть, то рейс добавлется в список рейсов
         for (Flight f : returnFlight) {
             if (checkFlightForNumberSeats(f, search)) {
@@ -103,7 +103,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Loggable
     private void addNonDirectDepartFlightsToSearchDepartFlight(Search search, List<Flight> searchFlightList) {
-        List<Flight> nonDirectDepartFlights = findNonDirectDepartFlights(search);
+        var nonDirectDepartFlights = findNonDirectDepartFlights(search);
         //проверка непрямых рейсов на наличие мест. если места есть, то соответствующая пара добавляется в список рейсов
         for (Flight f : nonDirectDepartFlights) {
             if (checkFlightForNumberSeats(f, search)) {
@@ -119,7 +119,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Loggable
     private void addNonDirectDepartFlightsToSearchReturnFlight(Search search, List<Flight> searchFlightList) {
-        List<Flight> nonDirectReturnFlights = findNonDirectReturnFlights(search);
+        var nonDirectReturnFlights = findNonDirectReturnFlights(search);
         //проверка непрямых обратных рейсов на наличие мест: если места есть, то соответствующая пара добавляется в список рейсов
         for (Flight f : nonDirectReturnFlights) {
             if (checkFlightForNumberSeats(f, search)) {
@@ -186,7 +186,7 @@ public class SearchServiceImpl implements SearchService {
     @Loggable
     public SearchResultProjection findSearchResultByID(Long id) {
         log.debug("findSearchResultByID: incoming data, searchResult \"id\" = {}", id);
-        SearchResultProjection searchResult = searchResultRepository.findAllProjectedBy(id);
+        var searchResult = searchResultRepository.findAllProjectedBy(id);
         log.debug("findSearchResultByID: output data, searchResult = {}", LogsUtils.objectToJson(searchResult));
         return searchResult;
     }

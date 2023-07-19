@@ -29,13 +29,13 @@ public class PassengerRestController implements PassengerRestApi {
 
     @Override
     public ResponseEntity<Page<PassengerDTO>> getAll(Integer page, Integer size) {
-        Page<Passenger> passengerPage = passengerService.findAll(page, size);
+        var passengerPage = passengerService.findAll(page, size);
         if (passengerPage == null) {
             log.error("getAll: Passengers not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         log.info("getAll: find all passengers");
-        List<PassengerDTO> passengerDTOS = passengerPage.stream().map(PassengerDTO::new).collect(Collectors.toList());
+        var passengerDTOS = passengerPage.stream().map(PassengerDTO::new).collect(Collectors.toList());
         return new ResponseEntity<>(new PageImpl<>(passengerDTOS, PageRequest.of(page, size), passengerPage.getTotalElements()), HttpStatus.OK);
     }
 
@@ -56,7 +56,7 @@ public class PassengerRestController implements PassengerRestApi {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(passengers.map(entity -> {
-            PassengerDTO dto = passengerMapper.convertToPassengerDTO(entity);
+            var dto = passengerMapper.convertToPassengerDTO(entity);
             log.info(String.valueOf(dto));
             return dto;
         }), HttpStatus.OK);

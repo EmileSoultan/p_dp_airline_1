@@ -27,7 +27,7 @@ class BookingDTOTest extends EntityTest {
 
 
     private JSONObject initJSONObject() {
-        JSONObject bookingDtoJSON = new JSONObject();
+        var bookingDtoJSON = new JSONObject();
         bookingDtoJSON.put("id", 10000L);
         bookingDtoJSON.put("bookingNumber", "BK-111111");
         bookingDtoJSON.put("bookingData", "2023-01-20T17:02:05.003992");
@@ -42,7 +42,7 @@ class BookingDTOTest extends EntityTest {
     @Test
     public void validBookingShouldValidate() {
         BookingDTO testBooking;
-        JSONObject bookingJson = initJSONObject();
+        var bookingJson = initJSONObject();
 
         try {
             testBooking = mapper.readValue(bookingJson.toString(), BookingDTO.class);
@@ -56,7 +56,7 @@ class BookingDTOTest extends EntityTest {
     @Test
     public void nullBookingNumberShouldNotValidate() {
         BookingDTO testBooking;
-        JSONObject bookingJson = initJSONObject();
+        var bookingJson = initJSONObject();
         bookingJson.replace("bookingNumber", null);
         try {
             testBooking = mapper.readValue(bookingJson.toString(), BookingDTO.class);
@@ -70,7 +70,7 @@ class BookingDTOTest extends EntityTest {
     @Test
     public void allWhitespaceCharactersBookingNumberShouldNotValidate() {
         BookingDTO testBooking;
-        JSONObject bookingJson = initJSONObject();
+        var bookingJson = initJSONObject();
         bookingJson.replace("bookingNumber", "         ");
         try {
             testBooking = mapper.readValue(bookingJson.toString(), BookingDTO.class);
@@ -83,7 +83,7 @@ class BookingDTOTest extends EntityTest {
     @Test
     public void lessThan9CharBookingNumberShouldNotValidate() {
         BookingDTO testBooking;
-        JSONObject bookingJson = initJSONObject();
+        var bookingJson = initJSONObject();
         bookingJson.replace("bookingNumber", "BK-1");
         try {
             testBooking = mapper.readValue(bookingJson.toString(), BookingDTO.class);
@@ -96,7 +96,7 @@ class BookingDTOTest extends EntityTest {
     @Test
     public void moreThan9CharBookingNumberShouldNotValidate() {
         BookingDTO testBooking;
-        JSONObject bookingJson = initJSONObject();
+        var bookingJson = initJSONObject();
         bookingJson.replace("bookingNumber", "BK-11111122");
         try {
             testBooking = mapper.readValue(bookingJson.toString(), BookingDTO.class);
@@ -109,7 +109,7 @@ class BookingDTOTest extends EntityTest {
     @Test
     public void nullIdPassengerShouldNotValidate() {
         BookingDTO testBooking;
-        JSONObject bookingJson = initJSONObject();
+        var bookingJson = initJSONObject();
         bookingJson.replace("passengerId", null);
         try {
             testBooking = mapper.readValue(bookingJson.toString(), BookingDTO.class);
@@ -122,7 +122,7 @@ class BookingDTOTest extends EntityTest {
     @Test
     public void nullFlightShouldNotValidate() {
         BookingDTO testBooking;
-        JSONObject bookingJson = initJSONObject();
+        var bookingJson = initJSONObject();
         bookingJson.replace("flightId", null);
         try {
             testBooking = mapper.readValue(bookingJson.toString(), BookingDTO.class);
@@ -135,7 +135,7 @@ class BookingDTOTest extends EntityTest {
     @Test
     public void nullCategoryShouldNotValidate() {
         BookingDTO testBooking;
-        JSONObject bookingJson = initJSONObject();
+        var bookingJson = initJSONObject();
         bookingJson.replace("categoryType", null);
         try {
             testBooking = mapper.readValue(bookingJson.toString(), BookingDTO.class);

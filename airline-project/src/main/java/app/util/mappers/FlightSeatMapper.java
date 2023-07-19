@@ -14,7 +14,7 @@ public class FlightSeatMapper {
     private final FlightService flightService;
 
     public FlightSeat convertToFlightSeatEntity(FlightSeatDTO dto) {
-        FlightSeat flightSeat = new FlightSeat();
+        var flightSeat = new FlightSeat();
         flightSeat.setId(dto.getId());
         flightSeat.setFare(dto.getFare());
         flightSeat.setIsRegistered(dto.getIsRegistered());
@@ -26,7 +26,7 @@ public class FlightSeatMapper {
     }
 
     public FlightSeatDTO convertToFlightSeatDTOEntity(FlightSeat flightSeat) {
-        FlightSeatDTO flightSeatDTO = new FlightSeatDTO();
+        var flightSeatDTO = new FlightSeatDTO();
         flightSeatDTO.setId(flightSeat.getId());
         flightSeatDTO.setFare(flightSeat.getFare());
         flightSeatDTO.setIsRegistered(flightSeat.getIsRegistered());

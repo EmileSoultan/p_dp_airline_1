@@ -12,9 +12,9 @@ public class PSQLExceptionHandlerTest {
 
     @Test
     void PSQLExceptionHandlerTest() {
-        ValidationExceptionHandler validationExceptionHandler = new ValidationExceptionHandler();
-        String errorMessage = "PSQL exception";
-        ResponseEntity<ResponseExceptionDTO> response = validationExceptionHandler
+        var validationExceptionHandler = new ValidationExceptionHandler();
+        var errorMessage = "PSQL exception";
+        var response = validationExceptionHandler
                 .handlePSQLException(new PSQLException(errorMessage, null));
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertTrue(response.getBody().getExceptionMessage().contains(errorMessage));

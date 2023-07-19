@@ -37,17 +37,17 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     public ResponseEntity<PaymentResponse> createPayment(PaymentRequest paymentRequest) {
         paymentRequest.getBookingsId().forEach(id -> {
-            Booking bookingFromDb = bookingService.findById(id);
+            var bookingFromDb = bookingService.findById(id);
             if (bookingFromDb == null) {
                 throw new NoSuchElementException(String.format("booking with id=%d not exists", id));
             }
         });
         paymentRequest.setPaymentState(State.CREATED);
-        Payment savedPayment = paymentRepository.save(paymentMapper.convertToPaymentEntity(paymentRequest));
+        var savedPayment = paymentRepository.save(paymentMapper.convertToPaymentEntity(paymentRequest));
         log.info("create: new payment saved with id = {}", savedPayment.getId());
-        ResponseEntity<PaymentResponse> response = paymentFeignClient.makePayment(paymentRequest);
-        PaymentResponse paymentResponse = paymentMapper.convertToDto(savedPayment);
-        String url = response.getHeaders().getFirst("url");
+        var response = paymentFeignClient.makePayment(paymentRequest);
+        var paymentResponse = paymentMapper.convertToDto(savedPayment);
+        var url = response.getHeaders().getFirst("url");
         return ResponseEntity.status(response.getStatusCode())
                 .header("url",url)
                 .body(paymentResponse);

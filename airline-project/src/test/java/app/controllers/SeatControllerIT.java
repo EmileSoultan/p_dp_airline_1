@@ -27,7 +27,7 @@ public class SeatControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldSaveSeat() throws Exception {
-        SeatDTO seatDTO = new SeatDTO();
+        var seatDTO = new SeatDTO();
         seatDTO.setSeatNumber("1B");
         seatDTO.setIsLockedBack(true);
         seatDTO.setIsNearEmergencyExit(false);
@@ -62,7 +62,7 @@ public class SeatControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldEditSeat() throws Exception {
-        SeatDTO seatDTO = new SeatDTO(seatService.findById(1));
+        var seatDTO = new SeatDTO(seatService.findById(1));
         seatDTO.setSeatNumber("1B");
         seatDTO.setIsLockedBack(false);
         seatDTO.setIsNearEmergencyExit(true);
@@ -87,7 +87,7 @@ public class SeatControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldGetValidError() throws Exception {
-        SeatDTO seatDTO = new SeatDTO();
+        var seatDTO = new SeatDTO();
         seatDTO.setSeatNumber("1");
 
         mockMvc.perform(post("http://localhost:8080/api/seats")

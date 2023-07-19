@@ -24,21 +24,21 @@ public class ValidationExceptionHandler {
     public ResponseEntity<ResponseExceptionDTO> handleNullPointerException(NullPointerException ex) {
         List<String> errors = new ArrayList<>();
         errors.add(ex.getMessage());
-        ResponseExceptionDTO NullPointerExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
-        return new ResponseEntity<>(NullPointerExceptionDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        var nullPointerExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now()); // тут изменено
+        return new ResponseEntity<>(nullPointerExceptionDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({PSQLException.class})
     public ResponseEntity<ResponseExceptionDTO> handlePSQLException(PSQLException ex) {
         List<String> errors = new ArrayList<>();
         errors.add(ex.getMessage());
-        ResponseExceptionDTO PSQLExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
-        return new ResponseEntity<>(PSQLExceptionDto, HttpStatus.BAD_REQUEST);
+        var pSqlExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
+        return new ResponseEntity<>(pSqlExceptionDto, HttpStatus.BAD_REQUEST);
     }
 
 //    @ExceptionHandler({RuntimeException.class})
     public ResponseEntity<ResponseExceptionDTO> handleRuntimeException(RuntimeException exception) {
-        ResponseExceptionDTO runtimeExceptionDTO = new ResponseExceptionDTO(exception.getMessage(), LocalDateTime.now());
+        var runtimeExceptionDTO = new ResponseExceptionDTO(exception.getMessage(), LocalDateTime.now());
         if (exception instanceof HttpMessageNotReadableException) {
             return new ResponseEntity<>(runtimeExceptionDTO, HttpStatus.BAD_REQUEST);
         }  else {
@@ -52,19 +52,19 @@ public class ValidationExceptionHandler {
         for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
             errors.add(violation.getMessage());
         }
-        ResponseExceptionDTO constraintViolationExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
+        var constraintViolationExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());// тут изменено
         return new ResponseEntity<>(constraintViolationExceptionDto, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({BindException.class})
     public ResponseEntity<List<ResponseExceptionDTO>> handleException(BindException exception) {
-        List<ResponseExceptionDTO> validationExceptionDto = bindFieldsExceptionsToList(exception, new ArrayList<>());
+        var validationExceptionDto = bindFieldsExceptionsToList(exception, new ArrayList<>());
         return new ResponseEntity<>(validationExceptionDto, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({SQLException.class})
     public ResponseEntity<ResponseExceptionDTO> handleException(SQLException exception) {
-        ResponseExceptionDTO sqlExceptionDto = new ResponseExceptionDTO(exception.getMessage(), LocalDateTime.now());
+        var sqlExceptionDto = new ResponseExceptionDTO(exception.getMessage(), LocalDateTime.now());// тут изменено
         if (exception.getSQLState().equals("23505")) {
             return new ResponseEntity<>(sqlExceptionDto, HttpStatus.CONFLICT);
         }
@@ -75,7 +75,7 @@ public class ValidationExceptionHandler {
     public ResponseEntity<ResponseExceptionDTO> handleEntityNotFoundException(EntityNotFoundException ex) {
         List<String> errors = new ArrayList<>();
         errors.add(ex.getMessage());
-        ResponseExceptionDTO EntityNotFoundExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
+        var EntityNotFoundExceptionDto = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());// тут изменено
         return new ResponseEntity<>(EntityNotFoundExceptionDto, HttpStatus.NOT_FOUND);
     }
 
@@ -92,7 +92,7 @@ public class ValidationExceptionHandler {
     public ResponseEntity<ResponseExceptionDTO> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex) {
         List<String> errors = new ArrayList<>();
         errors.add(ex.getMessage());
-        ResponseExceptionDTO emptyResultDataAccessException = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());
+        var emptyResultDataAccessException = new ResponseExceptionDTO(errors.toString(), LocalDateTime.now());// тут изменено
         return new ResponseEntity<>(emptyResultDataAccessException, HttpStatus.NOT_FOUND);
     }
 

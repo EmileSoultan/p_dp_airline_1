@@ -34,7 +34,7 @@ public class FlightRestController implements FlightRestApi {
             @RequestParam(required = false) String dateFinish,
             Pageable pageable) {
 
-            Page<FlightDTO> flightsByParams = flightService
+            var flightsByParams = flightService
                     .getAllFlightsByDestinationsAndDates(cityFrom, cityTo, dateStart, dateFinish, pageable)
                     .map(flightMapper::convertToFlightDTOEntity);
             log.info("getAllFlightsByDestinationsAndDates: get all Flights or Flights by params");

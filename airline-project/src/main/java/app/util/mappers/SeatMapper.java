@@ -13,7 +13,7 @@ public class SeatMapper {
     private final AircraftService aircraftService;
 
     public Seat convertToSeatEntity(SeatDTO seatDTO) {
-        Seat seat = new Seat();
+        var seat = new Seat();
         seat.setId(seatDTO.getId());
         seat.setSeatNumber(seatDTO.getSeatNumber());
         seat.setIsNearEmergencyExit(seatDTO.getIsNearEmergencyExit());
@@ -24,7 +24,7 @@ public class SeatMapper {
     }
 
     public SeatDTO convertToSeatDTOEntity(Seat seat) {
-        SeatDTO seatDTO = new SeatDTO();
+        var seatDTO = new SeatDTO();
         seatDTO.setId(seat.getId());
         seatDTO.setSeatNumber(seat.getSeatNumber());
         seatDTO.setIsNearEmergencyExit(seat.getIsNearEmergencyExit());

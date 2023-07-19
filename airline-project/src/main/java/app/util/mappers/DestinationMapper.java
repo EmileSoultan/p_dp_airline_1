@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class DestinationMapper {
 
     public Destination convertToDestinationEntity(DestinationDTO dto) {
-        Destination destination = new Destination();
+        var destination = new Destination();
 
         destination.setId(dto.getId());
         destination.setCountryName(dto.getCountryName());
@@ -21,7 +21,7 @@ public class DestinationMapper {
     }
 
     public DestinationDTO convertToDestinationDTOEntity(Destination destination) {
-        DestinationDTO destinationDTO = new DestinationDTO();
+        var destinationDTO = new DestinationDTO();
 
         destinationDTO.setId(destination.getId());
         destinationDTO.setCountryName(destination.getCountryName());

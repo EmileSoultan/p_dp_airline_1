@@ -40,7 +40,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @Test
     @DisplayName("Save Booking")
     void shouldSaveBooking() throws Exception {
-        BookingDTO booking = new BookingDTO();
+        var booking = new BookingDTO();
         booking.setBookingNumber("BK-111111");
         booking.setBookingData(LocalDateTime.now());
         booking.setPassengerId(passengerService.findById(1001L).get().getId());
@@ -59,7 +59,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @Test
     @DisplayName("Get All Bookings")
     void shouldGetAllBookings() throws Exception {
-        Pageable pageable = PageRequest.of(0, 1);
+        var pageable = PageRequest.of(0, 1);
         mockMvc.perform(get("http://localhost:8080/api/bookings?page=0&size=1"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -81,7 +81,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @Test
     @DisplayName("Get Booking by Number")
     void shouldGetBookingByNumber() throws Exception {
-        String bookingNumber = "000000001";
+        var bookingNumber = "000000001";
         mockMvc.perform(get("http://localhost:8080/api/bookings/number")
                         .param("bookingNumber", bookingNumber))
                 .andDo(print())
@@ -95,7 +95,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @DisplayName("Edit Booking by ID")
     void shouldEditBookingById() throws Exception {
         long id = 6002;
-        BookingDTO booking = new BookingDTO(bookingService.findById(id));
+        var booking = new BookingDTO(bookingService.findById(id));
         booking.setBookingNumber("BK-222222");
         booking.setBookingData(LocalDateTime.now());
         booking.setPassengerId(passengerService.findById(1002L).get().getId());
