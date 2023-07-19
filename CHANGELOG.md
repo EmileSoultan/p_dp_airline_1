@@ -9,6 +9,7 @@
 - #245 Добавлена configMap для payments.
 - #228 рефакторинг метода generate в SeatServiceImpl + тест + в pom.xml убраны дублированные зависимости
 - #240 Рефакторинг FlightSeatDTO замена seatId на seatNumber. Поправил FlightSeatDTOTest.
+- #239 Добавлена JWT авторизация в SWAGGER. По логину и паролю получаем access и refresh токены. По кнопке Authorize делаем авторизацию c access.
 
 ## [1.0.4] - 23.06.2023
 - #241 - Исправлен баг с id ticket'а при post запросе. Теперь при неправильных id билета, рейса и пассажира возвращает 400 ошибку вместо 500

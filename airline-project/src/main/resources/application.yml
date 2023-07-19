@@ -4,7 +4,19 @@ server:
     session:
       timeout: -1
 
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    oauth2:
+      enabled: true
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/.well-known/jwks.json
+
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
   application:
