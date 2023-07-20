@@ -22,7 +22,6 @@ public class Passenger {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @SequenceGenerator(name = "seq_passengers", initialValue = 1000, allocationSize = 1)
     private Long id;
 
     @Column(name = "first_name")

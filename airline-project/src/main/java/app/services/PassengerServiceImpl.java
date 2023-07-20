@@ -23,20 +23,15 @@ import java.util.Set;
 public class PassengerServiceImpl implements PassengerService {
 
     private final PassengerRepository passengerRepository;
-//    private final RoleRepository roleRepository;
-//    private final PasswordEncoder encoder;
     private final BookingService bookingService;
     private final TicketService ticketService;
     private final FlightSeatService flightSeatService;
 
     // FIXME Отрефакторить
     public PassengerServiceImpl(PassengerRepository passengerRepository,
-//                                RoleRepository roleRepository,
-//                                PasswordEncoder encoder,
-                                @Lazy BookingService bookingService, @Lazy TicketService ticketService, @Lazy FlightSeatService flightSeatService) {
+                                @Lazy BookingService bookingService, @Lazy TicketService ticketService,
+                                @Lazy FlightSeatService flightSeatService) {
         this.passengerRepository = passengerRepository;
-//        this.roleRepository = roleRepository;
-//        this.encoder = encoder;
         this.bookingService = bookingService;
         this.ticketService = ticketService;
         this.flightSeatService = flightSeatService;
@@ -45,9 +40,6 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     @Transactional
     public Passenger save(Passenger passenger) {
-//        passenger.setPassword(encoder.encode(passenger.getPassword()));
-//        passenger.setAnswerQuestion(encoder.encode(passenger.getAnswerQuestion()));
-//        passenger.setRoles(Set.of(roleRepository.findByName("ROLE_PASSENGER")));
         return passengerRepository.save(passenger);
     }
 
@@ -68,24 +60,21 @@ public class PassengerServiceImpl implements PassengerService {
         editPassenger.setEmail(passenger.getEmail());
         editPassenger.setPassport(passenger.getPassport());
 
-//        passenger.setPassword(encoder.encode(passenger.getPassword()));
-//        passenger.setAnswerQuestion(encoder.encode(passenger.getAnswerQuestion()));
-
         return passengerRepository.save(passenger);
     }
 
     @Override
     public Page<Passenger> findAllByKeyword(Pageable pageable, String firstName, String lastName, String email, String serialNumberPassport) {
-        if(firstName != null) {
+        if (firstName != null) {
             return passengerRepository.findAllByFirstName(pageable, firstName);
         }
-        if(lastName != null) {
+        if (lastName != null) {
             return passengerRepository.findByLastName(pageable, lastName);
         }
-        if(email != null) {
+        if (email != null) {
             return passengerRepository.findByEmail(pageable, email);
         }
-        if(serialNumberPassport != null) {
+        if (serialNumberPassport != null) {
             return passengerRepository.findByPassportSerialNumber(pageable, serialNumberPassport);
         }
         return passengerRepository.findAll(pageable);

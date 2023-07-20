@@ -23,13 +23,11 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"email"})
 @ToString
-//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
-//    @SequenceGenerator(name = "seq_account", initialValue = 1000, allocationSize = 1)
     private Long id;
 
     @Column(name = "first_name")
