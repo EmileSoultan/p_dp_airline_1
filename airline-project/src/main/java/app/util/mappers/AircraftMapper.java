@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class AircraftMapper {
 
     public Aircraft convertToAircraftEntity (AircraftDTO aircraftDTO) {
-        Aircraft aircraft = new Aircraft();
+        var aircraft = new Aircraft();
         aircraft.setId(aircraftDTO.getId());
         aircraft.setAircraftNumber(aircraftDTO.getAircraftNumber());
         aircraft.setModel(aircraftDTO.getModel());
@@ -21,7 +21,7 @@ public class AircraftMapper {
     }
 
     public AircraftDTO convertToAircarftDTOEntity(Aircraft aircraft){
-        AircraftDTO aircraftDTO = new AircraftDTO();
+        var aircraftDTO = new AircraftDTO();
         aircraftDTO.setId(aircraft.getId());
         aircraftDTO.setAircraftNumber(aircraft.getAircraftNumber());
         aircraftDTO.setModel(aircraft.getModel());

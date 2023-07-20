@@ -24,6 +24,14 @@
 - @Hidden - Скрывает ресурс, операцию или свойство
 - @ApiParam - Предназначена для параметров запроса ресурсов API
 
+**Авторизация в Swagger с помощью JWT:**
+
+- Получить access и refresh токен [здесь](http://localhost:8080/swagger-ui/#/JWT/loginUsingPOST).
+- Авторизация JWT с помощью access токена, по кнопке Authorize, вводим в формате ```Bearer ``` + полученный ранее токен (Bearer обязательно с пробелом).
+- Далее запросы к серверу уже будут содержать ```accessToken```.
+- Время жизни токенов: ```accessToken``` = 24 часа, ```refreshToken``` = 15 дней.
+- Дополнительная информация о [JWT](./guides/guide_postman_and_security.md).
+
 Дополнительные материалы:
 - https://habr.com/ru/post/541592/
 - https://www.youtube.com/watch?v=aaFDBgPdXw4

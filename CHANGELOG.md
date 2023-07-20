@@ -1,14 +1,19 @@
 # Changelog
 
 ## [Unreleased]
+- 
+
+## [1.0.5] - 19.07.2023
 - #230 Мягкое удаление Destination
 - #247 Исправлен баг, если передать в convertToTicketEntity несуществующие flightId/flightSeatId/passengerId вылетает NPE
-- #244 Замена Put на Patch в Passenger. Новый update в PassengerServiceImpl. null поля в DTO игнорируются. Проверены апишки на Patch методы. Скорректированы зависимости, контроллер и тест.  
+- #244 Замена Put на Patch в Passenger. Новый update в PassengerServiceImpl. null поля в DTO игнорируются. Проверены апишки на Patch методы. Скорректированы зависимости, контроллер и тест.
 - #243 Исправлен баг, в Patch Destination теперь возвращается обновленная сущность
 - #246 Настройки переменных окружения перенесены из airline-deployment в airline-configmap
 - #245 Добавлена configMap для payments.
 - #228 рефакторинг метода generate в SeatServiceImpl + тест + в pom.xml убраны дублированные зависимости
 - #240 Рефакторинг FlightSeatDTO замена seatId на seatNumber. Поправил FlightSeatDTOTest.
+- #239 Добавлена JWT авторизация в SWAGGER. По логину и паролю получаем access и refresh токены. По кнопке Authorize делаем авторизацию c access.
+- #252 замена локальных переменных на var + правка () названий переменных
 
 ## [1.0.4] - 23.06.2023
 - #241 - Исправлен баг с id ticket'а при post запросе. Теперь при неправильных id билета, рейса и пассажира возвращает 400 ошибку вместо 500

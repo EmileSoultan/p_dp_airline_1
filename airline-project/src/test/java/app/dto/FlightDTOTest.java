@@ -24,7 +24,7 @@ class FlightDTOTest extends EntityTest {
     }
 
     private JSONObject initJSONObject() {
-        JSONObject flightJSON = new JSONObject();
+        var flightJSON = new JSONObject();
         flightJSON.put("code", "01C");
         return flightJSON;
     }
@@ -32,7 +32,7 @@ class FlightDTOTest extends EntityTest {
     @Test
     void emptyFlightCodeFieldShouldNotValidate() {
         FlightDTO testFlight;
-        JSONObject flightJSON = initJSONObject();
+        var flightJSON = initJSONObject();
         flightJSON.replace("code", "");
         try {
             testFlight = mapper.readValue(flightJSON.toString(),
@@ -46,7 +46,7 @@ class FlightDTOTest extends EntityTest {
     @Test
     void lessThan2CharCodeSizeShouldNotValidate() {
         FlightDTO testFlight;
-        JSONObject flightJSON = initJSONObject();
+        var flightJSON = initJSONObject();
         flightJSON.replace("code", "1");
         try {
             testFlight = mapper.readValue(flightJSON.toString(),
@@ -60,7 +60,7 @@ class FlightDTOTest extends EntityTest {
     @Test
     void between2And15CodeSizeShouldValidate() {
         FlightDTO testFlight;
-        JSONObject flightJSON = initJSONObject();
+        var flightJSON = initJSONObject();
         try {
             testFlight = mapper.readValue(flightJSON.toString(),
                     FlightDTO.class);
@@ -73,7 +73,7 @@ class FlightDTOTest extends EntityTest {
     @Test
     void moreThan15CharCodeSizeShouldNotValidate() {
         FlightDTO testFlight;
-        JSONObject flightJSON = initJSONObject();
+        var flightJSON = initJSONObject();
         flightJSON.replace("code", "123456789101112131415");
         try {
             testFlight = mapper.readValue(flightJSON.toString(),

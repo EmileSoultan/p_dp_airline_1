@@ -29,7 +29,7 @@ public class PassengerTest extends EntityTest {
     }
 
     private JSONObject initJSONObject() {
-        JSONObject jsonObject = new JSONObject();
+        var jsonObject = new JSONObject();
 
         jsonObject.put("id", 1004L);
         jsonObject.put("email", "passenger@mail.ru");
@@ -58,7 +58,7 @@ public class PassengerTest extends EntityTest {
 
     @Test
     public void blankFirstNameShouldNotValidate() {
-        JSONObject jsonObject = initJSONObject();
+        var jsonObject = initJSONObject();
         jsonObject.replace("firstName", "");
         try {
             passenger = mapper.readValue(jsonObject.toString(), PassengerDTO.class);
@@ -70,7 +70,7 @@ public class PassengerTest extends EntityTest {
 
     @Test
     public void smallFirstNameShouldNotValidate() {
-        JSONObject jsonObject = initJSONObject();
+        var jsonObject = initJSONObject();
         jsonObject.replace("firstName", "a");
         try {
             passenger = mapper.readValue(jsonObject.toString(), PassengerDTO.class);
@@ -82,7 +82,7 @@ public class PassengerTest extends EntityTest {
 
     @Test
     public void blankLastNameShouldNotValidate() {
-        JSONObject jsonObject = initJSONObject();
+        var jsonObject = initJSONObject();
         jsonObject.replace("lastName", "");
         try {
             passenger = mapper.readValue(jsonObject.toString(), PassengerDTO.class);
@@ -94,7 +94,7 @@ public class PassengerTest extends EntityTest {
 
     @Test
     public void smallLastNameShouldNotValidate() {
-        JSONObject jsonObject = initJSONObject();
+        var jsonObject = initJSONObject();
         jsonObject.replace("lastName", "a");
         try {
             passenger = mapper.readValue(jsonObject.toString(), PassengerDTO.class);
@@ -106,7 +106,7 @@ public class PassengerTest extends EntityTest {
 
     @Test
     public void nullBirthDateShouldNotValidate() {
-        JSONObject jsonObject = initJSONObject();
+        var jsonObject = initJSONObject();
         jsonObject.replace("birthDate", null);
         try {
             passenger = mapper.readValue(jsonObject.toString(), PassengerDTO.class);
@@ -118,7 +118,7 @@ public class PassengerTest extends EntityTest {
 
     @Test
     public void pastBirthDateShouldNotValidate() {
-        JSONObject jsonObject = initJSONObject();
+        var jsonObject = initJSONObject();
         jsonObject.replace("birthDate", "2054-02-07");
         try {
             passenger = mapper.readValue(jsonObject.toString(), PassengerDTO.class);
@@ -130,7 +130,7 @@ public class PassengerTest extends EntityTest {
 
     @Test
     public void blankPhoneNumberShouldNotValidate() {
-        JSONObject jsonObject = initJSONObject();
+        var jsonObject = initJSONObject();
         jsonObject.replace("phoneNumber", "");
         try {
             passenger = mapper.readValue(jsonObject.toString(), PassengerDTO.class);
@@ -142,7 +142,7 @@ public class PassengerTest extends EntityTest {
 
     @Test
     public void smallPhoneNumberShouldNotValidate() {
-        JSONObject jsonObject = initJSONObject();
+        var jsonObject = initJSONObject();
         jsonObject.replace("phoneNumber", "4456");
         try {
             passenger = mapper.readValue(jsonObject.toString(), PassengerDTO.class);
@@ -154,7 +154,7 @@ public class PassengerTest extends EntityTest {
 
     @Test
     public void longFirstNameShouldNotValidate() {
-        JSONObject jsonObject = initJSONObject();
+        var jsonObject = initJSONObject();
         jsonObject.replace("firstName", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         try {
@@ -167,7 +167,7 @@ public class PassengerTest extends EntityTest {
 
     @Test
     public void longLastNameShouldNotValidate() {
-        JSONObject jsonObject = initJSONObject();
+        var jsonObject = initJSONObject();
         jsonObject.replace("lastName", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         try {
@@ -180,7 +180,7 @@ public class PassengerTest extends EntityTest {
 
     @Test
     public void longPhoneNumberShouldNotValidate() {
-        JSONObject jsonObject = initJSONObject();
+        var jsonObject = initJSONObject();
         jsonObject.replace("phoneNumber", "888888888888888888888888888888888888888888888888888888888888888888" +
                 "88888888888888888888888888888888888888888888888888888888888888888");
         try {

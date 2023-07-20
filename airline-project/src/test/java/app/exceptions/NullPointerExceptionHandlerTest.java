@@ -11,7 +11,7 @@ public class NullPointerExceptionHandlerTest {
 
     @Test
     public void testHandleNullPointerException() {
-        ValidationExceptionHandler handler = new ValidationExceptionHandler();
+        var handler = new ValidationExceptionHandler();
         String errorMessage = "Null pointer exception";
         ResponseEntity<ResponseExceptionDTO> response = handler.handleNullPointerException(new NullPointerException(errorMessage));
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());

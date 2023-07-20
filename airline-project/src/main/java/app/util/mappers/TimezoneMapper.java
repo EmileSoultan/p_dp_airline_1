@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class TimezoneMapper {
 
     public Timezone convertToTimezoneEntity(TimezoneDTO timezoneDTO) {
-        Timezone timezone = new Timezone();
+        var timezone = new Timezone();
 
         timezone.setId(timezoneDTO.getId());
         timezone.setCountryName(timezoneDTO.getCountryName());

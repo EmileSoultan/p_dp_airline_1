@@ -30,7 +30,7 @@ class TimezoneRestControllerIT extends IntegrationTestBase {
     @Test
     @DisplayName("Creating Timezone")
     void shouldCreateNewTimezone() throws Exception {
-        TimezoneDTO timezoneDTO = new TimezoneDTO();
+        var timezoneDTO = new TimezoneDTO();
         timezoneDTO.setCityName("New-York");
         timezoneDTO.setCountryName("USA");
         timezoneDTO.setGmt("GMT-5");
@@ -87,7 +87,7 @@ class TimezoneRestControllerIT extends IntegrationTestBase {
     @DisplayName("Update timezone")
     void shouldUpdateTimezone() throws Exception {
         long id = 5L;
-        TimezoneDTO timezoneDTO = new TimezoneDTO(timezoneService.getTimezoneById(id).get());
+        var timezoneDTO = new TimezoneDTO(timezoneService.getTimezoneById(id).get());
         timezoneDTO.setCountryName("Чехия");
         mockMvc.perform(patch("http://localhost:8080/api/timezones/{id}", id)
                         .content(objectMapper.writeValueAsString(timezoneDTO))

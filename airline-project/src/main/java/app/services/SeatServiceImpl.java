@@ -88,8 +88,8 @@ public class SeatServiceImpl implements SeatService {
     @Override
     @Transactional
     public List<SeatDTO> generate(long aircraftId) {
-        Category economyCategory = categoryService.findByCategoryType(CategoryType.ECONOMY);
-        Category businessCategory = categoryService.findByCategoryType(CategoryType.BUSINESS);
+       var economyCategory = categoryService.findByCategoryType(CategoryType.ECONOMY);
+       var businessCategory = categoryService.findByCategoryType(CategoryType.BUSINESS);
 
         List<SeatDTO> savedSeatsDTO = new ArrayList<>(getNumbersOfSeatsByAircraft(aircraftId).getTotalNumberOfSeats());
         if (findByAircraftId(aircraftId, Pageable.unpaged()).getTotalElements() > 0) {
@@ -108,14 +108,14 @@ public class SeatServiceImpl implements SeatService {
             seatDTO.setIsLockedBack(getAircraftSeats(aircraftId)[enumSeatsCounter].isLockedBack());
             enumSeatsCounter += 1;
 
-            Seat savedSeat = save(seatMapper.convertToSeatEntity(seatDTO));
+            var savedSeat = save(seatMapper.convertToSeatEntity(seatDTO));
             savedSeatsDTO.add(new SeatDTO(savedSeat));
         }
         return savedSeatsDTO;
     }
 
     private SeatsNumbersByAircraft getNumbersOfSeatsByAircraft(long aircraftId) {
-        Aircraft aircraft = aircraftService.findById(aircraftId); //создается объект САМОЛЕТ
+        var aircraft = aircraftService.findById(aircraftId); //создается объект САМОЛЕТ
         return SeatsNumbersByAircraft.valueOf(aircraft.getModel() //количество мест в самолете
                 .toUpperCase().replace(" ", "_"));
     }

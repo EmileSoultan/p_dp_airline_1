@@ -23,13 +23,13 @@ public class JwtController implements JwtControllerApi {
 
     @Override
     public ResponseEntity<JwtResponse> login(JwtRequest authRequest) throws AuthException {
-        final JwtResponse token = authService.login(authRequest);
+        final var token = authService.login(authRequest);
         return ResponseEntity.ok(token);
     }
 
     @Override
     public ResponseEntity<JwtResponse> getNewAccessToken(RefreshJwtRequest request) throws AuthException {
-        final JwtResponse token = authService.getAccessToken(request.getRefreshToken());
+        final var token = authService.getAccessToken(request.getRefreshToken());
         if (token.getAccessToken() != null) {
             log.info("getNewAccessToken: access token was generated");
             return ResponseEntity.ok(token);
@@ -41,7 +41,7 @@ public class JwtController implements JwtControllerApi {
 
     @Override
     public ResponseEntity<JwtResponse> getNewRefreshToken(RefreshJwtRequest request) throws AuthException {
-        final JwtResponse token = authService.refresh(request.getRefreshToken());
+        final var token = authService.refresh(request.getRefreshToken());
         if (token.getAccessToken() != null) {
             log.info("getNewRefreshToken: new tokens were generated");
             return ResponseEntity.ok(token);
@@ -53,7 +53,7 @@ public class JwtController implements JwtControllerApi {
 
     @Override
     public String loginPage(HttpServletRequest request) {
-        String referrer = request.getHeader("Referer");
+        var referrer = request.getHeader("Referer");
         if (referrer != null) {
             request.getSession().setAttribute("url_prior_login", referrer);
         }

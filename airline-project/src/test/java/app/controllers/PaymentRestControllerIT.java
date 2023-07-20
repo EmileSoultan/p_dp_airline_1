@@ -37,13 +37,13 @@ public class PaymentRestControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldSavePayment() throws Exception {
-        Payment payment = new Payment();
+        var payment = new Payment();
         List<Long> bookingsId = new ArrayList<>();
         bookingsId.add(6001L);
         bookingsId.add(6002L);
         payment.setBookingsId(bookingsId);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
+        var httpHeaders = new HttpHeaders();
         httpHeaders.set("url", "testUrl");
 
         ResponseEntity<PaymentResponse> response = new ResponseEntity<>(httpHeaders, HttpStatus.OK);
@@ -59,7 +59,7 @@ public class PaymentRestControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldNotSavePayment() throws Exception {
-        Payment payment = new Payment();
+        var payment = new Payment();
         List<Long> bookingsId = new ArrayList<>();
         bookingsId.add(6001L);
         bookingsId.add(8002L);

@@ -24,7 +24,7 @@ public class CategoryRestController implements CategoryRestApi {
 
     @Override
     public ResponseEntity<List<Category>> getAll() {
-        List<Category> categories = categoryService.findAll();
+        var categories = categoryService.findAll();
         if (categories != null) {
             log.info("getAll: find all Categories");
             return new ResponseEntity<>(categories, HttpStatus.OK);
@@ -38,7 +38,7 @@ public class CategoryRestController implements CategoryRestApi {
     @Override
     @Deprecated
     public ResponseEntity<Category> getByCategoryType(CategoryType categoryType) {
-        Category category = categoryService.findByCategoryType(categoryType);
+        var category = categoryService.findByCategoryType(categoryType);
         if (category != null) {
             log.info("getByCategoryType: get by Category type = {}. id = {} ", categoryType, category.getId());
             return new ResponseEntity<>(category, HttpStatus.OK);

@@ -49,7 +49,7 @@ public class AccountRestController implements AccountRestApi {
     @Override
     public ResponseEntity<AccountDTO> getAuthenticatedAccount() {
         log.info("getAuthenticatedAccount: get currently authenticated Account");
-        Account authAccount = accountService.getAccountByEmail(
+        var authAccount = accountService.getAccountByEmail(
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         return ResponseEntity.ok(new AccountDTO(authAccount));
     }

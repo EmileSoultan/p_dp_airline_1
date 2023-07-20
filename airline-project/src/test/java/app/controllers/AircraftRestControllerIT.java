@@ -26,7 +26,7 @@ class AircraftRestControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldSaveAircraft() throws Exception {
-        AircraftDTO aircraft = new AircraftDTO();
+        var aircraft = new AircraftDTO();
         aircraft.setAircraftNumber("412584");
         aircraft.setModel("Boeing 777");
         aircraft.setModelYear(2005);
@@ -62,7 +62,7 @@ class AircraftRestControllerIT extends IntegrationTestBase {
     @Test
     void shouldEditById() throws Exception {
         long id = 2;
-        AircraftDTO aircraft = new AircraftDTO(aircraftService.findById(id));
+        var aircraft = new AircraftDTO(aircraftService.findById(id));
         aircraft.setAircraftNumber("531487");
         aircraft.setModel("Boeing 737");
         aircraft.setModelYear(2001);

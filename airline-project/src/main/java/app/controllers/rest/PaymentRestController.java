@@ -24,7 +24,7 @@ public class PaymentRestController implements PaymentRestApi {
 
     @Override
     public ResponseEntity<Page<Payment>> getAll(Integer page, Integer count) {
-        List<Payment> payments = paymentService.findAllPayments();
+        var payments = paymentService.findAllPayments();
         if (payments == null) {
             log.info("getListOfAllPayments: not found any payments");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -35,7 +35,7 @@ public class PaymentRestController implements PaymentRestApi {
 
     @Override
     public ResponseEntity<Payment> get(Long id) {
-        Payment payment = paymentService.findPaymentById(id);
+        var payment = paymentService.findPaymentById(id);
         if (payment != null) {
             log.info("get: find payment with id = {}", id);
             return new ResponseEntity<>(payment, HttpStatus.OK);
@@ -49,8 +49,8 @@ public class PaymentRestController implements PaymentRestApi {
     public ResponseEntity<?> create(PaymentRequest paymentDto) {
         try {
             ResponseEntity<PaymentResponse> response = paymentService.createPayment(paymentDto);
-            String paypalUrl = response.getHeaders().getFirst("url");
-            PaymentResponse responseDto = response.getBody();
+            var paypalUrl = response.getHeaders().getFirst("url");
+            var responseDto = response.getBody();
             return ResponseEntity.status(HttpStatus.CREATED).header("paypalurl", paypalUrl).body(responseDto);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

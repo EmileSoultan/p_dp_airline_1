@@ -12,9 +12,9 @@ class EmptyResultDataAccessExceptionHandlerTest {
 
     @Test
     void emptyResultDataAccessExceptionHandlerTest() {
-        ValidationExceptionHandler validationExceptionHandler = new ValidationExceptionHandler();
-        String errorMessage = "EmptyResultDataAccess exception";
-        ResponseEntity<ResponseExceptionDTO> response = validationExceptionHandler
+        var validationExceptionHandler = new ValidationExceptionHandler();
+        var errorMessage = "EmptyResultDataAccess exception";
+        var response = validationExceptionHandler
                 .handleEmptyResultDataAccessException(new EmptyResultDataAccessException("EmptyResultDataAccess exception",1));
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertTrue(response.getBody().getExceptionMessage().contains(errorMessage));

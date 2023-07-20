@@ -31,8 +31,8 @@ class DestinationControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldCreateDestination() throws Exception {
-        Destination destination = new Destination(4L, Airport.OMS, "Moscow", "Moscow", "+3", "Russia", false);
-        DestinationDTO destinationDTO = new DestinationDTO(destination);
+        var destination = new Destination(4L, Airport.OMS, "Moscow", "Moscow", "+3", "Russia", false);
+        var destinationDTO = new DestinationDTO(destination);
         System.out.println(objectMapper.writeValueAsString(destination));
         mockMvc.perform(post("http://localhost:8080/api/destinations")
                         .content(objectMapper.writeValueAsString(destinationDTO))
@@ -44,10 +44,10 @@ class DestinationControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldShowDestinationByName() throws Exception {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
-        String city = "Абакан";
-        String country = "";
-        String timezone = "";
+        var pageable = PageRequest.of(0, 10, Sort.by("id"));
+        var city = "Абакан";
+        var country = "";
+        var timezone = "";
         Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone);
         mockMvc.perform(get("http://localhost:8080/api/destinations")
                         .param("cityName", city)
@@ -63,10 +63,10 @@ class DestinationControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldShowDestinationByCountry() throws Exception {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
-        String city = "";
-        String country = "Россия";
-        String timezone = "";
+        var pageable = PageRequest.of(0, 10, Sort.by("id"));
+        var city = "";
+        var country = "Россия";
+        var timezone = "";
         Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone);
         mockMvc.perform(get("http://localhost:8080/api/destinations")
                         .param("cityName", city)
@@ -82,10 +82,10 @@ class DestinationControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldShowDestinationByPageable() throws Exception {
-        Pageable pageable = PageRequest.of(0, 3, Sort.by("id"));
-        String city = "";
-        String country = "Россия";
-        String timezone = "";
+        var pageable = PageRequest.of(0, 3, Sort.by("id"));
+        var city = "";
+        var country = "Россия";
+        var timezone = "";
         Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone);
         mockMvc.perform(get("http://localhost:8080/api/destinations?page=0&size=3")
                         .param("cityName", city)
@@ -101,10 +101,10 @@ class DestinationControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldShowDestinationByTimezone() throws Exception {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
-        String city = "";
-        String country = "";
-        String timezone = "gtm%20+5";
+        var pageable = PageRequest.of(0, 10, Sort.by("id"));
+        var city = "";
+        var country = "";
+        var timezone = "gtm%20+5";
         Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone);
         mockMvc.perform(get("http://localhost:8080/api/destinations")
                         .param("cityName", city)
