@@ -1,9 +1,13 @@
-INSERT INTO passengers (id, email, first_name, last_name, middle_name, birth_date, gender, phone_number,
-                        serial_number_passport, passport_issuing_country, passport_issuing_date, password)
-VALUES (1001, 'minko.alexandr@gmail.com', 'Aleksander', 'Minko', 'Jurevich', TO_DATE('1986/08/21', 'YYYY/MM/DD'),
-        'MALE', '79041111111', '1001 001001', 'Russia', TO_DATE('2006/01/11', 'YYYY/MM/DD'), 'password1'),
-       (1002, 'ivan.ivanov@mail.com', 'Ivan', 'Ivanov', 'Ivanovich', TO_DATE('1977/10/17', 'YYYY/MM/DD'),
-        'MALE', '79052222222', '1002 001002', 'Russia', TO_DATE('2016/11/24', 'YYYY/MM/DD'), 'password2');
+
+INSERT INTO passengers (first_name, last_name, middle_name, birth_date, gender, email, phone_number,
+                        serial_number_passport, passport_issuing_date, passport_issuing_country, id)
+VALUES ('John2', 'Simons2', 'J2', TO_DATE('2003/11/08', 'YYYY/MM/DD'), 'MALE', 'passenger2@mail.ru', '79111181111',
+        '0010 001000', TO_DATE('2006/01/11', 'YYYY/MM/DD'), 'Россия', 1002);
+
+INSERT INTO passengers(first_name, last_name, middle_name, birth_date, gender, email, phone_number,
+                       serial_number_passport, passport_issuing_date, passport_issuing_country, id)
+VALUES ('Пётр2', 'Петров2', 'Петрович2', TO_DATE('1986/01/11', 'YYYY/MM/DD'), 'MALE', 'petrov2@mail.ru', '79111511111',
+        '1121 111121', TO_DATE('2006/01/11', 'YYYY/MM/DD'), 'Россия', 1001);
 
 
 INSERT INTO aircrafts (id, aircraft_number, model, model_year, flight_range)

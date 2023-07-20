@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -21,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
-@Sql(value = {"/sqlQuery/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = {"/sqlQuery/create-account-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class AccountControllerIT extends IntegrationTestBase {
 
     @Autowired
@@ -39,7 +40,7 @@ class AccountControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldGetAccountById() throws Exception {
-        Long id = 4L;
+        Long id = 3L;
         mockMvc.perform(
                         get("http://localhost:8080/api/accounts/{id}", id))
                 .andDo(print())
@@ -59,14 +60,18 @@ class AccountControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldPostNewAccount() throws Exception {
-        AirlineManagerDTO airlineManager = new AirlineManagerDTO();
-        airlineManager.setEmail("manager2@mail.ru");
-        airlineManager.setPassword("Test123@");
-        airlineManager.setSecurityQuestion("Test");
-        airlineManager.setAnswerQuestion("Test");
-        airlineManager.setRoles(Set.of(roleService.getRoleByName("ROLE_MANAGER")));
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setFirstName("Ivan");
+        accountDTO.setLastName("Ivanov");
+        accountDTO.setBirthDate(LocalDate.of(2023, 3, 23));
+        accountDTO.setPhoneNumber("7933333333");
+        accountDTO.setEmail("manager2@mail.ru");
+        accountDTO.setPassword("Test123@");
+        accountDTO.setSecurityQuestion("Test");
+        accountDTO.setAnswerQuestion("Test");
+        accountDTO.setRoles(Set.of(roleService.getRoleByName("ROLE_MANAGER")));
         mockMvc.perform(post("http://localhost:8080/api/accounts")
-                        .content(objectMapper.writeValueAsString(airlineManager))
+                        .content(objectMapper.writeValueAsString(accountDTO))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -75,7 +80,7 @@ class AccountControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldDeleteAccountById() throws Exception {
-        Long id = 4L;
+        Long id = 3L;
         mockMvc.perform(delete("http://localhost:8080/api/accounts/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -87,8 +92,8 @@ class AccountControllerIT extends IntegrationTestBase {
     @Transactional
     @Test
     void shouldUpdateAccount() throws Exception {
-        Long id = 3L;
-        AirlineManagerDTO updatableAccount = new AirlineManagerDTO((AirlineManager) accountService.getAccountById(id).get());
+        Long id = 2L;
+        AccountDTO updatableAccount = new AccountDTO(accountService.getAccountById(id).get());
         updatableAccount.setEmail("test@mail.ru");
         mockMvc.perform(patch("http://localhost:8080/api/accounts/{id}", id)
                         .content(objectMapper.writeValueAsString(updatableAccount))

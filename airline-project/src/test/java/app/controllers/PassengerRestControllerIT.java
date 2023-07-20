@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -27,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
-@Sql(value = {"/sqlQuery/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(value = {"/sqlQuery/create-passenger-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class PassengerRestControllerIT extends IntegrationTestBase {
     @Autowired
     private PassengerService passengerService;
@@ -80,10 +79,6 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
         passengerDTO.setBirthDate(LocalDate.of(2023, 3, 23));
         passengerDTO.setPhoneNumber("79222222222");
         passengerDTO.setEmail("petrov@mail.ru");
-        passengerDTO.setPassword("passwordIsGood?1@");
-        passengerDTO.setSecurityQuestion("securityQuestion");
-        passengerDTO.setAnswerQuestion("securityQuestion");
-        passengerDTO.setRoles(Set.of(roleService.getRoleByName("ROLE_PASSENGER")));
         passengerDTO.setPassport(new Passport("Petr", Gender.MALE, "3333 123456", LocalDate.of(2006, 3, 30), "Russia"));
 
         mockMvc.perform(
@@ -131,7 +126,7 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
         long id = 4L;
         PassengerDTO passengerDTO = new PassengerDTO(passengerService.findById(4L).get());
         passengerDTO.setFirstName("Klark");
-
+var fsjfs = objectMapper.writeValueAsString(passengerDTO);
         mockMvc.perform(put("http://localhost:8080/api/passengers/{id}", id)
                         .content(objectMapper.writeValueAsString(passengerDTO))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -144,7 +139,7 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
     @DisplayName("Filter passenger by FirstName")
     void shouldShowPassengerByFirstName() throws Exception {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
-        String firstName = "Ivan";
+        String firstName = "John20";
         String lastName = "";
         String email = "";
         String passportSerialNumber = "";
@@ -160,7 +155,7 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
     void shouldShowPassengerByLastName() throws Exception {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
         String firstName = "";
-        String lastName = "Ivanov";
+        String lastName = "Simons20";
         String email = "";
         String passportSerialNumber = "";
         mockMvc.perform(get("http://localhost:8080/api/passengers/filter")
@@ -176,7 +171,7 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
         String firstName = "";
         String lastName = "";
-        String email = "passenger@mail.ru";
+        String email = "passenger20@mail.ru";
         String passportSerialNumber = "";
         mockMvc.perform(get("http://localhost:8080/api/passengers/filter")
                         .param("email", email))

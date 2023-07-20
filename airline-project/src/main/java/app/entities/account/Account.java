@@ -56,14 +56,13 @@ public class Account {
     @Column(name = "answer_question")
     private String answerQuestion;
 
-    //    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
-//    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @ManyToMany
+
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "account_roles",
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     @NotNull
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private Set<Role> roles;
 }

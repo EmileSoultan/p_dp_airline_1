@@ -29,6 +29,7 @@ public class PassengerMapper {
         passenger.setLastName(passengerDTO.getLastName());
         passenger.setBirthDate(passengerDTO.getBirthDate());
         passenger.setPhoneNumber(passengerDTO.getPhoneNumber());
+        passenger.setEmail(passengerDTO.getEmail());
         passenger.setPassport(passengerDTO.getPassport());
 
         return passenger;

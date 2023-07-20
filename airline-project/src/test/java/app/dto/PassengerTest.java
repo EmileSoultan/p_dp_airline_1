@@ -1,4 +1,4 @@
-package app.dto.account;
+package app.dto;
 import app.dto.PassengerDTO;
 import app.entities.EntityTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -33,16 +33,11 @@ public class PassengerTest extends EntityTest {
         JSONObject jsonObject = new JSONObject();
 
         jsonObject.put("id", 1004L);
-        jsonObject.put("email", "passenger@mail.ru");
-        jsonObject.put("password", "1Passenger@Passenger");
-        jsonObject.put("securityQuestion", "someQuestion");
-        jsonObject.put("answerQuestion", "someAnswer");
-        jsonObject.put("roles", null);
-
         jsonObject.put("firstName", "Alexandr");
         jsonObject.put("lastName", "Bagin");
         jsonObject.put("birthDate", "1998-01-08");
         jsonObject.put("phoneNumber", "89995252503");
+        jsonObject.put("email", "passenger@mail.ru");
         jsonObject.put("passport", null);
         return jsonObject;
     }
@@ -184,6 +179,18 @@ public class PassengerTest extends EntityTest {
         JSONObject jsonObject = initJSONObject();
         jsonObject.replace("phoneNumber", "888888888888888888888888888888888888888888888888888888888888888888" +
                 "88888888888888888888888888888888888888888888888888888888888888888");
+        try {
+            passenger = mapper.readValue(jsonObject.toString(), PassengerDTO.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        Assertions.assertFalse(isSetWithViolationIsEmpty(validator, passenger));
+    }
+
+    @Test
+    public void blankEmailShouldNotValidate() {
+        JSONObject jsonObject = initJSONObject();
+        jsonObject.replace("email", "");
         try {
             passenger = mapper.readValue(jsonObject.toString(), PassengerDTO.class);
         } catch (JsonProcessingException e) {
