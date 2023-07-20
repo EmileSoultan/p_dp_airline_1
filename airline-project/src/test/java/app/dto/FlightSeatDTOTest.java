@@ -22,7 +22,7 @@ public class FlightSeatDTOTest extends EntityTest {
     }
 
     private JSONObject initJSONObject() {
-        JSONObject flightSeatJson = new JSONObject();
+        var flightSeatJson = new JSONObject();
 
         flightSeatJson.put("id", 1L);
         flightSeatJson.put("fare", 1500);
@@ -30,7 +30,7 @@ public class FlightSeatDTOTest extends EntityTest {
         flightSeatJson.put("isSold", true);
         flightSeatJson.put("isBooking", true);
         flightSeatJson.put("flightId", 1);
-        flightSeatJson.put("seatId", 1);
+        flightSeatJson.put("seatNumber", 1);
 
         return flightSeatJson;
     }
@@ -104,7 +104,7 @@ public class FlightSeatDTOTest extends EntityTest {
     public void nullSeatShouldNotValidate() {
         FlightSeatDTO testFlightSeat;
         JSONObject flightSeatJson = initJSONObject();
-        flightSeatJson.replace("seatId", null);
+        flightSeatJson.replace("seatNumber", null);
         try {
             testFlightSeat = mapper.readValue(flightSeatJson.toString(), FlightSeatDTO.class);
         } catch (IOException e) {

@@ -46,7 +46,7 @@ public class CachingBench extends IntegrationTestBase {
     }
 
     public void CreateRoles() {
-        Role role = new Role();
+        var role = new Role();
         role.setName("ROLE_ADMIN");
         roleRepository.save(role);
         role = new Role();

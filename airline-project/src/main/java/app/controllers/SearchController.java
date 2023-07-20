@@ -32,13 +32,13 @@ public class SearchController implements SearchControllerApi {
                 log.info("saveSearch: DepartureDate must be earlier then ReturnDate");
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            SearchResult searchResult = searchService.saveSearch(search);
+            var searchResult = searchService.saveSearch(search);
             if (searchResult.getDepartFlight().isEmpty()) {
                 log.info("saveSearch: Destinations not found");
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             log.info("saveSearch: new search result saved with id= {}", searchResult.getId());
-            SearchResultDTO result = new SearchResultDTO(searchResult);
+            var result = new SearchResultDTO(searchResult);
             log.debug("saveSearch: outgoing data, searchResultDTO = {}", LogsUtils.objectToJson(result));
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         }
@@ -47,7 +47,7 @@ public class SearchController implements SearchControllerApi {
     @Override
     public ResponseEntity<SearchResultDTO> getSearchResultById(Long id) {
 
-        SearchResultProjection searchResult = searchService.findSearchResultByID(id);
+        var searchResult = searchService.findSearchResultByID(id);
         if (searchResult != null) {
             log.info("getSearchResultById: find search result with id = {}", id);
             return new ResponseEntity<>(new SearchResultDTO(searchResult), HttpStatus.OK);

@@ -89,9 +89,9 @@ public class PassengerRestController implements PassengerRestApi {
     @Override
     public ResponseEntity<PassengerDTO> update(Long id, PassengerDTO passengerDTO) {
         passengerDTO.setId(id);
-//        log.info("update: passenger={}", passengerDTO);
         log.info("update: update Passenger with id = {}", id);
-        return new ResponseEntity<>(new PassengerDTO(passengerService.update(id, passengerMapper.convertToPassengerEntity(passengerDTO))),
+        return new ResponseEntity<>(new PassengerDTO(passengerService.update(id,
+                passengerMapper.convertToPassengerEntity(passengerDTO))),
                 HttpStatus.OK);
     }
 

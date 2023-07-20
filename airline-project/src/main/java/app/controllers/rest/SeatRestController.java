@@ -30,9 +30,8 @@ public class SeatRestController implements SeatRestApi {
 
     @Override
     public ResponseEntity<Page<SeatDTO>> getAll(Pageable pageable) {
-        Page<SeatDTO> seats = seatService.findAll(pageable).map(entity -> {
-            SeatDTO dto = seatMapper.convertToSeatDTOEntity(entity);
-            return dto;
+        var seats = seatService.findAll(pageable).map(entity -> {
+            return seatMapper.convertToSeatDTOEntity(entity);
         });
         if (!seats.isEmpty()) {
             log.info("getAll: found {} Seats", seats.getSize());
@@ -45,9 +44,9 @@ public class SeatRestController implements SeatRestApi {
 
     @Override
     public ResponseEntity<Page<SeatDTO>> getAllByAircraftId(Pageable pageable, Long aircraftId) {
-        Page<SeatDTO> seats = seatService.findByAircraftId(aircraftId, pageable).map(entity -> {
-            SeatDTO dto = seatMapper.convertToSeatDTOEntity(entity);
-            return dto;
+        var seats = seatService.findByAircraftId(aircraftId, pageable).map(entity -> {
+            return seatMapper.convertToSeatDTOEntity(entity);
+
         });
         if (!seats.isEmpty()) {
             log.info("getAllByAircraftId: found {} Seats with aircraftId = {}", seats.getSize(), aircraftId);
@@ -60,7 +59,7 @@ public class SeatRestController implements SeatRestApi {
 
     @Override
     public ResponseEntity<SeatDTO> getById(Long id) {
-        Seat seat = seatService.findById(id);
+        var seat = seatService.findById(id);
         if (seat != null) {
             log.info("getById: Seat with id = {}", id);
             return new ResponseEntity<>(new SeatDTO(seat), HttpStatus.OK);
@@ -72,7 +71,7 @@ public class SeatRestController implements SeatRestApi {
 
     @Override
     public ResponseEntity<SeatDTO> create(SeatDTO seatDTO) {
-        Seat seat = seatMapper.convertToSeatEntity(seatDTO);
+        var seat = seatMapper.convertToSeatEntity(seatDTO);
         seatService.save(seat);
         log.info("create: Seat saved with id= {}", seat.getId());
         return new ResponseEntity<>(new SeatDTO(seatService.findById(seat.getId())), HttpStatus.CREATED);
@@ -84,7 +83,7 @@ public class SeatRestController implements SeatRestApi {
             log.error("generate: Aircraft with id = {} not found", aircraftId);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        List<SeatDTO> savedSeats = seatService.generate(aircraftId);
+        var savedSeats = seatService.generate(aircraftId);
         if (!savedSeats.isEmpty()) {
             log.info("generate: saved {} new Seats with aircraft.id = {}", savedSeats.size(), aircraftId);
             return new ResponseEntity<>(savedSeats, HttpStatus.CREATED);

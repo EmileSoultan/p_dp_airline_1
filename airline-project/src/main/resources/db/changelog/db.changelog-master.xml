@@ -97,8 +97,13 @@
     </changeSet>
 
     <include file="v-1.14/db.changelog-v-1.14.xml" relativeToChangelogFile="true"/>
-    <changeSet id="1.14" author="olga-alikulieva">
+    <changeSet id="1.14" author="michail_konyshev">
         <tagDatabase tag="v-1.14"/>
+    </changeSet>
+
+    <include file="v-1.15/db.changelog-v-1.15.xml" relativeToChangelogFile="true"/>
+    <changeSet id="1.15" author="olga-alikulieva">
+        <tagDatabase tag="v-1.15"/>
     </changeSet>
 
 </databaseChangeLog>

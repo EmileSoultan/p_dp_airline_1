@@ -31,7 +31,7 @@ public class PaymentTest extends EntityTest {
 
 
     private JSONObject initJSONObject() {
-        JSONObject PaymentJSON = new JSONObject();
+        var PaymentJSON = new JSONObject();
         List<Long> bookingId = new ArrayList<>();
         bookingId.add(1L);
         bookingId.add(2L);
@@ -45,7 +45,7 @@ public class PaymentTest extends EntityTest {
     @Test
     public void validPaymentShouldValidate() {
         Payment testPayment;
-        JSONObject PaymentJSON = initJSONObject();
+        var PaymentJSON = initJSONObject();
 
         try {
             testPayment = mapper.readValue(PaymentJSON.toString(), Payment.class);
@@ -59,7 +59,7 @@ public class PaymentTest extends EntityTest {
     @Test
     public void nullBookingIdListShouldNotValidate() {
         Payment testPayment;
-        JSONObject PaymentJSON = initJSONObject();
+        var PaymentJSON = initJSONObject();
         PaymentJSON.replace("bookingsId", null);
         try {
             testPayment = mapper.readValue(PaymentJSON.toString(), Payment.class);
@@ -72,7 +72,7 @@ public class PaymentTest extends EntityTest {
     @Test
     public void emptyBookingIdListShouldNotValidate() {
         Payment testPayment;
-        JSONObject PaymentJSON = initJSONObject();
+        var PaymentJSON = initJSONObject();
         PaymentJSON.replace("bookingsId", new ArrayList<Long>());
         try {
             testPayment = mapper.readValue(PaymentJSON.toString(), Payment.class);

@@ -28,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
     public Set<Role> saveRolesToUser(Account user) {
         Set<Role> userRoles = new HashSet<>();
         user.getRoles().stream().forEach(a -> {
-            Role roleFromDb = getRoleByName(a.getName());
+            var roleFromDb = getRoleByName(a.getName());
             if (roleFromDb == null) {
                 throw new RuntimeException("role not found");
             }

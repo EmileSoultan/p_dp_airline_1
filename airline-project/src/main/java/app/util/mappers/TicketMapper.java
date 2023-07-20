@@ -2,6 +2,7 @@ package app.util.mappers;
 
 import app.dto.TicketDTO;
 import app.entities.Ticket;
+import app.exceptions.EntityNotFoundException;
 import app.services.interfaces.FlightSeatService;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.PassengerService;
@@ -17,11 +18,17 @@ public class TicketMapper {
     private final FlightSeatService flightSeatService;
 
     public Ticket convertToTicketEntity(TicketDTO ticketDTO) {
-        Ticket ticket = new Ticket();
+        var ticket = new Ticket();
         ticket.setTicketNumber(ticketDTO.getTicketNumber());
-        ticket.setPassenger(passengerService.findById(ticketDTO.getPassengerId()).orElse(null));
-        ticket.setFlight(flightService.getById(ticketDTO.getFlightId()));
-        ticket.setFlightSeat(flightSeatService.findById(ticketDTO.getFlightSeatId()));
+        ticket.setPassenger(passengerService.findById(ticketDTO.getPassengerId())
+                .orElseThrow(() -> new EntityNotFoundException("Operation was not finished because Passenger was not found with id = "
+                        + ticketDTO.getPassengerId())));
+        ticket.setFlight(flightService.findById(ticketDTO.getFlightId())
+                .orElseThrow(() -> new EntityNotFoundException("Operation was not finished because Flight was not found with id = "
+                        + ticketDTO.getFlightId())));
+        ticket.setFlightSeat(flightSeatService.findById(ticketDTO.getFlightSeatId())
+                .orElseThrow(() -> new EntityNotFoundException("Operation was not finished because FlightSeat was not found with id = "
+                        + ticketDTO.getFlightSeatId())));
         return ticket;
     }
 }

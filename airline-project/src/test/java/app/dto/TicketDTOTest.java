@@ -27,7 +27,7 @@ public class TicketDTOTest extends EntityTest {
 
     private JSONObject initJsonObject() {
 
-        JSONObject ticketJson = new JSONObject();
+        var ticketJson = new JSONObject();
         ticketJson.put("id", 1);
         ticketJson.put("ticketNumber", "SD-2222");
         ticketJson.put("passengerId", 4);
@@ -48,7 +48,7 @@ public class TicketDTOTest extends EntityTest {
     public void validTicketShouldValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
         } catch (IOException e) {
@@ -61,7 +61,7 @@ public class TicketDTOTest extends EntityTest {
     public void nullTicketNumberFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("ticketNumber", null);
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
@@ -75,7 +75,7 @@ public class TicketDTOTest extends EntityTest {
     public void nullPassengerIdFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("passengerId", null);
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
@@ -89,7 +89,7 @@ public class TicketDTOTest extends EntityTest {
     public void nullPassengerFirstNameFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("firstName", null);
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
@@ -117,7 +117,7 @@ public class TicketDTOTest extends EntityTest {
     public void nullPassengerLastNameFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("lastName", null);
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
@@ -131,7 +131,7 @@ public class TicketDTOTest extends EntityTest {
     public void shortPassengerLastNameFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("lastName", "I");
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
@@ -145,7 +145,7 @@ public class TicketDTOTest extends EntityTest {
     public void nullFlightIdFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("flightId", null);
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
@@ -159,7 +159,7 @@ public class TicketDTOTest extends EntityTest {
     public void nullCodeFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("code", null);
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
@@ -173,7 +173,7 @@ public class TicketDTOTest extends EntityTest {
     public void shortCodeFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("code", "1");
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
@@ -187,7 +187,7 @@ public class TicketDTOTest extends EntityTest {
     public void nullFromFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("from", null);
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
@@ -201,7 +201,7 @@ public class TicketDTOTest extends EntityTest {
     public void nullToFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("to", null);
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
@@ -215,7 +215,7 @@ public class TicketDTOTest extends EntityTest {
     public void nullDepartureDateTimeFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("departureDateTime", null);
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
@@ -229,7 +229,7 @@ public class TicketDTOTest extends EntityTest {
     public void nullArrivalDateTimeFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("arrivalDateTime", null);
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
@@ -243,7 +243,7 @@ public class TicketDTOTest extends EntityTest {
     public void nullFlightSeatIdFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("flightSeatId", null);
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
@@ -257,7 +257,7 @@ public class TicketDTOTest extends EntityTest {
     public void nullSeatNumberFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("seatNumber", null);
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);
@@ -271,7 +271,7 @@ public class TicketDTOTest extends EntityTest {
     public void shortSeatNumberFieldShouldNotValidate() {
 
         TicketDTO ticketDTO;
-        JSONObject ticketJson = initJsonObject();
+        var ticketJson = initJsonObject();
         ticketJson.replace("seatNumber", "1");
         try {
             ticketDTO = mapper.readValue(ticketJson.toString(), TicketDTO.class);

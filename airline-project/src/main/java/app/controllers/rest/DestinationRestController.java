@@ -34,7 +34,7 @@ public class DestinationRestController implements DestinationRestApi {
         }
         return (!destination.isEmpty())
                 ? new ResponseEntity<>(destination.map(entity -> {
-            DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
+            var dto = destinationMapper.convertToDestinationDTOEntity(entity);
             return dto;
         }), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -51,12 +51,19 @@ public class DestinationRestController implements DestinationRestApi {
     public ResponseEntity<DestinationDTO> update(Long id, DestinationDTO destinationDTO) {
         log.info("update: update Destination with id={}", id);
         destinationService.updateDestination(id, destinationMapper.convertToDestinationEntity(destinationDTO));
-        Destination updatedDestination = destinationService.getDestinationById(id);
+        var updatedDestination = destinationService.getDestinationById(id);
         if (updatedDestination != null) {
             DestinationDTO updatedDTO = destinationMapper.convertToDestinationDTOEntity(updatedDestination);
             return new ResponseEntity<>(updatedDTO, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @Override
+    public ResponseEntity<HttpStatus> delete(Long id) {
+        log.info("delete: delete Destination with id={}", id);
+        destinationService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

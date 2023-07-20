@@ -20,4 +20,6 @@ public interface DestinationService {
     Destination getDestinationById(Long id);
 
     Destination findDestinationByAirportCode(Airport airportCode);
+
+    void deleteById(Long id);
 }

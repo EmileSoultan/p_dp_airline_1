@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class PaymentMapper {
 
     public Payment convertToPaymentEntity(PaymentResponse paymentDto) {
-        Payment payment = new Payment();
+        var payment = new Payment();
         payment.setId(paymentDto.getId());
         payment.setPaymentState(paymentDto.getPaymentState());
         payment.setBookingsId(paymentDto.getBookingsId());
@@ -21,7 +21,7 @@ public class PaymentMapper {
     }
 
     public Payment convertToPaymentEntity(PaymentRequest paymentRequest) {
-        Payment payment = new Payment();
+        var payment = new Payment();
         payment.setId(paymentRequest.getId());
         payment.setPaymentState(paymentRequest.getPaymentState());
         payment.setBookingsId(paymentRequest.getBookingsId());
@@ -31,7 +31,7 @@ public class PaymentMapper {
     }
 
     public PaymentResponse convertToDto(Payment payment) {
-        PaymentResponse paymentResponse = new PaymentResponse();
+        var paymentResponse = new PaymentResponse();
         paymentResponse.setId(payment.getId());
         paymentResponse.setPaymentState(payment.getPaymentState());
         paymentResponse.setBookingsId(payment.getBookingsId());

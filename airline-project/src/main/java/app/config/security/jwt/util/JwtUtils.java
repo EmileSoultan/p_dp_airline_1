@@ -17,7 +17,7 @@ public class JwtUtils {
 
 
     public static JwtAuthentication generate(Claims claims) throws JsonProcessingException {
-        final JwtAuthentication jwtInfoToken = new JwtAuthentication();
+        final var jwtInfoToken = new JwtAuthentication();
         jwtInfoToken.setRoles(getRoles(claims));
         jwtInfoToken.setUsername(claims.getSubject());
         return jwtInfoToken;
@@ -25,9 +25,9 @@ public class JwtUtils {
 
     private static Set<Role> getRoles(Claims claims) throws JsonProcessingException {
 
-        ObjectMapper mapper = new ObjectMapper();
+        var mapper = new ObjectMapper();
         TypeReference<List<Role>> tr = new TypeReference<>(){};
-        String jsonRole = mapper.writeValueAsString(claims.get("roles", List.class));
+        var jsonRole = mapper.writeValueAsString(claims.get("roles", List.class));
         return Set.copyOf(mapper.readValue(jsonRole, tr));
 
     }

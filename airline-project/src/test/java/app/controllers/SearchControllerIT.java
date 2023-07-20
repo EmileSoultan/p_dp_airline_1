@@ -30,9 +30,9 @@ class SearchControllerIT extends IntegrationTestBase {
 
     @Test
     void CreateSearchResultCreate() throws Exception {
-        Destination from = destinationService.getDestinationById(1L);
-        Destination to = destinationService.getDestinationById(2L);
-        Search search = new Search(from, to, LocalDate.of(2023, 04, 01), null, 1);
+        var from = destinationService.getDestinationById(1L);
+        var to = destinationService.getDestinationById(2L);
+        var search = new Search(from, to, LocalDate.of(2023, 04, 01), null, 1);
         mockMvc.perform(post("http://localhost:8080/api/search")
                         .content(objectMapper.writeValueAsString(search))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -42,14 +42,14 @@ class SearchControllerIT extends IntegrationTestBase {
 
     @Test
     void CheckSearchResult() throws Exception {
-        Destination from = destinationService.getDestinationById(1L);
-        Destination to = destinationService.getDestinationById(2L);
-        Search search = new Search(from, to, LocalDate.of(2023, 04, 01), null, 1);
-        String search_result = mockMvc.perform(post("http://localhost:8080/api/search")
+        var from = destinationService.getDestinationById(1L);
+        var to = destinationService.getDestinationById(2L);
+        var search = new Search(from, to, LocalDate.of(2023, 04, 01), null, 1);
+        var search_result = mockMvc.perform(post("http://localhost:8080/api/search")
                         .content(objectMapper.writeValueAsString(search))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
-        Long id = new JSONObject(search_result).getLong("id");
+        var id = new JSONObject(search_result).getLong("id");
 
         mockMvc.perform(get("http://localhost:8080/api/search/{id}", id))
                 .andExpect(status().isOk());
@@ -57,9 +57,9 @@ class SearchControllerIT extends IntegrationTestBase {
 
     @Test
     void CheckSearchNotFound() throws Exception {
-        Destination from = destinationService.getDestinationById(1L);
-        Destination to = destinationService.getDestinationById(2L);
-        Search search = new Search(from, to, LocalDate.of(1999, 12, 01), null, 1);
+        var from = destinationService.getDestinationById(1L);
+        var to = destinationService.getDestinationById(2L);
+        var search = new Search(from, to, LocalDate.of(1999, 12, 01), null, 1);
         mockMvc.perform(post("http://localhost:8080/api/search")
                         .content(objectMapper.writeValueAsString(search))
                         .contentType(MediaType.APPLICATION_JSON))

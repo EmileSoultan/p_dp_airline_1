@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,8 +52,8 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     }
 
     @Override
-    public FlightSeat findById(Long id) {
-        return flightSeatRepository.findById(id).orElse(null);
+    public Optional<FlightSeat> findById(Long id) {
+        return flightSeatRepository.findById(id);
     }
 
     @org.springframework.transaction.annotation.Transactional(readOnly = true)
@@ -80,10 +81,10 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     @Loggable
     public Set<FlightSeat> addFlightSeatsByFlightId(Long flightId) {
         Set<FlightSeat> newFlightSeats = new HashSet<>();
-        Flight flight = flightService.getById(flightId);
-        Set<Seat> seats = seatRepository.findByAircraftId(flight.getAircraft().getId());
+        var flight = flightService.findById(flightId).get();
+        var seats = seatRepository.findByAircraftId(flight.getAircraft().getId());
         for (Seat s : seats) {
-            FlightSeat flightSeat = new FlightSeat();
+            var flightSeat = new FlightSeat();
             flightSeat.setSeat(s);
             flightSeat.setFlight(flight);
             flightSeat.setIsBooking(false);
@@ -103,13 +104,13 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     @Loggable
     public Set<FlightSeat> addFlightSeatsByFlightNumber(String flightNumber) {
         Set<FlightSeat> seatsForAdd = new HashSet<>();
-        Set<FlightSeat> allFlightSeats = findAll();
-        Flight flight = flightRepository.getByCode(flightNumber);
+        var allFlightSeats = findAll();
+        var flight = flightRepository.getByCode(flightNumber);
         if (flight != null) {
-            Set<Seat> seatsAircraft = flight.getAircraft().getSeatSet();
+           var seatsAircraft = flight.getAircraft().getSeatSet();
 
             for (Seat s : seatsAircraft) {
-                FlightSeat flightSeat = new FlightSeat();
+                var flightSeat = new FlightSeat();
                 flightSeat.setSeat(s);
                 flightSeat.setFlight(flight);
                 if (allFlightSeats.contains(flightSeat)) {

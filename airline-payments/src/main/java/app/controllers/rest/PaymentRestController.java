@@ -40,7 +40,7 @@ public class PaymentRestController {
             @RequestBody PaymentRequest paymentDto
     ) throws PayPalRESTException {
         String url = null;
-        Payment payment = paypalService.createPayment(
+        var payment = paypalService.createPayment(
                 paymentDto.getPrice().doubleValue(),
                 paymentDto.getCurrency().toString(),
                 "paypal",

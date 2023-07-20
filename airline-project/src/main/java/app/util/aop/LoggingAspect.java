@@ -19,7 +19,7 @@ public class LoggingAspect {
 
     @Around("loggable()")
     public Object getExecutionTime(ProceedingJoinPoint point) {
-        long start = System.currentTimeMillis();
+        var start = System.currentTimeMillis();
         Object object;
         try {
             object = point.proceed();
@@ -28,8 +28,8 @@ public class LoggingAspect {
         }
         long end = System.currentTimeMillis();
         long time = end - start;
-        MethodSignature signature = (MethodSignature) point.getSignature();
-        Method method = signature.getMethod();
+        var signature = (MethodSignature) point.getSignature();
+        var method = signature.getMethod();
 
         log.info("{}.{}, execution time: {} ms",
                 method.getDeclaringClass().getSimpleName(), method.getName(), time);

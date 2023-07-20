@@ -14,26 +14,26 @@ public class FlightSeatMapper {
     private final FlightService flightService;
 
     public FlightSeat convertToFlightSeatEntity(FlightSeatDTO dto) {
-        FlightSeat flightSeat = new FlightSeat();
+        var flightSeat = new FlightSeat();
         flightSeat.setId(dto.getId());
         flightSeat.setFare(dto.getFare());
         flightSeat.setIsRegistered(dto.getIsRegistered());
         flightSeat.setIsSold(dto.getIsSold());
         flightSeat.setIsBooking(dto.getIsBooking());
-        flightSeat.setFlight(flightService.getById(dto.getFlightId()));
-        flightSeat.setSeat(seatService.findById(dto.getSeatId()));
+        flightSeat.setFlight(flightService.findById(dto.getFlightId()).get());
+        flightSeat.setSeat(seatService.findById(dto.getSeatNumber()));
         return flightSeat;
     }
 
     public FlightSeatDTO convertToFlightSeatDTOEntity(FlightSeat flightSeat) {
-        FlightSeatDTO flightSeatDTO = new FlightSeatDTO();
+        var flightSeatDTO = new FlightSeatDTO();
         flightSeatDTO.setId(flightSeat.getId());
         flightSeatDTO.setFare(flightSeat.getFare());
         flightSeatDTO.setIsRegistered(flightSeat.getIsRegistered());
         flightSeatDTO.setIsSold(flightSeat.getIsSold());
         flightSeatDTO.setIsBooking(flightSeat.getIsBooking());
-        flightSeatDTO.setFlightId(flightService.getById(flightSeat.getFlight().getId()).getId());
-        flightSeatDTO.setSeatId(seatService.findById(flightSeat.getSeat().getId()).getId());
+        flightSeatDTO.setFlightId(flightService.findById(flightSeat.getFlight().getId()).get().getId());
+        flightSeatDTO.setSeatNumber(seatService.findById(flightSeat.getSeat().getId()).getId());
         return flightSeatDTO;
     }
 }

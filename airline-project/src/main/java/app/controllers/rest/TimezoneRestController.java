@@ -28,20 +28,20 @@ public class TimezoneRestController implements TimezoneRestApi {
 
     @Override
     public ResponseEntity<Page<TimezoneDTO>> getAll(Integer page, Integer size) {
-        Page<Timezone> timezone = timezoneService.findAll(page, size);
+        var timezone = timezoneService.findAll(page, size);
         if (timezone == null) {
             log.error("getAll: Timezones not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         log.info("getAll: Find all timezones");
-        List<TimezoneDTO> timezoneDTOS = timezone.stream().map(TimezoneDTO:: new).collect(Collectors.toList());
+        var timezoneDTOS = timezone.stream().map(TimezoneDTO:: new).collect(Collectors.toList());
         return new ResponseEntity<>(new PageImpl<>(timezoneDTOS, PageRequest.of(page, size), timezone.getTotalElements()), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<TimezoneDTO> getById(Long id) {
         log.info("getById: search Timezone by id = {}", id);
-        Optional<Timezone> timezone = timezoneService.getTimezoneById(id);
+        var timezone = timezoneService.getTimezoneById(id);
 
         if (timezone.isEmpty()) {
             log.info("getById: not found Timezone with id = {} doesn't exist", id);

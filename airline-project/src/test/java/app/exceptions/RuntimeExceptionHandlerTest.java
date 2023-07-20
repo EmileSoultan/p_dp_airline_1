@@ -9,10 +9,9 @@ class RuntimeExceptionHandlerTest {
 
     @Test
     void runtimeExceptionHandlerTest() {
-        ValidationExceptionHandler validationExceptionHandler = new ValidationExceptionHandler();
-        RuntimeException runtimeException = new RuntimeException();
-
-        ResponseEntity<ResponseExceptionDTO> response = validationExceptionHandler.handleRuntimeException(runtimeException);
+        var validationExceptionHandler = new ValidationExceptionHandler();
+        var runtimeException = new RuntimeException();
+        var response = validationExceptionHandler.handleRuntimeException(runtimeException);
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 }
