@@ -1,4 +1,4 @@
--- changeset olga_alikulieva:1.14.2
+-- changeset olga_alikulieva:1.15.2
 CREATE TABLE passengers
 (
     id           BIGSERIAL PRIMARY KEY,
