@@ -14,7 +14,7 @@
 - #240 Рефакторинг FlightSeatDTO замена seatId на seatNumber. Поправил FlightSeatDTOTest.
 - #239 Добавлена JWT авторизация в SWAGGER. По логину и паролю получаем access и refresh токены. По кнопке Authorize делаем авторизацию c access.
 - #252 замена локальных переменных на var + правка () названий переменных
-- #251 Исправлены две небольшие ошибки в enum SeatsNumbersByAircraft (если в тесте SeatServiceImplTest меняем модель самолета, ошибка не возникает)
+- #251 Исправлена ошибка в enum SeatsNumbersByAircraft. В методе getNumbersOfSeatsByAircraft: заменила  replace() на  replaceAll() + регулярка.
 
 ## [1.0.4] - 23.06.2023
 - #241 - Исправлен баг с id ticket'а при post запросе. Теперь при неправильных id билета, рейса и пассажира возвращает 400 ошибку вместо 500
