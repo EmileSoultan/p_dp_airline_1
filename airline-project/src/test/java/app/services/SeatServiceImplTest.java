@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 public class SeatServiceImplTest {
 
     private static final Long AIRCRAFT_TEST_ID = 1L;
-    private static final String AIRCRAFT_TEST_MODEL = "Boeing 737_800";
+    private static final String AIRCRAFT_TEST_MODEL = "Boeing 737-800";
 
     private final SeatRepository seatRepository = mock(SeatRepository.class);
     private final CategoryService categoryService = mock(CategoryService.class);

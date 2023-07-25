@@ -117,7 +117,7 @@ public class SeatServiceImpl implements SeatService {
     private SeatsNumbersByAircraft getNumbersOfSeatsByAircraft(long aircraftId) {
         var aircraft = aircraftService.findById(aircraftId); //создается объект САМОЛЕТ
         return SeatsNumbersByAircraft.valueOf(aircraft.getModel() //количество мест в самолете
-                .toUpperCase().replaceAll("[ -]","_"));
+                .toUpperCase().replaceAll("[^A-Za-z0-9]","_"));
     }
 
     private AircraftSeats[] getAircraftSeats(long aircraftId) {
