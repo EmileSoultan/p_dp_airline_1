@@ -96,11 +96,12 @@ class BookingRestControllerIT extends IntegrationTestBase {
     void shouldEditBookingById() throws Exception {
         long id = 6002;
         var booking = new BookingDTO(bookingService.findById(id));
-        booking.setBookingNumber("BK-222222");
         booking.setBookingDate(LocalDateTime.now());
         booking.setPassengerId(passengerService.findById(1002L).get().getId());
         booking.setFlightId(4002L);
         booking.setCategoryType(CategoryType.BUSINESS);
+        booking.setBookingNumber(booking.getCategoryType().name()
+                .substring(0, 2) + String.format("%07d", booking.getId()));
 
         mockMvc.perform(patch("http://localhost:8080/api/bookings/{id}", id)
                         .content(

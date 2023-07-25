@@ -31,8 +31,10 @@ public class BookingServiceImpl implements BookingService {
         booking.setPassenger((passengerService.findById(booking.getPassenger().getId())).get());
         booking.setFlight(flightService.getFlightByCode(booking.getFlight().getCode()));
         booking.setCategory(categoryService.findByCategoryType(booking.getCategory().getCategoryType()));
-
-        return bookingRepository.save(booking);
+        bookingRepository.save(booking);
+        booking.setBookingNumber(booking.getCategory().getCategoryType().name()
+                .substring(0, 2) + String.format("%07d", booking.getId()));
+        return booking;
     }
 
     @Override
