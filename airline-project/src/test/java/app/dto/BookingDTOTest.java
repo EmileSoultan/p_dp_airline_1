@@ -30,7 +30,7 @@ class BookingDTOTest extends EntityTest {
         var bookingDtoJSON = new JSONObject();
         bookingDtoJSON.put("id", 10000L);
         bookingDtoJSON.put("bookingNumber", "BK-111111");
-        bookingDtoJSON.put("bookingData", "2023-01-20T17:02:05.003992");
+        bookingDtoJSON.put("bookingDate", "2023-01-20T17:02:05.003992");
         bookingDtoJSON.put("passengerId", 1000L);
         bookingDtoJSON.put("flightId", 1L);
         bookingDtoJSON.put("categoryType", "BUSINESS");
