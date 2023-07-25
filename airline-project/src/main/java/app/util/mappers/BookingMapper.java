@@ -20,7 +20,7 @@ public class BookingMapper {
         var booking = new Booking();
         booking.setId(bookingDTO.getId());
         booking.setBookingNumber(bookingDTO.getBookingNumber());
-        booking.setBookingData(bookingDTO.getBookingData());
+        booking.setBookingDate(bookingDTO.getBookingDate());
         booking.setPassenger((passengerService.findById(bookingDTO.getPassengerId()).get()));
         booking.setFlight(flightService.findById(bookingDTO.getFlightId()).get());
         booking.setCategory(categoryService.findByCategoryType(bookingDTO.getCategoryType()));
@@ -31,7 +31,7 @@ public class BookingMapper {
         var bookingDTO = new BookingDTO();
         bookingDTO.setId(booking.getId());
         bookingDTO.setBookingNumber(booking.getBookingNumber());
-        bookingDTO.setBookingData(booking.getBookingData());
+        bookingDTO.setBookingDate(booking.getBookingDate());
         bookingDTO.setPassengerId((passengerService.findById(booking.getPassenger().getId()).get()).getId());
         bookingDTO.setFlightId(flightService.findById(booking.getFlight().getId()).get().getId());
         bookingDTO.setCategoryType(categoryService.findByCategoryType(booking.getCategory().getCategoryType()).getCategoryType());

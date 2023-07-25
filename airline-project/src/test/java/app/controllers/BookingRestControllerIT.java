@@ -42,7 +42,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
     void shouldSaveBooking() throws Exception {
         var booking = new BookingDTO();
         booking.setBookingNumber("BK-111111");
-        booking.setBookingData(LocalDateTime.now());
+        booking.setBookingDate(LocalDateTime.now());
         booking.setPassengerId(passengerService.findById(1001L).get().getId());
         booking.setFlightId(flightService.findById(4001L).get().getId());
         booking.setCategoryType(CategoryType.ECONOMY);
@@ -97,7 +97,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         long id = 6002;
         var booking = new BookingDTO(bookingService.findById(id));
         booking.setBookingNumber("BK-222222");
-        booking.setBookingData(LocalDateTime.now());
+        booking.setBookingDate(LocalDateTime.now());
         booking.setPassengerId(passengerService.findById(1002L).get().getId());
         booking.setFlightId(4002L);
         booking.setCategoryType(CategoryType.BUSINESS);
