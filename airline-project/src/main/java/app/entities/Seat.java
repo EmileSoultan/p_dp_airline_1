@@ -1,8 +1,6 @@
 package app.entities;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -14,7 +12,9 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "seats")
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"seatNumber", "aircraft"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

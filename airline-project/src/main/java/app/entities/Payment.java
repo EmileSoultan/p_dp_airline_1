@@ -2,8 +2,7 @@ package app.entities;
 import app.enums.Currency;
 import app.enums.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
@@ -18,7 +17,9 @@ import java.util.List;
  */
 @Entity
 @Table(name = "payments")
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Payment {

@@ -1,8 +1,6 @@
 package app.entities;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -25,7 +23,9 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "aircrafts")
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"aircraftNumber", "model", "modelYear", "flightRange"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -48,6 +48,7 @@ public class Aircraft {
 
     @OneToMany(mappedBy = "aircraft", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @ToString.Exclude
     private Set<Seat> seatSet = new HashSet<>();
 
     @PreRemove

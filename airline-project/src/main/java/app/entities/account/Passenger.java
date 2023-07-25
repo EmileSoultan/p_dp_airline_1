@@ -1,10 +1,7 @@
 package app.entities.account;
 
 import app.entities.Passport;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -18,7 +15,9 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "passengers")
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"firstName", "lastName", "birthDate", "phoneNumber", "passport"}, callSuper = true)
