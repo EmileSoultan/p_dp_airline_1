@@ -28,7 +28,7 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     @Override
     public Booking save(Booking booking) {
-        booking.setPassenger((passengerService.findById(booking.getPassenger().getId())).get());
+        booking.setPassenger((passengerService.findById(booking.getPassenger().getId())).orElse(null));
         booking.setFlight(flightService.getFlightByCode(booking.getFlight().getCode()));
         booking.setCategory(categoryService.findByCategoryType(booking.getCategory().getCategoryType()));
         bookingRepository.save(booking);
