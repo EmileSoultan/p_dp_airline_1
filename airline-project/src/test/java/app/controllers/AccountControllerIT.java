@@ -2,17 +2,24 @@ package app.controllers;
 
 import app.dto.account.AccountDTO;
 import app.dto.account.AirlineManagerDTO;
+import app.entities.account.Account;
 import app.entities.account.AirlineManager;
+import app.repositories.AccountRepository;
 import app.services.interfaces.AccountService;
 import app.services.interfaces.RoleService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -92,11 +99,23 @@ class AccountControllerIT extends IntegrationTestBase {
         Long id = 3L;
         var updatableAccount = new AirlineManagerDTO((AirlineManager) accountService.getAccountById(id).get());
         updatableAccount.setEmail("test@mail.ru");
+
+        Page<Account> accountsPage = accountService.getAllAccounts(PageRequest.of(0, 10));
+        List<Account> accounts = accountsPage.getContent();
+
         mockMvc.perform(patch("http://localhost:8080/api/accounts/{id}", id)
                         .content(objectMapper.writeValueAsString(updatableAccount))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("test@mail.ru"));
+        mockMvc.perform(get("http://localhost:8080/api/accounts"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()").value(accounts.size()));
     }
+
+
+
+
 }
