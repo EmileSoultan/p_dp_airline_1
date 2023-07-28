@@ -13,7 +13,7 @@ public enum SeatsNumbersByAircraft {
     AIRBUS_A320_NEO("Airbus A320 Neo", 164, 8, AirbusA320NeoSeats.values()),
     AIRBUS_A319("Airbus A319", 144, 0, AirbusA319Seats.values()),
     BOEING_737_800("Boeing 737-800", 168, 12, Boeing737800Seats.values()),
-    EMBRAER_ERJ170("Embraer ERJ170", 78, 0, EmbraerERJ170Seats.values());
+    EMBRAER_ERJ170("Embraer ERJ170", 76, 0, EmbraerERJ170Seats.values());
 
     private final String aircraftModel;
     private final int totalNumberOfSeats;
