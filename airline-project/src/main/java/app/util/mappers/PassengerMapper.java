@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class PassengerMapper {
 
     public PassengerDTO convertToPassengerDTO(Passenger passenger) {
-        PassengerDTO passengerDTO = new PassengerDTO();
+        var passengerDTO = new PassengerDTO();
 
         passengerDTO.setId(passenger.getId());
         passengerDTO.setFirstName(passenger.getFirstName());
@@ -23,7 +23,7 @@ public class PassengerMapper {
     }
 
     public Passenger convertToPassengerEntity(PassengerDTO passengerDTO) {
-        Passenger passenger = new Passenger();
+        var passenger = new Passenger();
         passenger.setId(passengerDTO.getId());
         passenger.setFirstName(passengerDTO.getFirstName());
         passenger.setLastName(passengerDTO.getLastName());

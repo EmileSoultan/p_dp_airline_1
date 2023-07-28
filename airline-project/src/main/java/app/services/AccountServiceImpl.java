@@ -22,17 +22,17 @@ public class AccountServiceImpl implements AccountService {
     private final RoleServiceImpl roleService;
 
     @Override
-    public void saveAccount(Account account) {
+    public Account saveAccount(Account account) {
         account.setPassword(encoder.encode(account.getPassword()));
         account.setRoles(roleService.saveRolesToUser(account));
         if (account.getAnswerQuestion() != null) {
             account.setAnswerQuestion(encoder.encode(account.getAnswerQuestion()));
         }
-        accountRepository.saveAndFlush(account);
+        return accountRepository.saveAndFlush(account);
     }
 
     @Override
-    public void updateAccount(Long id, Account account) {
+    public Account updateAccount(Long id, Account account) {
         var editAccount = accountRepository.getAccountById(id);
         if (!account.getPassword().equals(editAccount.getPassword())) {
             editAccount.setPassword(encoder.encode(account.getPassword()));
@@ -49,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
         editAccount.setBirthDate(account.getBirthDate());
         editAccount.setPhoneNumber(account.getPhoneNumber());
 
-        accountRepository.saveAndFlush(editAccount);
+        return accountRepository.saveAndFlush(editAccount);
     }
 
     @Transactional(readOnly = true)

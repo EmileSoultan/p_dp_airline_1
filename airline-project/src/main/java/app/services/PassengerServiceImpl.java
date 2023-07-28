@@ -2,7 +2,6 @@ package app.services;
 
 import app.entities.Passenger;
 import app.repositories.PassengerRepository;
-import app.repositories.RoleRepository;
 import app.services.interfaces.BookingService;
 import app.services.interfaces.FlightSeatService;
 import app.services.interfaces.PassengerService;
@@ -11,12 +10,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Optional;
-import java.util.Set;
+
 
 @Service
 @Transactional(readOnly = true)
@@ -52,7 +49,7 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     @Transactional
     public Passenger update(Long id, Passenger passenger) {
-        Passenger editPassenger = new Passenger();
+        var editPassenger = new Passenger();
         editPassenger.setFirstName(passenger.getFirstName());
         editPassenger.setLastName(passenger.getLastName());
         editPassenger.setBirthDate(passenger.getBirthDate());

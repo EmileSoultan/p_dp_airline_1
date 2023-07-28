@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountMapper {
     public AccountDTO convertToAccountDTO(Account account) {
-        AccountDTO accountDTO = new AccountDTO();
+        var accountDTO = new AccountDTO();
 
         accountDTO.setId(account.getId());
         accountDTO.setFirstName(account.getFirstName());
@@ -25,7 +25,7 @@ public class AccountMapper {
     }
 
     public Account convertToAccount(AccountDTO accountDTO) {
-        Account account = new Account();
+        var account = new Account();
 
         account.setId(accountDTO.getId());
         account.setFirstName(accountDTO.getFirstName());

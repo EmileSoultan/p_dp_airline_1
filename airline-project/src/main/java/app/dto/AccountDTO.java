@@ -9,14 +9,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.mail.MethodNotSupportedException;
-import javax.persistence.Column;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.Set;
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
-//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+
 @Getter
 @Setter
 @EqualsAndHashCode

@@ -21,6 +21,5 @@ CREATE TABLE roles
 CREATE TABLE account_roles
 (
     account_id  BIGINT REFERENCES account (account_id) ON UPDATE CASCADE ON DELETE CASCADE,
-    role_id  BIGINT REFERENCES roles (role_id) ON UPDATE CASCADE,
-    amount     numeric NOT NULL DEFAULT 1
+    role_id  BIGINT REFERENCES roles (role_id) ON UPDATE CASCADE
 );

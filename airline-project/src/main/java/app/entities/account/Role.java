@@ -18,7 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@EqualsAndHashCode(of = {"id", "name"})
+@EqualsAndHashCode(of = {"name"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Role implements GrantedAuthority {
 
