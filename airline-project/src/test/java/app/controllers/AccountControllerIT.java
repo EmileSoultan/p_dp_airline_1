@@ -40,7 +40,7 @@ class AccountControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldGetAccountById() throws Exception {
-        Long id = 3L;
+        var id = 3L;
         mockMvc.perform(
                         get("http://localhost:8080/api/accounts/{id}", id))
                 .andDo(print())
@@ -51,7 +51,7 @@ class AccountControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldGetNotExistedAccount() throws Exception {
-        Long id = 100L;
+        var id = 100L;
         mockMvc.perform(
                         get("http://localhost:8080/api/accounts/{id}", id))
                 .andDo(print())
@@ -60,7 +60,7 @@ class AccountControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldPostNewAccount() throws Exception {
-        AccountDTO accountDTO = new AccountDTO();
+        var accountDTO = new AccountDTO();
         accountDTO.setFirstName("Ivan");
         accountDTO.setLastName("Ivanov");
         accountDTO.setBirthDate(LocalDate.of(2023, 3, 23));
@@ -80,7 +80,7 @@ class AccountControllerIT extends IntegrationTestBase {
 
     @Test
     void shouldDeleteAccountById() throws Exception {
-        Long id = 3L;
+        var id = 3L;
         mockMvc.perform(delete("http://localhost:8080/api/accounts/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -93,7 +93,7 @@ class AccountControllerIT extends IntegrationTestBase {
     @Test
     void shouldUpdateAccount() throws Exception {
         Long id = 2L;
-        AccountDTO updatableAccount = new AccountDTO(accountService.getAccountById(id).get());
+        var updatableAccount = new AccountDTO(accountService.getAccountById(id).get());
         updatableAccount.setEmail("test@mail.ru");
         mockMvc.perform(patch("http://localhost:8080/api/accounts/{id}", id)
                         .content(objectMapper.writeValueAsString(updatableAccount))

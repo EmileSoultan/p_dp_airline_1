@@ -2,22 +2,19 @@ package app.dto;
 
 
 import app.entities.EntityTest;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.io.IOException;
 
-public class AccountTest extends EntityTest {
+public class AccountDTOTest extends EntityTest {
+
     private Validator validator;
     private ObjectMapper mapper;
     private AccountDTO accountDTO;
@@ -25,7 +22,7 @@ public class AccountTest extends EntityTest {
 
     @BeforeEach
     public void setUp() {
-        try (ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
+        try (var validatorFactory = Validation.buildDefaultValidatorFactory()) {
             validator = validatorFactory.getValidator();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -37,8 +34,7 @@ public class AccountTest extends EntityTest {
     }
 
     private JSONObject initValidableJSONObject() {
-        JSONObject validableAccountJson = new JSONObject();
-
+        var validableAccountJson = new JSONObject();
         validableAccountJson.put("id", "1002");
         validableAccountJson.put("firstName", "Olga");
         validableAccountJson.put("lastName", "Alikulieva");
@@ -49,7 +45,6 @@ public class AccountTest extends EntityTest {
         validableAccountJson.put("securityQuestion", "securityQuestion");
         validableAccountJson.put("answerQuestion", "answerQuestion");
         validableAccountJson.put("roles", null);
-
         return validableAccountJson;
     }
 
@@ -66,7 +61,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void blankFirstNameShouldNotValidate() {
         accountJsonObject.replace("firstName", "");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -78,7 +72,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void smallFirstNameShouldNotValidate() {
         accountJsonObject.replace("firstName", "a");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -91,7 +84,6 @@ public class AccountTest extends EntityTest {
     public void longFirstNameShouldNotValidate() {
         accountJsonObject.replace("firstName", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -103,7 +95,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void blankLastNameShouldNotValidate() {
         accountJsonObject.replace("lastName", "");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -115,7 +106,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void smallLastNameShouldNotValidate() {
         accountJsonObject.replace("lastName", "a");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -128,7 +118,6 @@ public class AccountTest extends EntityTest {
     public void longLastNameShouldNotValidate() {
         accountJsonObject.replace("lastName", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -140,7 +129,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void nullBirthDateShouldNotValidate() {
         accountJsonObject.replace("birthDate", "2054-02-07");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -152,7 +140,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void blankPhoneNumberShouldNotValidate() {
         accountJsonObject.replace("phoneNumber", "");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -164,7 +151,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void smallPhoneNumberShouldNotValidate() {
         accountJsonObject.replace("phoneNumber", "4456");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -177,7 +163,6 @@ public class AccountTest extends EntityTest {
     public void longPhoneNumberShouldNotValidate() {
         accountJsonObject.replace("phoneNumber", "888888888888888888888888888888888888888888888888888888888888888888" +
                 "88888888888888888888888888888888888888888888888888888888888888888");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -189,7 +174,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void blankEmailShouldNotValidate() {
         accountJsonObject.replace("email", "");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -201,7 +185,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void blankPasswordShouldNotValidate() {
         accountJsonObject.replace("password", "");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -213,7 +196,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void passwordUnder8CharShouldNotValidate() {
         accountJsonObject.replace("password", "1@Passw");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -225,7 +207,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void passwordWithoutUpperCaseCharShouldNotValidate() {
         accountJsonObject.replace("password", "1@password");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -237,7 +218,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void passwordWithoutLowerCharShouldNotValidate() {
         accountJsonObject.replace("password", "1@PASSWORD");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -249,7 +229,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void passwordWithoutNumberShouldNotValidate() {
         accountJsonObject.replace("password", "@Password");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -261,7 +240,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void passwordWithoutSpecialCharShouldNotValidate() {
         accountJsonObject.replace("password", "1Password");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -273,7 +251,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void blankQuestionShouldNotValidate() {
         accountJsonObject.replace("securityQuestion", "");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {
@@ -285,7 +262,6 @@ public class AccountTest extends EntityTest {
     @Test
     public void blankAnswerShouldNotValidate() {
         accountJsonObject.replace("answerQuestion", "");
-
         try {
             accountDTO = mapper.readValue(accountJsonObject.toString(), AccountDTO.class);
         } catch (IOException e) {

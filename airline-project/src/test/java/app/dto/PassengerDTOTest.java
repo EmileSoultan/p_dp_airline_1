@@ -1,25 +1,26 @@
 package app.dto;
-import app.dto.PassengerDTO;
+
 import app.entities.EntityTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import net.minidev.json.JSONObject;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import net.minidev.json.JSONObject;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
-public class PassengerTest extends EntityTest {
+public class PassengerDTOTest extends EntityTest {
+
     private Validator validator;
     private PassengerDTO passenger;
     private ObjectMapper mapper;
 
     @BeforeEach
     public void setUp() {
-        try (ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
+        try (var validatorFactory = Validation.buildDefaultValidatorFactory()) {
             validator = validatorFactory.getValidator();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -31,7 +32,6 @@ public class PassengerTest extends EntityTest {
 
     private JSONObject initJSONObject() {
         var jsonObject = new JSONObject();
-
         jsonObject.put("id", 1004L);
         jsonObject.put("firstName", "Alexandr");
         jsonObject.put("lastName", "Bagin");
@@ -189,7 +189,7 @@ public class PassengerTest extends EntityTest {
 
     @Test
     public void blankEmailShouldNotValidate() {
-        JSONObject jsonObject = initJSONObject();
+        var jsonObject = initJSONObject();
         jsonObject.replace("email", "");
         try {
             passenger = mapper.readValue(jsonObject.toString(), PassengerDTO.class);
