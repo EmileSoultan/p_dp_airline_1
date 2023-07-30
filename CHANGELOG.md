@@ -3,6 +3,9 @@
 ## [Unreleased]
 - 
 
+## [1.0.6] - 30.07.2023
+- #226 Рефакторинг passenger и account - убрано наследование
+
 ## [1.0.5] - 19.07.2023
 - #230 Мягкое удаление Destination
 - #247 Исправлен баг, если передать в convertToTicketEntity несуществующие flightId/flightSeatId/passengerId вылетает NPE
