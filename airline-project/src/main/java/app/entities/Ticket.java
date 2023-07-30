@@ -1,6 +1,5 @@
 package app.entities;
 
-import app.entities.account.Passenger;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 

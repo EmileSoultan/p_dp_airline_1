@@ -1,12 +1,9 @@
-package app.entities.account;
+package app.entities;
 
 import app.entities.Passport;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 
@@ -20,8 +17,12 @@ import java.time.LocalDate;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"firstName", "lastName", "birthDate", "phoneNumber", "passport"}, callSuper = true)
-public class Passenger extends Account {
+@EqualsAndHashCode(of = {"firstName", "lastName", "birthDate", "phoneNumber", "passport"})
+public class Passenger {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "first_name")
     private String firstName;
@@ -35,8 +36,10 @@ public class Passenger extends Account {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name = "email")
+    private String email;
+
     @Valid
     @Embedded
     private Passport passport;
-
 }

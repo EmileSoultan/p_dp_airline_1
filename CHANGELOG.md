@@ -3,6 +3,9 @@
 ## [Unreleased]
 - #237 Исправлен баг с редактированием Ticket. Убраны аннотации @Data из проекта.
 
+## [1.0.6] - 30.07.2023
+- #226 Рефакторинг passenger и account - убрано наследование
+
 ## [1.0.5] - 19.07.2023
 - #230 Мягкое удаление Destination
 - #247 Исправлен баг, если передать в convertToTicketEntity несуществующие flightId/flightSeatId/passengerId вылетает NPE
@@ -14,6 +17,7 @@
 - #240 Рефакторинг FlightSeatDTO замена seatId на seatNumber. Поправил FlightSeatDTOTest.
 - #239 Добавлена JWT авторизация в SWAGGER. По логину и паролю получаем access и refresh токены. По кнопке Authorize делаем авторизацию c access.
 - #252 замена локальных переменных на var + правка () названий переменных
+- #251 Исправлена ошибка в enum SeatsNumbersByAircraft. В методе getNumbersOfSeatsByAircraft: заменила  replace() на  replaceAll() + регулярка.
 
 ## [1.0.4] - 23.06.2023
 - #241 - Исправлен баг с id ticket'а при post запросе. Теперь при неправильных id билета, рейса и пассажира возвращает 400 ошибку вместо 500
