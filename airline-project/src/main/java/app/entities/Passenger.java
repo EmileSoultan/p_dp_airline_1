@@ -1,9 +1,7 @@
 package app.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import app.entities.Passport;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -14,7 +12,9 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "passengers")
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"firstName", "lastName", "birthDate", "phoneNumber", "passport"})
@@ -42,5 +42,4 @@ public class Passenger {
     @Valid
     @Embedded
     private Passport passport;
-
 }
