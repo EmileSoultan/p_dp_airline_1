@@ -1,6 +1,5 @@
 package app.entities;
 
-import app.entities.account.Passenger;
 import lombok.*;
 
 import javax.persistence.*;
@@ -42,5 +41,4 @@ public class Booking {
     @OneToOne
     @JoinColumn(name = "category_id")
     private Category category;
-
 }
