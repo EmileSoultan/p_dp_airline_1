@@ -1,6 +1,5 @@
 package app.entities;
 
-import app.entities.account.Passenger;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
