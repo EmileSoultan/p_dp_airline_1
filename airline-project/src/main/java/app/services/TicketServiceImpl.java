@@ -63,7 +63,7 @@ public class TicketServiceImpl implements TicketService {
         if (updatedTicket.getFlightSeat() == null) {
             updatedTicket.setFlightSeat(ticketRepository.findTicketById(id).getFlightSeat());
         }
-        return updatedTicket;
+        return ticketRepository.save(updatedTicket);
     }
 
     @Override

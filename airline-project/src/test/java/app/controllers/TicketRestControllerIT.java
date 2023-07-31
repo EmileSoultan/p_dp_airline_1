@@ -10,7 +10,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -53,7 +56,7 @@ class TicketRestControllerIT extends IntegrationTestBase {
     @Test
     void updateTicket_test() throws Exception {
         var ticketDTO = new TicketDTO(ticketService.findTicketByTicketNumber("ZX-3333"));
-        ticketDTO.setTicketNumber("123456789");
+        ticketDTO.setTicketNumber("ZX-2222");
         int numberOfTicket = ticketRepository.findAll().size();
 
         mockMvc.perform(patch("http://localhost:8080/api/tickets/{id}", ticketDTO.getId())

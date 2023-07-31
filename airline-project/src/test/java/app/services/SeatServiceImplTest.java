@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 public class SeatServiceImplTest {
 
     private static final Long AIRCRAFT_TEST_ID = 1L;
-    private static final String AIRCRAFT_TEST_MODEL = "Airbus A320 Neo";
+    private static final String AIRCRAFT_TEST_MODEL = "Boeing 737-800";
 
     private final SeatRepository seatRepository = mock(SeatRepository.class);
     private final CategoryService categoryService = mock(CategoryService.class);
@@ -88,7 +88,7 @@ public class SeatServiceImplTest {
                 .count();
 
         assertFalse(seatDTOs.isEmpty());
-        assertEquals(164, seatDTOs.size());
-        assertEquals(8, businessSeatsCount);
+        assertEquals(168, seatDTOs.size());
+        assertEquals(12, businessSeatsCount);
     }
 }

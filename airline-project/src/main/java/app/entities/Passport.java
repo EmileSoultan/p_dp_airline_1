@@ -3,9 +3,7 @@ package app.entities;
 import app.enums.Gender;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -22,7 +20,9 @@ import java.time.LocalDate;
  * Паспортные данные пассажира.
  */
 @Embeddable
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
