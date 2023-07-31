@@ -1,7 +1,7 @@
 package app.controllers;
 
 import app.dto.AircraftDTO;
-import app.entities.Aircraft;
+import app.repositories.AircraftRepository;
 import app.services.interfaces.AircraftService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,20 +9,22 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
+import static org.testcontainers.shaded.org.hamcrest.Matchers.hasSize;
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-aircraftCategorySeat-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Transactional
 class AircraftRestControllerIT extends IntegrationTestBase {
+
     @Autowired
     private AircraftService aircraftService;
+    @Autowired
+    private AircraftRepository aircraftRepository;
 
     @Test
     void shouldSaveAircraft() throws Exception {
@@ -67,13 +69,15 @@ class AircraftRestControllerIT extends IntegrationTestBase {
         aircraft.setModel("Boeing 737");
         aircraft.setModelYear(2001);
         aircraft.setFlightRange(5000);
+        int numberOfAircraft = aircraftRepository.findAll().size();
 
         mockMvc.perform(patch("http://localhost:8080/api/aircrafts/{id}", id)
                         .content(objectMapper.writeValueAsString(aircraft))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(aircraft)));
+                .andExpect(content().json(objectMapper.writeValueAsString(aircraft)))
+                .andExpect(result -> assertThat(aircraftRepository.findAll(), hasSize(numberOfAircraft)));
     }
 
     @Test

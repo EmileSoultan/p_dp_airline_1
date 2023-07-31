@@ -2,6 +2,7 @@ package app.controllers;
 
 import app.dto.BookingDTO;
 import app.enums.CategoryType;
+import app.repositories.BookingRepository;
 import app.services.interfaces.BookingService;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.PassengerService;
@@ -9,20 +10,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
+import static org.testcontainers.shaded.org.hamcrest.Matchers.hasSize;
 
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
@@ -36,6 +35,8 @@ class BookingRestControllerIT extends IntegrationTestBase {
     private PassengerService passengerService;
     @Autowired
     private FlightService flightService;
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @Test
     @DisplayName("Save Booking")
@@ -101,6 +102,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         booking.setPassengerId(passengerService.findById(1002L).get().getId());
         booking.setFlightId(4002L);
         booking.setCategoryType(CategoryType.BUSINESS);
+        int numberOfBooking = bookingRepository.findAll().size();
 
         mockMvc.perform(patch("http://localhost:8080/api/bookings/{id}", id)
                         .content(
@@ -109,7 +111,8 @@ class BookingRestControllerIT extends IntegrationTestBase {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(booking)));
+                .andExpect(content().json(objectMapper.writeValueAsString(booking)))
+                .andExpect(result -> assertThat(bookingRepository.findAll(), hasSize(numberOfBooking)));
     }
 
 

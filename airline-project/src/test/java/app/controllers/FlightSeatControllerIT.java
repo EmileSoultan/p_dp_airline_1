@@ -7,7 +7,6 @@ import app.services.interfaces.FlightSeatService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
@@ -16,12 +15,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
+import static org.testcontainers.shaded.org.hamcrest.Matchers.hasSize;
+
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-flightSeat-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -108,11 +108,14 @@ class FlightSeatControllerIT extends IntegrationTestBase {
         flightSeat.setFare(100);
         flightSeat.setIsSold(false);
         flightSeat.setIsRegistered(false);
+        int numberOfFlightSeat = flightSeatService.findAll().size();
+
         mockMvc.perform(patch("http://localhost:8080/api/flight-seats/{id}", id)
                         .content(objectMapper.writeValueAsString(new FlightSeatDTO(flightSeat)))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(result -> assertThat(flightSeatService.findAll(), hasSize(numberOfFlightSeat)));
     }
 
     @Test

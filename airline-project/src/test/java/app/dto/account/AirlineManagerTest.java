@@ -6,15 +6,17 @@ import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.io.IOException;
 
-public class AirlineManagerTest extends EntityTest {
+class AirlineManagerTest extends EntityTest {
     private Validator validator;
     private ObjectMapper mapper;
+
     private AirlineManagerDTO airlineManager;
     private JSONObject airlineManagerJsonObject;
 
@@ -41,7 +43,7 @@ public class AirlineManagerTest extends EntityTest {
     }
 
     @Test
-    public void validAirlineManagerShouldValidate() {
+    void validAirlineManagerShouldValidate() {
         try {
             airlineManager = mapper.readValue(airlineManagerJsonObject.toString(), AirlineManagerDTO.class);
         } catch (IOException e) {
@@ -51,7 +53,7 @@ public class AirlineManagerTest extends EntityTest {
     }
 
     @Test
-    public void blankEmailShouldNotValidate() {
+    void blankEmailShouldNotValidate() {
         airlineManagerJsonObject.replace("email", "");
 
         try {
@@ -63,7 +65,7 @@ public class AirlineManagerTest extends EntityTest {
     }
 
     @Test
-    public void blankPasswordShouldNotValidate() {
+    void blankPasswordShouldNotValidate() {
         airlineManagerJsonObject.replace("password", "");
 
         try {
@@ -75,7 +77,7 @@ public class AirlineManagerTest extends EntityTest {
     }
 
     @Test
-    public void passwordUnder8CharShouldNotValidate() {
+    void passwordUnder8CharShouldNotValidate() {
         airlineManagerJsonObject.replace("password", "1@Passw");
 
         try {
@@ -87,7 +89,7 @@ public class AirlineManagerTest extends EntityTest {
     }
 
     @Test
-    public void passwordWithoutUpperCaseCharShouldNotValidate() {
+    void passwordWithoutUpperCaseCharShouldNotValidate() {
         airlineManagerJsonObject.replace("password", "1@password");
 
         try {
@@ -99,7 +101,7 @@ public class AirlineManagerTest extends EntityTest {
     }
 
     @Test
-    public void passwordWithoutLowerCharShouldNotValidate() {
+    void passwordWithoutLowerCharShouldNotValidate() {
         airlineManagerJsonObject.replace("password", "1@PASSWORD");
 
         try {
@@ -111,7 +113,7 @@ public class AirlineManagerTest extends EntityTest {
     }
 
     @Test
-    public void passwordWithoutNumberShouldNotValidate() {
+    void passwordWithoutNumberShouldNotValidate() {
         airlineManagerJsonObject.replace("password", "@Password");
 
         try {
@@ -123,7 +125,7 @@ public class AirlineManagerTest extends EntityTest {
     }
 
     @Test
-    public void passwordWithoutSpecialCharShouldNotValidate() {
+    void passwordWithoutSpecialCharShouldNotValidate() {
         airlineManagerJsonObject.replace("password", "1Password");
 
         try {
@@ -135,7 +137,7 @@ public class AirlineManagerTest extends EntityTest {
     }
 
     @Test
-    public void blankQuestionShouldNotValidate() {
+    void blankQuestionShouldNotValidate() {
         airlineManagerJsonObject.replace("securityQuestion", "");
 
         try {
@@ -147,7 +149,7 @@ public class AirlineManagerTest extends EntityTest {
     }
 
     @Test
-    public void blankAnswerShouldNotValidate() {
+    void blankAnswerShouldNotValidate() {
         airlineManagerJsonObject.replace("answerQuestion", "");
 
         try {

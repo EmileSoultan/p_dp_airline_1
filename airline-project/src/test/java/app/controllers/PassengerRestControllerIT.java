@@ -4,12 +4,16 @@ import app.dto.account.PassengerDTO;
 import app.entities.Passport;
 import app.entities.account.Passenger;
 import app.enums.Gender;
+import app.repositories.PassengerRepository;
 import app.services.interfaces.PassengerService;
 import app.services.interfaces.RoleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -21,16 +25,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
+import static org.testcontainers.shaded.org.hamcrest.Matchers.hasSize;
 
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-user-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class PassengerRestControllerIT extends IntegrationTestBase {
-    @Autowired
-    private PassengerService passengerService;
+class PassengerRestControllerIT extends IntegrationTestBase {
 
     @Autowired
+    private PassengerService passengerService;
+    @Autowired
     private RoleService roleService;
+    @Autowired
+    private PassengerRepository passengerRepository;
 
     @Test
     @DisplayName("Get all passengers with pagination")
@@ -129,13 +137,14 @@ public class PassengerRestControllerIT extends IntegrationTestBase {
         var passengerDTO = new PassengerDTO(passengerService.findById(4L).get());
         passengerDTO.setFirstName("Klark");
         passengerDTO.setPassport(null);
+        int numberOfPassenger = passengerRepository.findAll().size();
 
         mockMvc.perform(patch("http://localhost:8080/api/passengers/{id}", id)
                         .content(objectMapper.writeValueAsString(passengerDTO))
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(result -> assertThat(passengerRepository.findAll(), hasSize(numberOfPassenger)));
     }
 
     @Test

@@ -2,6 +2,7 @@ package app.controllers;
 
 import app.dto.SeatDTO;
 import app.enums.CategoryType;
+import app.repositories.SeatRepository;
 import app.services.interfaces.CategoryService;
 import app.services.interfaces.SeatService;
 import org.junit.jupiter.api.Disabled;
@@ -14,16 +15,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
+import static org.testcontainers.shaded.org.hamcrest.Matchers.hasSize;
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-seat-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class SeatControllerIT extends IntegrationTestBase {
+class SeatControllerIT extends IntegrationTestBase {
 
     @Autowired
     private SeatService seatService;
-
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private SeatRepository seatRepository;
 
     @Test
     void shouldSaveSeat() throws Exception {
@@ -40,6 +44,7 @@ public class SeatControllerIT extends IntegrationTestBase {
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated());
+
 
     }
 
@@ -67,12 +72,14 @@ public class SeatControllerIT extends IntegrationTestBase {
         seatDTO.setIsLockedBack(false);
         seatDTO.setIsNearEmergencyExit(true);
         long id = seatDTO.getId();
+        int numberOfSeat = seatRepository.findAll().size();
 
         mockMvc.perform(patch("http://localhost:8080/api/seats/{id}", id)
                         .content(objectMapper.writeValueAsString(seatDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(result -> assertThat(seatRepository.findAll(), hasSize(numberOfSeat)));
     }
 
     @Test
