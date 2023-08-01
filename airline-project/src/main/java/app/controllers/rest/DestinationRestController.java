@@ -8,6 +8,7 @@ import app.util.mappers.DestinationMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class DestinationRestController implements DestinationRestApi {
             log.info("getAll: get all Destinations");
         } else {
             log.info("getAll: get Destinations by cityName or countryName or timezone. countryName = {}. cityName= {}. timezone = {}", countryName, cityName, timezone);
-            destination = destinationService.findDestinationByNameAndTimezone(page, size, cityName, countryName, timezone);
+            destination = destinationService.findDestinationByNameAndTimezone(PageRequest.of(page, size), cityName, countryName, timezone);
         }
         return (!destination.isEmpty())
                 ? new ResponseEntity<>(destination.map(entity -> {
