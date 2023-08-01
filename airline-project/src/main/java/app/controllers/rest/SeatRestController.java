@@ -29,8 +29,8 @@ public class SeatRestController implements SeatRestApi {
     private final SeatMapper seatMapper;
 
     @Override
-    public ResponseEntity<Page<SeatDTO>> getAll(Pageable pageable) {
-        var seats = seatService.findAll(pageable).map(entity -> {
+    public ResponseEntity<Page<SeatDTO>> getAll(Integer page, Integer size) {
+        var seats = seatService.findAll(page, size).map(entity -> {
             return seatMapper.convertToSeatDTOEntity(entity);
         });
         if (!seats.isEmpty()) {

@@ -23,9 +23,9 @@ public class AircraftRestController implements AircraftRestApi {
     private final AircraftMapper aircraftMapper;
 
     @Override
-    public ResponseEntity<Page<AircraftDTO>> getAll(Pageable pageable) {
+    public ResponseEntity<Page<AircraftDTO>> getAll(Integer page, Integer size) {
         log.info("getAll: get all Aircrafts");
-        Page<AircraftDTO> aircrafts = aircraftService.findAll(pageable).map(entity -> {
+        Page<AircraftDTO> aircrafts = aircraftService.findAll(page, size).map(entity -> {
             return aircraftMapper.convertToAircarftDTOEntity(entity);
         });
         return aircrafts.isEmpty()

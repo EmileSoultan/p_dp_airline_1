@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @RequestMapping("/api/bookings")
 @Api(tags = "Booking REST")
@@ -32,7 +34,10 @@ public interface BookingRestApi {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Bookings found"),
             @ApiResponse(code = 204, message = "Bookings not found")})
-    ResponseEntity<Page<BookingDTO>> getAll(Pageable pageable);
+    ResponseEntity<Page<BookingDTO>> getAll(
+            @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page,
+            @RequestParam(value = "size", defaultValue = "10") @Min(1) @Max(10) Integer size
+    );
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Get Booking by \"id\"")

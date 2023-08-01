@@ -12,15 +12,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Api(tags = "Aircraft REST")
 @Tag(name = "Aircraft REST", description = "API для операций с самолётом")
@@ -32,7 +28,9 @@ public interface AircraftRestApi {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Aircrafts found"),
             @ApiResponse(code = 204, message = "Aircrafts not found")})
-    ResponseEntity<Page<AircraftDTO>> getAll(Pageable pageable);
+    ResponseEntity<Page<AircraftDTO>> getAll(
+            @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page,
+            @RequestParam(value = "size", defaultValue = "10") @Min(1) @Max(10) Integer size);
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Get Aircraft by it's \"id\"")

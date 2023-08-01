@@ -15,6 +15,7 @@ import app.services.interfaces.CategoryService;
 import app.services.interfaces.SeatService;
 import lombok.RequiredArgsConstructor;
 import app.util.mappers.SeatMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
@@ -131,7 +132,7 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public Page<Seat> findAll(Pageable pageable) {
-        return seatRepository.findAll(pageable);
+    public Page<Seat> findAll(Integer page, Integer size) {
+        return seatRepository.findAll(PageRequest.of(page, size));
     }
 }

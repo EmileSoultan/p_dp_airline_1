@@ -23,9 +23,9 @@ public class BookingRestController implements BookingRestApi {
     private final BookingMapper bookingMapper;
 
     @Override
-    public ResponseEntity<Page<BookingDTO>> getAll(Pageable pageable) {
+    public ResponseEntity<Page<BookingDTO>> getAll(Integer page, Integer size) {
         log.info("getAll: search all Bookings");
-        Page<BookingDTO> bookings = bookingService.findAll(pageable).map(entity -> {
+        Page<BookingDTO> bookings = bookingService.findAll(page, size).map(entity -> {
             var dto = bookingMapper.convertToBookingDTOEntity(entity);
             return dto;
         });

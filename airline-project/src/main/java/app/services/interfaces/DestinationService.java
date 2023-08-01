@@ -9,9 +9,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface DestinationService {
 
-    Page<Destination> findAll(Pageable pageable);
+    Page<Destination> findAll(Integer page, Integer size);
 
-    Page<Destination> findDestinationByNameAndTimezone(Pageable pageable, String cityName, String countryName, String timezone);
+    Page<Destination> findDestinationByNameAndTimezone(Integer page, Integer size, String cityName, String countryName, String timezone);
 
     void saveDestination(Destination destination);
 

@@ -10,7 +10,7 @@ public interface AircraftService {
 
     Aircraft save(Aircraft aircraft);
 
-    Page<Aircraft> findAll(Pageable pageable);
+    Page<Aircraft> findAll(Integer page, Integer size);
 
     Aircraft findById(Long id);
 

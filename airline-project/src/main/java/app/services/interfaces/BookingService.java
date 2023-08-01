@@ -12,7 +12,7 @@ public interface BookingService {
 
     Booking save(Booking book);
 
-    Page<Booking> findAll(Pageable pageable);
+    Page<Booking> findAll(Integer page, Integer size);
 
     Booking findById(Long id);
 

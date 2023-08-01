@@ -11,7 +11,7 @@ public interface AccountService {
 
     void updateAccount(Long id, Account user);
 
-    Page<Account> getAllAccounts(Pageable pageable);
+    Page<Account> getAllAccounts(Integer page, Integer size);
 
     Optional<Account> getAccountById(Long id);
 

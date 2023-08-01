@@ -5,6 +5,7 @@ import app.enums.Airport;
 import app.repositories.DestinationRepository;
 import app.services.interfaces.DestinationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
@@ -18,18 +19,18 @@ public class DestinationServiceImpl implements DestinationService {
     private final DestinationRepository destinationRepository;
 
     @Override
-    public Page<Destination> findAll(Pageable pageable) {
-        return destinationRepository.findAll(pageable);
+    public Page<Destination> findAll(Integer page, Integer size) {
+        return destinationRepository.findAll(PageRequest.of(page, size));
     }
 
     @Override
-    public Page<Destination> findDestinationByNameAndTimezone(Pageable pageable, String cityName, String countryName, String timezone) {
+    public Page<Destination> findDestinationByNameAndTimezone(Integer page, Integer siz, String cityName, String countryName, String timezone) {
         if (cityName != null) {
-            return destinationRepository.findByCityNameContainingIgnoreCase(pageable, cityName);
+            return destinationRepository.findByCityNameContainingIgnoreCase(PageRequest.of(page, siz), cityName);
         } else if(countryName != null) {
-            return destinationRepository.findByCountryNameContainingIgnoreCase(pageable, countryName);
+            return destinationRepository.findByCountryNameContainingIgnoreCase(PageRequest.of(page, siz), countryName);
         } else {
-            return destinationRepository.findByTimezoneContainingIgnoreCase(pageable, timezone);
+            return destinationRepository.findByTimezoneContainingIgnoreCase(PageRequest.of(page, siz), timezone);
         }
     }
 

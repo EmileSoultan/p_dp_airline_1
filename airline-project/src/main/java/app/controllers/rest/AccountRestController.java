@@ -29,9 +29,9 @@ public class AccountRestController implements AccountRestApi {
     private final RoleService roleService;
 
     @Override
-    public ResponseEntity<Page> getAll(Pageable pageable) {
+    public ResponseEntity<Page> getAll(Integer page, Integer size) {
         log.info("getAll: get all Accounts");
-        var users = accountService.getAllAccounts(pageable);
+        var users = accountService.getAllAccounts(page, size);
         return users.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(users, HttpStatus.OK);

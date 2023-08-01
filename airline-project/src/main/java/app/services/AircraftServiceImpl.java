@@ -8,6 +8,7 @@ import app.services.interfaces.AircraftService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +30,8 @@ public class AircraftServiceImpl implements AircraftService {
         return aircraftRepository.save(aircraft);
     }
 
-    public Page<Aircraft> findAll(Pageable pageable) {
-        return aircraftRepository.findAll(pageable);
+    public Page<Aircraft> findAll(Integer page, Integer size) {
+        return aircraftRepository.findAll(PageRequest.of(page, size));
     }
 
     public Aircraft findById(Long id) {

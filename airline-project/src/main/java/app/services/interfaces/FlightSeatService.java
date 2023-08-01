@@ -15,7 +15,7 @@ public interface FlightSeatService {
 
     Set<FlightSeat> findAll();
 
-    Page<FlightSeat> findAll(Pageable pageable);
+    Page<FlightSeat> findAll(Integer page, Integer size);
 
     Optional<FlightSeat> findById(Long id);
 

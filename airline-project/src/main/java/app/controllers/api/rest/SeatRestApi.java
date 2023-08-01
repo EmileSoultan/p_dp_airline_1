@@ -11,15 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Api(tags = "Seat REST")
@@ -33,7 +29,9 @@ public interface SeatRestApi {
             @ApiResponse(code = 200, message = "Seats found"),
             @ApiResponse(code = 404, message = "Seats not found")
     })
-    ResponseEntity<Page<SeatDTO>> getAll(@PageableDefault() Pageable pageable);
+    ResponseEntity<Page<SeatDTO>> getAll(@PageableDefault()
+                                         @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page,
+                                         @RequestParam(value = "size", defaultValue = "10") @Min(1) @Max(10) Integer size);
 
     @GetMapping("/aircraft/{aircraftId}")
     @ApiOperation(value = "Get Seats by \"aircraftId\"")

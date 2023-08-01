@@ -8,6 +8,7 @@ import app.services.interfaces.FlightService;
 import app.services.interfaces.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +37,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Page<Booking> findAll(Pageable pageable) {
-        return bookingRepository.findAll(pageable);
+    public Page<Booking> findAll(Integer page, Integer size) {
+        return bookingRepository.findAll(PageRequest.of(page, size));
     }
 
     @Override

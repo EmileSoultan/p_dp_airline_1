@@ -48,7 +48,7 @@ class DestinationControllerIT extends IntegrationTestBase {
         var city = "Абакан";
         var country = "";
         var timezone = "";
-        Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone);
+        Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable.getPageNumber(), pageable.getPageSize(), city, country, timezone);
         mockMvc.perform(get("http://localhost:8080/api/destinations")
                         .param("cityName", city)
                         .param("countryName", country)
@@ -67,7 +67,7 @@ class DestinationControllerIT extends IntegrationTestBase {
         var city = "";
         var country = "Россия";
         var timezone = "";
-        Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone);
+        Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable.getPageNumber(), pageable.getPageSize(), city, country, timezone);
         mockMvc.perform(get("http://localhost:8080/api/destinations")
                         .param("cityName", city)
                         .param("countryName", country)
@@ -86,7 +86,7 @@ class DestinationControllerIT extends IntegrationTestBase {
         var city = "";
         var country = "Россия";
         var timezone = "";
-        Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone);
+        Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable.getPageNumber(), pageable.getPageSize(), city, country, timezone);
         mockMvc.perform(get("http://localhost:8080/api/destinations?page=0&size=3")
                         .param("cityName", city)
                         .param("countryName", country)
@@ -105,7 +105,7 @@ class DestinationControllerIT extends IntegrationTestBase {
         var city = "";
         var country = "";
         var timezone = "gtm%20+5";
-        Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable, city, country, timezone);
+        Page<Destination> destination = destinationService.findDestinationByNameAndTimezone(pageable.getPageNumber(), pageable.getPageSize(), city, country, timezone);
         mockMvc.perform(get("http://localhost:8080/api/destinations")
                         .param("cityName", city)
                         .param("countryName", country)

@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 
 @Api(tags = "Destination REST")
 @Tag(name = "Destination REST", description = "API для операций с пунктами назначения (прилет/вылет)")
@@ -22,7 +25,9 @@ public interface DestinationRestApi {
             @ApiResponse(code = 200, message = "Destinations found"),
             @ApiResponse(code = 404, message = "Destinations not found")
     })
-    ResponseEntity<Page<DestinationDTO>> getAll(@PageableDefault(sort = {"id"}) Pageable pageable,
+    ResponseEntity<Page<DestinationDTO>> getAll(@PageableDefault(sort = {"id"})
+                                                @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page,
+                                                @RequestParam(value = "size", defaultValue = "10") @Min(1) @Max(10) Integer size,
 
             @ApiParam(
                     name = "cityName",
