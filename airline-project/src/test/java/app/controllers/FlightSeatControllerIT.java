@@ -3,6 +3,7 @@ package app.controllers;
 import app.dto.FlightSeatDTO;
 import app.entities.FlightSeat;
 import app.enums.CategoryType;
+import app.repositories.FlightSeatRepository;
 import app.services.interfaces.FlightSeatService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.test.context.jdbc.Sql;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -29,6 +31,8 @@ class FlightSeatControllerIT extends IntegrationTestBase {
 
     @Autowired
     private FlightSeatService flightSeatService;
+    @Autowired
+    private FlightSeatRepository flightSeatRepository;
 
     @Test
     void shouldGetFlightSeats() throws Exception {
@@ -108,14 +112,15 @@ class FlightSeatControllerIT extends IntegrationTestBase {
         flightSeat.setFare(100);
         flightSeat.setIsSold(false);
         flightSeat.setIsRegistered(false);
-        int numberOfFlightSeat = flightSeatService.findAll().size();
+        int numberOfFlightSeat = (int) flightSeatRepository.count();
 
         mockMvc.perform(patch("http://localhost:8080/api/flight-seats/{id}", id)
                         .content(objectMapper.writeValueAsString(new FlightSeatDTO(flightSeat)))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(result -> assertThat(flightSeatService.findAll(), hasSize(numberOfFlightSeat)));
+                .andExpect(result -> assertThat(StreamSupport.stream(flightSeatRepository.findAll().spliterator(), false)
+                        .collect(Collectors.toList()), hasSize(numberOfFlightSeat)));
     }
 
     @Test
