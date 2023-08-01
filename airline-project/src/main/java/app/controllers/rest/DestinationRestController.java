@@ -31,7 +31,7 @@ public class DestinationRestController implements DestinationRestApi {
             log.info("getAll: get all Destinations");
         } else {
             log.info("getAll: get Destinations by cityName or countryName or timezone. countryName = {}. cityName= {}. timezone = {}", countryName, cityName, timezone);
-            destination = destinationService.findDestinationByNameAndTimezone(PageRequest.of(page, size), cityName, countryName, timezone);
+            destination = destinationService.findDestinationByNameAndTimezone(page, size, cityName, countryName, timezone);
         }
         return (!destination.isEmpty())
                 ? new ResponseEntity<>(destination.map(entity -> {

@@ -24,13 +24,13 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
-    public Page<Destination> findDestinationByNameAndTimezone(Pageable pageable, String cityName, String countryName, String timezone) {
+    public Page<Destination> findDestinationByNameAndTimezone(Integer page, Integer size, String cityName, String countryName, String timezone) {
         if (cityName != null) {
-            return destinationRepository.findByCityNameContainingIgnoreCase(pageable, cityName);
+            return destinationRepository.findByCityNameContainingIgnoreCase(PageRequest.of(page, size), cityName);
         } else if(countryName != null) {
-            return destinationRepository.findByCountryNameContainingIgnoreCase(pageable, countryName);
+            return destinationRepository.findByCountryNameContainingIgnoreCase(PageRequest.of(page, size), countryName);
         } else {
-            return destinationRepository.findByTimezoneContainingIgnoreCase(pageable, timezone);
+            return destinationRepository.findByTimezoneContainingIgnoreCase(PageRequest.of(page, size), timezone);
         }
     }
 
