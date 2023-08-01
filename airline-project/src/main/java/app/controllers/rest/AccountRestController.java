@@ -1,11 +1,11 @@
 package app.controllers.rest;
 
 import app.controllers.api.rest.AccountRestApi;
-import app.dto.account.AccountDTO;
-import app.entities.account.Account;
+import app.dto.AccountDTO;;
 import app.entities.account.Role;
 import app.services.interfaces.AccountService;
 import app.services.interfaces.RoleService;
+import app.util.mappers.AccountMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.mail.MethodNotSupportedException;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -27,6 +26,7 @@ public class AccountRestController implements AccountRestApi {
 
     private final AccountService accountService;
     private final RoleService roleService;
+    private final AccountMapper accountMapper;
 
     @Override
     public ResponseEntity<Page> getAll(Integer page, Integer size) {
@@ -58,16 +58,15 @@ public class AccountRestController implements AccountRestApi {
     public ResponseEntity<AccountDTO> create(AccountDTO accountDTO)
             throws MethodNotSupportedException {
         log.info("create: create new Account with email={}", accountDTO.getEmail());
-        accountService.saveAccount(accountDTO.convertToEntity());
-        return ResponseEntity.ok(new AccountDTO(accountService.getAccountByEmail(accountDTO.getEmail())));
+        return ResponseEntity.ok(new AccountDTO(accountService.saveAccount(accountMapper.convertToAccount(accountDTO))));
     }
 
     @Override
     public ResponseEntity<AccountDTO> update(Long id, AccountDTO accountDTO)
             throws MethodNotSupportedException {
         log.info("update: update Account with id = {}", id);
-        accountService.updateAccount(id, accountDTO.convertToEntity());
-        return new ResponseEntity<>(new AccountDTO(accountService.getAccountById(id).get()), HttpStatus.OK);
+        return new ResponseEntity<>(new AccountDTO( accountService.updateAccount(id,
+                accountMapper.convertToAccount(accountDTO))), HttpStatus.OK);
     }
 
     @Override
@@ -83,7 +82,7 @@ public class AccountRestController implements AccountRestApi {
 
     @Override
     public ResponseEntity<List<Role>> getAllRoles() {
-        List<Role> allRolesFromDb = roleService.getAllRoles();
+        var allRolesFromDb = roleService.getAllRoles();
         if (allRolesFromDb.isEmpty()) {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT);
         }

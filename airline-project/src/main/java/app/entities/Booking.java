@@ -1,10 +1,6 @@
 package app.entities;
 
-import app.entities.account.Passenger;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,7 +10,9 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name="booking")
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"bookingNumber", "passenger"})
@@ -43,5 +41,4 @@ public class Booking {
     @OneToOne
     @JoinColumn(name = "category_id")
     private Category category;
-
 }

@@ -1,9 +1,7 @@
 package app.entities;
 
 import app.enums.FlightStatus;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -16,7 +14,9 @@ import java.util.List;
     indexes = {
         @Index(columnList = "departure_date", name = "departure_index")
     })
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"code"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -28,12 +28,15 @@ public class Flight {
     private Long id;
 
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<FlightSeat> seats;
 
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<Ticket> ticket;
 
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<Booking> Booking;
 
     @Column(name = "code")
