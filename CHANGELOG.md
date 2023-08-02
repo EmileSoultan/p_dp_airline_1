@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased]
+- #257 Переход AccountMapper на Mapstruct.
 - #237 Исправлен баг с редактированием Ticket. Убраны аннотации @Data из проекта.
 
 ## [1.0.6] - 30.07.2023
