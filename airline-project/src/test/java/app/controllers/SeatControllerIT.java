@@ -5,7 +5,6 @@ import app.enums.CategoryType;
 import app.repositories.SeatRepository;
 import app.services.interfaces.CategoryService;
 import app.services.interfaces.SeatService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
-import static org.testcontainers.shaded.org.hamcrest.Matchers.hasSize;
+import static org.testcontainers.shaded.org.hamcrest.Matchers.equalTo;
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-seat-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -72,24 +71,28 @@ class SeatControllerIT extends IntegrationTestBase {
         seatDTO.setIsLockedBack(false);
         seatDTO.setIsNearEmergencyExit(true);
         long id = seatDTO.getId();
-        int numberOfSeat = seatRepository.findAll().size();
+        long numberOfSeat = seatRepository.count();
 
         mockMvc.perform(patch("http://localhost:8080/api/seats/{id}", id)
                         .content(objectMapper.writeValueAsString(seatDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(result -> assertThat(seatRepository.findAll(), hasSize(numberOfSeat)));
+                .andExpect(result -> assertThat(seatRepository.count(), equalTo(numberOfSeat)));
     }
 
     @Test
     void editNotExistedSeat() throws Exception {
         long id = 100;
+        long numberOfNotExistedSeat = seatRepository.count();
+
         mockMvc.perform(patch("http://localhost:8080/api/seats/{id}", id)
                         .content(objectMapper.writeValueAsString(seatService.findById(100)))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertThat(seatRepository.count(), equalTo(numberOfNotExistedSeat)));
+        ;
     }
 
     @Test

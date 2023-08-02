@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
-import static org.testcontainers.shaded.org.hamcrest.Matchers.hasSize;
+import static org.testcontainers.shaded.org.hamcrest.Matchers.equalTo;
 
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
@@ -102,17 +102,15 @@ class BookingRestControllerIT extends IntegrationTestBase {
         booking.setPassengerId(passengerService.findById(1002L).get().getId());
         booking.setFlightId(4002L);
         booking.setCategoryType(CategoryType.BUSINESS);
-        int numberOfBooking = bookingRepository.findAll().size();
+        long numberOfBooking = bookingRepository.count();
 
         mockMvc.perform(patch("http://localhost:8080/api/bookings/{id}", id)
-                        .content(
-                                objectMapper.writeValueAsString(booking)
-                        )
+                        .content(objectMapper.writeValueAsString(booking))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(booking)))
-                .andExpect(result -> assertThat(bookingRepository.findAll(), hasSize(numberOfBooking)));
+                .andExpect(result -> assertThat(bookingRepository.count(), equalTo(numberOfBooking)));
     }
 
 

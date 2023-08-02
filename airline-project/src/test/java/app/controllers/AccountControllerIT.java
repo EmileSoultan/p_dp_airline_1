@@ -13,14 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Set;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
-import static org.testcontainers.shaded.org.hamcrest.Matchers.hasSize;
+import static org.testcontainers.shaded.org.hamcrest.Matchers.equalTo;
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-account-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -98,7 +95,7 @@ class AccountControllerIT extends IntegrationTestBase {
         Long id = 2L;
         var updatableAccount = new AccountDTO(accountService.getAccountById(id).get());
         updatableAccount.setEmail("test@mail.ru");
-        int numberOfAccounts = accountRepository.findAll().size();
+        long numberOfAccounts = accountRepository.count();
 
         mockMvc.perform(patch("http://localhost:8080/api/accounts/{id}", id)
                         .content(objectMapper.writeValueAsString(updatableAccount))
@@ -106,7 +103,7 @@ class AccountControllerIT extends IntegrationTestBase {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("test@mail.ru"))
-                .andExpect(result -> assertThat(accountRepository.findAll(), hasSize(numberOfAccounts)));
+                .andExpect(result -> assertThat(accountRepository.count(), equalTo(numberOfAccounts)));
     }
 
 }

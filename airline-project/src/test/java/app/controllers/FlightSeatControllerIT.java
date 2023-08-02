@@ -15,14 +15,13 @@ import org.springframework.test.context.jdbc.Sql;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
-import static org.testcontainers.shaded.org.hamcrest.Matchers.hasSize;
+import static org.testcontainers.shaded.org.hamcrest.Matchers.equalTo;
 
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
@@ -112,15 +111,14 @@ class FlightSeatControllerIT extends IntegrationTestBase {
         flightSeat.setFare(100);
         flightSeat.setIsSold(false);
         flightSeat.setIsRegistered(false);
-        int numberOfFlightSeat = (int) flightSeatRepository.count();
+        long numberOfFlightSeat = flightSeatRepository.count();
 
         mockMvc.perform(patch("http://localhost:8080/api/flight-seats/{id}", id)
                         .content(objectMapper.writeValueAsString(new FlightSeatDTO(flightSeat)))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(result -> assertThat(StreamSupport.stream(flightSeatRepository.findAll().spliterator(), false)
-                        .collect(Collectors.toList()), hasSize(numberOfFlightSeat)));
+                .andExpect(result -> assertThat(flightSeatRepository.count(), equalTo(numberOfFlightSeat)));
     }
 
     @Test

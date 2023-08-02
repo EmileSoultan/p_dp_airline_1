@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
-import static org.testcontainers.shaded.org.hamcrest.Matchers.hasSize;
+import static org.testcontainers.shaded.org.hamcrest.Matchers.equalTo;
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-aircraftCategorySeat-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -69,7 +69,7 @@ class AircraftRestControllerIT extends IntegrationTestBase {
         aircraft.setModel("Boeing 737");
         aircraft.setModelYear(2001);
         aircraft.setFlightRange(5000);
-        int numberOfAircraft = aircraftRepository.findAll().size();
+        long numberOfAircraft = aircraftRepository.count();
 
         mockMvc.perform(patch("http://localhost:8080/api/aircrafts/{id}", id)
                         .content(objectMapper.writeValueAsString(aircraft))
@@ -77,7 +77,7 @@ class AircraftRestControllerIT extends IntegrationTestBase {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(aircraft)))
-                .andExpect(result -> assertThat(aircraftRepository.findAll(), hasSize(numberOfAircraft)));
+                .andExpect(result -> assertThat(aircraftRepository.count(), equalTo(numberOfAircraft)));
     }
 
     @Test

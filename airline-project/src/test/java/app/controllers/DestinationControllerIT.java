@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
-import static org.testcontainers.shaded.org.hamcrest.Matchers.hasSize;
+import static org.testcontainers.shaded.org.hamcrest.Matchers.equalTo;
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-destination-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -126,14 +126,14 @@ class DestinationControllerIT extends IntegrationTestBase {
     @Test
     void shouldUpdateDestination() throws Exception {
         Long id = 3L;
-        int numberOfDestination = destinationRepository.findAll().size();
+        long numberOfDestination = destinationRepository.count();
         mockMvc.perform(patch("http://localhost:8080/api/destinations/{id}", id)
                         .content(objectMapper.writeValueAsString(new DestinationDTO
                                 (new Destination(3L, Airport.RAT, "Радужный", "Радужный", "+3", "Россия", false))))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(result -> assertThat(destinationRepository.findAll(), hasSize(numberOfDestination)));
+                .andExpect(result -> assertThat(destinationRepository.count(), equalTo(numberOfDestination)));
     }
 
     @Test

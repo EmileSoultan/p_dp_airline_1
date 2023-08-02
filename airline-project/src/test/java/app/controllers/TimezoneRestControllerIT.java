@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
-import static org.testcontainers.shaded.org.hamcrest.Matchers.hasSize;
+import static org.testcontainers.shaded.org.hamcrest.Matchers.equalTo;
 
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
@@ -96,7 +96,7 @@ class TimezoneRestControllerIT extends IntegrationTestBase {
         long id = 5L;
         var timezoneDTO = new TimezoneDTO(timezoneService.getTimezoneById(id).get());
         timezoneDTO.setCountryName("Чехия");
-        int numberOfTimezone = timezoneRepository.findAll().size();
+        long numberOfTimezone = timezoneRepository.count();
 
         mockMvc.perform(patch("http://localhost:8080/api/timezones/{id}", id)
                         .content(objectMapper.writeValueAsString(timezoneDTO))
@@ -104,6 +104,6 @@ class TimezoneRestControllerIT extends IntegrationTestBase {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(result -> assertThat(timezoneRepository.findAll(), hasSize(numberOfTimezone)));
+                .andExpect(result -> assertThat(timezoneRepository.count(), equalTo(numberOfTimezone)));
     }
 }
