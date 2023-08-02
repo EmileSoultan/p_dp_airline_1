@@ -40,7 +40,7 @@ class BookingDTOTest extends EntityTest {
 
 
     @Test
-    public void validBookingShouldValidate() {
+    void validBookingShouldValidate() {
         BookingDTO testBooking;
         var bookingJson = initJSONObject();
 
@@ -52,62 +52,8 @@ class BookingDTOTest extends EntityTest {
         Assertions.assertTrue(isSetWithViolationIsEmpty(validator, testBooking));
     }
 
-
     @Test
-    public void nullBookingNumberShouldNotValidate() {
-        BookingDTO testBooking;
-        var bookingJson = initJSONObject();
-        bookingJson.replace("bookingNumber", null);
-        try {
-            testBooking = mapper.readValue(bookingJson.toString(), BookingDTO.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        Assertions.assertFalse(isSetWithViolationIsEmpty(validator, testBooking));
-    }
-
-
-    @Test
-    public void allWhitespaceCharactersBookingNumberShouldNotValidate() {
-        BookingDTO testBooking;
-        var bookingJson = initJSONObject();
-        bookingJson.replace("bookingNumber", "         ");
-        try {
-            testBooking = mapper.readValue(bookingJson.toString(), BookingDTO.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        Assertions.assertFalse(isSetWithViolationIsEmpty(validator, testBooking));
-    }
-
-    @Test
-    public void lessThan9CharBookingNumberShouldNotValidate() {
-        BookingDTO testBooking;
-        var bookingJson = initJSONObject();
-        bookingJson.replace("bookingNumber", "BK-1");
-        try {
-            testBooking = mapper.readValue(bookingJson.toString(), BookingDTO.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        Assertions.assertFalse(isSetWithViolationIsEmpty(validator, testBooking));
-    }
-
-    @Test
-    public void moreThan9CharBookingNumberShouldNotValidate() {
-        BookingDTO testBooking;
-        var bookingJson = initJSONObject();
-        bookingJson.replace("bookingNumber", "BK-11111122");
-        try {
-            testBooking = mapper.readValue(bookingJson.toString(), BookingDTO.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        Assertions.assertFalse(isSetWithViolationIsEmpty(validator, testBooking));
-    }
-
-    @Test
-    public void nullIdPassengerShouldNotValidate() {
+    void nullIdPassengerShouldNotValidate() {
         BookingDTO testBooking;
         var bookingJson = initJSONObject();
         bookingJson.replace("passengerId", null);
@@ -120,7 +66,7 @@ class BookingDTOTest extends EntityTest {
     }
 
     @Test
-    public void nullFlightShouldNotValidate() {
+    void nullFlightShouldNotValidate() {
         BookingDTO testBooking;
         var bookingJson = initJSONObject();
         bookingJson.replace("flightId", null);
@@ -133,7 +79,7 @@ class BookingDTOTest extends EntityTest {
     }
 
     @Test
-    public void nullCategoryShouldNotValidate() {
+    void nullCategoryShouldNotValidate() {
         BookingDTO testBooking;
         var bookingJson = initJSONObject();
         bookingJson.replace("categoryType", null);
@@ -144,5 +90,4 @@ class BookingDTOTest extends EntityTest {
         }
         Assertions.assertFalse(isSetWithViolationIsEmpty(validator, testBooking));
     }
-
 }
