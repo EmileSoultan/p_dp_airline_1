@@ -1,8 +1,6 @@
 package app.entities;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -21,7 +19,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "flight_seats")
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"flight", "seat"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

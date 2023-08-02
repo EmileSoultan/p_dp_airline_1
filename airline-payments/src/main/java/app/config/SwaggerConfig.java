@@ -29,7 +29,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("S7 Airlines API (Payment)")
-                .version("1.0.5")
+                .version("1.0.6")
                 .description("UI для работы с API проекта S7 Airlines. (Payment)")
                 .build();
     }

@@ -3,7 +3,6 @@ package app.controllers.rest;
 
 import app.controllers.api.rest.TicketRestApi;
 import app.dto.TicketDTO;
-import app.entities.Ticket;
 import app.services.interfaces.TicketService;
 import app.util.mappers.TicketMapper;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -51,14 +49,12 @@ public class TicketRestController implements TicketRestApi {
     public ResponseEntity<TicketDTO> create(TicketDTO ticketDTO) {
         log.info("create: new Ticket = {}", ticketDTO);
         var savedTicket = ticketService.saveTicket(ticketMapper.convertToTicketEntity(ticketDTO));
-        ticketDTO.setId(savedTicket.getId());
-        return new ResponseEntity<>(ticketDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(new TicketDTO(savedTicket), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<?> update(Long id, TicketDTO ticketDTO) {
         log.info("update: Ticket with id = {}", id);
-        ticketDTO.setId(id);
         var ticket = ticketService.updateTicket(id, ticketMapper.convertToTicketEntity(ticketDTO));
         return new ResponseEntity<>(new TicketDTO(ticket), HttpStatus.OK);
     }
