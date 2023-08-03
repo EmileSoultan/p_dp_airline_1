@@ -9,7 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,7 +62,8 @@ class BookingRestControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/bookings?page=0&size=1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.findAll(pageable).map(BookingDTO::new))));
+                .andExpect(content().json(objectMapper.writeValueAsString
+                        (bookingService.findAll(pageable).map(BookingDTO::new))));
     }
 
 

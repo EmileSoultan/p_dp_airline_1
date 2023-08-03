@@ -8,6 +8,7 @@ import app.services.interfaces.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+@Deprecated
 @Component
 @RequiredArgsConstructor
 public class BookingMapper {
@@ -21,7 +22,7 @@ public class BookingMapper {
         booking.setId(bookingDTO.getId());
         booking.setBookingNumber(bookingDTO.getBookingNumber());
         booking.setBookingData(bookingDTO.getBookingData());
-        booking.setPassenger((passengerService.findById(bookingDTO.getPassengerId()).get()));
+        booking.setPassenger(passengerService.findById(bookingDTO.getPassengerId()).get());
         booking.setFlight(flightService.findById(bookingDTO.getFlightId()).get());
         booking.setCategory(categoryService.findByCategoryType(bookingDTO.getCategoryType()));
         return booking;
