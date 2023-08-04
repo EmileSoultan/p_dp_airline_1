@@ -1,8 +1,6 @@
 package app.services;
 
 import app.dto.SeatDTO;
-import app.entities.Aircraft;
-import app.entities.Category;
 import app.entities.Seat;
 import app.enums.seats.SeatsNumbersByAircraft;
 import app.enums.seats.interfaces.AircraftSeats;
