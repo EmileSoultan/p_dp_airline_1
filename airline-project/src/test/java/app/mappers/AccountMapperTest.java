@@ -5,25 +5,30 @@ import app.entities.account.Account;
 import app.entities.account.Role;
 import app.services.interfaces.RoleService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
 import java.util.Set;
+
+import static org.mockito.Mockito.when;
 
 
 class AccountMapperTest {
 
     private AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);
     @Mock
-    private RoleService roleService;
+    private RoleService roleServiceMock = Mockito.mock(RoleService.class);
 
     @Test
     public void shouldConvertAccountToAccountDTO() throws Exception {
+        Role role = new Role();
+        role.setId(1L);
+        role.setName("ROLE_MANAGER");
+
+        when(roleServiceMock.getRoleByName("ROLE_MANAGER")).thenReturn(role);
 
         Account account = new Account();
 
@@ -36,7 +41,7 @@ class AccountMapperTest {
         account.setPassword("Test123@");
         account.setAnswerQuestion("Test");
         account.setSecurityQuestion("Test");
-        Mockito.when(account.setRoles(Set.of(roleService.getRoleByName("ROLE_MANAGER")))).thenReturn("ROLE_MANEGER");
+        account.setRoles(Set.of(roleServiceMock.getRoleByName("ROLE_MANAGER")));
 
         AccountDTO accountDTO = accountMapper.convertToAccountDTO(account);
 
@@ -55,6 +60,11 @@ class AccountMapperTest {
 
     @Test
     public void shouldConvertAccountDTOToAccount() throws Exception {
+        Role role = new Role();
+        role.setId(1L);
+        role.setName("ROLE_MANAGER");
+
+        when(roleServiceMock.getRoleByName("ROLE_MANAGER")).thenReturn(role);
 
         AccountDTO accountDTO = new AccountDTO();
 
@@ -67,7 +77,7 @@ class AccountMapperTest {
         accountDTO.setPassword("Test123@");
         accountDTO.setAnswerQuestion("Test");
         accountDTO.setSecurityQuestion("Test");
-//        accountDTO.setRoles(Set.of(roleServiceMock.getRoleByName("ROLE_MANAGER")));
+        accountDTO.setRoles(Set.of(roleServiceMock.getRoleByName("ROLE_MANAGER")));
 
         Account account = accountMapper.convertToAccount(accountDTO);
 
@@ -81,7 +91,6 @@ class AccountMapperTest {
         Assertions.assertEquals(accountDTO.getAnswerQuestion(), account.getAnswerQuestion());
         Assertions.assertEquals(accountDTO.getSecurityQuestion(), account.getSecurityQuestion());
         Assertions.assertEquals(accountDTO.getRoles(), account.getRoles());
-
 
     }
 }
