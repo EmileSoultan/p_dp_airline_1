@@ -6,21 +6,17 @@ import app.enums.CategoryType;
 import app.services.interfaces.CategoryService;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.PassengerService;
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
-import static springfox.documentation.builders.PathSelectors.any;
+
 
 class BookingMapperTest {
 
@@ -36,13 +32,7 @@ class BookingMapperTest {
     public void shouldConvertBookingToBookingDTOEntity() throws Exception {
         Passenger passenger = new Passenger();
         passenger.setId(1001L);
-//        passenger.setPassport(new Passport());
-//        passenger.setEmail("ema");
-//        passenger.setLastName("23");
-//        passenger.setFirstName("213");
-//        passenger.setBirthDate(LocalDate.of(1920, 2, 26));
-//        passenger.setPhoneNumber("213123");
-        when(passengerServiceMock.findById(1001L)).thenReturn(1001L);
+        when(passengerServiceMock.findById(1001L)).thenReturn(Optional.of(passenger));
 
 
         Flight flight = new Flight();
@@ -67,14 +57,26 @@ class BookingMapperTest {
         Assertions.assertEquals(booking.getId(), bookingDTO.getId());
         Assertions.assertEquals(booking.getBookingNumber(), bookingDTO.getBookingNumber());
         Assertions.assertEquals(booking.getBookingData(), bookingDTO.getBookingData());
-        Assertions.assertEquals(booking.getPassenger(), bookingDTO.getPassengerId());
-        Assertions.assertEquals(booking.getFlight(), bookingDTO.getFlightId());
-        Assertions.assertEquals(booking.getCategory(), bookingDTO.getCategoryType());
+        Assertions.assertEquals(booking.getPassenger().getId(), bookingDTO.getPassengerId());
+        Assertions.assertEquals(booking.getFlight().getId(), bookingDTO.getFlightId());
+        Assertions.assertEquals(booking.getCategory().getCategoryType(), bookingDTO.getCategoryType());
 
     }
 
     @Test
     public void shouldConvertBookingDTOToBookingEntity() throws Exception {
+
+        Passenger passenger = new Passenger();
+        passenger.setId(1001L);
+        when(passengerServiceMock.findById(1001L)).thenReturn(Optional.of(passenger));
+
+        Flight flight = new Flight();
+        flight.setId(4001L);
+        when(flightServiceMock.findById(4001L)).thenReturn(Optional.of(flight));
+
+        Category category = new Category();
+        category.setCategoryType(CategoryType.ECONOMY);
+        when(categoryServiceMock.findByCategoryType(CategoryType.ECONOMY)).thenReturn(category);
 
         BookingDTO bookingDTO = new BookingDTO();
         bookingDTO.setId(1L);
