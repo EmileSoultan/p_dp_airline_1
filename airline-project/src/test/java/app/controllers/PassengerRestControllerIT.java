@@ -35,8 +35,6 @@ class PassengerRestControllerIT extends IntegrationTestBase {
     @Autowired
     private PassengerService passengerService;
     @Autowired
-    private RoleService roleService;
-    @Autowired
     private PassengerRepository passengerRepository;
 
     @Test

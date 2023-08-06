@@ -62,10 +62,8 @@ class DestinationControllerIT extends IntegrationTestBase {
                         .param("timezone", timezone))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(destination.map(entity -> {
-                    DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
-                    return dto;
-                }))));
+                .andExpect(content().json(objectMapper.writeValueAsString(destination.map(entity ->
+                    destinationMapper.convertToDestinationDTOEntity(entity)))));
     }
 
     @Test
@@ -81,10 +79,8 @@ class DestinationControllerIT extends IntegrationTestBase {
                         .param("timezone", timezone))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(destination.map(entity -> {
-                    DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
-                    return dto;
-                }))));
+                .andExpect(content().json(objectMapper.writeValueAsString(destination.map(entity ->
+                    destinationMapper.convertToDestinationDTOEntity(entity)))));
     }
 
     @Test
@@ -100,10 +96,8 @@ class DestinationControllerIT extends IntegrationTestBase {
                         .param("timezone", timezone))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(destination.map(entity -> {
-                    DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
-                    return dto;
-                }))));
+                .andExpect(content().json(objectMapper.writeValueAsString(destination.map(entity ->
+                    destinationMapper.convertToDestinationDTOEntity(entity)))));
     }
 
     @Test
@@ -119,10 +113,8 @@ class DestinationControllerIT extends IntegrationTestBase {
                         .param("timezone", timezone))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(destination.map(entity -> {
-                    DestinationDTO dto = destinationMapper.convertToDestinationDTOEntity(entity);
-                    return dto;
-                }))));
+                .andExpect(content().json(objectMapper.writeValueAsString(destination.map(entity ->
+                    destinationMapper.convertToDestinationDTOEntity(entity)))));
     }
 
     @Transactional

@@ -2,8 +2,6 @@ package app.controllers.rest;
 
 import app.controllers.api.rest.SeatRestApi;
 import app.dto.SeatDTO;
-import app.entities.Seat;
-
 import app.exceptions.ViolationOfForeignKeyConstraintException;
 import app.services.interfaces.AircraftService;
 import app.services.interfaces.SeatService;
@@ -11,10 +9,10 @@ import app.util.mappers.SeatMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,9 +28,8 @@ public class SeatRestController implements SeatRestApi {
 
     @Override
     public ResponseEntity<Page<SeatDTO>> getAll(Pageable pageable) {
-        var seats = seatService.findAll(pageable).map(entity -> {
-            return seatMapper.convertToSeatDTOEntity(entity);
-        });
+        var seats = seatService.findAll(pageable).map(entity ->
+                seatMapper.convertToSeatDTOEntity(entity));
         if (!seats.isEmpty()) {
             log.info("getAll: found {} Seats", seats.getSize());
             return new ResponseEntity<>(seats, HttpStatus.OK);
@@ -44,10 +41,8 @@ public class SeatRestController implements SeatRestApi {
 
     @Override
     public ResponseEntity<Page<SeatDTO>> getAllByAircraftId(Pageable pageable, Long aircraftId) {
-        var seats = seatService.findByAircraftId(aircraftId, pageable).map(entity -> {
-            return seatMapper.convertToSeatDTOEntity(entity);
-
-        });
+        var seats = seatService.findByAircraftId(aircraftId, pageable).map(entity ->
+            seatMapper.convertToSeatDTOEntity(entity));
         if (!seats.isEmpty()) {
             log.info("getAllByAircraftId: found {} Seats with aircraftId = {}", seats.getSize(), aircraftId);
             return new ResponseEntity<>(seats, HttpStatus.OK);
