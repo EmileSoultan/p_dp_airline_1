@@ -1,7 +1,6 @@
 package app.controllers;
 
 import app.dto.AircraftDTO;
-import app.entities.Aircraft;
 import app.services.interfaces.AircraftService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

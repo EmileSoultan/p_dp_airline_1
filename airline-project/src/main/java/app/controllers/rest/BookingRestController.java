@@ -2,7 +2,6 @@ package app.controllers.rest;
 
 import app.controllers.api.rest.BookingRestApi;
 import app.dto.BookingDTO;
-import app.entities.Booking;
 import app.services.interfaces.BookingService;
 import app.util.mappers.BookingMapper;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +24,8 @@ public class BookingRestController implements BookingRestApi {
     @Override
     public ResponseEntity<Page<BookingDTO>> getAll(Pageable pageable) {
         log.info("getAll: search all Bookings");
-        Page<BookingDTO> bookings = bookingService.findAll(pageable).map(entity -> {
-            var dto = bookingMapper.convertToBookingDTOEntity(entity);
-            return dto;
-        });
+        Page<BookingDTO> bookings = bookingService.findAll(pageable)
+                .map(bookingMapper::convertToBookingDTOEntity);
         if (bookings == null) {
             log.info("getAll: Bookings not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
