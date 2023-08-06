@@ -2,7 +2,6 @@ package app.controllers.rest;
 
 import app.controllers.api.rest.TimezoneRestApi;
 import app.dto.TimezoneDTO;
-import app.entities.Timezone;
 import app.services.interfaces.TimezoneService;
 import app.util.mappers.TimezoneMapper;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j

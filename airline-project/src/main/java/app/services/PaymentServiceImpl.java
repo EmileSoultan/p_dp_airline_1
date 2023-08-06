@@ -3,7 +3,6 @@ package app.services;
 import app.clients.PaymentFeignClient;
 import app.dto.PaymentRequest;
 import app.dto.PaymentResponse;
-import app.entities.Booking;
 import app.entities.Payment;
 import app.enums.State;
 import app.repositories.PaymentRepository;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 
 @Slf4j

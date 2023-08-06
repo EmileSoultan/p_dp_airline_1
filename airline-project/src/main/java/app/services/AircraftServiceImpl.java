@@ -6,7 +6,6 @@ import app.repositories.AircraftRepository;
 import app.repositories.FlightRepository;
 import app.services.interfaces.AircraftService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

@@ -5,7 +5,6 @@ import app.entities.Passport;
 import app.enums.Gender;
 import app.repositories.PassengerRepository;
 import app.services.interfaces.PassengerService;
-import app.services.interfaces.RoleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,6 @@ package app.exceptions;
 
 import app.controllers.IntegrationTestBase;
 import app.dto.TicketDTO;
-import app.entities.Ticket;
 import app.services.interfaces.TicketService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

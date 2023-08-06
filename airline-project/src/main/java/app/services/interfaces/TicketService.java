@@ -2,7 +2,6 @@ package app.services.interfaces;
 
 import app.entities.Ticket;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 public interface TicketService {
 

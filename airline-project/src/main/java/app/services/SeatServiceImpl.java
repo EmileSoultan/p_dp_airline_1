@@ -1,25 +1,22 @@
 package app.services;
 
 import app.dto.SeatDTO;
-import app.entities.Aircraft;
-import app.entities.Category;
 import app.entities.Seat;
+import app.enums.CategoryType;
 import app.enums.seats.SeatsNumbersByAircraft;
 import app.enums.seats.interfaces.AircraftSeats;
-import app.enums.CategoryType;
 import app.exceptions.ViolationOfForeignKeyConstraintException;
 import app.repositories.FlightSeatRepository;
 import app.repositories.SeatRepository;
 import app.services.interfaces.AircraftService;
 import app.services.interfaces.CategoryService;
 import app.services.interfaces.SeatService;
-import lombok.RequiredArgsConstructor;
 import app.util.mappers.SeatMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
