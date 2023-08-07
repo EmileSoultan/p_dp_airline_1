@@ -114,13 +114,13 @@ public class SeatControllerIT extends IntegrationTestBase {
                 .andExpect(status().isOk());
     }
 
-//    @Disabled("The logic of this method has been fixed. Check for existed seats was added")
-//    @Test
-//    void shouldCreateManySeats() throws Exception {
-//        mockMvc.perform(post("http://localhost:8080/api/seats/aircraft/{aircraftId}", 1))
-//                .andDo(print())
-//                .andExpect(status().isCreated());
-//    }
+    @Disabled("The logic of this method has been fixed. Check for existed seats was added")
+    @Test
+    void shouldCreateManySeats() throws Exception {
+        mockMvc.perform(post("http://localhost:8080/api/seats/aircraft/{aircraftId}", 1))
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
 
     @Test
     void creatingManySeatsForNotExistedAircraft() throws Exception {
