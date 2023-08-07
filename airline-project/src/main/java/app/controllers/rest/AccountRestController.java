@@ -28,7 +28,7 @@ public class AccountRestController implements AccountRestApi {
     private final RoleService roleService;
 
     @Override
-    public ResponseEntity<Page> getAll(Pageable pageable) {
+    public ResponseEntity<Page> getAllAccountsPages(Pageable pageable) {
         log.info("getAll: get all Accounts");
         var users = accountService.getAllAccounts(pageable);
         return users.isEmpty()
@@ -37,7 +37,7 @@ public class AccountRestController implements AccountRestApi {
     }
 
     @Override
-    public ResponseEntity<AccountDTO> getById(Long id) {
+    public ResponseEntity<AccountDTO> getAccountDTOById(Long id) {
         log.info("getById: get Account by id. id = {}", id);
         var account = accountService.getAccountById(id);
         return account.isEmpty()
@@ -54,14 +54,14 @@ public class AccountRestController implements AccountRestApi {
     }
 
     @Override
-    public ResponseEntity<AccountDTO> create(AccountDTO accountDTO)
+    public ResponseEntity<AccountDTO> createAccountDTO(AccountDTO accountDTO)
             throws MethodNotSupportedException {
         log.info("create: create new Account with email={}", accountDTO.getEmail());
         return ResponseEntity.ok(new AccountDTO(accountService.saveAccount(AccountMapper.INSTANCE.convertToAccount(accountDTO))));
     }
 
     @Override
-    public ResponseEntity<AccountDTO> update(Long id, AccountDTO accountDTO)
+    public ResponseEntity<AccountDTO> updateAccountDTOById(Long id, AccountDTO accountDTO)
             throws MethodNotSupportedException {
         log.info("update: update Account with id = {}", id);
         return new ResponseEntity<>(new AccountDTO( accountService.updateAccount(id,
@@ -69,8 +69,8 @@ public class AccountRestController implements AccountRestApi {
     }
 
     @Override
-    public ResponseEntity<Void> delete(Long id) {
-        log.info("delete: delete Account with id = {}", id);
+    public ResponseEntity<Void> deleteAccountById(Long id) {
+        log.info("deleteAircraftById: deleteAircraftById Account with id = {}", id);
         var user = accountService.getAccountById(id);
         if (user.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

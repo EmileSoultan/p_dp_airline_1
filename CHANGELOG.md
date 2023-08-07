@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased]
+- #263 Смена названий методов контроллеров и сервисов 
 - #257 Переход AccountMapper, BookingMapper на Mapstruct , а также junit тесты к ним. 
 - #237 Исправлен баг с редактированием Ticket. Убраны аннотации @Data из проекта.
 
