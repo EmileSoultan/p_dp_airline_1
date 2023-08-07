@@ -9,7 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,7 +62,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/bookings?page=0&size=1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.findAll(pageable).map(BookingDTO::new))));
+                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.getAllBookings(pageable).map(BookingDTO::new))));
     }
 
 
@@ -74,7 +73,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/bookings/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(new BookingDTO(bookingService.findById(id)))));
+                .andExpect(content().json(objectMapper.writeValueAsString(new BookingDTO(bookingService.getBookingById(id)))));
     }
 
 
@@ -87,7 +86,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(new BookingDTO(bookingService
-                        .findByBookingNumber(bookingNumber)))));
+                        .getBookingByNumber(bookingNumber)))));
     }
 
 
@@ -95,7 +94,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @DisplayName("Edit Booking by ID")
     void shouldEditBookingById() throws Exception {
         long id = 6002;
-        var booking = new BookingDTO(bookingService.findById(id));
+        var booking = new BookingDTO(bookingService.getBookingById(id));
         booking.setBookingNumber("BK-222222");
         booking.setBookingDate(LocalDateTime.now());
         booking.setPassengerId(passengerService.findById(1002L).get().getId());

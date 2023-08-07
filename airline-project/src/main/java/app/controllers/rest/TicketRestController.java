@@ -3,7 +3,6 @@ package app.controllers.rest;
 
 import app.controllers.api.rest.TicketRestApi;
 import app.dto.TicketDTO;
-import app.entities.Ticket;
 import app.services.interfaces.TicketService;
 import app.util.mappers.TicketMapper;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -27,8 +25,8 @@ public class TicketRestController implements TicketRestApi {
     private final TicketMapper ticketMapper;
 
     @Override
-    public ResponseEntity<Page<TicketDTO>> getAll(Integer page, Integer size) {
-        var ticketPage = ticketService.findAll(page, size);
+    public ResponseEntity<Page<TicketDTO>> getAllPagesTicketsDTO(Integer page, Integer size) {
+        var ticketPage = ticketService.getAllTickets(page, size);
         if(ticketPage.isEmpty()){
             log.error("getAll: Tickets not found");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -39,32 +37,30 @@ public class TicketRestController implements TicketRestApi {
     }
 
     @Override
-    public ResponseEntity<TicketDTO> getByNumber(String ticketNumber) {
+    public ResponseEntity<TicketDTO> getTicketDTOByTicketNumber(String ticketNumber) {
         log.info("getByNumber: Ticket by ticketNumber = {}", ticketNumber);
-        var ticket = ticketService.findTicketByTicketNumber(ticketNumber);
+        var ticket = ticketService.getTicketByTicketNumber(ticketNumber);
         return ticket != null
                 ? new ResponseEntity<>(new TicketDTO(ticket), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Override
-    public ResponseEntity<TicketDTO> create(TicketDTO ticketDTO) {
+    public ResponseEntity<TicketDTO> createTicketDTO(TicketDTO ticketDTO) {
         log.info("create: new Ticket = {}", ticketDTO);
         var savedTicket = ticketService.saveTicket(ticketMapper.convertToTicketEntity(ticketDTO));
-        ticketDTO.setId(savedTicket.getId());
-        return new ResponseEntity<>(ticketDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(new TicketDTO(savedTicket), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<?> update(Long id, TicketDTO ticketDTO) {
+    public ResponseEntity<?> updateTicketById(Long id, TicketDTO ticketDTO) {
         log.info("update: Ticket with id = {}", id);
-        ticketDTO.setId(id);
-        var ticket = ticketService.updateTicket(id, ticketMapper.convertToTicketEntity(ticketDTO));
+        var ticket = ticketService.updateTicketById(id, ticketMapper.convertToTicketEntity(ticketDTO));
         return new ResponseEntity<>(new TicketDTO(ticket), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<HttpStatus> delete(Long id) {
+    public ResponseEntity<HttpStatus> deleteTicketById(Long id) {
         try {
             ticketService.deleteTicketById(id);
             log.info("delete: Ticket. id={}", id);

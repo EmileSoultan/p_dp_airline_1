@@ -22,29 +22,34 @@ public class AccountServiceImpl implements AccountService {
     private final RoleServiceImpl roleService;
 
     @Override
-    public void saveAccount(Account account) {
+    public Account saveAccount(Account account) {
         account.setPassword(encoder.encode(account.getPassword()));
         account.setRoles(roleService.saveRolesToUser(account));
         if (account.getAnswerQuestion() != null) {
             account.setAnswerQuestion(encoder.encode(account.getAnswerQuestion()));
         }
-        accountRepository.saveAndFlush(account);
+        return accountRepository.saveAndFlush(account);
     }
 
     @Override
-    public void updateAccount(Long id, Account account) {
-        var editUser = accountRepository.getAccountById(id);
-        if (!account.getPassword().equals(editUser.getPassword())) {
-            editUser.setPassword(encoder.encode(account.getPassword()));
+    public Account updateAccount(Long id, Account account) {
+        var editAccount = accountRepository.getAccountById(id);
+        if (!account.getPassword().equals(editAccount.getPassword())) {
+            editAccount.setPassword(encoder.encode(account.getPassword()));
         }
         if (!account.getAnswerQuestion()
                 .equals(accountRepository.findById(id).orElse(null).getAnswerQuestion())) {
-            editUser.setAnswerQuestion(encoder.encode(account.getAnswerQuestion()));
+            editAccount.setAnswerQuestion(encoder.encode(account.getAnswerQuestion()));
         }
 
-        editUser.setRoles(roleService.saveRolesToUser(account));
-        editUser.setEmail(account.getEmail());
-        accountRepository.saveAndFlush(editUser);
+        editAccount.setRoles(roleService.saveRolesToUser(account));
+        editAccount.setEmail(account.getEmail());
+        editAccount.setFirstName(account.getFirstName());
+        editAccount.setLastName(account.getLastName());
+        editAccount.setBirthDate(account.getBirthDate());
+        editAccount.setPhoneNumber(account.getPhoneNumber());
+
+        return accountRepository.saveAndFlush(editAccount);
     }
 
     @Transactional(readOnly = true)

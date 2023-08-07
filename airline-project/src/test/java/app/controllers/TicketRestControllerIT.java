@@ -26,7 +26,7 @@ class TicketRestControllerIT extends IntegrationTestBase {
 
     @Test
     void createTicket_test() throws Exception {
-        Ticket newTicket = ticketService.findTicketByTicketNumber("ZX-3333");
+        Ticket newTicket = ticketService.getTicketByTicketNumber("ZX-3333");
         newTicket.setTicketNumber("SJ-9346");
         newTicket.setId(null);
         var ticketDTO = new TicketDTO(newTicket);
@@ -50,7 +50,8 @@ class TicketRestControllerIT extends IntegrationTestBase {
 
     @Test
     void updateTicket_test() throws Exception {
-        var ticketDTO = new TicketDTO(ticketService.findTicketByTicketNumber("ZX-3333"));
+        var ticketDTO = new TicketDTO(ticketService.getTicketByTicketNumber("ZX-3333"));
+        ticketDTO.setTicketNumber("ZX-2222");
         mockMvc.perform(patch("http://localhost:8080/api/tickets/{id}", ticketDTO.getId())
                         .content(
                                 objectMapper.writeValueAsString(ticketDTO)
@@ -59,6 +60,7 @@ class TicketRestControllerIT extends IntegrationTestBase {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(ticketDTO)));
+
     }
 
     @Test

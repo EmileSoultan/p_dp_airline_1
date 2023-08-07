@@ -17,7 +17,7 @@ import java.util.*;
 public class CachingBench extends IntegrationTestBase {
 
     @Autowired
-    AccountServiceImpl userService;
+    AccountServiceImpl accountService;
 
     @Autowired
     RoleRepository roleRepository;
@@ -52,9 +52,6 @@ public class CachingBench extends IntegrationTestBase {
         role = new Role();
         role.setName("ROLE_MANAGER");
         roleRepository.save(role);
-        role = new Role();
-        role.setName("ROLE_PASSENGER");
-        roleRepository.save(role);
     }
 
     @Test
@@ -67,29 +64,25 @@ public class CachingBench extends IntegrationTestBase {
         //Save users
         for(int i = 1; i <= iterations; i++){
             System.out.printf("\rIteration save users: %s/%s", i, iterations);
-            Account user = new Admin();
+            Account user = new Account();
             switch (random.ints(0,2).limit(1).findFirst().getAsInt()){
                 case 0:{
-                    user = new Admin();
+                    user = new Account();
                     time_load = System.currentTimeMillis();
                     user.setRoles(Set.of(roleRepository.findByName("ROLE_ADMIN")));//stress search role id any iteration
                     TimeListFindRole.add(System.currentTimeMillis() - time_load);
                 }
                 case 1:{
-                    user = new AirlineManager();
+                    user = new Account();
                     time_load = System.currentTimeMillis();
                     user.setRoles(Set.of(roleRepository.findByName("ROLE_MANAGER")));
                     TimeListFindRole.add(System.currentTimeMillis() - time_load);
                 }
-                case 2:{
-                    user = new Passenger(GetRandomString(4), GetRandomString(4),
-                            LocalDate.of(2000, 1, 1),
-                            GetRandomString(8), new Passport());
-                    time_load = System.currentTimeMillis();
-                    user.setRoles(Set.of(roleRepository.findByName("ROLE_PASSENGER")));
-                    TimeListFindRole.add(System.currentTimeMillis() - time_load);
-                }
             }
+            user.setFirstName(GetRandomString(4));
+            user.setLastName(GetRandomString(4));
+            user.setPhoneNumber(GetRandomString(4));
+            user.setBirthDate(LocalDate.now());
             user.setEmail(GetRandomMail());
             user.setPassword(GetRandomString(8) + "1A@");
             user.setSecurityQuestion(GetRandomString(4));
@@ -114,7 +107,7 @@ public class CachingBench extends IntegrationTestBase {
         for(long i = 1; i <= iterations; i++) {
             System.out.printf("\rIteration load users: %s/%s", i, iterations);
             time_load_user = System.currentTimeMillis();
-            userService.getAccountById(i);
+            accountService.getAccountById(i);
             TimeListLoadUser.add(System.currentTimeMillis() - time_load_user);
         }
         //Show avg
@@ -136,7 +129,7 @@ public class CachingBench extends IntegrationTestBase {
             id = random.longs(1L, (long) iterations).limit(1).findFirst().getAsLong();
             System.out.printf("\rIteration load users: %s/%s", i, iterations);
             time_load_user = System.currentTimeMillis();
-            userService.getAccountById(id);
+            accountService.getAccountById(id);
             TimeListLoadUser.add(System.currentTimeMillis() - time_load_user);
         }
         //Show avg

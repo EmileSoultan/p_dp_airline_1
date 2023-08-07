@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 public class SeatServiceImplTest {
 
     private static final Long AIRCRAFT_TEST_ID = 1L;
-    private static final String AIRCRAFT_TEST_MODEL = "Airbus A320";
+    private static final String AIRCRAFT_TEST_MODEL = "Boeing 737-800";
 
     private final SeatRepository seatRepository = mock(SeatRepository.class);
     private final CategoryService categoryService = mock(CategoryService.class);
@@ -55,11 +55,11 @@ public class SeatServiceImplTest {
         aircraft.setId(AIRCRAFT_TEST_ID);
         aircraft.setModel(AIRCRAFT_TEST_MODEL);
 
-        when(categoryService.findByCategoryType(CategoryType.ECONOMY))
+        when(categoryService.getCategoryByType(CategoryType.ECONOMY))
                 .thenReturn(economyCategory);
-        when(categoryService.findByCategoryType(CategoryType.BUSINESS))
+        when(categoryService.getCategoryByType(CategoryType.BUSINESS))
                 .thenReturn(businessCategory);
-        when(aircraftService.findById(AIRCRAFT_TEST_ID))
+        when(aircraftService.getAircraftById(AIRCRAFT_TEST_ID))
                 .thenReturn(aircraft);
         when(seatRepository.findByAircraftId(eq(AIRCRAFT_TEST_ID), any()))
                 .thenReturn(new PageImpl<>(Collections.emptyList()));
@@ -79,7 +79,7 @@ public class SeatServiceImplTest {
                     return seat;
                 });
 
-        List<SeatDTO> seatDTOs = seatService.generate(AIRCRAFT_TEST_ID);
+        List<SeatDTO> seatDTOs = seatService.generateSeatsDTOByAircraftId(AIRCRAFT_TEST_ID);
 
         long businessSeatsCount = seatDTOs.stream()
                 .map(SeatDTO::getCategory)
@@ -88,7 +88,7 @@ public class SeatServiceImplTest {
                 .count();
 
         assertFalse(seatDTOs.isEmpty());
-        assertEquals(158, seatDTOs.size());
-        assertEquals(8, businessSeatsCount);
+        assertEquals(168, seatDTOs.size());
+        assertEquals(12, businessSeatsCount);
     }
 }

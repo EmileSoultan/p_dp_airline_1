@@ -2,8 +2,7 @@ package app.entities;
 
 import app.enums.CategoryType;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -22,7 +21,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "category")
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Category {
