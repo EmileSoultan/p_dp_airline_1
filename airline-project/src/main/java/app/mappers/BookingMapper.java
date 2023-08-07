@@ -6,7 +6,9 @@ import app.entities.Booking;
 import app.services.interfaces.CategoryService;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.PassengerService;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Context;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
