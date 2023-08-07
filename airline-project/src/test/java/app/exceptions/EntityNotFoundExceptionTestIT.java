@@ -21,7 +21,7 @@ class EntityNotFoundExceptionTestIT extends IntegrationTestBase {
 
     @Test
     void shouldThrowExceptionIfPassengerIdNotExistWhenCreatedTicket() throws Exception {
-        var newTicket = ticketService.findTicketByTicketNumber("ZX-3333");
+        var newTicket = ticketService.getTicketByTicketNumber("ZX-3333");
         newTicket.setTicketNumber("SJ-9346");
         var ticketDTO = new TicketDTO(newTicket);
         ticketDTO.setPassengerId(0L);
@@ -35,7 +35,7 @@ class EntityNotFoundExceptionTestIT extends IntegrationTestBase {
 
     @Test
     void shouldThrowExceptionIfFlightIdNotExistWhenCreatedTicket() throws Exception {
-        var newTicket = ticketService.findTicketByTicketNumber("ZX-3333");
+        var newTicket = ticketService.getTicketByTicketNumber("ZX-3333");
         newTicket.setTicketNumber("SJ-9346");
         var ticketDTO = new TicketDTO(newTicket);
         ticketDTO.setFlightId(0L);
@@ -49,7 +49,7 @@ class EntityNotFoundExceptionTestIT extends IntegrationTestBase {
 
     @Test
     void shouldThrowExceptionIfIFlightSeatIdNotExistWhenCreatedTicket() throws Exception {
-        var newTicket = ticketService.findTicketByTicketNumber("ZX-3333");
+        var newTicket = ticketService.getTicketByTicketNumber("ZX-3333");
         newTicket.setTicketNumber("SJ-9346");
         var ticketDTO = new TicketDTO(newTicket);
         ticketDTO.setFlightSeatId(0L);

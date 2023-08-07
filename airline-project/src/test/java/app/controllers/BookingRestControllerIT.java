@@ -47,8 +47,8 @@ class BookingRestControllerIT extends IntegrationTestBase {
         var booking = new BookingDTO();
         booking.setBookingNumber("BK-111111");
         booking.setBookingData(LocalDateTime.now());
-        booking.setPassengerId(passengerService.findById(1001L).get().getId());
-        booking.setFlightId(flightService.findById(4001L).get().getId());
+        booking.setPassengerId(passengerService.getPassengerById(1001L).get().getId());
+        booking.setFlightId(flightService.getFlightById(4001L).get().getId());
         booking.setCategoryType(CategoryType.ECONOMY);
 
         mockMvc.perform(post("http://localhost:8080/api/bookings")
@@ -67,7 +67,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/bookings?page=0&size=1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.findAll(pageable).map(BookingDTO::new))));
+                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.getAllBookings(pageable).map(BookingDTO::new))));
     }
 
 
@@ -78,7 +78,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/bookings/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(new BookingDTO(bookingService.findById(id)))));
+                .andExpect(content().json(objectMapper.writeValueAsString(new BookingDTO(bookingService.getBookingById(id)))));
     }
 
 
@@ -91,7 +91,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(new BookingDTO(bookingService
-                        .findByBookingNumber(bookingNumber)))));
+                        .getBookingByNumber(bookingNumber)))));
     }
 
 
@@ -99,10 +99,10 @@ class BookingRestControllerIT extends IntegrationTestBase {
     @DisplayName("Edit Booking by ID")
     void shouldEditBookingById() throws Exception {
         long id = 6002;
-        var booking = new BookingDTO(bookingService.findById(id));
+        var booking = new BookingDTO(bookingService.getBookingById(id));
         booking.setBookingNumber("BK-222222");
         booking.setBookingData(LocalDateTime.now());
-        booking.setPassengerId(passengerService.findById(1002L).get().getId());
+        booking.setPassengerId(passengerService.getPassengerById(1002L).get().getId());
         booking.setFlightId(4002L);
         booking.setCategoryType(CategoryType.BUSINESS);
         long numberOfBooking = bookingRepository.count();

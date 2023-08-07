@@ -35,7 +35,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     public ResponseEntity<PaymentResponse> createPayment(PaymentRequest paymentRequest) {
         paymentRequest.getBookingsId().forEach(id -> {
-            var bookingFromDb = bookingService.findById(id);
+            var bookingFromDb = bookingService.getBookingById(id);
             if (bookingFromDb == null) {
                 throw new NoSuchElementException(String.format("booking with id=%d not exists", id));
             }
@@ -53,12 +53,12 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<Payment> findAllPayments() {
+    public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
     }
 
     @Override
-    public Payment findPaymentById(long id) {
+    public Payment getPaymentById(long id) {
         return paymentRepository.findById(id).orElse(null);
     }
 

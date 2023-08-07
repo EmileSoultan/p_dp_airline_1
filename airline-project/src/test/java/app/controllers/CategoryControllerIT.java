@@ -26,7 +26,7 @@ class CategoryControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/categories"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(categoryService.findAll())));
+                .andExpect(content().json(objectMapper.writeValueAsString(categoryService.getAllCategories())));
 
     }
 
@@ -36,6 +36,6 @@ class CategoryControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/categories/{category_type}", categoryType))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(categoryService.findByCategoryType(categoryType))));
+                .andExpect(content().json(objectMapper.writeValueAsString(categoryService.getCategoryByType(categoryType))));
     }
 }
