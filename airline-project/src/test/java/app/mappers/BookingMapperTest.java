@@ -1,7 +1,10 @@
 package app.mappers;
 
 import app.dto.BookingDTO;
-import app.entities.*;
+import app.entities.Booking;
+import app.entities.Category;
+import app.entities.Flight;
+import app.entities.Passenger;
 import app.enums.CategoryType;
 import app.services.interfaces.CategoryService;
 import app.services.interfaces.FlightService;
