@@ -8,17 +8,17 @@ import java.util.List;
 
 public interface BookingService {
 
-    Booking save(Booking book);
+    Booking saveBooking(Booking book);
 
-    Page<Booking> findAll(Integer page, Integer size);
+    Page<Booking> getAllBookings(Integer page, Integer size);
 
-    Booking findById(Long id);
+    Booking getBookingById(Long id);
 
-    List<Booking> getAllBooksForEmailNotification(LocalDateTime departureIn, LocalDateTime gap);
+    List<Booking> getAllBookingsForEmailNotification(LocalDateTime departureIn, LocalDateTime gap);
 
-    void deleteById(Long id);
+    void deleteBookingById(Long id);
 
-    Booking findByBookingNumber(String number);
+    Booking getBookingByNumber(String number);
 
     void deleteBookingByPassengerId(long passengerId);
 }

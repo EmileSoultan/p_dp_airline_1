@@ -21,27 +21,27 @@ public class AircraftServiceImpl implements AircraftService {
     private final FlightRepository flightRepository;
 
     @Transactional
-    public Aircraft save(Aircraft aircraft) {
+    public Aircraft saveAircraft(Aircraft aircraft) {
         if (!aircraft.getSeatSet().isEmpty()) {
             aircraft.getSeatSet().forEach(seat -> seat.setAircraft(aircraft));
         }
         return aircraftRepository.save(aircraft);
     }
 
-    public Page<Aircraft> findAll(Integer page, Integer size) {
+    public Page<Aircraft> getAllAircrafts(Integer page, Integer size) {
         return aircraftRepository.findAll(PageRequest.of(page, size));
     }
 
-    public Aircraft findById(Long id) {
+    public Aircraft getAircraftById(Long id) {
         return aircraftRepository.findById(id).orElse(null);
     }
 
-    public Aircraft findByAircraftNumber(String aircraftNumber) {
+    public Aircraft getAircraftByAircraftNumber(String aircraftNumber) {
         return aircraftRepository.findByAircraftNumber(aircraftNumber);
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void deleteAircraftById(Long id) {
         List<Flight> flightSet = flightRepository.findByAircraft_Id(id);
         if (flightSet != null) {
             flightSet.forEach(flight -> flight.setAircraft(null));

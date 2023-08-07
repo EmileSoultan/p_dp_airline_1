@@ -5,13 +5,13 @@ import org.springframework.data.domain.Page;
 
 public interface AircraftService {
 
-    Aircraft save(Aircraft aircraft);
+    Aircraft saveAircraft(Aircraft aircraft);
 
-    Page<Aircraft> findAll(Integer page, Integer size);
+    Page<Aircraft> getAllAircrafts(Integer page, Integer size);
 
-    Aircraft findById(Long id);
+    Aircraft getAircraftById(Long id);
 
-    Aircraft findByAircraftNumber(String aircraftNumber);
+    Aircraft getAircraftByAircraftNumber(String aircraftNumber);
 
-    void delete(Long id);
+    void deleteAircraftById(Long id);
 }

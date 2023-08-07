@@ -21,9 +21,9 @@ public class BookingRestController implements BookingRestApi {
     private final BookingMapper bookingMapper;
 
     @Override
-    public ResponseEntity<Page<BookingDTO>> getAll(Integer page, Integer size) {
+    public ResponseEntity<Page<BookingDTO>> getAllPagesBookingsDTO(Integer page, Integer size) {
         log.info("getAll: search all Bookings");
-        Page<BookingDTO> bookings = bookingService.findAll(page, size).map(entity -> {
+        Page<BookingDTO> bookings = bookingService.getAllBookings(page, size).map(entity -> {
             var dto = bookingMapper.convertToBookingDTOEntity(entity);
             return dto;
         });
@@ -35,9 +35,9 @@ public class BookingRestController implements BookingRestApi {
     }
 
     @Override
-    public ResponseEntity<BookingDTO> getById(Long id) {
+    public ResponseEntity<BookingDTO> getBookingDTOById(Long id) {
         log.info("getById: search Booking by id = {}", id);
-        var booking = bookingService.findById(id);
+        var booking = bookingService.getBookingById(id);
         if (booking == null) {
             log.info("getById: not found Booking with id = {}", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,9 +46,9 @@ public class BookingRestController implements BookingRestApi {
     }
 
     @Override
-    public ResponseEntity<BookingDTO> getByNumber(String bookingNumber) {
+    public ResponseEntity<BookingDTO> getBookingDTOByBookingNumber(String bookingNumber) {
         log.info("getByNumber: search Booking by number = {}", bookingNumber);
-        var booking = bookingService.findByBookingNumber(bookingNumber);
+        var booking = bookingService.getBookingByNumber(bookingNumber);
         if (booking == null) {
             log.info("getByNumber: not found Booking with number = {}", bookingNumber);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -57,33 +57,33 @@ public class BookingRestController implements BookingRestApi {
     }
 
     @Override
-    public ResponseEntity<BookingDTO> create(BookingDTO bookingDTO) {
+    public ResponseEntity<BookingDTO> createBookingDTO(BookingDTO bookingDTO) {
         log.info("create: creating a new Booking");
-        return new ResponseEntity<>(new BookingDTO(bookingService.save(bookingMapper
+        return new ResponseEntity<>(new BookingDTO(bookingService.saveBooking(bookingMapper
                 .convertToBookingEntity(bookingDTO))),
                 HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<BookingDTO> update(Long id, BookingDTO bookingDTO) {
+    public ResponseEntity<BookingDTO> updateBookingDTOById(Long id, BookingDTO bookingDTO) {
         log.info("update: edit Booking with id = {}", id);
-        if (bookingService.findById(id) == null) {
+        if (bookingService.getBookingById(id) == null) {
             log.info("update: not found Booking with id = {}", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         bookingDTO.setId(id);
-        return new ResponseEntity<>(new BookingDTO(bookingService.save(bookingMapper
+        return new ResponseEntity<>(new BookingDTO(bookingService.saveBooking(bookingMapper
                 .convertToBookingEntity(bookingDTO))),
                 HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<HttpStatus> delete(Long id) {
-        log.info("delete: deleting a Booking with id = {}", id);
+    public ResponseEntity<HttpStatus> deleteBookingById(Long id) {
+        log.info("deleteAircraftById: deleting a Booking with id = {}", id);
         try {
-            bookingService.deleteById(id);
+            bookingService.deleteBookingById(id);
         } catch (Exception e) {
-            log.error("delete: error of deleting - Booking with id = {} not found", id);
+            log.error("deleteAircraftById: error of deleting - Booking with id = {} not found", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

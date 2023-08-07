@@ -8,6 +8,7 @@ import app.util.mappers.AircraftMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,9 +23,9 @@ public class AircraftRestController implements AircraftRestApi {
     private final AircraftMapper aircraftMapper;
 
     @Override
-    public ResponseEntity<Page<AircraftDTO>> getAll(Integer page, Integer size) {
+    public ResponseEntity<Page<AircraftDTO>> getAllPagesAircraftsDTO(Integer page, Integer size) {
         log.info("getAll: get all Aircrafts");
-        Page<AircraftDTO> aircrafts = aircraftService.findAll(page, size).map(entity -> {
+        Page<AircraftDTO> aircrafts = aircraftService.getAllAircrafts(page, size).map(entity -> {
             return aircraftMapper.convertToAircarftDTOEntity(entity);
         });
         return aircrafts.isEmpty()
@@ -33,8 +34,8 @@ public class AircraftRestController implements AircraftRestApi {
     }
 
     @Override
-    public ResponseEntity<AircraftDTO> getById(Long id) {
-        var aircraft = aircraftService.findById(id);
+    public ResponseEntity<AircraftDTO> getAircraftDTOById(Long id) {
+        var aircraft = aircraftService.getAircraftById(id);
         if (aircraft == null) {
             log.error("getById: Aircraft with id={} doesn't exist.", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -44,33 +45,33 @@ public class AircraftRestController implements AircraftRestApi {
     }
 
     @Override
-    public ResponseEntity<Aircraft> create(AircraftDTO aircraftDTO) {
+    public ResponseEntity<Aircraft> createAircraft(AircraftDTO aircraftDTO) {
         log.info("create: new Aircraft saved.");
-        return new ResponseEntity<>(aircraftService.save(aircraftMapper
+        return new ResponseEntity<>(aircraftService.saveAircraft(aircraftMapper
                 .convertToAircraftEntity(aircraftDTO)),
                 HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Aircraft> update(Long id, AircraftDTO aircraftDTO) {
-        if (aircraftService.findById(id) == null) {
+    public ResponseEntity<Aircraft> updateAircraftById(Long id, AircraftDTO aircraftDTO) {
+        if (aircraftService.getAircraftById(id) == null) {
             log.error("update: Aircraft with id={} doesn't exist.", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         aircraftDTO.setId(id);
         log.info("update: the Aircraft with id={} has been edited.", id);
-        return ResponseEntity.ok(aircraftService.save(aircraftMapper
+        return ResponseEntity.ok(aircraftService.saveAircraft(aircraftMapper
                 .convertToAircraftEntity(aircraftDTO)));
     }
 
     @Override
-    public ResponseEntity<HttpStatus> delete(Long id) {
+    public ResponseEntity<HttpStatus> deleteAircraftById(Long id) {
         try {
-            aircraftService.delete(id);
-            log.info("delete: the Aircraft with id={} has been deleted.", id);
+            aircraftService.deleteAircraftById(id);
+            log.info("deleteAircraftById: the Aircraft with id={} has been deleted.", id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            log.error("delete: error of deleting - Aircraft with id={} not found.", id);
+            log.error("deleteAircraftById: error of deleting - Aircraft with id={} not found.", id);
             return ResponseEntity.notFound().build();
         }
     }

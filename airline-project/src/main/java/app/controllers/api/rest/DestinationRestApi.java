@@ -4,6 +4,7 @@ import app.dto.DestinationDTO;
 import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,22 +32,22 @@ public interface DestinationRestApi {
             @ApiResponse(code = 200, message = "Destinations found"),
             @ApiResponse(code = 404, message = "Destinations not found")
     })
-    ResponseEntity<Page<DestinationDTO>> getAll(@PageableDefault(sort = {"id"})
+    ResponseEntity<Page<DestinationDTO>> getAllPagesDestinationsDTO(@PageableDefault(sort = {"id"})
                                                 @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page,
                                                 @RequestParam(value = "size", defaultValue = "10") @Min(1) @Max(10) Integer size,
 
-            @ApiParam(
+                                                                    @ApiParam(
                     name = "cityName",
                     value = "cityName",
                     example = "Волгоград"
             )
             @RequestParam(value = "cityName", required = false) String cityName,
-            @ApiParam(
+                                                                    @ApiParam(
                     name = "countryName",
                     value = "countryName"
             )
             @RequestParam(value = "countryName", required = false) String countryName,
-            @ApiParam(
+                                                                    @ApiParam(
                     name = "timezone",
                     value = "timezone",
                     example = "gmt%20%2b5"
@@ -56,7 +57,7 @@ public interface DestinationRestApi {
     @ApiOperation(value = "Create new Destination")
     @ApiResponse(code = 201, message = "Destination created")
     @PostMapping
-    ResponseEntity<DestinationDTO> create(
+    ResponseEntity<DestinationDTO> createDestinationDTO(
             @ApiParam(
                     name = "Destination",
                     value = "Destination"
@@ -66,7 +67,7 @@ public interface DestinationRestApi {
     @ApiOperation(value = "Edit Destination by id")
     @ApiResponse(code = 200, message = "Destination has been updated")
     @PatchMapping("/{id}")
-    ResponseEntity<DestinationDTO> update(
+    ResponseEntity<DestinationDTO> updateDestinationDTOById(
             @ApiParam(
                     name = "id",
                     value = "Destination.id"
@@ -83,7 +84,7 @@ public interface DestinationRestApi {
             @ApiResponse(code = 200, message = "Destination deleted"),
     })
     @DeleteMapping(value = "/{id}")
-    ResponseEntity<HttpStatus> delete(
+    ResponseEntity<HttpStatus> deleteDestinationById(
             @ApiParam(
                     name = "id",
                     value = "Destination.id",

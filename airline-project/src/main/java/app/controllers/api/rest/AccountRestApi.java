@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
+
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,16 +37,16 @@ public interface AccountRestApi {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Accounts found"),
             @ApiResponse(code = 204, message = "Accounts not found")})
-    ResponseEntity<Page> getAll(@PageableDefault(sort = {"id"})
-                                @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page,
-                                @RequestParam(value = "size", defaultValue = "10") @Min(1) @Max(10) Integer size);
+    ResponseEntity<Page> getAllAccountsPages(@PageableDefault(sort = {"id"})
+                                             @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page,
+                                             @RequestParam(value = "size", defaultValue = "10") @Min(1) @Max(10) Integer size);
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Get Account by \"id\"")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Account found"),
             @ApiResponse(code = 404, message = "Account not found")})
-    ResponseEntity<AccountDTO> getById(
+    ResponseEntity<AccountDTO> getAccountDTOById(
             @ApiParam(
                     name = "id",
                     value = "Account.id"
@@ -60,7 +61,7 @@ public interface AccountRestApi {
     @PostMapping
     @ApiOperation(value = "Create Account")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Account created")})
-    ResponseEntity<AccountDTO> create(
+    ResponseEntity<AccountDTO> createAccountDTO(
             @ApiParam(
                     name = "account",
                     value = "Account model"
@@ -72,7 +73,7 @@ public interface AccountRestApi {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Account updated"),
             @ApiResponse(code = 404, message = "Account not found")})
-    ResponseEntity<AccountDTO> update(
+    ResponseEntity<AccountDTO> updateAccountDTOById(
             @ApiParam(
                     name = "id",
                     value = "Account.id"
@@ -89,7 +90,7 @@ public interface AccountRestApi {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Account deleted"),
             @ApiResponse(code = 404, message = "Account not found")})
-    ResponseEntity<Void> delete(
+    ResponseEntity<Void> deleteAccountById(
             @ApiParam(
                     name = "id",
                     value = "Account.id"

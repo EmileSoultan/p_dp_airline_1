@@ -36,7 +36,7 @@ public interface SeatRestApi {
             @ApiResponse(code = 200, message = "Seats found"),
             @ApiResponse(code = 404, message = "Seats not found")
     })
-    ResponseEntity<Page<SeatDTO>> getAll(@PageableDefault()
+    ResponseEntity<Page<SeatDTO>> getAllPagesSeatsDTO(@PageableDefault()
                                          @RequestParam(value = "page", defaultValue = "0") @Min(0) Integer page,
                                          @RequestParam(value = "size", defaultValue = "10") @Min(1) @Max(10) Integer size);
 
@@ -46,7 +46,7 @@ public interface SeatRestApi {
             @ApiResponse(code = 200, message = "Seats found"),
             @ApiResponse(code = 404, message = "Seats not found")
     })
-    ResponseEntity<Page<SeatDTO>> getAllByAircraftId(
+    ResponseEntity<Page<SeatDTO>> getAllPagesSeatsDTOByAircraftId(
             @PageableDefault(sort = {"id"}, value = 30) Pageable pageable,
             @ApiParam(
                     name = "aircraftId",
@@ -60,7 +60,7 @@ public interface SeatRestApi {
             @ApiResponse(code = 200, message = "seat found"),
             @ApiResponse(code = 404, message = "seat not found")
     })
-    ResponseEntity<SeatDTO> getById(
+    ResponseEntity<SeatDTO> getSeatDTOById(
             @ApiParam(
                     name = "id",
                     value = "Seat.id"
@@ -73,7 +73,7 @@ public interface SeatRestApi {
             @ApiResponse(code = 201, message = "seat created"),
             @ApiResponse(code = 400, message = "seat not created")
     })
-    ResponseEntity<SeatDTO> create(
+    ResponseEntity<SeatDTO> createSeatDTO(
             @ApiParam(
                     name = "seat",
                     value = "Seat model"
@@ -88,7 +88,7 @@ public interface SeatRestApi {
             @ApiResponse(code = 400, message = "Seats not created"),
             @ApiResponse(code = 404, message = "Aircraft with this id not found")
     })
-    ResponseEntity<List<SeatDTO>> generate(@PathVariable("aircraftId") Long aircraftId);
+    ResponseEntity<List<SeatDTO>> generateSeatsDTOByAircraftId(@PathVariable("aircraftId") Long aircraftId);
 
     @PatchMapping("/{id}")
     @ApiOperation(value = "Edit Seat by \"id\"")
@@ -97,7 +97,7 @@ public interface SeatRestApi {
             @ApiResponse(code = 400, message = "seat failed to edit"),
             @ApiResponse(code = 404, message = "seat not found")
     })
-    ResponseEntity<SeatDTO> update(
+    ResponseEntity<SeatDTO> updateSeatDTOById(
             @ApiParam(
                     name = "id",
                     value = "Seat.id"
@@ -116,7 +116,7 @@ public interface SeatRestApi {
             @ApiResponse(code = 404, message = "seat not found"),
             @ApiResponse(code = 405, message = "seat is locked")
     })
-    ResponseEntity<String> delete(
+    ResponseEntity<String> deleteSeatById(
             @ApiParam(
                     name = "id",
                     value = "Seat.id"
