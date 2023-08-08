@@ -21,9 +21,9 @@ public class BookingMapper {
         booking.setId(bookingDTO.getId());
         booking.setBookingNumber(bookingDTO.getBookingNumber());
         booking.setBookingDate(bookingDTO.getBookingDate());
-        booking.setPassenger((passengerService.findById(bookingDTO.getPassengerId()).get()));
-        booking.setFlight(flightService.findById(bookingDTO.getFlightId()).get());
-        booking.setCategory(categoryService.findByCategoryType(bookingDTO.getCategoryType()));
+        booking.setPassenger((passengerService.getPassengerById(bookingDTO.getPassengerId()).get()));
+        booking.setFlight(flightService.getFlightById(bookingDTO.getFlightId()).get());
+        booking.setCategory(categoryService.getCategoryByType(bookingDTO.getCategoryType()));
         return booking;
     }
 
@@ -32,9 +32,9 @@ public class BookingMapper {
         bookingDTO.setId(booking.getId());
         bookingDTO.setBookingNumber(booking.getBookingNumber());
         bookingDTO.setBookingDate(booking.getBookingDate());
-        bookingDTO.setPassengerId((passengerService.findById(booking.getPassenger().getId()).get()).getId());
-        bookingDTO.setFlightId(flightService.findById(booking.getFlight().getId()).get().getId());
-        bookingDTO.setCategoryType(categoryService.findByCategoryType(booking.getCategory().getCategoryType()).getCategoryType());
+        bookingDTO.setPassengerId((passengerService.getPassengerById(booking.getPassenger().getId()).get()).getId());
+        bookingDTO.setFlightId(flightService.getFlightById(booking.getFlight().getId()).get().getId());
+        bookingDTO.setCategoryType(categoryService.getCategoryByType(booking.getCategory().getCategoryType()).getCategoryType());
 
         return bookingDTO;
     }
