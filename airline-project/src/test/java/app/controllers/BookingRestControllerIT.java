@@ -42,8 +42,8 @@ class BookingRestControllerIT extends IntegrationTestBase {
         var booking = new BookingDTO();
         booking.setBookingNumber("BK-111111");
         booking.setBookingDate(LocalDateTime.now());
-        booking.setPassengerId(passengerService.findById(1001L).get().getId());
-        booking.setFlightId(flightService.findById(4001L).get().getId());
+        booking.setPassengerId(passengerService.getPassengerById(1001L).get().getId());
+        booking.setFlightId(flightService.getFlightById(4001L).get().getId());
         booking.setCategoryType(CategoryType.ECONOMY);
 
         mockMvc.perform(post("http://localhost:8080/api/bookings")
@@ -95,9 +95,8 @@ class BookingRestControllerIT extends IntegrationTestBase {
     void shouldEditBookingById() throws Exception {
         long id = 6002;
         var booking = new BookingDTO(bookingService.getBookingById(id));
-        booking.setBookingNumber("BK-222222");
         booking.setBookingDate(LocalDateTime.now());
-        booking.setPassengerId(passengerService.findById(1002L).get().getId());
+        booking.setPassengerId(passengerService.getPassengerById(1002L).get().getId());
         booking.setFlightId(4002L);
         booking.setCategoryType(CategoryType.BUSINESS);
 

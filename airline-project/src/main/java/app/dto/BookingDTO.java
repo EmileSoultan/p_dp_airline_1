@@ -22,8 +22,7 @@ public class BookingDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private long id;
 
-    @NotBlank
-    @Size(min = 9, max = 9, message = "Length of Booking Number should be 9 characters")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String bookingNumber;
 
     @NotNull
