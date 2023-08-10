@@ -89,5 +89,4 @@ class BookingDTOTest extends EntityTest {
         }
         Assertions.assertFalse(isSetWithViolationIsEmpty(validator, testBooking));
     }
-
 }

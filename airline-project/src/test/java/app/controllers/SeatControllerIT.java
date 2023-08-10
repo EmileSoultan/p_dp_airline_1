@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-seat-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class SeatControllerIT extends IntegrationTestBase {
+class SeatControllerIT extends IntegrationTestBase {
 
     @Autowired
     private SeatService seatService;
