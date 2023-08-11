@@ -4,20 +4,21 @@ import app.dto.SeatDTO;
 import app.enums.CategoryType;
 import app.services.interfaces.CategoryService;
 import app.services.interfaces.SeatService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-seat-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class SeatControllerIT extends IntegrationTestBase {
+class SeatControllerIT extends IntegrationTestBase {
 
     @Autowired
     private SeatService seatService;
@@ -114,13 +115,13 @@ public class SeatControllerIT extends IntegrationTestBase {
                 .andExpect(status().isOk());
     }
 
-    @Disabled("The logic of this method has been fixed. Check for existed seats was added")
-    @Test
-    void shouldCreateManySeats() throws Exception {
-        mockMvc.perform(post("http://localhost:8080/api/seats/aircraft/{aircraftId}", 1))
-                .andDo(print())
-                .andExpect(status().isCreated());
-    }
+//    @Disabled("The logic of this method has been fixed. Check for existed seats was added")
+//    @Test
+//    void shouldCreateManySeats() throws Exception {
+//        mockMvc.perform(post("http://localhost:8080/api/seats/aircraft/{aircraftId}", 1))
+//                .andDo(print())
+//                .andExpect(status().isCreated());
+//    }
 
     @Test
     void creatingManySeatsForNotExistedAircraft() throws Exception {
