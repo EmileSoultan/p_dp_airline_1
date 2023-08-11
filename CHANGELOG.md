@@ -3,6 +3,7 @@
 ## [Unreleased]
 - #259 в BookingDto поле bookingNumber доступно теперь только для чтения, генерируется в сервисе, удалены тесты в BookingRestControllerIT на валидацию этого поля. bookingData переименовано на bookingDate
 - #237 Исправлен баг с редактированием Ticket. Убраны аннотации @Data из проекта.
+- #no_task - added vaadin
 
 ## [1.0.6] - 30.07.2023
 - #226 Рефакторинг passenger и account - убрано наследование
