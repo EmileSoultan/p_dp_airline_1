@@ -51,7 +51,6 @@ class SeatControllerIT extends IntegrationTestBase {
                 .andDo(print())
                 .andExpect(status().isCreated());
 
-
     }
 
     @Test
