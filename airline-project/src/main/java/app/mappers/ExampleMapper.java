@@ -1,4 +1,4 @@
-package app.util.mappers;
+package app.mappers;
 
 
 import app.dto.ExampleDto;
