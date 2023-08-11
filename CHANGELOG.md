@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 - #259 в BookingDto поле bookingNumber доступно теперь только для чтения, генерируется в сервисе, удалены тесты в BookingRestControllerIT на валидацию этого поля. bookingData переименовано на bookingDate
+- #263 Смена названий методов контроллеров и сервисов 
+- #257 Переход AccountMapper, BookingMapper на Mapstruct , а также junit тесты к ним.
+- #260 Сделана пагинация во всех контроллерах использующих метод findAll.
 - #237 Исправлен баг с редактированием Ticket. Убраны аннотации @Data из проекта.
 - #no_task - added vaadin
 
