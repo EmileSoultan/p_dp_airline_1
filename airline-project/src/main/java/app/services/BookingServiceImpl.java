@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +32,11 @@ public class BookingServiceImpl implements BookingService {
         booking.setPassenger((passengerService.getPassengerById(booking.getPassenger().getId())).get());
         booking.setFlight(flightService.getFlightByCode(booking.getFlight().getCode()));
         booking.setCategory(categoryService.getCategoryByType(booking.getCategory().getCategoryType()));
+        if (booking.getId() == 0) {
+            booking.setBookingNumber(generateBookingNumber());
+        } else {
+            booking.setBookingNumber(bookingRepository.findById(booking.getId()).get().getBookingNumber());
+        }
 
         return bookingRepository.save(booking);
     }
@@ -65,5 +71,9 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public void deleteBookingByPassengerId(long passengerId) {
         bookingRepository.deleteBookingByPassengerId(passengerId);
+    }
+
+    private String generateBookingNumber() {
+        return UUID.randomUUID().toString().substring(0, 9);
     }
 }

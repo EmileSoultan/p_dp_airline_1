@@ -84,7 +84,8 @@ public class SeatRestController implements SeatRestApi {
         }
         var savedSeats = seatService.generateSeatsDTOByAircraftId(aircraftId);
         if (!savedSeats.isEmpty()) {
-            log.info("generate: saved {} new Seats with aircraft.id = {}", savedSeats.size(), aircraftId);
+            log.info("generate: saved {} new Seats with aircraft.id = {}",
+                    savedSeats.size(), aircraftId);
             return new ResponseEntity<>(savedSeats, HttpStatus.CREATED);
         } else return new ResponseEntity<>(HttpStatus.OK);
     }
