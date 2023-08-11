@@ -1,7 +1,10 @@
 package app.controllers;
 
 import app.dto.SeatDTO;
+import app.entities.Aircraft;
 import app.enums.CategoryType;
+import app.repositories.SeatRepository;
+import app.services.interfaces.AircraftService;
 import app.services.interfaces.CategoryService;
 import app.services.interfaces.SeatService;
 import org.junit.jupiter.api.Test;
@@ -15,6 +18,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
+import static org.testcontainers.shaded.org.hamcrest.Matchers.equalTo;
+
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
 @Sql(value = {"/sqlQuery/create-seat-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -22,9 +28,12 @@ class SeatControllerIT extends IntegrationTestBase {
 
     @Autowired
     private SeatService seatService;
-
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private SeatRepository seatRepository;
+    @Autowired
+    private AircraftService aircraftService;
 
     @Test
     void shouldSaveSeat() throws Exception {
@@ -68,22 +77,27 @@ class SeatControllerIT extends IntegrationTestBase {
         seatDTO.setIsLockedBack(false);
         seatDTO.setIsNearEmergencyExit(true);
         long id = seatDTO.getId();
+        long numberOfSeat = seatRepository.count();
 
         mockMvc.perform(patch("http://localhost:8080/api/seats/{id}", id)
                         .content(objectMapper.writeValueAsString(seatDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(result -> assertThat(seatRepository.count(), equalTo(numberOfSeat)));
     }
 
     @Test
     void editNotExistedSeat() throws Exception {
         long id = 100;
+        long numberOfNotExistedSeat = seatRepository.count();
+
         mockMvc.perform(patch("http://localhost:8080/api/seats/{id}", id)
                         .content(objectMapper.writeValueAsString(seatService.getSeatById(100)))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertThat(seatRepository.count(), equalTo(numberOfNotExistedSeat)));
     }
 
     @Test
@@ -115,13 +129,23 @@ class SeatControllerIT extends IntegrationTestBase {
                 .andExpect(status().isOk());
     }
 
-//    @Disabled("The logic of this method has been fixed. Check for existed seats was added")
-//    @Test
-//    void shouldCreateManySeats() throws Exception {
-//        mockMvc.perform(post("http://localhost:8080/api/seats/aircraft/{aircraftId}", 1))
-//                .andDo(print())
-//                .andExpect(status().isCreated());
-//    }
+
+    @Test
+    void shouldCreateManySeats() throws Exception {
+        var aircraft = new Aircraft();
+        aircraft.setAircraftNumber("17000010");
+        aircraft.setModel("Airbus A319");
+        aircraft.setModelYear(2002);
+        aircraft.setFlightRange(3800);
+        long aircraftId = aircraftService.saveAircraft(aircraft).getId();
+
+        mockMvc.perform(post("http://localhost:8080/api/seats/aircraft/{aircraftId}", 1))
+                .andDo(print())
+                .andExpect(status().isOk());
+        mockMvc.perform(post("http://localhost:8080/api/seats/aircraft/{aircraftId}", aircraftId))
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
 
     @Test
     void creatingManySeatsForNotExistedAircraft() throws Exception {

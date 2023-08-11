@@ -1,7 +1,7 @@
 package app.controllers.rest;
 
 import app.controllers.api.rest.AccountRestApi;
-import app.dto.AccountDTO;;
+import app.dto.AccountDTO;
 import app.entities.account.Role;
 import app.mappers.AccountMapper;
 import app.services.interfaces.AccountService;
@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.mail.MethodNotSupportedException;
 import java.util.Collections;
 import java.util.List;
+
+;
 
 @Slf4j
 @RestController
