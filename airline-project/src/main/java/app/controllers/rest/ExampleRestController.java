@@ -5,7 +5,7 @@ import app.controllers.api.rest.ExampleRestApi;
 import app.dto.ExampleDto;
 import app.entities.Example;
 import app.services.ExampleService;
-import app.util.mappers.ExampleMapper;
+import app.mappers.ExampleMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

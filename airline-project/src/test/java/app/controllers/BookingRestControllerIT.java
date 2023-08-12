@@ -2,6 +2,7 @@ package app.controllers;
 
 import app.dto.BookingDTO;
 import app.enums.CategoryType;
+import app.repositories.BookingRepository;
 import app.services.interfaces.BookingService;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.PassengerService;
@@ -22,6 +23,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
+import static org.testcontainers.shaded.org.hamcrest.Matchers.equalTo;
 
 
 @Sql({"/sqlQuery/delete-from-tables.sql"})
@@ -35,6 +38,8 @@ class BookingRestControllerIT extends IntegrationTestBase {
     private PassengerService passengerService;
     @Autowired
     private FlightService flightService;
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @Test
     @DisplayName("Save Booking")
@@ -62,7 +67,7 @@ class BookingRestControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("http://localhost:8080/api/bookings?page=0&size=1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.getAllBookings(pageable).map(BookingDTO::new))));
+                .andExpect(content().json(objectMapper.writeValueAsString(bookingService.getAllBookings(pageable.getPageNumber(), pageable.getPageSize()).map(BookingDTO::new))));
     }
 
 
@@ -99,15 +104,15 @@ class BookingRestControllerIT extends IntegrationTestBase {
         booking.setPassengerId(passengerService.getPassengerById(1002L).get().getId());
         booking.setFlightId(4002L);
         booking.setCategoryType(CategoryType.BUSINESS);
+        long numberOfBooking = bookingRepository.count();
 
         mockMvc.perform(patch("http://localhost:8080/api/bookings/{id}", id)
-                        .content(
-                                objectMapper.writeValueAsString(booking)
-                        )
+                        .content(objectMapper.writeValueAsString(booking))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(booking)));
+                .andExpect(content().json(objectMapper.writeValueAsString(booking)))
+                .andExpect(result -> assertThat(bookingRepository.count(), equalTo(numberOfBooking)));
     }
 
 
