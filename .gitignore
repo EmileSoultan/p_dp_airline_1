@@ -29,3 +29,7 @@
 
 /logs/
 
+### Frontend(Vaadin) ###
+/airline-project/src/main/java/app/controllers/view/
+/airline-project/src/main/java/app/controllers/view/*.ts
+
