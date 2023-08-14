@@ -2,6 +2,7 @@
 /airline-payments/target/
 /common/target/
 !.mvn/wrapper/maven-wrapper.jar
+/S7_Airlines_API.postman_collection.json
 
 ### STS ###
 .apt_generated
@@ -27,3 +28,4 @@
 /.nb-gradle/
 
 /logs/
+
