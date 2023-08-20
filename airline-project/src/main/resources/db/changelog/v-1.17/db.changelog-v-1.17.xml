@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <include file="01-add-table-booking.sql" relativeToChangelogFile="true"/>
+
+    <changeSet id="1.16.1" author="galina-arbatskaya">
+        <tagDatabase tag="01-add-table-booking"/>
+    </changeSet>
+
+<!--&lt;!&ndash;    <include file="02-change-table-flight_seats.sql" relativeToChangelogFile="true"/>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <changeSet id="1.16.2" author="galina-arbatskaya">&ndash;&gt;-->
+<!--&lt;!&ndash;        <tagDatabase tag="02-change-table-flight_seats"/>&ndash;&gt;-->
+<!--    </changeSet>-->
+
+
+</databaseChangeLog>
+

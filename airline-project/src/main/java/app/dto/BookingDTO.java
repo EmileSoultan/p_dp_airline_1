@@ -40,7 +40,8 @@ public class BookingDTO {
         this.bookingNumber = booking.getBookingNumber();
         this.bookingDate = booking.getBookingDate();
         this.passengerId = booking.getPassenger().getId();
-        this.flightId = booking.getFlight().getId();
+        //this.flightId = booking.getFlight().getId();
+        this.flightId = booking.getFlightSeat().getId();
         this.categoryType = booking.getCategory().getCategoryType();
     }
 }

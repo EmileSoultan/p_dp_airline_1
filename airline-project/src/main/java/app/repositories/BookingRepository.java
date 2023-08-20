@@ -18,6 +18,11 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "LEFT JOIN FETCH booking.passenger WHERE flight.departureDateTime BETWEEN ?2 AND ?1")
     List<Booking> getAllBooksForEmailNotification(LocalDateTime departureIn, LocalDateTime gap);
 
+//    @Query(value = "SELECT booking FROM Booking booking LEFT JOIN FETCH booking.flightSeat flightSeat " +
+//            "LEFT JOIN FETCH booking.passenger WHERE flightSeat.departureDateTime BETWEEN ?2 AND ?1")
+//    List<Booking> getAllBooksForEmailNotification(LocalDateTime departureIn, LocalDateTime gap);
+
+
     Optional<Booking> findByBookingNumber(String number);
 
     @Modifying

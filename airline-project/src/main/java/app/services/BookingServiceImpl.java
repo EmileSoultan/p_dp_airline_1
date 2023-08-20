@@ -2,10 +2,7 @@ package app.services;
 
 import app.entities.Booking;
 import app.repositories.BookingRepository;
-import app.services.interfaces.BookingService;
-import app.services.interfaces.CategoryService;
-import app.services.interfaces.FlightService;
-import app.services.interfaces.PassengerService;
+import app.services.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,13 +21,14 @@ public class BookingServiceImpl implements BookingService {
     private final CategoryService categoryService;
     private final PassengerService passengerService;
     private final FlightService flightService;
-
+    private final FlightSeatService flightSeatService;
 
     @Transactional
     @Override
     public Booking saveBooking(Booking booking) {
         booking.setPassenger((passengerService.getPassengerById(booking.getPassenger().getId())).get());
-        booking.setFlight(flightService.getFlightByCode(booking.getFlight().getCode()));
+       // booking.setFlight(flightService.getFlightByCode(booking.getFlight().getCode()));
+        booking.setFlightSeat(flightSeatService.saveFlightSeat(booking.getFlightSeat()));
         booking.setCategory(categoryService.getCategoryByType(booking.getCategory().getCategoryType()));
         if (booking.getId() == 0) {
             booking.setBookingNumber(generateBookingNumber());

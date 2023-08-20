@@ -44,6 +44,9 @@ public class FlightSeat {
     @Column(name = "is_booking")
     private Boolean isBooking;
 
+    //    @Column(name = "is_booked")
+//    private Boolean  isBooked;
+
     @ManyToOne
     @JoinColumn(name = "flight_id")
     private Flight flight;
