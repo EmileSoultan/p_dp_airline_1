@@ -4,18 +4,17 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <include file="01-add-table-booking.sql" relativeToChangelogFile="true"/>
+    <include file="01-alter-table-booking.sql" relativeToChangelogFile="true"/>
 
     <changeSet id="1.16.1" author="galina-arbatskaya">
-        <tagDatabase tag="01-add-table-booking"/>
+        <tagDatabase tag="01-alter-table-booking"/>
     </changeSet>
 
-<!--&lt;!&ndash;    <include file="02-change-table-flight_seats.sql" relativeToChangelogFile="true"/>&ndash;&gt;-->
+    <include file="02-add-column-flight_seat_id-booking.sql" relativeToChangelogFile="true"/>
 
-<!--&lt;!&ndash;    <changeSet id="1.16.2" author="galina-arbatskaya">&ndash;&gt;-->
-<!--&lt;!&ndash;        <tagDatabase tag="02-change-table-flight_seats"/>&ndash;&gt;-->
-<!--    </changeSet>-->
-
+    <changeSet id="1.16.2" author="galina-arbatskaya">
+        <tagDatabase tag="02-add-column-flight_seat_id-booking"/>
+    </changeSet>
 
 </databaseChangeLog>
 
