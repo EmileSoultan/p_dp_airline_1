@@ -29,8 +29,11 @@ public class BookingDTO {
     @NotNull
     private Long passengerId;
 
+//    @NotNull
+//    private Long flightId;
+
     @NotNull
-    private Long flightId;
+    private Long flightSeatId;
 
     @NotNull
     private CategoryType categoryType;
@@ -41,7 +44,7 @@ public class BookingDTO {
         this.bookingDate = booking.getBookingDate();
         this.passengerId = booking.getPassenger().getId();
         //this.flightId = booking.getFlight().getId();
-        this.flightId = booking.getFlightSeat().getId();
+        this.flightSeatId = booking.getFlightSeat().getId();
         this.categoryType = booking.getCategory().getCategoryType();
     }
 }

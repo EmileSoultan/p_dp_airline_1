@@ -7,6 +7,7 @@ import app.entities.Flight;
 import app.entities.Passenger;
 import app.enums.CategoryType;
 import app.services.interfaces.CategoryService;
+import app.services.interfaces.FlightSeatService;
 import app.services.interfaces.FlightService;
 import app.services.interfaces.PassengerService;
 import org.junit.jupiter.api.Assertions;
@@ -28,6 +29,10 @@ class BookingMapperTest {
     private PassengerService passengerServiceMock = Mockito.mock(PassengerService.class);
     @Mock
     private FlightService flightServiceMock = Mockito.mock(FlightService.class);
+
+    @Mock
+    private FlightSeatService flightSeatServiceMock = Mockito.mock(FlightSeatService.class);
+
     @Mock
     private CategoryService categoryServiceMock = Mockito.mock(CategoryService.class);
 
@@ -51,7 +56,8 @@ class BookingMapperTest {
         booking.setBookingNumber("BK-111111");
         booking.setBookingDate(LocalDateTime.now());
         booking.setPassenger(passengerServiceMock.getPassengerById(1001L).get());
-        booking.setFlight(flightServiceMock.getFlightById(4001L).get());
+       // booking.setFlight(flightServiceMock.getFlightById(4001L).get());
+        booking.setFlightSeat(flightSeatServiceMock.getFlightSeatById(4001L).get());
         booking.setCategory(categoryServiceMock.getCategoryByType(CategoryType.ECONOMY));
 
         BookingDTO bookingDTO = bookingMapper.convertToBookingDTOEntity(booking, passengerServiceMock, flightServiceMock,
@@ -61,7 +67,7 @@ class BookingMapperTest {
         Assertions.assertEquals(booking.getBookingNumber(), bookingDTO.getBookingNumber());
         Assertions.assertEquals(booking.getBookingDate(), bookingDTO.getBookingDate());
         Assertions.assertEquals(booking.getPassenger().getId(), bookingDTO.getPassengerId());
-        Assertions.assertEquals(booking.getFlight().getId(), bookingDTO.getFlightId());
+        Assertions.assertEquals(booking.getFlightSeat().getId(), bookingDTO.getFlightSeatId());
         Assertions.assertEquals(booking.getCategory().getCategoryType(), bookingDTO.getCategoryType());
 
     }
@@ -86,7 +92,7 @@ class BookingMapperTest {
         bookingDTO.setBookingNumber("BK-111111");
         bookingDTO.setBookingDate(LocalDateTime.now());
         bookingDTO.setPassengerId(passengerServiceMock.getPassengerById(1001L).get().getId());
-        bookingDTO.setFlightId(flightServiceMock.getFlightById(4001L).get().getId());
+        bookingDTO.setFlightSeatId(flightServiceMock.getFlightById(4001L).get().getId());
         bookingDTO.setCategoryType(CategoryType.ECONOMY);
 
         Booking booking = bookingMapper.convertToBookingEntity(bookingDTO, passengerServiceMock, flightServiceMock, categoryServiceMock);
@@ -95,7 +101,7 @@ class BookingMapperTest {
         Assertions.assertEquals(bookingDTO.getBookingNumber(), booking.getBookingNumber());
         Assertions.assertEquals(bookingDTO.getBookingDate(), booking.getBookingDate());
         Assertions.assertEquals(bookingDTO.getPassengerId(), booking.getPassenger().getId());
-        Assertions.assertEquals(bookingDTO.getFlightId(), booking.getFlight().getId());
+        Assertions.assertEquals(bookingDTO.getFlightSeatId(), booking.getFlightSeat().getId());
         Assertions.assertEquals(bookingDTO.getCategoryType(), booking.getCategory().getCategoryType());
 
     }
