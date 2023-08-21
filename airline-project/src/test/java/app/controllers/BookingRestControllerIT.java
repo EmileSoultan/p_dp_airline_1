@@ -48,7 +48,8 @@ class BookingRestControllerIT extends IntegrationTestBase {
         booking.setBookingNumber("BK-111111");
         booking.setBookingDate(LocalDateTime.now());
         booking.setPassengerId(passengerService.getPassengerById(1001L).get().getId());
-        booking.setFlightId(flightService.getFlightById(4001L).get().getId());
+        //booking.setFlightId(flightService.getFlightById(4001L).get().getId());
+        booking.setFlightSeatId(flightService.getFlightById(4001L).get().getId());
         booking.setCategoryType(CategoryType.ECONOMY);
 
         mockMvc.perform(post("http://localhost:8080/api/bookings")
@@ -102,7 +103,8 @@ class BookingRestControllerIT extends IntegrationTestBase {
         var booking = new BookingDTO(bookingService.getBookingById(id));
         booking.setBookingDate(LocalDateTime.now());
         booking.setPassengerId(passengerService.getPassengerById(1002L).get().getId());
-        booking.setFlightId(4002L);
+        //booking.setFlightId(4002L);
+        booking.setFlightSeatId(4002L);
         booking.setCategoryType(CategoryType.BUSINESS);
         long numberOfBooking = bookingRepository.count();
 
