@@ -44,7 +44,8 @@ public class FlightSeatServiceImpl implements FlightSeatService {
     @Transactional(readOnly = true)
     @Loggable
     public Page<FlightSeat> getFreeSeatsById(Pageable pageable, Long id) {
-        return flightSeatRepository.findFlightSeatByFlightIdAndIsSoldFalseAndIsRegisteredFalse(id, pageable);
+       // return flightSeatRepository.findFlightSeatByFlightIdAndIsSoldFalseAndIsRegisteredFalse(id, pageable);
+        return flightSeatRepository.findFlightSeatByFlightIdAndIsSoldFalseAndIsRegisteredFalseAndIsBookedFalse(id, pageable);
     }
 
     @Override
